@@ -18,11 +18,15 @@ class RoleSeeder extends Seeder
         DB::table('roles')->insert([
             [
                 'name' => 'Super Admin',
-                'guard_name' => 'web',
+                'guard_name' => 'backpack',
             ],
             [
                 'name' => 'Module Admin',
-                'guard_name' => 'web',
+                'guard_name' => 'backpack',
+            ],
+            [
+                'name' => 'Normal User',
+                'guard_name' => 'backpack',
             ]
         ]);
     }

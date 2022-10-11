@@ -17,52 +17,52 @@ class PermissionSeeder extends Seeder
     {
         DB::table('permissions')->insert([
             [
-                'name' => 'View users',
-                'guard_name' => 'web',
+                'name' => 'view-users',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Create users',
-                'guard_name' => 'web',
+                'name' => 'create-users',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Edit users',
-                'guard_name' => 'web',
+                'name' => 'edit-users',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Delete users',
-                'guard_name' => 'web',
+                'name' => 'delete-users',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'View roles',
-                'guard_name' => 'web',
+                'name' => 'view-roles',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Create roles',
-                'guard_name' => 'web',
+                'name' => 'create-roles',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Edit roles',
-                'guard_name' => 'web',
+                'name' => 'edit-roles',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Delete roles',
-                'guard_name' => 'web',
+                'name' => 'delete-roles',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'View permissions',
-                'guard_name' => 'web',
+                'name' => 'view-permissions',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Create permissions',
-                'guard_name' => 'web',
+                'name' => 'create-permissions',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Edit permissions',
-                'guard_name' => 'web',
+                'name' => 'edit-permissions',
+                'guard_name' => 'backpack',
             ],
             [
-                'name' => 'Delete permissions',
-                'guard_name' => 'web',
+                'name' => 'delete-permissions',
+                'guard_name' => 'backpack',
             ]
         ]);
     }

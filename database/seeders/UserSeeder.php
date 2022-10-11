@@ -17,9 +17,21 @@ class UserSeeder extends Seeder
     public function run()
     {
         DB::table('users')->insert([
-            'name' => 'Admin',
-            'email' => 'admin@etreceportal.com',
-            'password' => Hash::make('admin@etreceportal.com'),
+            [
+                'name' => 'Super Admin',
+                'email' => 'superadmin@etreceportal.com',
+                'password' => Hash::make('superadmin@etreceportal.com'),
+            ],
+            [
+                'name' => 'Module Admin',
+                'email' => 'moduleadmin@etreceportal.com',
+                'password' => Hash::make('moduleadmin@etreceportal.com'),
+            ],
+            [
+                'name' => 'Normal User',
+                'email' => 'normaluser@etreceportal.com',
+                'password' => Hash::make('normaluser@etreceportal.com'),
+            ]
         ]);
     }
 }
