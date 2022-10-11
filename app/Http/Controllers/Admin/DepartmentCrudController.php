@@ -39,7 +39,8 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        
+        CRUD::column('name');
+        CRUD::column('officeId');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,7 +59,9 @@ class DepartmentCrudController extends CrudController
     {
         CRUD::setValidation(DepartmentRequest::class);
 
-        
+        CRUD::field('name');
+        CRUD::field('officeId');
+        CRUD::field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

@@ -23,6 +23,13 @@ class Section extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $fillable = [
+        'name',
+        'officeId',
+        'contactNo',
+        'isActive'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

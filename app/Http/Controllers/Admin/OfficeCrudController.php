@@ -39,7 +39,8 @@ class OfficeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        
+        CRUD::column('code');
+        CRUD::column('name');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,7 +59,12 @@ class OfficeCrudController extends CrudController
     {
         CRUD::setValidation(OfficeRequest::class);
 
-        
+        CRUD::field('name');
+        CRUD::field('code');
+        CRUD::field('cityId');
+        CRUD::field('contactNo');
+        CRUD::field('headId');
+        CRUD::field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

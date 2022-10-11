@@ -23,6 +23,12 @@ class Position extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $fillable = [
+        'name',
+        'code',
+        'isActive'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

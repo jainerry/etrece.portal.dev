@@ -40,6 +40,9 @@ class EmployeeCrudController extends CrudController
     protected function setupListOperation()
     {
         
+        CRUD::column('employeeId');
+        CRUD::column('firstName');
+        CRUD::column('LastName');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,7 +61,67 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
+        CRUD::field('employeeId');
+        CRUD::field('IDNo');
+        CRUD::field('lastName');
+        CRUD::field('firstName');
+        CRUD::field('middleName');
+        //CRUD::field('birthDate');
+        CRUD::addField([
+            'label'        => "Birth Date",
+            'name'         => "birthDate",
+            'type'         => 'date',
+        ]);
+        CRUD::field('bloodType');
+        CRUD::field('tinNo');
+        CRUD::field('bpNo');
+        CRUD::field('emergencyContactPerson');
+        CRUD::field('emergencyContactRelationship');
+        CRUD::field('emergencyContactAddress1');
+        CRUD::field('emergencyContactAddress2');
+        CRUD::field('oldIDNo');
+        //CRUD::field('departmentId');
+        CRUD::addField([
+            'label'        => "Department",
+            'name'         => "departmentId",
+            'type'         => 'select',
+            'entity'    => 'department',
+            'model'     => "App\Models\Department",
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }), 
+        ]);
         
+        CRUD::field('sectionId');
+        CRUD::field('positionId');
+        CRUD::field('picName');
+        CRUD::field('halfPicName');
+        CRUD::field('signName');
+        CRUD::field('empPrint');
+        CRUD::field('workStatus');
+        CRUD::field('remarks');
+        CRUD::field('encryptCode');
+        CRUD::field('contactNo');
+        CRUD::field('smallPrint');
+        CRUD::field('suffix');
+        CRUD::field('birthPlace');
+        CRUD::field('civilStatus');
+        CRUD::field('citizenShip');
+        CRUD::field('citizenShipAcquisition');
+        CRUD::field('country');
+        CRUD::field('sex');
+        CRUD::field('height');
+        CRUD::field('weight');
+        CRUD::field('pagibigNo');
+        CRUD::field('philhealthNo');
+        CRUD::field('sssNo');
+        CRUD::field('landlineNo');
+        CRUD::field('email');
+        CRUD::field('residentialAddress');
+        CRUD::field('permanentAddress');
+        CRUD::field('residentialSitio');
+        CRUD::field('permanentSitio');
+        CRUD::field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

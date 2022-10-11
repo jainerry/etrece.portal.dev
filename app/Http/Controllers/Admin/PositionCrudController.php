@@ -39,7 +39,8 @@ class PositionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        
+        CRUD::column('code');
+        CRUD::column('name');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -58,7 +59,9 @@ class PositionCrudController extends CrudController
     {
         CRUD::setValidation(PositionRequest::class);
 
-        
+        CRUD::field('name');
+        CRUD::field('code');
+        CRUD::field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

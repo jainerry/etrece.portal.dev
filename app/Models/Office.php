@@ -23,13 +23,14 @@ class Office extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    /**
-     * The attributes that are mass assignable.
-     *
-     * @var array<int, string>
-     */
+
     protected $fillable = [
         'name',
+        'code',
+        'cityId',
+        'contactNo',
+        'headId',
+        'isActive'
     ];
 
     /*

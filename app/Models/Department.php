@@ -23,6 +23,13 @@ class Department extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+
+    protected $fillable = [
+        'name',
+        'officeId',
+        'isActive'
+    ];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -34,6 +41,11 @@ class Department extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function employee()
+    {
+        return $this->belongsTo(Department::class);
+    }
 
     /*
     |--------------------------------------------------------------------------
