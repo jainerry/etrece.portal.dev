@@ -25,7 +25,10 @@ class CitizenProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'fName' => 'required',
+            'lName' => 'required',
+            'address'=>'required',
+            'bdate'=>'required'
         ];
     }
 
@@ -37,7 +40,10 @@ class CitizenProfileRequest extends FormRequest
     public function attributes()
     {
         return [
-            //
+           'fName'=>'First Name',
+           'lName'=>'Last Name',
+           'address'=>'Address',
+           'bdate'=>'Birthday'
         ];
     }
 
