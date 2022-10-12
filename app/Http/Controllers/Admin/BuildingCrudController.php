@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\PositionRequest;
+use App\Http\Requests\BuildingRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class PositionCrudController
+ * Class BuildingCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class PositionCrudController extends CrudController
+class BuildingCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class PositionCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Position::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/position');
-        CRUD::setEntityNameStrings('position', 'positions');
+        CRUD::setModel(\App\Models\Building::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/building');
+        CRUD::setEntityNameStrings('building', 'buildings');
     }
 
     /**
@@ -62,7 +62,7 @@ class PositionCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(PositionRequest::class);
+        CRUD::setValidation(BuildingRequest::class);
 
         $this->crud->addField(
             [

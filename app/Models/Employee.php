@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Department;
 
 class Employee extends Model
 {
@@ -29,6 +30,7 @@ class Employee extends Model
         'lastName',
         'firstName',
         'middleName',
+        'nickName',
         'birthDate',
         'bloodType',
         'tinNo',
@@ -38,6 +40,7 @@ class Employee extends Model
         'emergencyContactAddress1',
         'emergencyContactAddress2',
         'oldIDNo',
+        'isActive',
         'departmentId',
         'sectionId',
         'positionId',
@@ -67,8 +70,7 @@ class Employee extends Model
         'residentialAddress',
         'permanentAddress',
         'residentialSitio',
-        'permanentSitio',
-        'isActive'
+        'permanentSitio'
     ];
 
     /*
@@ -76,6 +78,33 @@ class Employee extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getFullName(){
+        $firstName = ucfirst($this->firstName);
+        $middleName = ucfirst($this->middleName);
+        $lastName = ucfirst($this->lastName);
+        return "{$firstName}  {$middleName} {$lastName}";
+    }
+
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
+
+    public function getDepartment(){
+        return Department::find(1)->name;
+    }
+
+    public function getSection(){
+        return Section::find(1)->name;
+    }
+
+    public function getPosition(){
+        return Position::find(1)->name;
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -83,9 +112,16 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function department()
-    {
-        return $this->hasOne(Department::class);
+    public function department(){
+        return $this->belongsTo(Department::class);
+    }
+
+    public function section(){
+        return $this->belongsTo(Section::class);
+    }
+
+    public function position(){
+        return $this->belongsTo(Position::class);
     }
 
     /*

@@ -39,8 +39,19 @@ class SectionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        CRUD::column('code');
         CRUD::column('name');
-        CRUD::column('officeId');
+        CRUD::addColumn([
+            'label'=>'Office',
+            'type'  => 'model_function',
+            'function_name' => 'getOffice',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
+        CRUD::column('contactNo');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -59,10 +70,69 @@ class SectionCrudController extends CrudController
     {
         CRUD::setValidation(SectionRequest::class);
 
-        CRUD::field('name');
-        CRUD::field('officeId');
-        CRUD::field('contactNo');
-        CRUD::field('isActive');
+        $this->crud->addField(
+            [
+                'name'=>'code',
+                'label'=>'Code',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'isActive',
+                'label'=>'Status',
+                'type' => 'select_from_array',
+                'options' => [
+                    'Y' => 'Active', 
+                    'N' => 'Inactive'
+                ],
+                'allows_null' => false,
+                'default'     => 'Y',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ],
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name' => 'contactNo',
+                'label' => 'Contact No.',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'name',
+                'label'=>'Name',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-12'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'officeId',
+                'label'=>'Office',
+                'type' => 'select',
+                'entity' => 'office',
+                'model' => 'App\Models\Office',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+               ]
+            ]
+        );
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

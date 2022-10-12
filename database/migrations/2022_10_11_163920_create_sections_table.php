@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('sections', function (Blueprint $table) {
             $table->id();
-            $table->string('name');
+            $table->string('name')->unique();
+            $table->string('code')->nullable();
             $table->string('officeId');
             $table->string('contactNo')->nullable();
             $table->char('isActive', 1)->default('Y');

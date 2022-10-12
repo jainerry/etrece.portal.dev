@@ -41,6 +41,22 @@ class OfficeCrudController extends CrudController
     {
         CRUD::column('code');
         CRUD::column('name');
+        CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Building',
+            'type'  => 'model_function',
+            'function_name' => 'getBuilding',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Head',
+            'type'  => 'model_function',
+            'function_name' => 'getHead',
+        ]);
+        CRUD::column('contactNo');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -59,12 +75,86 @@ class OfficeCrudController extends CrudController
     {
         CRUD::setValidation(OfficeRequest::class);
 
-        CRUD::field('name');
-        CRUD::field('code');
-        CRUD::field('cityId');
-        CRUD::field('contactNo');
-        CRUD::field('headId');
-        CRUD::field('isActive');
+        $this->crud->addField(
+            [
+                'name'=>'code',
+                'label'=>'Code',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'isActive',
+                'label'=>'Status',
+                'type' => 'select_from_array',
+                'options' => [
+                    'Y' => 'Active', 
+                    'N' => 'Inactive'
+                ],
+                'allows_null' => false,
+                'default'     => 'Y',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ],
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name' => 'contactNo',
+                'label' => 'Contact No.',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'name',
+                'label'=>'Name',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-12'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'buildingId',
+                'label'=>'Building',
+                'type' => 'select',
+                'entity' => 'building',
+                'model' => 'App\Models\Building',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'label' => 'Head / OIC',
+                'name' => 'headId',
+                'type' => 'select',
+                'entity' => 'head',
+                'model' => 'App\Models\Employee',
+                'attribute' => 'lastName',
+                'options'   => (function ($query) {
+                    return $query->orderBy('lastName', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+               ]
+            ] 
+        );
+        
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -83,4 +173,5 @@ class OfficeCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+    
 }

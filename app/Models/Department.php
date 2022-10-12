@@ -26,6 +26,7 @@ class Department extends Model
 
     protected $fillable = [
         'name',
+        'code',
         'officeId',
         'isActive'
     ];
@@ -35,16 +36,27 @@ class Department extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
+
+    public function getOffice(){
+        return Office::find(1)->name;
+    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
-    public function employee()
+    public function office()
     {
-        return $this->belongsTo(Department::class);
+        return $this->belongsTo(Office::class);
     }
 
     /*

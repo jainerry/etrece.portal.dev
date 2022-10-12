@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\EmployeeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\Employee;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class EmployeeCrudController
@@ -41,8 +43,31 @@ class EmployeeCrudController extends CrudController
     {
         
         CRUD::column('employeeId');
-        CRUD::column('firstName');
-        CRUD::column('LastName');
+        CRUD::addColumn([
+            'label'=>'Full Name',
+            'type'  => 'model_function',
+            'function_name' => 'getFullName',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Department',
+            'type'  => 'model_function',
+            'function_name' => 'getDepartment',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Section',
+            'type'  => 'model_function',
+            'function_name' => 'getSection',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Position',
+            'type'  => 'model_function',
+            'function_name' => 'getPosition',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -61,73 +86,435 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
-        CRUD::field('employeeId');
-        CRUD::field('IDNo');
-        CRUD::field('lastName');
-        CRUD::field('firstName');
-        CRUD::field('middleName');
-        //CRUD::field('birthDate');
-        CRUD::addField([
-            'label'        => "Birth Date",
-            'name'         => "birthDate",
-            'type'         => 'date',
+        $this->crud->addField(
+            [
+                'name'=>'IDNo',
+                'label'=>'ID No.',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'oldIDNo',
+                'label'=>'Old ID No.',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
         ]);
-        CRUD::field('bloodType');
-        CRUD::field('tinNo');
-        CRUD::field('bpNo');
-        CRUD::field('emergencyContactPerson');
-        CRUD::field('emergencyContactRelationship');
-        CRUD::field('emergencyContactAddress1');
-        CRUD::field('emergencyContactAddress2');
-        CRUD::field('oldIDNo');
-        //CRUD::field('departmentId');
-        CRUD::addField([
-            'label'        => "Department",
-            'name'         => "departmentId",
-            'type'         => 'select',
-            'entity'    => 'department',
-            'model'     => "App\Models\Department",
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }), 
+        $this->crud->addField([
+            'name'=>'firstName',
+            'label'=>'First Name',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'middleName',
+            'label'=>'Middle Name',
+            'hint'=>'(optional)',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'lastName',
+            'label'=>'Last Name',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'suffix',
+            'label'=>'Suffix',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-1'
+           ]
+        ]);
+        $this->crud->addField(
+            [
+                'name'=>'departmentId',
+                'label'=>'Department',
+                'type' => 'select',
+                'entity' => 'department',
+                'model' => 'App\Models\Department',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'sectionId',
+                'label'=>'Section',
+                'type' => 'select',
+                'entity' => 'section',
+                'model' => 'App\Models\Section',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'positionId',
+                'label'=>'Position',
+                'type' => 'select',
+                'entity' => 'position',
+                'model' => 'App\Models\Position',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+               ]
+            ]
+        );
+        $this->crud->addField([
+            'name'=>'sex',
+            'label'=>'Sex',
+            'type' => 'select_from_array',
+            'options' => [
+                'Male' => 'Male',
+                'Female' => 'Female'
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'birthDate',
+            'label'=>'Birth Date',
+            'type'=>'date',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'civilStatus',
+            'label'=>'Civil Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Single' => 'Single',
+                'Married' => 'Married',
+                'Divorced' => 'Divorced',
+                'Separated' => 'Separated'
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([ 
+            'name' => 'bloodType',
+            'label' => "Blood Type",
+            'type' => 'select_from_array',
+            'options' => [
+                'A+' => 'A+',
+                'A-' => 'A-',
+                'B+' => 'B+',
+                'B-' => 'B-',
+                'O+' => 'O+',
+                'O-' => 'AO-',
+                'AB+' => 'AB+',
+                'AB-' => 'AB-'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ]
+        ]);
+        $this->crud->addField([
+            'name'=>'birthPlace',
+            'label'=>'Birth Place',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'citizenShip',
+            'label'=>'Citizenship',
+            'type' => 'select_from_array',
+            'options' => [
+                'Filipino' => 'Filipino'
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'citizenShipAcquisition',
+            'label'=>'Citizenship Acquisition',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'country',
+            'label'=>'Country',
+            'type' => 'select_from_array',
+            'options' => [
+                'Philippines' => 'Philippines'
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'email',
+            'label'=>'Email',
+            'type'=>'email',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'contactNo',
+            'label'=>'Contact No.',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'landlineNo',
+            'label'=>'Landline No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'height',
+            'label'=>'Height',
+            'hint'=>'(in cm)',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'weight',
+            'label'=>'Weight',
+            'hint'=>'(in kg)',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name' => 'picName',
+            'label' => 'Upload Picture',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'uploads',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name' => 'halfPicName',
+            'label' => 'Upload Half Picture',
+            'type' => 'upload',
+            'upload' => true,
+            'disk' => 'uploads',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'signName',
+            'label'=>'Sign Name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'tinNo',
+            'label'=>'TIN No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'bpNo',
+            'label'=>'BP No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'pagibigNo',
+            'label'=>'Pagibig No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'philhealthNo',
+            'label'=>'Philhealth No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'sssNo',
+            'label'=>'SSS No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'residentialAddress',
+            'label'=>'Residential Address',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'permanentAddress',
+            'label'=>'Permanent Address',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'residentialSitio',
+            'label'=>'Residential Sitio',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'Permanent Sitio',
+            'label'=>'Permanent Sitio',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'emergencyContactPerson',
+            'label'=>'Emergency Contact Person',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'emergencyContactRelationship',
+            'label'=>'Emergency Contact Relationship',
+            'type' => 'select_from_array',
+            'options' => [
+                'Mother' => 'Mother',
+                'Father' => 'Father',
+                'Sister' => 'Sister',
+                'Brother' => 'Brother',
+                'Relative' => 'Relative'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'emergencyContactAddress1',
+            'label'=>'Emergency Contact Address 1',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'emergencyContactAddress2',
+            'label'=>'Emergency Contact Address 2',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
         ]);
         
-        CRUD::field('sectionId');
-        CRUD::field('positionId');
-        CRUD::field('picName');
-        CRUD::field('halfPicName');
-        CRUD::field('signName');
-        CRUD::field('empPrint');
-        CRUD::field('workStatus');
-        CRUD::field('remarks');
-        CRUD::field('encryptCode');
-        CRUD::field('contactNo');
-        CRUD::field('smallPrint');
-        CRUD::field('suffix');
-        CRUD::field('birthPlace');
-        CRUD::field('civilStatus');
-        CRUD::field('citizenShip');
-        CRUD::field('citizenShipAcquisition');
-        CRUD::field('country');
-        CRUD::field('sex');
-        CRUD::field('height');
-        CRUD::field('weight');
-        CRUD::field('pagibigNo');
-        CRUD::field('philhealthNo');
-        CRUD::field('sssNo');
-        CRUD::field('landlineNo');
-        CRUD::field('email');
-        CRUD::field('residentialAddress');
-        CRUD::field('permanentAddress');
-        CRUD::field('residentialSitio');
-        CRUD::field('permanentSitio');
-        CRUD::field('isActive');
+        $this->crud->addField([
+            'name'=>'empPrint',
+            'label'=>'EMP Print',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'workStatus',
+            'label'=>'Work Status',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'remarks',
+            'label'=>'Remarks',
+            'type' => 'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+           ]
+        ]);
+        $this->crud->addField([
+            'name'=>'encryptCode',
+            'label'=>'Encrypted Code',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+        
+        $this->crud->addField([
+            'name'=>'smallPrint',
+            'label'=>'Small Print',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+           ]
+        ]);
+       
+        
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+
+        Employee::creating(function($entry) {
+            $count = Employee::select(DB::raw('count(*) as count'))->where('employeeId','like',"%".Date('mdY')."%")->first();
+            $employeeId = 'EMPID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+
+            $entry->employeeId = $employeeId;
+        });
     }
 
     /**
