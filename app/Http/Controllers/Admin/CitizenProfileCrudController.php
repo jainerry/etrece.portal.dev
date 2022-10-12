@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\CitizenProfileRequest;
+use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\Date;
 use Yajra\Address\Entities\Barangay;
-
+use Illuminate\Support\Facades\DB;
 /**
  * Class CitizenProfileCrudController
  * @package App\Http\Controllers\Admin
@@ -41,19 +43,44 @@ class CitizenProfileCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('address');
+        
+        
+        
+        CRUD::column('refID');
+        // CRUD::addColumn([
+        //     'name'=>'fName',
+        //     'label'=>'First Name'
+        // ]);
+        // CRUD::addColumn([
+        //     'name'=>'mName',
+        //     'label'=>'Middle Name'
+        // ]);
+        // CRUD::addColumn([
+        //     'name'=>'lName',
+        //     'label'=>'Last Name'
+        // ]);
+        
+        CRUD::addColumn([
+            'label'=>'Full Name',
+            'type'  => 'model_function',
+            'function_name' => 'getFullName',
+        ]);
+      
         CRUD::column('bdate');
-        CRUD::column('brgyID');
+        CRUD::addColumn([
+            'name'=>'brgyID',
+            'label' => "Barangay",
+            'type'=>'select',
+            'entity' => 'barangay',
+            'attribute' => 'name',
+        ]);
+        CRUD::column('address');
         CRUD::column('civilStatus');
         CRUD::column('created_at');
-        CRUD::column('fName');
         CRUD::column('isActive');
-        CRUD::column('lName');
-        CRUD::column('mName');
-        CRUD::column('name');
         CRUD::column('placeOfOrigin');
         CRUD::column('purokID');
-        CRUD::column('refID');
+       
         CRUD::column('sex');
         CRUD::column('suffix');
         CRUD::column('updated_at');
@@ -74,12 +101,12 @@ class CitizenProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(CitizenProfileRequest::class);
+
         $brgys = Barangay::select('id','name')->where('city_id','042122')->get();
         $brgy = [];
         foreach($brgys as $br){
             $brgy += [$br->id => $br->name];
         }
-     
         $this->crud->addField([
             'name'=>'fName',
             'label'=>'First Name',
@@ -194,10 +221,7 @@ class CitizenProfileCrudController extends CrudController
             ]
         ]);
        
-       
-      
-       
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([   
             'name'        => 'isActive',
             'label'       => "isActive",
             'type'        => 'select_from_array',
@@ -206,15 +230,20 @@ class CitizenProfileCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-12'
             ]
-            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
        
-
+        
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
+        CitizenProfile::creating(function($entry) {
+            $count = CitizenProfile::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
+            $refId = 'CID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+
+            $entry->refID = $refId;
+        });
     }
 
     /**
@@ -226,5 +255,6 @@ class CitizenProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+       
     }
 }

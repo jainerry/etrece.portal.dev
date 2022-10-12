@@ -4,6 +4,8 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
+use Yajra\Address\Entities\Barangay;
 
 class CitizenProfile extends Model
 {
@@ -28,13 +30,20 @@ class CitizenProfile extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function getFullName(){
+        $fName = ucfirst($this->fName);
+        $mName = ucfirst($this->mName);
+        $lName = ucfirst($this->lName);
+        return "{$fName}  {$mName} {$lName}";
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function barangay(){
+        return $this->hasOne(Barangay::class, 'id', 'brgyID');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
