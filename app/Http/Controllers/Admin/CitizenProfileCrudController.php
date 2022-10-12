@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\CitizenProfileRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Yajra\Address\HasAddress;
+use Yajra\Address\Entities\Barangay;
 
 /**
  * Class CitizenProfileCrudController
@@ -19,6 +19,7 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+   
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -73,7 +74,12 @@ class CitizenProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(CitizenProfileRequest::class);
-
+        $brgys = Barangay::select('id','name')->where('city_id','042122')->get();
+        $brgy = [];
+        foreach($brgys as $br){
+            $brgy += [$br->id => $br->name];
+        }
+     
         $this->crud->addField([
             'name'=>'fName',
             'label'=>'First Name',
@@ -101,6 +107,16 @@ class CitizenProfileCrudController extends CrudController
            
         ]);
         $this->crud->addField([
+            'name'=>'suffix',
+            'label'=>'Suffix',
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6'
+           ]
+           
+        ]);
+
+        $this->crud->addField([
             'name'=>'address',
             'label'=>'Address',
             'allows_null' => false,
@@ -118,15 +134,42 @@ class CitizenProfileCrudController extends CrudController
            ]
            
         ]);
-        $this->crud->addField([
-            'name'=>'brgyID',
-            'label'=>'Baranggay',
+        
+        $this->crud->addField([ 
+            'name'        => 'sex',
+            'label'       => "Sex",
+            'type'        => 'select_from_array',
+            'options'     => ['1' => 'Male', '0' => 'Female'],
             'allows_null' => false,
+            'default'     => '1',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6'
-           ]
+            ]
         ]);
-       
+
+        $this->crud->addField([   // select_from_array
+            'name'        => 'brgyID',
+            'label'       => "Baranggay",
+            'type'        => 'select_from_array',
+            'options'     => $brgy,
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-4'
+            ]
+            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
+        ]);
+        $this->crud->addField([   // select_from_array
+            'name'        => 'purokID',
+            'label'       => "Purok",
+            'type'        => 'select_from_array',
+            'options'     => ['N/A' => 'N/A'],
+            'allows_null' => false,
+            'default'     => '1',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-4'
+            ]
+            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
+        ]);
         $this->crud->addField([   // select_from_array
             'name'        => 'civilStatus',
             'label'       => "Civil Status",
@@ -137,30 +180,35 @@ class CitizenProfileCrudController extends CrudController
             'allows_null' => false,
             'default'     => '1',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-6'
+                'class' => 'form-group col-12 col-lg-4'
             ]
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
         
-        CRUD::field('isActive');
-        // CRUD::field('placeOfOrigin');
        $this->crud->addField([   // Textarea
             'name'  => 'placeOfOrigin',
             'label' => 'Place of Origin',
-            'type'  => 'textarea'
+            'type'  => 'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-12'
+            ]
         ]);
-        CRUD::field('purokID');
-        CRUD::field('refID');
+       
+       
+      
+       
         $this->crud->addField([   // select_from_array
-            'name'        => 'sex',
-            'label'       => "Sex",
+            'name'        => 'isActive',
+            'label'       => "isActive",
             'type'        => 'select_from_array',
-            'options'     => ['1' => 'Male', '0' => 'Female'],
+            'options'     => ['y'=>'TRUE','n'=>'FALSE'],
             'allows_null' => false,
-            'default'     => '1',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6'
+            ]
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
-        CRUD::field('suffix');
+       
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
