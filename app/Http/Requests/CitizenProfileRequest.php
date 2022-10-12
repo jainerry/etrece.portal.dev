@@ -28,7 +28,8 @@ class CitizenProfileRequest extends FormRequest
             'fName' => 'required',
             'lName' => 'required',
             'address'=>'required',
-            'bdate'=>'required'
+            'bdate'=>'required',
+            'placeOfOrigin'=>'required'
         ];
     }
 

@@ -204,7 +204,7 @@ class CitizenProfileCrudController extends CrudController
             'options'     => ['y'=>'TRUE','n'=>'FALSE'],
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-6'
+                'class' => 'form-group col-12 col-lg-12'
             ]
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
