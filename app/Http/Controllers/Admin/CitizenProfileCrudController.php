@@ -65,6 +65,7 @@ class CitizenProfileCrudController extends CrudController
             'type'  => 'model_function',
             'function_name' => 'getFullName',
         ]);
+        CRUD::column('suffix');
       
         CRUD::column('bdate');
         CRUD::addColumn([
@@ -80,9 +81,7 @@ class CitizenProfileCrudController extends CrudController
         CRUD::column('isActive');
         CRUD::column('placeOfOrigin');
         CRUD::column('purokID');
-       
         CRUD::column('sex');
-        CRUD::column('suffix');
         CRUD::column('updated_at');
 
         /**
