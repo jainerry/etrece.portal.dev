@@ -25,9 +25,8 @@ class OfficeRequest extends FormRequest
     public function rules()
     {
         return [
-            'code' => 'required|min:5|max:255',
-            'name' => 'required|min:5|max:255',
-            'contactNo' => 'required|min:5|max:11'
+            'name' => 'required',
+            'officeLocationId' => 'required'
         ];
     }
 

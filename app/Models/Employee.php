@@ -4,7 +4,9 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\Department;
+use App\Models\Office;
+use App\Models\Section;
+use App\Models\Position;
 
 class Employee extends Model
 {
@@ -41,7 +43,6 @@ class Employee extends Model
         'emergencyContactAddress2',
         'oldIDNo',
         'isActive',
-        'departmentId',
         'sectionId',
         'positionId',
         'picName',
@@ -80,9 +81,8 @@ class Employee extends Model
     */
     public function getFullName(){
         $firstName = ucfirst($this->firstName);
-        $middleName = ucfirst($this->middleName);
         $lastName = ucfirst($this->lastName);
-        return "{$firstName}  {$middleName} {$lastName}";
+        return "{$firstName} {$lastName}";
     }
 
     public function getStatus(){
@@ -94,10 +94,6 @@ class Employee extends Model
         }
     }
 
-    public function getDepartment(){
-        return Department::find(1)->name;
-    }
-
     public function getSection(){
         return Section::find(1)->name;
     }
@@ -106,14 +102,22 @@ class Employee extends Model
         return Position::find(1)->name;
     }
 
+    // public function workStatus(){
+    //     return WorkStatuses::find(1)->name;
+    // }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
 
-    public function department(){
-        return $this->belongsTo(Department::class);
+    public function sectionHeads(){
+        return $this->hasMany(Section::class);
+    }
+
+    public function officeHeads(){
+        return $this->hasMany(Office::class);
     }
 
     public function section(){
@@ -122,6 +126,10 @@ class Employee extends Model
 
     public function position(){
         return $this->belongsTo(Position::class);
+    }
+
+    public function office(){
+        return $this->belongsTo(Office::class);
     }
 
     /*

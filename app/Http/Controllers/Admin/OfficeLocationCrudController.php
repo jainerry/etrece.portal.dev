@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\DepartmentRequest;
+use App\Http\Requests\OfficeLocationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class DepartmentCrudController
+ * Class OfficeLocationCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class DepartmentCrudController extends CrudController
+class OfficeLocationCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class DepartmentCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Department::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/department');
-        CRUD::setEntityNameStrings('department', 'departments');
+        CRUD::setModel(\App\Models\OfficeLocation::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/office-location');
+        CRUD::setEntityNameStrings('office location', 'office locations');
     }
 
     /**
@@ -39,13 +39,7 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('code');
         CRUD::column('name');
-        CRUD::addColumn([
-            'label'=>'Office',
-            'type'  => 'model_function',
-            'function_name' => 'getOffice',
-        ]);
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -67,18 +61,8 @@ class DepartmentCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(DepartmentRequest::class);
+        CRUD::setValidation(OfficeLocationRequest::class);
 
-        $this->crud->addField(
-            [
-                'name'=>'code',
-                'label'=>'Code',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-               ]
-            ]
-        );
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -105,23 +89,7 @@ class DepartmentCrudController extends CrudController
                 ]
             ]
         );
-        $this->crud->addField(
-            [
-                'name'=>'officeId',
-                'label'=>'Office',
-                'type' => 'select',
-                'entity' => 'office',
-                'model' => 'App\Models\Office',
-                'attribute' => 'name',
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-                }),
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-               ]
-            ]
-        );
+        
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

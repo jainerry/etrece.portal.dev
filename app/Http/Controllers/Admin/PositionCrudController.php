@@ -68,7 +68,6 @@ class PositionCrudController extends CrudController
             [
                 'name'=>'code',
                 'label'=>'Code',
-                'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
                ]

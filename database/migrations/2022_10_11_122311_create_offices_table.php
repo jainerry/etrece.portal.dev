@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('name')->unique();
             $table->string('code')->nullable();
-            $table->string('buildingId')->nullable();
+            $table->string('officeLocationId')->nullable();
             $table->string('contactNo')->nullable();
             $table->string('headId')->nullable();
             $table->char('isActive', 1)->default('Y');

@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\SectionRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 
 /**
  * Class SectionCrudController
@@ -39,12 +41,16 @@ class SectionCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('code');
         CRUD::column('name');
         CRUD::addColumn([
             'label'=>'Office',
             'type'  => 'model_function',
             'function_name' => 'getOffice',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Head',
+            'type'  => 'model_function',
+            'function_name' => 'getSectionHead',
         ]);
         CRUD::addColumn([
             'label'=>'Status',
@@ -70,16 +76,12 @@ class SectionCrudController extends CrudController
     {
         CRUD::setValidation(SectionRequest::class);
 
-        $this->crud->addField(
-            [
-                'name'=>'code',
-                'label'=>'Code',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-               ]
-            ]
-        );
+        $employees = Employee::select('id', DB::raw("CONCAT(firstName,' ',lastName) AS fullName"))->where('isActive','Y')->get();
+        $employeeOptions = [];
+        foreach($employees as $employee){
+            $employeeOptions += [$employee->id => $employee->fullName];
+        }
+
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -100,7 +102,6 @@ class SectionCrudController extends CrudController
             [
                 'name' => 'contactNo',
                 'label' => 'Contact No.',
-                'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
                 ]
@@ -128,6 +129,17 @@ class SectionCrudController extends CrudController
                     return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
                 }),
                 'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+               ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'headId',
+                'label'=>'Section Head',
+                'type' => 'select_from_array',
+                'options'   => $employeeOptions,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
                ]

@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Employee;
-use App\Models\Building;
+use App\Models\OfficeLocation;
 
 class Office extends Model
 {
@@ -29,7 +29,7 @@ class Office extends Model
     protected $fillable = [
         'name',
         'code',
-        'buildingId',
+        'officeLocationId',
         'contactNo',
         'headId',
         'isActive'
@@ -49,12 +49,17 @@ class Office extends Model
         }
     }
 
-    public function getBuilding(){
-        return Building::find(1)->name;
+    public function getOfficeLocation(){
+        return OfficeLocation::find($this->officeLocationId)->name;
     }
 
-    public function getHead(){
-        return Employee::find(1)->firstName . ' ' . Employee::find(1)->lastName;
+    public function getOfficeHead(){
+        if(!empty($this->headId)) {
+            return Employee::find($this->headId)->firstName . ' ' . Employee::find(1)->lastName;
+        }
+        else {
+            return $this->headId;
+        }
     }
 
     /*
@@ -63,12 +68,16 @@ class Office extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function head(){
+    public function officeHead(){
         return $this->belongsTo(Employee::class);
     }
 
-    public function building(){
-        return $this->belongsTo(Building::class);
+    public function officeLocation(){
+        return $this->belongsTo(OfficeLocation::class);
+    }
+
+    public function employess(){
+        return $this->hasMany(Employee::class);
     }
 
     /*

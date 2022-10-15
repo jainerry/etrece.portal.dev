@@ -5,7 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\OfficeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use Illuminate\Support\Facades\DB;
+use App\Models\Employee;
 /**
  * Class OfficeCrudController
  * @package App\Http\Controllers\Admin
@@ -47,14 +48,14 @@ class OfficeCrudController extends CrudController
             'function_name' => 'getStatus',
         ]);
         CRUD::addColumn([
-            'label'=>'Building',
+            'label'=>'Location',
             'type'  => 'model_function',
-            'function_name' => 'getBuilding',
+            'function_name' => 'getOfficeLocation',
         ]);
         CRUD::addColumn([
             'label'=>'Head',
             'type'  => 'model_function',
-            'function_name' => 'getHead',
+            'function_name' => 'getOfficeHead',
         ]);
         CRUD::column('contactNo');
 
@@ -75,11 +76,16 @@ class OfficeCrudController extends CrudController
     {
         CRUD::setValidation(OfficeRequest::class);
 
+        $employees = Employee::select('id', DB::raw("CONCAT(firstName,' ',lastName) AS fullName"))->where('isActive','Y')->get();
+        $employeeOptions = [];
+        foreach($employees as $employee){
+            $employeeOptions += [$employee->id => $employee->fullName];
+        }
+
         $this->crud->addField(
             [
                 'name'=>'code',
                 'label'=>'Code',
-                'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
                ]
@@ -105,7 +111,6 @@ class OfficeCrudController extends CrudController
             [
                 'name' => 'contactNo',
                 'label' => 'Contact No.',
-                'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
                 ]
@@ -123,11 +128,11 @@ class OfficeCrudController extends CrudController
         );
         $this->crud->addField(
             [
-                'name'=>'buildingId',
-                'label'=>'Building',
+                'name'=>'officeLocationId',
+                'label'=>'Location',
                 'type' => 'select',
-                'entity' => 'building',
-                'model' => 'App\Models\Building',
+                'entity' => 'officeLocation',
+                'model' => 'App\Models\OfficeLocation',
                 'attribute' => 'name',
                 'options'   => (function ($query) {
                     return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
@@ -140,19 +145,14 @@ class OfficeCrudController extends CrudController
         );
         $this->crud->addField(
             [
-                'label' => 'Head / OIC',
-                'name' => 'headId',
-                'type' => 'select',
-                'entity' => 'head',
-                'model' => 'App\Models\Employee',
-                'attribute' => 'lastName',
-                'options'   => (function ($query) {
-                    return $query->orderBy('lastName', 'ASC')->where('isActive', 'Y')->get();
-                }),
+                'name'=>'headId',
+                'label'=>'Office Head',
+                'type' => 'select_from_array',
+                'options'   => $employeeOptions,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
                ]
-            ] 
+            ]
         );
         
 

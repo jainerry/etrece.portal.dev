@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\Office;
 
-class Department extends Model
+class OfficeLocation extends Model
 {
     use CrudTrait;
 
@@ -15,7 +16,7 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'departments';
+    protected $table = 'office_locations';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -23,11 +24,8 @@ class Department extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-
     protected $fillable = [
         'name',
-        'code',
-        'officeId',
         'isActive'
     ];
 
@@ -45,18 +43,14 @@ class Department extends Model
         }
     }
 
-    public function getOffice(){
-        return Office::find(1)->name;
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function office()
-    {
-        return $this->belongsTo(Office::class);
+
+    public function offices(){
+        return $this->hasMany(Office::class);
     }
 
     /*

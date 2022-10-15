@@ -4,7 +4,8 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-
+use App\Models\Employee;
+use App\Models\Office;
 class Section extends Model
 {
     use CrudTrait;
@@ -25,9 +26,9 @@ class Section extends Model
 
     protected $fillable = [
         'name',
-        'code',
         'officeId',
         'contactNo',
+        'headId',
         'isActive'
     ];
 
@@ -47,7 +48,17 @@ class Section extends Model
     }
 
     public function getOffice(){
-        return Office::find(1)->name;
+        return Office::find($this->officeId)->name;
+    }
+
+    public function getSectionHead(){
+        if(!empty($this->headId)){
+            $employee = Employee::find($this->headId);
+            return $employee->firstName.' '.$employee->lastName;
+        }
+        else {
+            return $this->headId;
+        }
     }
 
     /*
@@ -59,6 +70,10 @@ class Section extends Model
     public function office()
     {
         return $this->belongsTo(Office::class);
+    }
+
+    public function sectionHead(){
+        return $this->belongsTo(Employee::class);
     }
 
     /*
