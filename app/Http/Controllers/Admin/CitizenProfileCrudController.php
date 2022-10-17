@@ -44,7 +44,7 @@ class CitizenProfileCrudController extends CrudController
     protected function setupListOperation()
     {
         
-        
+        $this->crud->enableExportButtons();
         
         CRUD::column('refID');
         // CRUD::addColumn([
