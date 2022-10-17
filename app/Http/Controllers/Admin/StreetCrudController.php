@@ -2,16 +2,17 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\AppointmentRequest;
+use App\Http\Requests\StreetRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Yajra\Address\Entities\Barangay;
 
 /**
- * Class AppointmentCrudController
+ * Class StreetCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class AppointmentCrudController extends CrudController
+class StreetCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +27,9 @@ class AppointmentCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Appointment::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/appointment');
-        CRUD::setEntityNameStrings('appointment', 'appointments');
+        CRUD::setModel(\App\Models\Street::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/street');
+        CRUD::setEntityNameStrings('street', 'streets');
     }
 
     /**
@@ -39,7 +40,13 @@ class AppointmentCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        
         CRUD::column('name');
+        CRUD::addColumn([
+            'label'=>'Barangay',
+            'type'  => 'model_function',
+            'function_name' => 'getBarangay',
+        ]);
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -61,7 +68,13 @@ class AppointmentCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(AppointmentRequest::class);
+        CRUD::setValidation(StreetRequest::class);
+
+        $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
+        $barangayOptions = [];
+        foreach($barangays as $barangay){
+            $barangayOptions += [$barangay->id => $barangay->name];
+        }
 
         $this->crud->addField(
             [
@@ -87,6 +100,18 @@ class AppointmentCrudController extends CrudController
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-12'
                 ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'barangayId',
+                'label'=>'Barangay',
+                'type' => 'select_from_array',
+                'options' => $barangayOptions,
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+               ]
             ]
         );
 

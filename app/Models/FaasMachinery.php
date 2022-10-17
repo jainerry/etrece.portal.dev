@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Appointment extends Model
+class FaasMachinery extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Appointment extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'appointments';
+    protected $table = 'faas_machineries';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -24,8 +24,40 @@ class Appointment extends Model
     // protected $dates = [];
 
     protected $fillable = [
-        'name',
-        'isActive'
+        'ARPNo',
+        'pin',
+        'transactionCode',
+        'primaryOwner',
+        'secondaryOwners',
+        'ownerAddress',
+        'ownerTelephoneNo',
+        'ownerTin',
+        'administrator',
+        'administratorAddress',
+        'administratorTelephoneNo',
+        'administratorTin',
+        'noOfStreet',
+        'barangay',
+        'city',
+        'province',
+        'landOwner',
+        'buildingOwner',
+        'landOwnerPin',
+        'buildingOwnerPin',
+        'propertyAppraisal',
+        'propertyAssessment',
+        'assessmentType',
+        'assessmentEffectivity',
+        'assessedBy',
+        'assessedDate',
+        'recommendingPersonel',
+        'recommendingApprovalDate',
+        'approvedBy',
+        'approvedDate',
+        'memoranda',
+        'recordOfAssesmentEntryDate',
+        'recordingPersonel',
+        'TDNo'
     ];
 
     /*
@@ -33,15 +65,6 @@ class Appointment extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    
-    public function getStatus(){
-        if($this->isActive === 'Y'){
-            return "Active";
-        }
-        else {
-            return "InActive";
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------

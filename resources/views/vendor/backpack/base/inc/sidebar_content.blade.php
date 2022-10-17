@@ -18,3 +18,6 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('position') }}"><i class="nav-icon la la-list"></i> Positions</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li>
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('appointment') }}"><i class="nav-icon la la-question"></i> Appointments</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('street') }}"><i class="nav-icon la la-question"></i> Streets</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-machinery') }}"><i class="nav-icon la la-question"></i> Faas machineries</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-other') }}"><i class="nav-icon la la-question"></i> Faas others</a></li>

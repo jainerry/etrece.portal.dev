@@ -8,16 +8,16 @@
     "packages": [
         {
             "name": "backpack/crud",
-            "version": "5.4.0",
+            "version": "5.4.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/Laravel-Backpack/CRUD.git",
-                "reference": "ebbe9a12760538cf20e9c174d7d113b5ed8e8040"
+                "reference": "e5d5cac37c911b7571c5811b3ff124b1206dc0cd"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/ebbe9a12760538cf20e9c174d7d113b5ed8e8040",
-                "reference": "ebbe9a12760538cf20e9c174d7d113b5ed8e8040",
+                "url": "https://api.github.com/repos/Laravel-Backpack/CRUD/zipball/e5d5cac37c911b7571c5811b3ff124b1206dc0cd",
+                "reference": "e5d5cac37c911b7571c5811b3ff124b1206dc0cd",
                 "shasum": ""
             },
             "require": {
@@ -96,9 +96,9 @@
             ],
             "support": {
                 "issues": "https://github.com/Laravel-Backpack/CRUD/issues",
-                "source": "https://github.com/Laravel-Backpack/CRUD/tree/5.4.0"
+                "source": "https://github.com/Laravel-Backpack/CRUD/tree/5.4.1"
             },
-            "time": "2022-10-17T10:33:38+00:00"
+            "time": "2022-10-17T15:39:57+00:00"
         },
         {
             "name": "backpack/permissionmanager",
@@ -3005,16 +3005,16 @@
         },
         {
             "name": "nunomaduro/termwind",
-            "version": "v1.14.0",
+            "version": "v1.14.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/nunomaduro/termwind.git",
-                "reference": "10065367baccf13b6e30f5e9246fa4f63a79eb1d"
+                "reference": "86fc30eace93b9b6d4c844ba6de76db84184e01b"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/10065367baccf13b6e30f5e9246fa4f63a79eb1d",
-                "reference": "10065367baccf13b6e30f5e9246fa4f63a79eb1d",
+                "url": "https://api.github.com/repos/nunomaduro/termwind/zipball/86fc30eace93b9b6d4c844ba6de76db84184e01b",
+                "reference": "86fc30eace93b9b6d4c844ba6de76db84184e01b",
                 "shasum": ""
             },
             "require": {
@@ -3071,7 +3071,7 @@
             ],
             "support": {
                 "issues": "https://github.com/nunomaduro/termwind/issues",
-                "source": "https://github.com/nunomaduro/termwind/tree/v1.14.0"
+                "source": "https://github.com/nunomaduro/termwind/tree/v1.14.1"
             },
             "funding": [
                 {
@@ -3087,7 +3087,7 @@
                     "type": "github"
                 }
             ],
-            "time": "2022-08-01T11:03:24+00:00"
+            "time": "2022-10-17T15:20:29+00:00"
         },
         {
             "name": "phpoption/phpoption",

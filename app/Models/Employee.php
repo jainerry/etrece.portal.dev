@@ -7,7 +7,9 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\Office;
 use App\Models\Section;
 use App\Models\Position;
-
+use App\Models\Appointment;
+use App\Models\Street;
+use Yajra\Address\Entities\Barangay;
 class Employee extends Model
 {
     use CrudTrait;
@@ -36,42 +38,42 @@ class Employee extends Model
         'birthDate',
         'bloodType',
         'tinNo',
-        'bpNo',
+        'gsisNo',
         'emergencyContactPerson',
         'emergencyContactRelationship',
+        'emergencyContactNo',
         'emergencyContactAddress1',
         'emergencyContactAddress2',
         'oldIDNo',
         'isActive',
         'sectionId',
         'positionId',
-        'picName',
-        'halfPicName',
-        'signName',
-        'empPrint',
-        'workStatus',
+        'idPicture',
+        'halfPicture',
+        'signature',
+        'appointmentId',
         'remarks',
-        'encryptCode',
-        'contactNo',
-        'smallPrint',
+        'cellphoneNo',
         'suffix',
         'birthPlace',
         'civilStatus',
         'citizenShip',
         'citizenShipAcquisition',
-        'country',
+        'dualCitizenCountry',
         'sex',
         'height',
         'weight',
         'pagibigNo',
         'philhealthNo',
         'sssNo',
-        'landlineNo',
+        'telephoneNo',
         'email',
         'residentialAddress',
         'permanentAddress',
-        'residentialSitio',
-        'permanentSitio'
+        'residentialBarangayId',
+        'permanentBarangayId',
+        'residentialStreetId',
+        'permanentStreetId'
     ];
 
     /*
@@ -102,10 +104,6 @@ class Employee extends Model
         return Position::find(1)->name;
     }
 
-    // public function workStatus(){
-    //     return WorkStatuses::find(1)->name;
-    // }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -132,11 +130,47 @@ class Employee extends Model
         return $this->belongsTo(Office::class);
     }
 
+    public function appointment(){
+        return $this->belongsTo(Appointment::class);
+    }
+
+    public function residentialStreet(){
+        return $this->belongsTo(Street::class);
+    }
+
+    public function permanentStreet(){
+        return $this->belongsTo(Street::class);
+    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
+
+    public function setIdPictureAttribute($value)
+    {
+        $attribute_name = "idPicture";
+        $disk = "local";
+        $destination_path = "/uploads/idPictures";       
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+    }
+
+    public function setHalfPictureAttribute($value)
+    {
+        $attribute_name = "halfPicture";
+        $disk = "local";
+        $destination_path = "/uploads/halfPictures";       
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+    }
+
+    public function setSignatureAttribute($value)
+    {
+        $attribute_name = "signature";
+        $disk = "local";
+        $destination_path = "/uploads/signatures";       
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
+    }
 
     /*
     |--------------------------------------------------------------------------
