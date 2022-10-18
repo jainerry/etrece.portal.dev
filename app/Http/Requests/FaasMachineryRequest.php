@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class AppointmentRequest extends FormRequest
+class FaasMachineryRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,7 +25,7 @@ class AppointmentRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

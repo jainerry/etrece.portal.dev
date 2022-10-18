@@ -39,7 +39,7 @@ return new class extends Migration
             $table->string('halfPicture')->nullable();
             $table->string('signature')->nullable();
             $table->string('appointmentId');
-            $table->string('remarks');
+            $table->string('remarks')->nullable();
             $table->string('cellphoneNo')->nullable();
             $table->string('suffix')->nullable();
             $table->string('birthPlace')->nullable();
@@ -57,8 +57,10 @@ return new class extends Migration
             $table->string('email')->nullable();
             $table->string('residentialAddress')->nullable();
             $table->string('permanentAddress')->nullable();
-            $table->string('residentialStreet')->nullable();
-            $table->string('permanentStreet')->nullable();
+            $table->string('residentialBarangayId')->nullable();
+            $table->string('permanentBarangayId')->nullable();
+            $table->string('residentialStreetId')->nullable();
+            $table->string('permanentStreetId')->nullable();
 
             $table->timestamps();
         });

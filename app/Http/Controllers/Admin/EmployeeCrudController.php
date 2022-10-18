@@ -3,10 +3,12 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\EmployeeRequest;
+use App\Models\Appointment;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
+use Yajra\Address\Entities\Barangay;
 
 /**
  * Class EmployeeCrudController
@@ -81,6 +83,11 @@ class EmployeeCrudController extends CrudController
     {
         CRUD::setValidation(EmployeeRequest::class);
 
+        $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
+        $barangayOptions = [];
+        foreach($barangays as $barangay){
+            $barangayOptions += [$barangay->id => $barangay->name];
+        }
  
         $this->crud->addField([
             'name'=>'firstName',
@@ -135,6 +142,7 @@ class EmployeeCrudController extends CrudController
             'name'=>'nickName',
             'label'=>'Nick Name',
             'allows_null' => false,
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
@@ -204,7 +212,7 @@ class EmployeeCrudController extends CrudController
             'tab' => 'Personal Information',
         ]);
         $this->crud->addField([
-            'name'=>'country',
+            'name'=>'dualCitizenCountry',
             'label'=>'Country',
             'hint' => '(for dual citizens)',
             'wrapperAttributes' => [
@@ -310,7 +318,7 @@ class EmployeeCrudController extends CrudController
             'tab' => 'Personal Information',
         ]);
         $this->crud->addField([
-            'name'=>'landlineNo',
+            'name'=>'telephoneNo',
             'label'=>'Telephone No.',
             'hint'=>'(optional)',
             'wrapperAttributes' => [
@@ -319,7 +327,7 @@ class EmployeeCrudController extends CrudController
             'tab' => 'Personal Information',
         ]);
         $this->crud->addField([
-            'name'=>'contactNo',
+            'name'=>'cellphoneNo',
             'label'=>'Cellphone No.',
             'hint'=>'(optional)',
             'wrapperAttributes' => [
@@ -348,39 +356,19 @@ class EmployeeCrudController extends CrudController
             'tab' => 'Personal Information',
         ]);
         $this->crud->addField([
-            'name'=>'workStatus',
+            'name'=>'appointmentId',
             'label'=>'Appointment',
-            'type' => 'select_from_array',
-            'options' => [
-                'Permanent' => 'Permanent',
-                'Co-Termimus' => 'Co-Termimus',
-                'Casual' => 'Casual',
-                'Job Order' => 'Job Order',
-                'CPAG' => 'CPAG'
-            ],
+            'type' => 'select',
+            'entity' => 'appointment',
+            'model' => 'App\Models\Appointment',
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }),
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-4'
             ],
-            'tab' => 'Personal Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'entryDate',
-            'label'=>'Entry Date',
-            'type'=>'date',
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Personal Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'IDNo',
-            'label'=>'ID No.',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'allows_null' => false,
             'tab' => 'Personal Information',
         ]);
         $this->crud->addField([
@@ -394,7 +382,7 @@ class EmployeeCrudController extends CrudController
             'allows_null' => false,
             'default'     => 'Y',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Personal Information',
         ]);
@@ -452,52 +440,37 @@ class EmployeeCrudController extends CrudController
                 'tab' => 'Personal Information',
             ]
         );
-        
-       
-        $this->crud->addField([
-            'name'=>'empPrint',
-            'label'=>'EMP Print',
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Personal Information',
-        ]);
-        
-        
-        $this->crud->addField([
-            'name'=>'encryptCode',
-            'label'=>'Encrypted Code',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Personal Information',
-        ]);
-        
-        $this->crud->addField([
-            'name'=>'smallPrint',
-            'label'=>'Small Print',
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Personal Information',
-        ]);
-
         /* Address Details */
         $this->crud->addField([
             'name'=>'residentialAddress',
             'label'=>'House/Block/Lot No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Address Details',
         ]);
         $this->crud->addField([
-            'name'=>'residentialSitio',
-            'label'=>'Street/Purok',
+            'name'=>'residentialBarangayId',
+            'label'=>'Barangay',
+            'type' => 'select_from_array',
+            'options' => $barangayOptions,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Address Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'residentialStreetId',
+            'label'=>'Street/Purok',
+            'type' => 'select',
+            'entity' => 'residentialStreet',
+            'model' => 'App\Models\Street',
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }),
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Address Details',
         ]);
@@ -505,15 +478,32 @@ class EmployeeCrudController extends CrudController
             'name'=>'permanentAddress',
             'label'=>'House/Block/Lot No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Address Details',
         ]);
         $this->crud->addField([
-            'name'=>'permanentSitio',
-            'label'=>'Street/Purok',
+            'name'=>'permanentBarangayId',
+            'label'=>'Barangay',
+            'type' => 'select_from_array',
+            'options' => $barangayOptions,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Address Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'permanentStreetId',
+            'label'=>'Street/Purok',
+            'type' => 'select',
+            'entity' => 'permanentStreet',
+            'model' => 'App\Models\Street',
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }),
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Address Details',
         ]);
@@ -523,6 +513,7 @@ class EmployeeCrudController extends CrudController
         $this->crud->addField([
             'name'=>'emergencyContactPerson',
             'label'=>'Contact Person',
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -531,6 +522,7 @@ class EmployeeCrudController extends CrudController
         $this->crud->addField([
             'name'=>'emergencyContactNo',
             'label'=>'Contact No.',
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -548,6 +540,7 @@ class EmployeeCrudController extends CrudController
                 'Relative' => 'Relative',
                 'Friend' => 'Friend'
             ],
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -559,6 +552,7 @@ class EmployeeCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
+            'hint'=>'(optional)',
             'tab' => 'Emergency Contact Details',
         ]);
         $this->crud->addField([
@@ -574,38 +568,41 @@ class EmployeeCrudController extends CrudController
 
         /* Uploads */
         $this->crud->addField([
-            'name' => 'picName',
+            'name' => 'idPicture',
             'label' => 'Picture (2x2)',
             'type' => 'upload',
             'upload' => true,
-            'disk' => 'uploads',
+            'disk' => 'local',
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
         ]);
         $this->crud->addField([
-            'name' => 'halfPicName',
+            'name' => 'halfPicture',
             'label' => 'Picture (half)',
             'type' => 'upload',
             'upload' => true,
-            'disk' => 'uploads',
+            'disk' => 'local',
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
-        ]);
+        ],'both');
         $this->crud->addField([
-            'name'=>'signName',
+            'name'=>'signature',
             'label'=>'Signature',
             'type' => 'upload',
             'upload' => true,
-            'disk' => 'uploads',
+            'disk' => 'local',
+            'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
-        ]);
+        ],'both');
         /* Uploads */
 
         
@@ -619,11 +616,17 @@ class EmployeeCrudController extends CrudController
          */
 
         Employee::creating(function($entry) {
-            $employeeIdCtr = Employee::select(DB::raw('count(*) as count'))->where('employeeId','like',"%".Date('Y')."%")->first();
-            $employeeId = 'EMPID'.Date('Y').'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
+            $year = Date('Y');
+            $employeeIdCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
+            //EP22-001 (EP)(last two digit of current year)(-)(series)
+            $employeeId = 'EP'.substr($year,(strlen($year)-2),2).'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
 
-            $IDNoCtr = Employee::select(DB::raw('count(*) as count'))->where('IDNo','like',"%".Date('Y')."%")->first();
-            $IDNo = Date('Y').'-'.str_pad(($IDNoCtr->count), 3, "0", STR_PAD_LEFT);
+            $appointmentId = $_REQUEST['appointmentId'];
+            $appointmentName = Appointment::find($appointmentId)->name;
+            $appointmentInitial = strtoupper(substr($appointmentName,0,1));
+            $IDNoCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
+            //22-J001 (last two digit of current year)(-)(initial of appointment)(series)
+            $IDNo = substr($year,(strlen($year)-2),2).'-'.$appointmentInitial.str_pad(($IDNoCtr->count), 3, "0", STR_PAD_LEFT);
 
             $entry->IDNo = $IDNo;
             $entry->employeeId = $employeeId;
@@ -641,6 +644,11 @@ class EmployeeCrudController extends CrudController
         $this->setupCreateOperation();
     }
 
+    /**
+     * Show the form for creating inserting a new row.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
     public function create()
     {
         $this->crud->hasAccessOrFail('create');
@@ -653,5 +661,31 @@ class EmployeeCrudController extends CrudController
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         //return view($this->crud->getCreateView(), $this->data);
         return view('employee.create', $this->data);
+    }
+
+    /**
+     * Show the form for editing the specified resource.
+     *
+     * @param  int  $id
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function edit($id)
+    {
+        $this->crud->hasAccessOrFail('update');
+        // get entry ID from Request (makes sure its the last ID for nested resources)
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+        // get the info for that entry
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
+        //return view($this->crud->getEditView(), $this->data);
+        return view('employee.edit', $this->data);
     }
 }

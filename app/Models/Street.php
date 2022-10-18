@@ -4,8 +4,9 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Yajra\Address\Entities\Barangay;
 
-class Appointment extends Model
+class Street extends Model
 {
     use CrudTrait;
 
@@ -15,7 +16,7 @@ class Appointment extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'appointments';
+    protected $table = 'streets';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -25,6 +26,7 @@ class Appointment extends Model
 
     protected $fillable = [
         'name',
+        'barangayId',
         'isActive'
     ];
 
@@ -33,7 +35,7 @@ class Appointment extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    
+
     public function getStatus(){
         if($this->isActive === 'Y'){
             return "Active";
@@ -43,12 +45,20 @@ class Appointment extends Model
         }
     }
 
+    public function getBarangay(){
+        return Barangay::find($this->barangayId)->name;
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
 
+    public function barangay()
+    {
+        return $this->belongsTo(Barangay::class);
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
