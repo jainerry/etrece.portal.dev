@@ -13,11 +13,11 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('building_profiles', function (Blueprint $table) {
+        Schema::create('building_owners', function (Blueprint $table) {
             $table->id();
-            $table->string('arpNo')->unique();
-            $table->string('code')->nullable();
-            $table->char('isActive', 1)->default('Y');
+            $table->string('citizen_profile_id')->unique();
+            $table->string('building_profile_id')->nullable();
+            $table->string('isPrimary')->nullable();
             $table->timestamps();
         });
     }
@@ -29,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('building_profiles');
+        Schema::dropIfExists('building_owners');
     }
 };

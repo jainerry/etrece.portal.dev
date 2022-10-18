@@ -60,11 +60,7 @@ class CitizenProfileCrudController extends CrudController
         //     'label'=>'Last Name'
         // ]);
         
-        CRUD::addColumn([
-            'label'=>'Full Name',
-            'type'  => 'model_function',
-            'function_name' => 'getFullName',
-        ]);
+        CRUD::column('fullname');
         CRUD::column('suffix');
       
         CRUD::column('bdate');
