@@ -58,7 +58,7 @@ class CitizenProfileSeeder extends Seeder
                 'Sex' => '0',
                 'bdate' => Carbon::now(),
                 'civilStatus'=>'Single',
-                'brgyID'=>'10548',
+                'brgyID'=>rand(1,13),
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
