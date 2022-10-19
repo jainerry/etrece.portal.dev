@@ -63,26 +63,36 @@ class BuildingProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(BuildingProfileRequest::class);
-
+       
         CRUD::field('code');
         CRUD::addField([    // Select2Multiple = n-n relationship (with pivot table)
-            'label'     => "Owner ID",
+            'label'     => "Owner",
             'type'      => 'select2_multiple',
-            'name'      => 'building_owner', // the method that defines the relationship in your Model
+
+            'name'      => 'citizen_profile', // the method that defines the relationship in your Model
        
             // optional
-            'entity'    => 'building_owner', // the method that defines the relationship in your Model
+            'entity'    => 'citizen_profile', // the method that defines the relationship in your Model
             'model'     => "App\Models\CitizenProfile", // foreign key model
-            'attribute' => 'full_name_with_id', // foreign key attribute that is shown to user
+            'attribute' => 'full_name_with_id_and_address', // foreign key attribute that is shown to user
             'pivot'     => true, // on create&update, do you need to add/delete pivot table entries?
             // 'select_all' => true, // show Select All and Clear buttons?
        
             // optional
             'options'   => (function ($query) {
-                return $query->orderBy('fname', 'ASC')->get();
+                return $query->orderBy('fName', 'ASC')->get();
             }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-       ]);
-        CRUD::field('isActive');
+       ],);
+       $this->crud->addField([   
+        'name'        => 'isActive',
+        'label'       => "isActive",
+        'type'        => 'select_from_array',
+        'options'     => ['y'=>'TRUE','n'=>'FALSE'],
+        'allows_null' => false,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-lg-12'
+        ]
+    ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -90,6 +100,7 @@ class BuildingProfileCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
         BuildingProfile::creating(function($entry) {
+            // dd($this->crud);
             $count = BuildingProfile::select(DB::raw('count(*) as count'))->where('arpNo','like',"%".Date('mdY')."%")->first();
             $arpNo = 'BPID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->arpNo = $arpNo;

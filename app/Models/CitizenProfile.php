@@ -38,11 +38,13 @@ class CitizenProfile extends Model
         $lName = ucfirst($this->lName);
         return "{$fName}  {$mName} {$lName}";
     }
-    public function getFullNameWithIdAttribute(){
+    public function getFullNameWithIdAndAddressAttribute(){
         $fName = ucfirst($this->fName);
         $mName = ucfirst($this->mName);
         $lName = ucfirst($this->lName);
-        return "{$fName}  {$mName} {$lName} - {$this->refID}";
+       
+        $baranggay = ($this->barangay == null) ? $this->barangay:$this->barangay->name;
+        return "{$fName}  {$mName} {$lName} - {$this->refID} - {$baranggay}";
     }
     /*
     |--------------------------------------------------------------------------
@@ -53,8 +55,8 @@ class CitizenProfile extends Model
         return $this->hasOne(Barangay::class, 'id', 'brgyID');
     }
     
-    public function building_owner(){
-        return $this->belongsTo(BuildingOwner::class);
+    public function building_profile(){
+        return $this->hasMany(BuildingProfile::class);
     }
     /*
     |--------------------------------------------------------------------------

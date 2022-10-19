@@ -5,6 +5,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\BuildingProfile;
+
 class BuildingOwner extends Model
 {
     use CrudTrait;
@@ -14,8 +15,11 @@ class BuildingOwner extends Model
     protected $guarded = ['id'];
 
 
-    public function BuildingProfiles(){
-        return  $this->belongsToMany(BuildingProfile::class);
+    public function building_owners(){
+        return  $this->hasm(BuildingProfile::class,'id','building_profile_id');
     }
+    
+ 
+   
 
 }

@@ -37,8 +37,9 @@ class BuildingProfile extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function building_owner(){
-        return $this->hasMany(BuildingOwner::class);
+    
+    public function citizen_profile(){
+        return $this->belongsToMany(CitizenProfile::class,'building_owners');
     }
    
     /*

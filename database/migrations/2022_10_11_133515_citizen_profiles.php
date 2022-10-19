@@ -27,6 +27,7 @@ return new class extends Migration
             $table->string('brgyID');
             $table->string('purokID');
             $table->string('address');
+            $table->string('building_profile_id')->nullable();
             $table->string('placeOfOrigin');
             $table->char('isActive', 1)->default('y');
             $table->timestamps();
