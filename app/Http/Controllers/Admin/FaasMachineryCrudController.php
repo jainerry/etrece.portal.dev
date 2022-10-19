@@ -234,6 +234,103 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Property Location',
         ]);
 
+        $this->crud->addField([
+            'name'=>'buildingOwnerPin',
+            'label'=>'PIN',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+            ],
+            'tab' => 'Property Appraisal',
+        ]);
+
+        // propertyAppraisal repeatable
+        // $this->crud->addField([   
+        //     'name'  => 'propertyAppraisal',
+        //     'label' => 'Property Appraisal',
+        //     'type'  => 'repeatable',
+        //     'subfields' => [ // also works as: "fields"
+        //         [
+        //             'name'    => 'kindOfMachinery',
+        //             'type'    => 'text',
+        //             'label'   => 'Kind of Machinery',
+        //             'hint'    => '(Use additional sheets if necessary)',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'    => 'brandModel',
+        //             'type'    => 'text',
+        //             'label'   => 'Brand & Model',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'    => 'capacity',
+        //             'type'    => 'text',
+        //             'label'   => 'Capacity/HP',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'  => 'dateAcquired',
+        //             'type'  => 'date',
+        //             'label' => 'Date Acquired',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'  => 'conditionWhenAcquired',
+        //             'type'  => 'select_from_array',
+        //             'label' => 'Condition When Acquired',
+        //             'options' => [
+        //                 'New' => 'New',
+        //                 'Second Hand' => 'Second Hand'
+        //             ],
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'    => 'economicLifeEstimated',
+        //             'type'    => 'text',
+        //             'label'   => 'Economic Life - Estimated',
+        //             'hint'    => '(No. of Years)',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'    => 'economicLifeRemain',
+        //             'type'    => 'text',
+        //             'label'   => 'Economic Life - Remain',
+        //             'hint'    => '(No. of Years)',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'    => 'yearInstalled',
+        //             'type'    => 'text',
+        //             'label'   => 'Year Installed',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'  => 'yearOfInitialOperation',
+        //             'type'  => 'text',
+        //             'label' => 'Year of Initial Operation',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ],
+        //         [
+        //             'name'  => 'originalCost',
+        //             'type'  => 'text',
+        //             'label' => 'Original Cost',
+        //             'wrapper' => ['class' => 'form-group col-md-3'],
+        //         ]
+        //     ],
+        
+        //     // optional
+        //     'new_item_label'  => '+ New Item', // customize the text of the button
+        //     'init_rows' => 2, // number of empty rows to be initialized, by default 1
+        //     'min_rows' => 2, // minimum rows allowed, when reached the "delete" buttons will be hidden
+        //     'max_rows' => 2, // maximum rows allowed, when reached the "new item" button will be hidden
+        //     // allow reordering?
+        //     'reorder' => false, // hide up&down arrows next to each row (no reordering)
+        //     'reorder' => true, // show up&down arrows next to each row
+        //     'reorder' => 'order', // show arrows AND add a hidden subfield with that name (value gets updated when rows move)
+        //     'reorder' => ['name' => 'order', 'type' => 'number', 'attributes' => ['data-reorder-input' => true]], // show arrows AND add a visible number subfield
+        // ]);
+        //
+
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
