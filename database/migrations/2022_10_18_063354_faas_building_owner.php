@@ -17,7 +17,6 @@ return new class extends Migration
             $table->id();
             $table->string('citizen_profile_id')->unique();
             $table->string('building_profile_id')->nullable();
-            $table->string('isPrimary')->nullable();
             $table->timestamps();
         });
     }

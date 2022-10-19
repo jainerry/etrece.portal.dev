@@ -23,15 +23,16 @@ Route::group([
 ], function () { // custom admin routes
 
     Route::get('/api/cp',function(Request $req){
-        $query  = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName,"=",refId) as fullname, id'))
-        ->where('refID', 'like',"%{$req->q}%");
+        $query  = CitizenProfile::select(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName," - ",citizen_profiles.refId," - ",`barangays`.name,"-",citizen_profiles.bdate) as data, citizen_profiles.id'))
+                ->join('barangays','citizen_profiles.brgyId','=','barangays.id')
+        ->where('fName', 'like',"%{$req->q}%");
 
-        $columns = ['fName', 'mName', 'lName'];
-        $d = $req->q;
+        // $columns = ['fName', 'mName', 'lName'];
+        // $d = $req->q;
        
-            foreach($columns as $column){
-                $query->orWhere($column, 'LIKE', '%' . $d . '%');
-                }
+        //     foreach($columns as $column){
+        //         $query->orWhere($column, 'LIKE', '%' . $d . '%');
+        //         }
       
         return $query->get();
     });

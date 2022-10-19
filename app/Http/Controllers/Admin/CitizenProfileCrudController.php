@@ -145,16 +145,21 @@ class CitizenProfileCrudController extends CrudController
            ]
            
         ]);
-
-        $this->crud->addField([
-            'name'=>'address',
-            'label'=>'Address',
+        $this->crud->addField([   // select_from_array
+            'name'        => 'civilStatus',
+            'label'       => "Civil Status",
+            'type'        => 'select_from_array',
+            'options'     => ['Single' => 'Single', 
+                              'Married' => 'Married',
+                              'Widowed' => 'Widowed'],
             'allows_null' => false,
+            'default'     => '1',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6'
-           ]
-           
+            ]
+            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
+       
         $this->crud->addField([
             'name'=>'bdate',
             'label'=>'Birthday',
@@ -200,21 +205,16 @@ class CitizenProfileCrudController extends CrudController
             ]
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
-        $this->crud->addField([   // select_from_array
-            'name'        => 'civilStatus',
-            'label'       => "Civil Status",
-            'type'        => 'select_from_array',
-            'options'     => ['Single' => 'Single', 
-                              'Married' => 'Married',
-                              'Widowed' => 'Widowed'],
+       
+        $this->crud->addField([
+            'name'=>'address',
+            'label'=>'Address',
             'allows_null' => false,
-            'default'     => '1',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-4'
-            ]
-            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
+           ]
+           
         ]);
-        
        $this->crud->addField([   // Textarea
             'name'  => 'placeOfOrigin',
             'label' => 'Place of Origin',

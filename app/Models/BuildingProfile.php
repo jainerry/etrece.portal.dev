@@ -8,6 +8,7 @@ use App\Models\CitizenProfile;
 use App\Models\BuildingOwner;
 use GuzzleHttp\Psr7\Request;
 
+
 class BuildingProfile extends Model
 {
     use CrudTrait;
@@ -39,8 +40,11 @@ class BuildingProfile extends Model
     */
     
     public function citizen_profile(){
-        return $this->belongsToMany(CitizenProfile::class,'building_owners');
+        return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
     }
+
+   
+
    
     /*
     |--------------------------------------------------------------------------

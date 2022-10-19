@@ -38,7 +38,7 @@ class CitizenProfile extends Model
         $lName = ucfirst($this->lName);
         return "{$fName}  {$mName} {$lName}";
     }
-    public function getFullNameWithIdAndAddressAttribute(){
+    public function getEntryDataAttribute(){
         $fName = ucfirst($this->fName);
         $mName = ucfirst($this->mName);
         $lName = ucfirst($this->lName);
@@ -58,6 +58,9 @@ class CitizenProfile extends Model
     public function building_profile(){
         return $this->hasMany(BuildingProfile::class);
     }
+
+
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

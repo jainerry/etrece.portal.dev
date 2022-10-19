@@ -27,7 +27,7 @@ class CitizenProfileSeeder extends Seeder
                 'Sex' => '0',
                 'bdate' => Carbon::now(),
                 'civilStatus'=>'Single',
-                'brgyID'=>'0',
+                'brgyID'=>'2',
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
@@ -41,7 +41,7 @@ class CitizenProfileSeeder extends Seeder
                 'Sex' => '0',
                 'bdate' => Carbon::now(),
                 'civilStatus'=>'Single',
-                'brgyID'=>'0',
+                'brgyID'=>'2',
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
@@ -49,7 +49,7 @@ class CitizenProfileSeeder extends Seeder
             ]
         ];
         $cid = 2;
-        for($i=0; 2000>=$i; $i++ ){
+        for($i=0; 500>=$i; $i++ ){
             $faker =app(Faker::class);
             array_push($users, [
                 'refId' => 'CID'.Date('mdY').'-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),
