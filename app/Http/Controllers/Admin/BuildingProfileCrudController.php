@@ -104,9 +104,7 @@ class BuildingProfileCrudController extends CrudController
             $count = BuildingProfile::select(DB::raw('count(*) as count'))->where('arpNo','like',"%".Date('mdY')."%")->first();
             $arpNo = 'BPID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->arpNo = $arpNo;
-            
 
-           
         });
     }
 

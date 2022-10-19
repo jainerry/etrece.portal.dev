@@ -25,8 +25,7 @@ class BarangayRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
-            'referenceCode' => 'required'
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

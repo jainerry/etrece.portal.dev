@@ -23,11 +23,6 @@ class Barangay extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $fillable = [
-        'name',
-        'referenceCode'
-    ];
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

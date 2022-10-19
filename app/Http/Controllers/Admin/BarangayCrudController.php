@@ -39,28 +39,11 @@ class BarangayCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('referenceCode');
+        CRUD::column('refID');
         CRUD::column('name');
-        // CRUD::column('code');
-        // CRUD::column('region_id');
-        // CRUD::column('province_id');
-        // CRUD::column('city_id');
-
-
-        $this->crud->addFilter([ 
-            'type'  => 'simple',
-            'name'  => 'city_id',
-            'label' => 'Show Only Barangays in Trece Martires'
-          ],
-          false, // the simple filter has no values, just the "Draft" label specified above
-          function() { // if the filter is active (the GET parameter "draft" exits)
-            $this->crud->addClause('where', 'city_id', '042122'); 
-            // we've added a clause to the CRUD so that only elements with draft=1 are shown in the table
-            // an alternative syntax to this would have been
-            // $this->crud->query = $this->crud->query->where('draft', '1'); 
-            // another alternative syntax, in case you had a scopeDraft() on your model:
-            // $this->crud->addClause('draft'); 
-          });
+        CRUD::column('isActive');
+        CRUD::column('created_at');
+        CRUD::column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -79,50 +62,9 @@ class BarangayCrudController extends CrudController
     {
         CRUD::setValidation(BarangayRequest::class);
 
-
-        $this->crud->addField(
-            [
-                'name'=>'isActive',
-                'label'=>'Status',
-                'type' => 'select_from_array',
-                'options' => [
-                    'Y' => 'Active', 
-                    'N' => 'Inactive'
-                ],
-                'allows_null' => false,
-                'default'     => 'Y',
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ],
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'referenceCode',
-                'label'=>'Reference Code',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'name',
-                'label'=>'Name',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-12'
-                ]
-            ]
-        );
-        
-
-        // CRUD::field('code');
-        // CRUD::field('name');
-        // CRUD::field('region_id');
-        // CRUD::field('province_id');
-        // CRUD::field('city_id');
+        CRUD::field('refID');
+        CRUD::field('name');
+        CRUD::field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

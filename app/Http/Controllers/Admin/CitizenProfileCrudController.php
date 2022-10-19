@@ -7,7 +7,7 @@ use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Date;
-use Yajra\Address\Entities\Barangay;
+use App\Models\Barangay;
 use Illuminate\Support\Facades\DB;
 /**
  * Class CitizenProfileCrudController
@@ -97,7 +97,7 @@ class CitizenProfileCrudController extends CrudController
     {
         CRUD::setValidation(CitizenProfileRequest::class);
 
-        $brgys = Barangay::select('id','name')->where('city_id','042122')->get();
+        $brgys = Barangay::all();
         $brgy = [];
         foreach($brgys as $br){
             $brgy += [$br->id => $br->name];

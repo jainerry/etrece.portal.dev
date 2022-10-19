@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
-use Yajra\Address\Entities\Barangay;
+use App\Models\Barangay;
 use App\Models\BuildingProfile;
 use App\Models\BuildingOwner;
 
