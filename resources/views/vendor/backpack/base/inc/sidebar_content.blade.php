@@ -33,7 +33,7 @@
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('position') }}"><i class="nav-icon la la-list"></i> Positions</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('appointment') }}"><i class="nav-icon la la-list"></i> Appointments</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('barangay') }}"><i class="nav-icon la la-question"></i> Barangays</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('street') }}"><i class="nav-icon la la-list"></i> Streets</a></li>
     </ul>
 </li>
-
