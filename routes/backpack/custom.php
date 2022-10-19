@@ -3,6 +3,10 @@
 use Illuminate\Support\Facades\Route;
 use App\Models\CitizenProfile;
 use App\Http\Resources\CitizenProfileDropdown;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use Termwind\Components\Raw;
+
 // --------------------------
 // Custom Backpack Routes
 // --------------------------
@@ -18,6 +22,19 @@ Route::group([
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
 
+    Route::get('/api/cp',function(Request $req){
+        $query  = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName,"=",refId) as fullname, id'))
+        ->where('refID', 'like',"%{$req->q}%");
+
+        $columns = ['fName', 'mName', 'lName'];
+        $d = $req->q;
+       
+            foreach($columns as $column){
+                $query->orWhere($column, 'LIKE', '%' . $d . '%');
+                }
+      
+        return $query->get();
+    });
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');
     Route::crud('office', 'OfficeCrudController');

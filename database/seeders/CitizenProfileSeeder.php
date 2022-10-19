@@ -8,6 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Faker\Generator as Faker;
 
+
 class CitizenProfileSeeder extends Seeder
 {
     /**
@@ -48,7 +49,7 @@ class CitizenProfileSeeder extends Seeder
             ]
         ];
         $cid = 2;
-        for($i=0; 600>=$i; $i++ ){
+        for($i=0; 2000>=$i; $i++ ){
             $faker =app(Faker::class);
             array_push($users, [
                 'refId' => 'CID'.Date('mdY').'-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),

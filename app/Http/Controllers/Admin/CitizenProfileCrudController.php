@@ -9,11 +9,15 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Date;
 use App\Models\Barangay;
 use Illuminate\Support\Facades\DB;
+
+
 /**
  * Class CitizenProfileCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
+
+
 class CitizenProfileCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
@@ -21,26 +25,30 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-   
+    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation; 
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
      * @return void
      */
+    
     public function setup()
     {
         CRUD::setModel(\App\Models\CitizenProfile::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         CRUD::setEntityNameStrings('citizen profile', 'citizen profiles');
     }
-
+    
     /**
      * Define what happens when the List operation is loaded.
      * 
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
+  
+
+
     protected function setupListOperation()
     {
         
