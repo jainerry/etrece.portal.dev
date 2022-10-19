@@ -28,7 +28,8 @@ class FaasOtherCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\FaasOther::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-other');
-        CRUD::setEntityNameStrings('faas other', 'faas others');
+        // CRUD::setEntityNameStrings('faas other', 'faas others');
+        CRUD::setEntityNameStrings('other', 'others');
     }
 
     /**

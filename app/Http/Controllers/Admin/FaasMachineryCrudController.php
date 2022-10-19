@@ -28,7 +28,8 @@ class FaasMachineryCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\FaasMachinery::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-machinery');
-        CRUD::setEntityNameStrings('faas machinery', 'faas machineries');
+        //CRUD::setEntityNameStrings('faas machinery', 'faas machineries');
+        CRUD::setEntityNameStrings('machinery', 'machineries');
     }
 
     /**
