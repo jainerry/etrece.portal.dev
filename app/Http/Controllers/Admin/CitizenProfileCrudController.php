@@ -9,6 +9,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Date;
 use App\Models\Barangay;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Http\Request;
 
 
 /**
@@ -260,4 +261,5 @@ class CitizenProfileCrudController extends CrudController
         $this->setupCreateOperation();
        
     }
+
 }

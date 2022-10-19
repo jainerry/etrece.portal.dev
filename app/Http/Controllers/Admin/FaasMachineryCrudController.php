@@ -102,10 +102,10 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([   // n-n relationship
             'label'       => "Owner", // Table column heading
             'type'        => "select2_from_ajax_multiple",
-            'name'        => 'primaryOwner', // a unique identifier (usually the method that defines the relationship in your Model)
-            'entity'      => 'primaryOwner', // the method that defines the relationship in your Model
-            'attribute'   => "fullname", // foreign key attribute that is shown to user
-            'data_source' => url("/admin/api/cp"), // url to controller search function (with /{id} should return model)
+            'name'        => 'machineryPrimaryOwners', // a unique identifier (usually the method that defines the relationship in your Model)
+            'entity'      => 'machineryPrimaryOwners', // the method that defines the relationship in your Model
+            'attribute'   => "primaryOwnerData", // foreign key attribute that is shown to user
+            'data_source' => url("/admin/api/citizen-profile/find"), // url to controller search function (with /{id} should return model)
             'pivot'       => true, // on create&update, do you need to add/delete pivot table entries?
         
             // OPTIONAL
@@ -366,8 +366,20 @@ class FaasMachineryCrudController extends CrudController
         FaasMachinery::creating(function($entry) {
             $count = FaasMachinery::select(DB::raw('count(*) as count'))->where('ARPNo','like',"%".Date('mdY')."%")->first();
             $ARPNo = 'ARP'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
-
             $entry->ARPNo = $ARPNo;
+
+            $request = app(FaasMachineryRequest::class);
+
+            // var_dump($request->primaryOwner);
+            // var_dump($request->propertyAppraisal);
+
+            // var_dump(json_encode($request->primaryOwner));
+            // var_dump(json_encode($request->propertyAppraisal));
+
+            $entry->primaryOwner = json_encode($request->primaryOwner);
+            $entry->propertyAppraisal = json_encode($request->propertyAppraisal);
+
+            //die();
         });
     }
 

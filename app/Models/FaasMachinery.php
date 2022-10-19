@@ -72,8 +72,8 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function primaryOwner(){
-        return $this->belongsToMany(CitizenProfile::class,'primaryOwner');
+    public function machineryPrimaryOwners(){
+        return $this->hasMany(CitizenProfile::class, 'id');
     }
 
     /*

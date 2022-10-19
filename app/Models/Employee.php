@@ -11,6 +11,7 @@ use App\Models\Appointment;
 use App\Models\Street;
 use App\Models\Barangay;
 use Intervention\Image\ImageManagerStatic as Image;
+use Illuminate\Support\Str;
 
 class Employee extends Model
 {
@@ -75,7 +76,8 @@ class Employee extends Model
         'residentialBarangayId',
         'permanentBarangayId',
         'residentialStreetId',
-        'permanentStreetId'
+        'permanentStreetId',
+        'officeId'
     ];
 
     /*
@@ -99,11 +101,11 @@ class Employee extends Model
     }
 
     public function getSection(){
-        return Section::find(1)->name;
+        return Section::find($this->sectionId)->name;
     }
 
     public function getPosition(){
-        return Position::find(1)->name;
+        return Position::find($this->positionId)->name;
     }
 
     /*
@@ -121,15 +123,15 @@ class Employee extends Model
     }
 
     public function section(){
-        return $this->belongsTo(Section::class);
+        return $this->belongsTo(Section::class, 'sectionId', 'id');
     }
 
     public function position(){
-        return $this->belongsTo(Position::class);
+        return $this->belongsTo(Position::class, 'positionId', 'id');
     }
 
     public function office(){
-        return $this->belongsTo(Office::class);
+        return $this->belongsTo(Office::class, 'officeId', 'id');
     }
 
     public function appointment(){
@@ -184,11 +186,11 @@ class Employee extends Model
 
     public function setIdPictureAttribute($value)
     {
-        $attribute_name = "image";
+        $attribute_name = "idPicture";
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
         // destination path relative to the disk above
-        $destination_path = "public/uploads/folder_1/folder_2";
+        $destination_path = "public/uploads/images/idpictures";
 
         // if the image was erased
         if (empty($value)) {

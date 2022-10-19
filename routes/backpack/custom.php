@@ -2,6 +2,7 @@
 
 use Illuminate\Support\Facades\Route;
 use App\Models\CitizenProfile;
+use App\Models\Employee;
 use App\Http\Resources\CitizenProfileDropdown;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
@@ -24,7 +25,7 @@ Route::group([
 
     Route::get('/api/cp',function(Request $req){
         $query  = CitizenProfile::select(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName," - ",citizen_profiles.refId," - ",`barangays`.name,"-",citizen_profiles.bdate) as data, citizen_profiles.id'))
-                ->join('barangays','citizen_profiles.brgyId','=','barangays.id')
+        ->leftJoin('barangays','citizen_profiles.brgyId','=','barangays.id')
         ->where('fName', 'like',"%{$req->q}%");
 
         // $columns = ['fName', 'mName', 'lName'];
@@ -36,6 +37,24 @@ Route::group([
       
         return $query->get();
     });
+
+    Route::get('/api/citizen-profile/find',function(Request $req){
+        $searchTerm = $req->q;
+        $query = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as primaryOwnerData, id'))
+        ->orWhereHas('barangay', function ($q) use ($searchTerm) {
+            $q->where('name', 'like', '%'.$searchTerm.'%');
+        })
+        ->orWhere('refID', 'like', '%'.$searchTerm.'%')
+        ->orWhere('fName', 'like', '%'.$searchTerm.'%')
+        ->orWhere('mName', 'like', '%'.$searchTerm.'%')
+        ->orWhere('lName', 'like', '%'.$searchTerm.'%')
+        ->orWhere('suffix', 'like', '%'.$searchTerm.'%')
+        ->orWhere('address', 'like', '%'.$searchTerm.'%')
+        ->orWhereDate('bdate', '=', date($searchTerm));
+
+        return $query->get();
+    });
+
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');
     Route::crud('office', 'OfficeCrudController');

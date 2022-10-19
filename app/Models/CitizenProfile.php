@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Barangay;
 use App\Models\BuildingProfile;
 use App\Models\BuildingOwner;
+use App\Models\FaasMachinery;
 
 class CitizenProfile extends Model
 {
@@ -57,6 +58,10 @@ class CitizenProfile extends Model
     
     public function building_profile(){
         return $this->hasMany(BuildingProfile::class);
+    }
+
+    public function machineryPrimaryOwner(){
+        return $this->belongsTo(FaasMachinery::class, 'id', 'primaryOwner');
     }
 
 
