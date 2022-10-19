@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\StreetRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Yajra\Address\Entities\Barangay;
+use App\Models\Barangay;
 
 /**
  * Class StreetCrudController
@@ -70,11 +70,11 @@ class StreetCrudController extends CrudController
     {
         CRUD::setValidation(StreetRequest::class);
 
-        $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
-        $barangayOptions = [];
-        foreach($barangays as $barangay){
-            $barangayOptions += [$barangay->id => $barangay->name];
-        }
+        // $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
+        // $barangayOptions = [];
+        // foreach($barangays as $barangay){
+        //     $barangayOptions += [$barangay->id => $barangay->name];
+        // }
 
         $this->crud->addField(
             [
@@ -106,8 +106,13 @@ class StreetCrudController extends CrudController
             [
                 'name'=>'barangayId',
                 'label'=>'Barangay',
-                'type' => 'select_from_array',
-                'options' => $barangayOptions,
+                'type' => 'select',
+                'entity' => 'barangay',
+                'model' => 'App\Models\Barangay',
+                'attribute' => 'name',
+                'options'   => (function ($query) {
+                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+                }),
                 'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'

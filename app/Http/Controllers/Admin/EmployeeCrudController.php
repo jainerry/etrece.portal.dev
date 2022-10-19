@@ -8,7 +8,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
-use Yajra\Address\Entities\Barangay;
+use App\Models\Barangay;
 
 /**
  * Class EmployeeCrudController
@@ -82,12 +82,6 @@ class EmployeeCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(EmployeeRequest::class);
-
-        $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
-        $barangayOptions = [];
-        foreach($barangays as $barangay){
-            $barangayOptions += [$barangay->id => $barangay->name];
-        }
  
         $this->crud->addField([
             'name'=>'firstName',
@@ -452,8 +446,13 @@ class EmployeeCrudController extends CrudController
         $this->crud->addField([
             'name'=>'residentialBarangayId',
             'label'=>'Barangay',
-            'type' => 'select_from_array',
-            'options' => $barangayOptions,
+            'type' => 'select',
+            'entity' => 'residentialBarangay',
+            'model' => 'App\Models\Barangay',
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }),
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -485,8 +484,13 @@ class EmployeeCrudController extends CrudController
         $this->crud->addField([
             'name'=>'permanentBarangayId',
             'label'=>'Barangay',
-            'type' => 'select_from_array',
-            'options' => $barangayOptions,
+            'type' => 'select',
+            'entity' => 'permanentBarangay',
+            'model' => 'App\Models\Barangay',
+            'attribute' => 'name',
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
+            }),
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -567,18 +571,34 @@ class EmployeeCrudController extends CrudController
         /* Emergency Contact Details */
 
         /* Uploads */
+        // $this->crud->addField([
+        //     'name' => 'idPicture',
+        //     'label' => 'Picture (2x2)',
+        //     'type' => 'upload',
+        //     'upload' => true,
+        //     'disk' => 'local',
+        //     'hint'=>'(optional)',
+        //     'wrapperAttributes' => [
+        //         'class' => 'form-group col-12 col-md-12'
+        //     ],
+        //     'tab' => 'Uploads',
+        // ]);
+
         $this->crud->addField([
-            'name' => 'idPicture',
-            'label' => 'Picture (2x2)',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'local',
+            'label' => "Picture (2x2)",
+            'name' => "idPicture",
+            'type' => 'image',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+            // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
+            // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
             'hint'=>'(optional)',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Uploads',
         ]);
+
         $this->crud->addField([
             'name' => 'halfPicture',
             'label' => 'Picture (half)',
@@ -616,17 +636,21 @@ class EmployeeCrudController extends CrudController
          */
 
         Employee::creating(function($entry) {
-            $year = Date('Y');
             $employeeIdCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
             //EP22-001 (EP)(last two digit of current year)(-)(series)
-            $employeeId = 'EP'.substr($year,(strlen($year)-2),2).'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
-
+            $employeeId = 'EP'.substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
             $appointmentId = $_REQUEST['appointmentId'];
+            $request = app(EmployeeRequest::class);
+
+            var_dump($request);
+            die();
+            
+            //$appointmentId = $request;
             $appointmentName = Appointment::find($appointmentId)->name;
             $appointmentInitial = strtoupper(substr($appointmentName,0,1));
             $IDNoCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
             //22-J001 (last two digit of current year)(-)(initial of appointment)(series)
-            $IDNo = substr($year,(strlen($year)-2),2).'-'.$appointmentInitial.str_pad(($IDNoCtr->count), 3, "0", STR_PAD_LEFT);
+            $IDNo = substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.$appointmentInitial.str_pad(($IDNoCtr->count), 3, "0", STR_PAD_LEFT);
 
             $entry->IDNo = $IDNo;
             $entry->employeeId = $employeeId;

@@ -4,7 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Yajra\Address\Entities\Barangay;
+use App\Models\Barangay;
 
 class Street extends Model
 {

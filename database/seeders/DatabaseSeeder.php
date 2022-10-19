@@ -5,7 +5,6 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use Illuminate\Database\Seeder;
-use Yajra\Address\Entities\Barangay;
 
 class DatabaseSeeder extends Seeder
 {
@@ -22,6 +21,14 @@ class DatabaseSeeder extends Seeder
             PermissionSeeder::class,
             CitizenProfileSeeder::class,
             BarangaySeeder::class,
+            OfficeLocationSeeder::class,
+            OfficeSeeder::class,
+            PositionSeeder::class,
+            SectionSeeder::class,
+            AppointmentSeeder::class,
+            StreetSeeder::class,
+            EmployeeSeeder::class,
+            DepartmentSeeder::class,
         ]);
     }
 }

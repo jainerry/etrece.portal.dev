@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('office_locations', function (Blueprint $table) {
             $table->id();
             $table->string('name')->unique();
+            $table->string('code')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

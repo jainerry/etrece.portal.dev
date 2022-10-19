@@ -13,15 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('barangays', function (Blueprint $table) {
+        Schema::create('departments', function (Blueprint $table) {
             $table->id();
-            $table->string('refID')->unique();
             $table->string('name')->unique();
             $table->string('code')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
-        
     }
 
     /**
@@ -31,6 +29,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('barangays');
+        Schema::dropIfExists('departments');
     }
 };
