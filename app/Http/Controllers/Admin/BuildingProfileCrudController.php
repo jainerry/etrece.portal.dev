@@ -9,8 +9,6 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 
-
-
 /**
  * Class BuildingProfileCrudController
  * @package App\Http\Controllers\Admin
@@ -26,7 +24,7 @@ class BuildingProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     * 
+     *
      * @return void
      */
     public function setup()
@@ -36,11 +34,10 @@ class BuildingProfileCrudController extends CrudController
         CRUD::setEntityNameStrings('building profile', 'building profiles');
         CRUD::setCreateView('buildingProfile.create');
     }
-   
 
     /**
      * Define what happens when the List operation is loaded.
-     * 
+     *
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -55,13 +52,13 @@ class BuildingProfileCrudController extends CrudController
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
 
     /**
      * Define what happens when the Create operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
@@ -70,68 +67,67 @@ class BuildingProfileCrudController extends CrudController
         CRUD::setValidation(BuildingProfileRequest::class);
         CRUD::field('code');
         CRUD::addField([
-            'label'    => "Primary Owner", 
-            'type'      => 'select2_from_ajax',
-            'name'     => 'primary_owner', 
-            'entity'   => 'citizen_profile',
+            'label' => 'Primary Owner',
+            'type' => 'select2_from_ajax',
+            'name' => 'primary_owner',
+            'entity' => 'citizen_profile',
             'attribute' => 'entry_data',
-            'data_source'   => url("/admin/api/cp"),
-            'minimum_input_length' => 1
-            
+            'data_source' => url('/admin/api/cp'),
+            'minimum_input_length' => 1,
         ]);
-    CRUD::addField([
-        'name'     => 'secondary_owner', // JSON variable name
-        'label'    => "Secondary Owner", // human-readable label for the input
-        'type'     => 'secondary_owner',
-        'data_source'   => url("/admin/api/cp"),
-        
-    ]);
+        CRUD::addField([
+            'name' => 'building_owner', // JSON variable name
+            'label' => 'Secondary Owner', // human-readable label for the input
+            'type' => 'secondary_owner',
+            'entity' => 'building_owner',
+            'data_source' => url('/admin/api/cp'),
+        ]);
 
-    CRUD::addField([   
-        'name'        => 'isActive',
-        'label'       => "isActive",
-        'type'        => 'select_from_array',
-        'options'     => ['Y'=>'TRUE','N'=>'FALSE'],
-        'allows_null' => false,
-        'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-lg-12'
-        ]
-    ]);
+        CRUD::addField([
+            'name' => 'isActive',
+            'label' => 'isActive',
+            'type' => 'select_from_array',
+            'options' => ['Y' => 'TRUE', 'N' => 'FALSE'],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-12',
+            ],
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
          */
-        BuildingProfile::creating(function($entry) {
+        BuildingProfile::creating(function ($entry) {
             // $req  = app(BuildingProfileRequest::class);
             // dd($req);
-            $count = BuildingProfile::select(DB::raw('count(*) as count'))->where('arpNo','like',"%".Date('mdY')."%")->first();
-            $arpNo = 'BPID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+            $count = BuildingProfile::select(DB::raw('count(*) as count'))
+                ->where('arpNo', 'like', '%' . Date('mdY') . '%')
+                ->first();
+            $arpNo = 'BPID' . Date('mdY') . '-' . str_pad($count->count, 4, '0', STR_PAD_LEFT);
             $entry->arpNo = $arpNo;
-
-
         });
     }
 
     /**
      * Define what happens when the Update operation is loaded.
-     * 
+     *
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-    
+
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
         CRUD::addField([
-            'label'    => "Primary Owner", 
-            'type'      => 'select2_from_ajax',
-            'name'     => 'primary_owner', 
-            'entity'   => 'citizen_profile',
+            'label' => 'Primary Owner',
+            'type' => 'select2_from_ajax',
+            'name' => 'primary_owner',
+            'entity' => 'citizen_profile',
             'attribute' => 'entry_data',
-            'data_source'   => url("/admin/api/cp"),
-            'minimum_input_length' => 1
+            'data_source' => url('/admin/api/cp'),
+            'minimum_input_length' => 1,
         ]);
     }
 }
