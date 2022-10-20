@@ -9,11 +9,11 @@ use App\Models\Barangay;
 use App\Models\BuildingProfile;
 use App\Models\BuildingOwner;
 use App\Models\FaasMachinery;
+use Searchab;
 
 class CitizenProfile extends Model
 {
     use CrudTrait;
-
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -27,7 +27,7 @@ class CitizenProfile extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
- 
+    protected $appends = ['entry_data'];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -43,9 +43,9 @@ class CitizenProfile extends Model
         $fName = ucfirst($this->fName);
         $mName = ucfirst($this->mName);
         $lName = ucfirst($this->lName);
-       
+        $bdate = $this->bdate;
         $baranggay = ($this->barangay == null) ? $this->barangay:$this->barangay->name;
-        return "{$fName}  {$mName} {$lName} - {$this->refID} - {$baranggay}";
+        return "{$fName}  {$mName} {$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
     }
     /*
     |--------------------------------------------------------------------------

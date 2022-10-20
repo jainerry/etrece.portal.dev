@@ -8,7 +8,7 @@ use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
-use Illuminate\Http\Request;
+
 
 
 /**
@@ -74,17 +74,18 @@ class BuildingProfileCrudController extends CrudController
             'type'      => 'select2_from_ajax',
             'name'     => 'primary_owner', 
             'entity'   => 'citizen_profile',
-            'attribute' => 'data',
+            'attribute' => 'entry_data',
             'data_source'   => url("/admin/api/cp"),
+            'minimum_input_length' => 1
             
         ]);
-    // CRUD::addField([
-    //     'name'     => 'second_owner', // JSON variable name
-    //     'label'    => "Second Owner", // human-readable label for the input
-    
-    //     'fake'     => true, // show the field, but don't store it in the database column above
-    //     'store_in' => 'extras' // [optional] the database column name where you want the fake fields to ACTUALLY be stored as a JSON array 
-    // ]);
+    CRUD::addField([
+        'name'     => 'secondary_owner', // JSON variable name
+        'label'    => "Secondary Owner", // human-readable label for the input
+        'type'     => 'secondary_owner',
+        'data_source'   => url("/admin/api/cp"),
+        
+    ]);
 
     CRUD::addField([   
         'name'        => 'isActive',
@@ -130,7 +131,7 @@ class BuildingProfileCrudController extends CrudController
             'entity'   => 'citizen_profile',
             'attribute' => 'entry_data',
             'data_source'   => url("/admin/api/cp"),
-            
+            'minimum_input_length' => 1
         ]);
     }
 }
