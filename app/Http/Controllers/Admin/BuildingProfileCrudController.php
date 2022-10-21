@@ -81,6 +81,9 @@ class BuildingProfileCrudController extends CrudController
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
             'data_source' => url('/admin/api/cp'),
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-12',
+            ],
         ]);
 
         CRUD::addField([

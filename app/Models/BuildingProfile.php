@@ -44,7 +44,7 @@ class BuildingProfile extends Model
     }
 
     public function building_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'building_owners','citizen_profile_id','id','building_profile_id','id');
+        return $this->belongsToMany(CitizenProfile::class,'building_owners','citizen_profile_id','building_profile_id');
     }
 
    

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         Schema::create('building_owners', function (Blueprint $table) {
             $table->id();
-            $table->string('citizen_profile_id')->unique();
+            $table->string('citizen_profile_id')->nullable();
             $table->string('building_profile_id')->nullable();
             $table->timestamps();
         });
