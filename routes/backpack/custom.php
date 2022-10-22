@@ -23,18 +23,12 @@ Route::group([
     'namespace'  => 'App\Http\Controllers\Admin',
 ], function () { // custom admin routes
 
-    Route::get('/api/cp',function(Request $req){
+    Route::get('/api/cp/search',function(Request $req){
         $searchTxt = $req->q;
-        $columns = ['fName','mName','lName'];
         $query  = CitizenProfile::select(DB::raw('citizen_profiles.*,CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName) as fullname'))
         ->leftJoin('barangays','citizen_profiles.brgyId','=','barangays.id')
-        ->where(function($q) use($searchTxt,$columns){
-            $extxt = explode($searchTxt,' ');
-         
-                foreach($columns as $col){
-                    $q->orWhere('citizen_profiles.'.$col,'like',"%{$searchTxt}%");
-                } 
-        })
+        ->orWhere(DB::raw('CONCAT(TRIM(citizen_profiles.fName)," ",TRIM(citizen_profiles.mName),(IF(TRIM(citizen_profiles.mName) IS NOT NULL, " ","")),TRIM(citizen_profiles.lName))'),'LIKE',"%".strtolower($searchTxt)."%")
+        ->orWhere('citizen_profiles.refId','like',"%{$searchTxt}%")
         ->orderBy('fullname');
         return $query->get();
     });

@@ -72,7 +72,7 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
             'attribute' => 'entry_data',
-            'data_source' => url('/admin/api/cp'),
+            'data_source' => url('/admin/api/cp/search'),
             'minimum_input_length' => 1,
         ]);
         CRUD::addField([
@@ -80,7 +80,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Secondary Owner', // human-readable label for the input
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
-            'data_source' => url('/admin/api/cp'),
+            'data_source' => url('/admin/api/cp/search'),
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-12',
             ],
