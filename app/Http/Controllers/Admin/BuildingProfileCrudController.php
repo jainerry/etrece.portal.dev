@@ -129,7 +129,7 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
             'attribute' => 'entry_data',
-            'data_source' => url('/admin/api/cp'),
+            'data_source' => url('/admin/api/cp/search'),
             'minimum_input_length' => 1,
         ]);
     }

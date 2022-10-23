@@ -45,7 +45,7 @@ class CitizenProfile extends Model
         $lName = ucfirst($this->lName);
         $bdate = $this->bdate;
         $baranggay = ($this->barangay == null) ? $this->barangay:$this->barangay->name;
-        return "{$fName}  {$mName} {$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
+        return "{$fName}  ".($mName == null ?"": $mName." ")."{$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
     }
     /*
     |--------------------------------------------------------------------------
@@ -57,7 +57,7 @@ class CitizenProfile extends Model
     }
     
     public function building_profile(){
-        return $this->hasMany(BuildingProfile::class);
+        return $this->hasMany(Building::class);
     }
 
     public function machineryPrimaryOwner(){
