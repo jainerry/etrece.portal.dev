@@ -5,10 +5,12 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
-use App\Models\FaasMachinerySecondaryOwners;
+//use App\Models\FaasMachinerySecondaryOwners;
+//use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 class FaasMachinery extends Model
 {
     use CrudTrait;
+    //use HasIdentifiableAttribute;
 
     /*
     |--------------------------------------------------------------------------
@@ -24,12 +26,15 @@ class FaasMachinery extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $casts = [
+        'propertyAppraisal' => 'array',
+    ];
+
     protected $fillable = [
         'ARPNo',
         'pin',
         'transactionCode',
         'primaryOwner',
-        //'secondaryOwners',
         'ownerAddress',
         'ownerTelephoneNo',
         'ownerTin',
@@ -75,6 +80,14 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
+    // public function citizen_profile(){
+    //     return $this->belongsTo(CitizenProfile::class,'primaryOwner','id');
+    // }
+
+    // public function machinery_owner(){
+    //     return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
+    // }
+
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwner','id');
     }
@@ -82,6 +95,10 @@ class FaasMachinery extends Model
     public function machinery_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
     }
+
+    // public function property_appraisal(){
+    //     return $this->hasMany(FaasMachineryPropertyAppraisals::class);
+    // }
 
     /*
     |--------------------------------------------------------------------------

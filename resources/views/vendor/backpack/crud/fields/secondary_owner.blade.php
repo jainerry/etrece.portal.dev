@@ -123,7 +123,7 @@
                                                 Suffix: <b> ${item.suffix}</b>
                                             </div>
                                             <div>
-                                                Reference ID: <b> ${item.refID}</b>
+                                                Reference ID: <b> ${item.refId}</b>
                                             </div>
                                             <div>
                                                 Birth Date: <b> ${item.bdate}</b>

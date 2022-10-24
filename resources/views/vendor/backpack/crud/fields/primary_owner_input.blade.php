@@ -128,9 +128,9 @@
         $(element).select2({
             theme: 'bootstrap',
             multiple: false,
-            placeholder: $placeholder,
-            minimumInputLength: $minimumInputLength,
-            allowClear: $allowClear,
+            placeholder: 'Select Primary Owner',
+            minimumInputLength: 2,
+            allowClear: true,
             templateSelection: formatState,
             dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : $(document.body),
             ajax: {
@@ -182,7 +182,7 @@
                                                 Suffix: <b> ${item.suffix}</b>
                                             </div>
                                             <div>
-                                                Reference ID: <b> ${item.refID}</b>
+                                                Reference ID: <b> ${item.refId}</b>
                                             </div>
                                             <div>
                                                 Birth Date: <b> ${item.bdate}</b>

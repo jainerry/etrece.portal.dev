@@ -30,7 +30,8 @@ class FaasMachineryCrudController extends CrudController
      */
     public function setup()
     {
-        Widget::add()->type('style')->content('assets/css/faas/machinery/styles.css');
+        //Widget::add()->type('style')->content('assets/css/faas/machinery/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
 
         CRUD::setModel(\App\Models\FaasMachinery::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-machinery');
@@ -49,8 +50,8 @@ class FaasMachineryCrudController extends CrudController
         CRUD::column('ARPNo');
         CRUD::column('primaryOwner');
         //CRUD::column('secondaryOwners');
-        CRUD::column('ownerAddress');
-        CRUD::column('ownerTelephoneNo');
+        //CRUD::column('ownerAddress');
+        //CRUD::column('ownerTelephoneNo');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -119,31 +120,61 @@ class FaasMachineryCrudController extends CrudController
         //     'tab' => 'Main Information',
         // ]);
 
+        // $this->crud->addField([   // n-n relationship
+        //     'label' => 'Primary Owner',
+        //     'type' => 'select2_from_ajax',
+        //     'name' => 'primaryOwner',
+        //     'entity' => 'citizen_profile',
+        //     'attribute' => 'fullname',
+        //     'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        //     'minimum_input_length' => 2,
+        //     'wrapperAttributes' => [
+        //         'class' => 'form-group col-12 col-md-6'
+        //     ],
+        //     'tab' => 'Main Information',
+        // ]);
+
+        
+
         $this->crud->addField([   // n-n relationship
             'label' => 'Primary Owner',
-            'type' => 'select2_from_ajax',
+            'type' => 'primary_owner_input',
             'name' => 'primaryOwner',
             'entity' => 'citizen_profile',
-            'attribute' => 'fullname',
+            'attribute' => 'full_name',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
-            'minimum_input_length' => 2,
+            'minimum_input_length' => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-lg-6'
             ],
             'tab' => 'Main Information',
         ]);
 
         $this->crud->addField([   // n-n relationship
             'name' => 'machinery_owner', // JSON variable name
-            'label' => 'Secondary Owners', // human-readable label for the input
-            'type' => 'select2_from_ajax_multiple',
+            'label' => 'Secondary Owner', // human-readable label for the input
+            'type' => 'secondary_owner',
             'entity' => 'machinery_owner',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'attribute' => 'full_name',
+            'minimum_input_length' => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-lg-6'
             ],
             'tab' => 'Main Information',
         ]);
+
+        // $this->crud->addField([   // n-n relationship
+        //     'name' => 'machinery_owner', // JSON variable name
+        //     'label' => 'Secondary Owners', // human-readable label for the input
+        //     'type' => 'select2_from_ajax_multiple',
+        //     'entity' => 'machinery_owner',
+        //     'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        //     'wrapperAttributes' => [
+        //         'class' => 'form-group col-12 col-md-6'
+        //     ],
+        //     'tab' => 'Main Information',
+        // ]);
 
         
 
@@ -307,93 +338,93 @@ class FaasMachineryCrudController extends CrudController
         // ]);
 
         // propertyAppraisal repeatable
-        // $this->crud->addField([   
-        //     'name'  => 'propertyAppraisal',
-        //     'label' => 'Property Appraisal',
-        //     'type'  => 'repeatable',
-        //     'subfields' => [ // also works as: "fields"
-        //         [
-        //             'name'    => 'kindOfMachinery',
-        //             'type'    => 'text',
-        //             'label'   => 'Kind of Machinery',
-        //             'hint'    => '(Use additional sheets if necessary)',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'    => 'brandModel',
-        //             'type'    => 'text',
-        //             'label'   => 'Brand & Model',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'    => 'capacity',
-        //             'type'    => 'text',
-        //             'label'   => 'Capacity/HP',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'  => 'dateAcquired',
-        //             'type'  => 'date',
-        //             'label' => 'Date Acquired',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'  => 'conditionWhenAcquired',
-        //             'type'  => 'select_from_array',
-        //             'label' => 'Condition When Acquired',
-        //             'options' => [
-        //                 'New' => 'New',
-        //                 'Second Hand' => 'Second Hand'
-        //             ],
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'    => 'economicLifeEstimated',
-        //             'type'    => 'text',
-        //             'label'   => 'Economic Life - Estimated',
-        //             'hint'    => '(No. of Years)',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'    => 'economicLifeRemain',
-        //             'type'    => 'text',
-        //             'label'   => 'Economic Life - Remain',
-        //             'hint'    => '(No. of Years)',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'    => 'yearInstalled',
-        //             'type'    => 'text',
-        //             'label'   => 'Year Installed',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'  => 'yearOfInitialOperation',
-        //             'type'  => 'text',
-        //             'label' => 'Year of Initial Operation',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ],
-        //         [
-        //             'name'  => 'originalCost',
-        //             'type'  => 'text',
-        //             'label' => 'Original Cost',
-        //             'wrapper' => ['class' => 'form-group col-md-3'],
-        //         ]
-        //     ],
+        $this->crud->addField([   
+            'name'  => 'propertyAppraisal',
+            'label' => 'Property Appraisal',
+            'type'  => 'repeatable',
+            'subfields' => [ // also works as: "fields"
+                [
+                    'name'    => 'kindOfMachinery',
+                    'type'    => 'text',
+                    'label'   => 'Kind of Machinery',
+                    'hint'    => '(Use additional sheets if necessary)',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'brandModel',
+                    'type'    => 'text',
+                    'label'   => 'Brand & Model',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'capacity',
+                    'type'    => 'text',
+                    'label'   => 'Capacity/HP',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'dateAcquired',
+                    'type'  => 'date',
+                    'label' => 'Date Acquired',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'conditionWhenAcquired',
+                    'type'  => 'select_from_array',
+                    'label' => 'Condition When Acquired',
+                    'options' => [
+                        'New' => 'New',
+                        'Second Hand' => 'Second Hand'
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'economicLifeEstimated',
+                    'type'    => 'text',
+                    'label'   => 'Economic Life - Estimated',
+                    'hint'    => '(No. of Years)',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'economicLifeRemain',
+                    'type'    => 'text',
+                    'label'   => 'Economic Life - Remain',
+                    'hint'    => '(No. of Years)',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'yearInstalled',
+                    'type'    => 'text',
+                    'label'   => 'Year Installed',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'yearOfInitialOperation',
+                    'type'  => 'text',
+                    'label' => 'Year of Initial Operation',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'originalCost',
+                    'type'  => 'text',
+                    'label' => 'Original Cost',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ]
+            ],
         
-        //     // optional
-        //     'new_item_label'  => 'New Item', // customize the text of the button
-        //     'init_rows' => 1, // number of empty rows to be initialized, by default 1
-        //     'min_rows' => 1, // minimum rows allowed, when reached the "delete" buttons will be hidden
-        //     'max_rows' => 10, // maximum rows allowed, when reached the "new item" button will be hidden
-        //     // allow reordering?
-        //     //'reorder' => false, // hide up&down arrows next to each row (no reordering)
-        //     'reorder' => true, // show up&down arrows next to each row
-        //     // 'reorder' => 'order', // show arrows AND add a hidden subfield with that name (value gets updated when rows move)
-        //     // 'reorder' => ['name' => 'order', 'type' => 'number', 'attributes' => ['data-reorder-input' => true]], // show arrows AND add a visible number subfield
+            // optional
+            'new_item_label'  => 'New Item', // customize the text of the button
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' => 1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            'max_rows' => 10, // maximum rows allowed, when reached the "new item" button will be hidden
+            // allow reordering?
+            //'reorder' => false, // hide up&down arrows next to each row (no reordering)
+            'reorder' => true, // show up&down arrows next to each row
+            // 'reorder' => 'order', // show arrows AND add a hidden subfield with that name (value gets updated when rows move)
+            // 'reorder' => ['name' => 'order', 'type' => 'number', 'attributes' => ['data-reorder-input' => true]], // show arrows AND add a visible number subfield
 
-        //     'tab' => 'Property Appraisal',
-        // ]);
+            'tab' => 'Property Appraisal',
+        ]);
         
 
         /**
@@ -407,6 +438,10 @@ class FaasMachineryCrudController extends CrudController
             $count = FaasMachinery::select(DB::raw('count(*) as count'))->where('ARPNo','like',"%".Date('mdY')."%")->first();
             $ARPNo = 'ARP'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->ARPNo = $ARPNo;
+
+            // $request = app(FaasMachinery::class);
+
+            // if(!empty($request->input('propertyAppraisal')))
         });
     }
 
@@ -428,8 +463,8 @@ class FaasMachineryCrudController extends CrudController
      */
     public function create()
     {
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js/faas/machinery/owner-selection.js');
+        // Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        // Widget::add()->type('script')->content('assets/js/faas/machinery/owner-selection.js');
 
         $this->crud->hasAccessOrFail('create');
 
@@ -451,8 +486,8 @@ class FaasMachineryCrudController extends CrudController
      */
     public function edit($id)
     {
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js//faas/machinery/owner-selection.js');
+        // Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        // Widget::add()->type('script')->content('assets/js//faas/machinery/owner-selection.js');
 
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)
