@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
             $table->string('primaryOwner');
-            $table->string('secondaryOwners')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTin')->nullable();

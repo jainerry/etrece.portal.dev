@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
+use App\Models\FaasMachinerySecondaryOwners;
 class FaasMachinery extends Model
 {
     use CrudTrait;
@@ -28,7 +29,7 @@ class FaasMachinery extends Model
         'pin',
         'transactionCode',
         'primaryOwner',
-        'secondaryOwners',
+        //'secondaryOwners',
         'ownerAddress',
         'ownerTelephoneNo',
         'ownerTin',
@@ -60,6 +61,8 @@ class FaasMachinery extends Model
         'TDNo'
     ];
 
+    
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -72,12 +75,12 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function machineryPrimaryOwner(){
-        return $this->hasOne(CitizenProfile::class, 'id');
+    public function citizen_profile(){
+        return $this->belongsTo(CitizenProfile::class,'primaryOwner','id');
     }
 
-    public function machinerySecondaryOwners(){
-        return $this->hasMany(CitizenProfile::class, 'id');
+    public function machinery_owner(){
+        return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
     }
 
     /*

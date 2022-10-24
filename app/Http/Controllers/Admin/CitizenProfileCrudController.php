@@ -271,7 +271,7 @@ class CitizenProfileCrudController extends CrudController
 
         if ($search_term)
         {
-            $results = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as citizenProfileData, id, refId, suffix, address, bdate, brgyID'))
+            $results = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refId, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex'))
                 ->orWhereHas('barangay', function ($q) use ($search_term) {
                     $q->where('name', 'like', '%'.$search_term.'%');
                 })
@@ -281,8 +281,9 @@ class CitizenProfileCrudController extends CrudController
                 ->orWhere('lName', 'like', '%'.$search_term.'%')
                 ->orWhere('suffix', 'like', '%'.$search_term.'%')
                 ->orWhere('address', 'like', '%'.$search_term.'%')
+                //->whereIn('id', [1, 2, 3])
                 ->orWhereDate('bdate', '=', date($search_term))
-                ->orderBy('lName','ASC')
+                ->orderBy('fullname','ASC')
                 ->get();
         }
         else

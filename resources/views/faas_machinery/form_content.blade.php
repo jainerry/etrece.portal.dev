@@ -229,6 +229,8 @@
       if (window.location.hash) {
           $("input[name='_current_tab']").val(window.location.hash.substr(1));
       }
+
+      
       });
     </script>
 

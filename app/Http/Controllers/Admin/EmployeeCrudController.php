@@ -651,8 +651,7 @@ class EmployeeCrudController extends CrudController
             //EP22-001 (EP)(last two digit of current year)(-)(series)
             $employeeId = 'EP'.substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
             $request = app(EmployeeRequest::class);
-            //$appointmentId = $request;
-            $appointmentName = Appointment::find($request->appointmentId)->name;
+            $appointmentName = Appointment::find($request->input('appointmentId'))->name;
             $appointmentInitial = strtoupper(substr($appointmentName,0,1));
             $IDNoCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
             //22-J001 (last two digit of current year)(-)(initial of appointment)(series)
