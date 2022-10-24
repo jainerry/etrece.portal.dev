@@ -28,7 +28,9 @@ class Barangay extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
+    public function building_profile(){
+        return $this->belongsTo(BuildingProfile::class,'barangay_id','id');
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

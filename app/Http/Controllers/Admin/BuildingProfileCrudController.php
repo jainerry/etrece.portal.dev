@@ -44,6 +44,7 @@ class BuildingProfileCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('arpNo');
+        
         CRUD::column('code');
         CRUD::column('isActive');
         CRUD::column('created_at');
@@ -71,6 +72,7 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
             'attribute' => 'full_name',
+            
             'data_source' => url('/admin/api/cp/search'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
@@ -176,9 +178,9 @@ class BuildingProfileCrudController extends CrudController
         ]);
       
         CRUD::addField([
-            'name'=>'brgyID',
             'label' => "Barangay",
             'type'=>'select',
+            'name'=>'barangay_id',
             'entity' => 'barangay',
             'attribute' => 'name',
             'wrapperAttributes' => [
@@ -191,6 +193,17 @@ class BuildingProfileCrudController extends CrudController
             'label' => "Municipality",
             'type'=>'select',
             'entity' => 'municipality',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name'=>'province_id',
+            'label' => "Province",
+            'type'=>'select',
+            'entity' => 'province',
             'attribute' => 'name',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6',

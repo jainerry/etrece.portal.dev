@@ -25,8 +25,9 @@ return new class extends Migration
             $table->string('admin_tel_no')->nullable();
             $table->string('admin_tin_no')->nullable();
             $table->string('no_of_street')->nullable();
-            $table->string('brgyID')->nullable();
+            $table->string('barangay_id')->nullable();
             $table->string('municipality_id')->nullable();
+            $table->string('province_id')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
