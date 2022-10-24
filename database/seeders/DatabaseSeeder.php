@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
+use App\Models\Municipality;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -29,6 +30,8 @@ class DatabaseSeeder extends Seeder
             StreetSeeder::class,
             EmployeeSeeder::class,
             DepartmentSeeder::class,
+            ProvinceSeeder::class,
+            MunicipalitiesSeeder::class
         ]);
     }
 }

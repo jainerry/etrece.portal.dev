@@ -44,6 +44,7 @@ class BuildingProfileCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('arpNo');
+        
         CRUD::column('code');
         CRUD::column('isActive');
         CRUD::column('created_at');
@@ -65,27 +66,52 @@ class BuildingProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(BuildingProfileRequest::class);
-        CRUD::field('code');
         CRUD::addField([
             'label' => 'Primary Owner',
-            'type' => 'select2_from_ajax',
+            'type' => 'primary_owner_input',
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
-            'attribute' => 'entry_data',
+            'attribute' => 'full_name',
+            
             'data_source' => url('/admin/api/cp/search'),
             'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
         ]);
+       
         CRUD::addField([
             'name' => 'building_owner', // JSON variable name
             'label' => 'Secondary Owner', // human-readable label for the input
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
             'data_source' => url('/admin/api/cp/search'),
+            'attribute' => 'full_name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-12',
+                'class' => 'form-group col-12 col-lg-6',
             ],
+            'tab'             => 'Main Information',
         ]);
-
+        CRUD::addField([
+            'name' => 'tel_no', 
+            'label' => 'Tel No.', 
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'owner_tin_no', 
+            'label' => 'TIN Number:', 
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+      
         CRUD::addField([
             'name' => 'isActive',
             'label' => 'isActive',
@@ -95,8 +121,95 @@ class BuildingProfileCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-12',
             ],
+            'tab'             => 'Main Information',
         ]);
 
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'administrator',
+            'label' => 'Administrator',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_address',
+            'label' => 'Administrator Address',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_tel_no',
+            'label' => 'Administrator Tel No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_tin_no',
+            'label' => 'Administrator Tin No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        // Building Location
+        CRUD::addField([
+            'name' => 'no_of_street',
+            'label' => 'No. Of Street:',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+      
+        CRUD::addField([
+            'label' => "Barangay",
+            'type'=>'select',
+            'name'=>'barangay_id',
+            'entity' => 'barangay',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name'=>'municipality_id',
+            'label' => "Municipality",
+            'type'=>'select',
+            'entity' => 'municipality',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name'=>'province_id',
+            'label' => "Province",
+            'type'=>'select',
+            'entity' => 'province',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
@@ -123,14 +236,6 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        CRUD::addField([
-            'label' => 'Primary Owner',
-            'type' => 'select2_from_ajax',
-            'name' => 'primary_owner',
-            'entity' => 'citizen_profile',
-            'attribute' => 'entry_data',
-            'data_source' => url('/admin/api/cp/search'),
-            'minimum_input_length' => 1,
-        ]);
+      
     }
 }
