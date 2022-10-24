@@ -27,7 +27,7 @@
                 @endphp
             @endif
             <option value="{{ $item->getKey() }}" selected>
-                {{ $item->entry_data }}
+                {{ $item->full_name }}
             </option>
         @endforeach
     @endif
@@ -69,18 +69,12 @@
                 // element parameter here will be the jQuery wrapped
                 // element where init function was defined
                 function formatState(state) {
-                    if (!state.id) {
+                    if($(state.text).find('.fullname').length > 0 ){
+                        return $(state.text).find('.fullname').html();
+                    }else{
                         return state.text;
                     }
-                    var baseUrl = "/user/pages/images/flags";
-                    var $state = $(
-                        '<span><img src="' + baseUrl + '/' + state.element.value.toLowerCase() +
-                        '.png" class="img-flag" /> ' + state.text + '</span>'
-                    );
-                    return $state;
                 };
-
-
 
                 var $dataSource = element.attr('data-data-source');
                 var $isFieldInline = element.data('field-is-inline');
@@ -92,6 +86,8 @@
                     placeholder: 'Select Secondary Owner',
                     minimumInputLength: 2,
                     allowClear: true,
+                    templateSelection: formatState,
+                    
                     dropdownParent: $isFieldInline ? $('#inline-create-dialog .modal-content') : $(document.body),
                     ajax: {
                         url: '{{ $field['data_source'] }}',
@@ -118,9 +114,27 @@
                             })
                             return {
                                 results: $.map(data, function(item) {
-                                    console.log(item.fName)
                                     return {
-                                        text: item.entry_data,
+                                        text: `<div>
+                                            <div>
+                                                Fullname: <b class="fullname"> ${item.fullname}</b>
+                                            </div>
+                                            <div>
+                                                Suffix: <b> ${item.suffix}</b>
+                                            </div>
+                                            <div>
+                                                Reference ID: <b> ${item.refID}</b>
+                                            </div>
+                                            <div>
+                                                Birth Date: <b> ${item.bdate}</b>
+                                            </div>
+                                            <div>
+                                                Barangay: <b> ${item.barangay.name}</b>
+                                            </div>
+                                            <div>
+                                                Address: <b> ${item.address}</b>
+                                            </div>
+                                            </div>`,
                                         id: item.id
                                     }
                                 }),

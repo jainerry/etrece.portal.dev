@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('arpNo')->unique();
             $table->string('code')->nullable();
             $table->string('primary_owner')->nullable();
+            $table->string('tel_no')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

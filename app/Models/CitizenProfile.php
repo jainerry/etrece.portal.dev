@@ -27,7 +27,7 @@ class CitizenProfile extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['entry_data'];
+    protected $appends = ['entry_data','full_name'];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

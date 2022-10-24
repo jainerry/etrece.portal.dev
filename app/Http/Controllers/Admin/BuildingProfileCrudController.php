@@ -65,15 +65,18 @@ class BuildingProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(BuildingProfileRequest::class);
-        CRUD::field('code');
         CRUD::addField([
             'label' => 'Primary Owner',
-            'type' => 'select2_from_ajax',
+            'type' => 'primary_owner_input',
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
-            'attribute' => 'entry_data',
+            'attribute' => 'full_name',
             'data_source' => url('/admin/api/cp/search'),
             'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
         ]);
         CRUD::addField([
             'name' => 'building_owner', // JSON variable name
@@ -81,9 +84,11 @@ class BuildingProfileCrudController extends CrudController
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
             'data_source' => url('/admin/api/cp/search'),
+            'attribute' => 'full_name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-12',
+                'class' => 'form-group col-12 col-lg-6',
             ],
+            'tab'             => 'Main Information',
         ]);
 
         CRUD::addField([
@@ -95,6 +100,7 @@ class BuildingProfileCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-12',
             ],
+            'tab'             => 'Main Information',
         ]);
 
         /**
@@ -123,14 +129,6 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        CRUD::addField([
-            'label' => 'Primary Owner',
-            'type' => 'select2_from_ajax',
-            'name' => 'primary_owner',
-            'entity' => 'citizen_profile',
-            'attribute' => 'entry_data',
-            'data_source' => url('/admin/api/cp/search'),
-            'minimum_input_length' => 1,
-        ]);
+      
     }
 }
