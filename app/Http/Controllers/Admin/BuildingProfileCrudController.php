@@ -78,6 +78,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
+       
         CRUD::addField([
             'name' => 'building_owner', // JSON variable name
             'label' => 'Secondary Owner', // human-readable label for the input
@@ -90,7 +91,25 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-
+        CRUD::addField([
+            'name' => 'tel_no', 
+            'label' => 'Tel No.', 
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'owner_tin_no', 
+            'label' => 'TIN Number:', 
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+      
         CRUD::addField([
             'name' => 'isActive',
             'label' => 'isActive',
@@ -103,6 +122,81 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'Main Information',
         ]);
 
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'administrator',
+            'label' => 'Administrator',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_address',
+            'label' => 'Administrator Address',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_tel_no',
+            'label' => 'Administrator Tel No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        CRUD::addField([
+            'name' => 'admin_tin_no',
+            'label' => 'Administrator Tin No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+        // Building Location
+        CRUD::addField([
+            'name' => 'no_of_street',
+            'label' => 'No. Of Street:',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+      
+        CRUD::addField([
+            'name'=>'brgyID',
+            'label' => "Barangay",
+            'type'=>'select',
+            'entity' => 'barangay',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name'=>'municipality_id',
+            'label' => "Municipality",
+            'type'=>'select',
+            'entity' => 'municipality',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'Building Location',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');

@@ -48,4 +48,6 @@ Route::group([
     Route::crud('faas-other', 'FaasOtherCrudController');
     Route::crud('building-profile', 'BuildingProfileCrudController');
     Route::crud('barangay', 'BarangayCrudController');
+    Route::crud('municipality', 'MunicipalityCrudController');
+    Route::crud('province', 'ProvinceCrudController');
 }); // this should be the absolute last line of this file

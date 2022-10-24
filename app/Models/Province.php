@@ -4,12 +4,8 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\CitizenProfile;
-use App\Models\BuildingOwner;
-use GuzzleHttp\Psr7\Request;
 
-
-class BuildingProfile extends Model
+class Province extends Model
 {
     use CrudTrait;
 
@@ -19,11 +15,10 @@ class BuildingProfile extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'building_profiles';
+    protected $table = 'provinces';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
@@ -39,20 +34,7 @@ class BuildingProfile extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function barangay(){
-        return $this->hasOne(Barangay::class, 'id', 'brgyID');
-    }
-    public function citizen_profile(){
-        return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
-    }
 
-    public function building_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'building_owners','citizen_profile_id','building_profile_id');
-    }
-    public function municipality(){
-        return $this->hasOne(Municipality::class, 'id', 'municipality_id');
-    }
-    
     /*
     |--------------------------------------------------------------------------
     | SCOPES
