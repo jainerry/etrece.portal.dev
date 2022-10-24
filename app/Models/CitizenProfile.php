@@ -60,12 +60,6 @@ class CitizenProfile extends Model
         return $this->hasMany(Building::class);
     }
 
-    public function machineryPrimaryOwner(){
-        return $this->belongsTo(FaasMachinery::class, 'id', 'primaryOwner');
-    }
-
-
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES

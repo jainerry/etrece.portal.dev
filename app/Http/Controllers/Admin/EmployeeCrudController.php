@@ -9,6 +9,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Employee;
 use Illuminate\Support\Facades\DB;
 use App\Models\Barangay;
+use Backpack\CRUD\app\Library\Widget;
 
 /**
  * Class EmployeeCrudController
@@ -680,6 +681,8 @@ class EmployeeCrudController extends CrudController
      */
     public function create()
     {
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+
         $this->crud->hasAccessOrFail('create');
 
         // prepare the fields you need to show
@@ -700,6 +703,8 @@ class EmployeeCrudController extends CrudController
      */
     public function edit($id)
     {
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;

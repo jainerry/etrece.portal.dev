@@ -33,22 +33,7 @@ Route::group([
         return $query->get();
     });
 
-    Route::get('/api/citizen-profile/find',function(Request $req){
-        $searchTerm = $req->q;
-        $query = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as primaryOwnerData, id'))
-        ->orWhereHas('barangay', function ($q) use ($searchTerm) {
-            $q->where('name', 'like', '%'.$searchTerm.'%');
-        })
-        ->orWhere('refID', 'like', '%'.$searchTerm.'%')
-        ->orWhere('fName', 'like', '%'.$searchTerm.'%')
-        ->orWhere('mName', 'like', '%'.$searchTerm.'%')
-        ->orWhere('lName', 'like', '%'.$searchTerm.'%')
-        ->orWhere('suffix', 'like', '%'.$searchTerm.'%')
-        ->orWhere('address', 'like', '%'.$searchTerm.'%')
-        ->orWhereDate('bdate', '=', date($searchTerm));
-
-        return $query->get();
-    });
+    Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
 
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');

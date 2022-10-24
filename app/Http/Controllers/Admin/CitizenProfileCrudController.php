@@ -262,4 +262,35 @@ class CitizenProfileCrudController extends CrudController
        
     }
 
+
+    public function ajaxsearch(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+        //return "jai is using ajasx";
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $results = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as citizenProfileData, id, refId, suffix, address, bdate, brgyID'))
+                ->orWhereHas('barangay', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('fName', 'like', '%'.$search_term.'%')
+                ->orWhere('mName', 'like', '%'.$search_term.'%')
+                ->orWhere('lName', 'like', '%'.$search_term.'%')
+                ->orWhere('suffix', 'like', '%'.$search_term.'%')
+                ->orWhere('address', 'like', '%'.$search_term.'%')
+                ->orWhereDate('bdate', '=', date($search_term))
+                ->orderBy('lName','ASC')
+                ->get();
+        }
+        else
+        {
+            $results = CitizenProfile::orderBy('lName','ASC')->paginate(10);
+        }
+
+        return $results;
+    }
+
 }
