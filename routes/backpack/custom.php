@@ -50,4 +50,6 @@ Route::group([
     Route::crud('barangay', 'BarangayCrudController');
     Route::crud('municipality', 'MunicipalityCrudController');
     Route::crud('province', 'ProvinceCrudController');
+    Route::crud('structural-type', 'StructuralTypeCrudController');
+    Route::crud('kind-of-building', 'KindOfBuildingCrudController');
 }); // this should be the absolute last line of this file

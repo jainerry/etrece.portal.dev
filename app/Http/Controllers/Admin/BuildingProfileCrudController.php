@@ -46,6 +46,17 @@ class BuildingProfileCrudController extends CrudController
         CRUD::column('arpNo');
         
         CRUD::column('code');
+        CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'primary_owner',
+            'label' => 'Primary Owner', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'citizen_profile',
+            'attribute' => 'full_name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ],);
         CRUD::column('isActive');
         CRUD::column('created_at');
         CRUD::column('updated_at');
@@ -112,18 +123,7 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'Main Information',
         ]);
       
-        CRUD::addField([
-            'name' => 'isActive',
-            'label' => 'isActive',
-            'type' => 'select_from_array',
-            'options' => ['Y' => 'TRUE', 'N' => 'FALSE'],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-12',
-            ],
-            'tab'             => 'Main Information',
-        ]);
-
+        
         CRUD::addField([   // CustomHTML
             'name'  => 'separator',
             'type'  => 'custom_html',
@@ -166,10 +166,22 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
+        CRUD::addField([
+            'name' => 'isActive',
+            'label' => 'isActive',
+            'type' => 'select_from_array',
+            'options' => ['Y' => 'TRUE', 'N' => 'FALSE'],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-12',
+            ],
+            'tab'             => 'Main Information',
+        ]);
+
         // Building Location
         CRUD::addField([
             'name' => 'no_of_street',
-            'label' => 'No. Of Street:',
+            'label' => 'No. Of Street',
             'type' => 'text',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6',
@@ -183,6 +195,7 @@ class BuildingProfileCrudController extends CrudController
             'name'=>'barangay_id',
             'entity' => 'barangay',
             'attribute' => 'name',
+
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6',
             ],
@@ -209,6 +222,187 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-lg-6',
             ],
             'tab' => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name' => 'oct_tct_no',
+            'label' => 'OCT/TCT No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name' => 'lot_no',
+            'label' => 'Lot No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name' => 'block_no',
+            'label' => 'Block No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name' => 'survey_no',
+            'label' => 'Survey No.',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+        CRUD::addField([
+            'name' => 'area',
+            'label' => 'Area',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'Building Location',
+        ]);
+
+        // General Description
+       
+        CRUD::addField([
+            'label' => "Kind of Building",
+            'type'=>'select',
+            'name'=>'kind_of_building_id',
+            'entity' => 'kind_of_building',
+            'attribute' => 'name',
+
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'General Description',
+        ]);
+        
+        CRUD::addField([
+            'label' => "Structural Type",
+            'type'=>'select',
+            'name'=>'structural_type_id',
+            'entity' => 'structural_type',
+            'attribute' => 'name',
+
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab' => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'building_permit_no',
+            'label' => 'Building Permit No',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'building_permit_date_issued',
+            'label' => 'Building Permit Date No',
+            'type' => 'date',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'condominium_certificate_of_title',
+            'label' => 'Condominium Certificate of Title (CCT)',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'certificate_of_completion_issued_on',
+            'label' => 'Certificate of Completion Issued On',
+            'type' => 'text',
+            'date' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'certificate_of_occupancy_issued_on',
+            'label' => 'Certificate of Occupancy Issued On',
+            'type' => 'date',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'date_constructed',
+            'label' => 'Date Constructed',
+            'type' => 'date',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'date_occupied',
+            'label' => 'Date Occupied',
+            'type' => 'date',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'no_of_storeys',
+            'label' => 'No. of Storeys',
+            'type' => 'number',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'area_first_floor',
+            'label' => 'Area of 1st Floor',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'area_second_floor',
+            'label' => 'Area of 2nd Floor',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'area_third_floor',
+            'label' => 'Area of 3rd Floor',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
+        ]);
+        CRUD::addField([
+            'name' => 'area_fourth_floor',
+            'label' => 'Area of 4th Floor',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-6',
+            ],
+            'tab'             => 'General Description',
         ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:

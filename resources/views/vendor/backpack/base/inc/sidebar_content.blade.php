@@ -38,4 +38,15 @@
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('barangay') }}"><i class="nav-icon la la-list"></i> Barangays</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('street') }}"><i class="nav-icon la la-list"></i> Streets</a></li>
     </ul>
+   
+
 </li>
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i>FAAS Configurations</a>
+        <ul class="nav-dropdown-items">
+        <li class="nav-item "><a class="nav-link" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-list"></i> Structural types</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-list"></i> Kind of buildings</a></li>   
+    </ul>
+            
+</li>
+
