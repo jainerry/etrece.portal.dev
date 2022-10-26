@@ -34,6 +34,7 @@ Route::group([
     });
 
     Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
+    Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
 
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');

@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
+use App\Models\Employee;
 //use App\Models\FaasMachinerySecondaryOwners;
 //use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 class FaasMachinery extends Model
@@ -34,7 +35,7 @@ class FaasMachinery extends Model
         'ARPNo',
         'pin',
         'transactionCode',
-        'primaryOwner',
+        'primaryOwnerId',
         'ownerAddress',
         'ownerTelephoneNo',
         'ownerTin',
@@ -42,12 +43,12 @@ class FaasMachinery extends Model
         'administratorAddress',
         'administratorTelephoneNo',
         'administratorTin',
-        'noOfStreet',
-        'barangay',
-        'city',
-        'province',
-        'landOwner',
-        'buildingOwner',
+        'streetId',
+        'barangayId',
+        'cityId',
+        'provinceId',
+        'landOwnerId',
+        'buildingOwnerId',
         'landOwnerPin',
         'buildingOwnerPin',
         'propertyAppraisal',
@@ -80,25 +81,33 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
-    // public function citizen_profile(){
-    //     return $this->belongsTo(CitizenProfile::class,'primaryOwner','id');
-    // }
-
-    // public function machinery_owner(){
-    //     return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
-    // }
-
     public function citizen_profile(){
-        return $this->belongsTo(CitizenProfile::class,'primaryOwner','id');
+        return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
     }
 
     public function machinery_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
     }
 
-    // public function property_appraisal(){
-    //     return $this->hasMany(FaasMachineryPropertyAppraisals::class);
-    // }
+    public function street(){
+        return $this->belongsTo(Street::class, 'streetId','id');
+    }
+
+    public function barangay(){
+        return $this->belongsTo(Barangay::class, 'barangayId','id');
+    }
+
+    public function municipality(){
+        return $this->belongsTo(Municipality::class, 'cityId', 'id');
+    }
+
+    public function province(){
+        return $this->belongsTo(Province::class, 'provinceId', 'id');
+    }
+
+    public function administrator(){
+        return $this->belongsTo(Employee::class, 'administratorId', 'id');
+    }
 
     /*
     |--------------------------------------------------------------------------

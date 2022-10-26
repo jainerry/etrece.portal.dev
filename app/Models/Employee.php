@@ -4,6 +4,7 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Office;
 use App\Models\Section;
 use App\Models\Position;
@@ -12,6 +13,7 @@ use App\Models\Street;
 use App\Models\Barangay;
 use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
+use Searchab;
 
 class Employee extends Model
 {
@@ -30,6 +32,8 @@ class Employee extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+
+    protected $appends = ['entry_data','full_name'];
 
     protected $fillable = [
         'employeeId',
@@ -85,10 +89,21 @@ class Employee extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function getFullName(){
+
+    public function getFullNameAttribute(){
         $firstName = ucfirst($this->firstName);
+        $middleName = ucfirst($this->middleName);
         $lastName = ucfirst($this->lastName);
-        return "{$firstName} {$lastName}";
+        return "{$firstName}  {$middleName} {$lastName}";
+    }
+
+    public function getEntryDataAttribute(){
+        $firstName = ucfirst($this->firstName);
+        $middleName = ucfirst($this->middleName);
+        $lastName = ucfirst($this->lastName);
+        $birthDate = $this->birthDate;
+        $residentialBarangay = ($this->residentialBarangay == null) ? $this->residentialBarangay:$this->residentialBarangay->name;
+        return "{$firstName}  ".($middleName == null ?"": $middleName." ")."{$lastName} - {$this->refID} - {$residentialBarangay} - BDATE({$birthDate})";
     }
 
     public function getStatus(){
@@ -135,23 +150,27 @@ class Employee extends Model
     }
 
     public function appointment(){
-        return $this->belongsTo(Appointment::class);
+        return $this->belongsTo(Appointment::class, 'appointmentId', 'id');
     }
 
     public function residentialStreet(){
-        return $this->belongsTo(Street::class);
+        return $this->belongsTo(Street::class, 'residentialStreetId','id');
     }
 
     public function permanentStreet(){
-        return $this->belongsTo(Street::class);
+        return $this->belongsTo(Street::class, 'permanentStreetId','id');
     }
 
     public function residentialBarangay(){
-        return $this->belongsTo(Barangay::class);
+        return $this->belongsTo(Barangay::class, 'residentialBarangayId','id');
     }
 
     public function permanentBarangay(){
-        return $this->belongsTo(Barangay::class);
+        return $this->belongsTo(Barangay::class, 'permanentBarangayId','id');
+    }
+
+    public function machinery_profile(){
+        return $this->hasMany(FaasMachinery::class);
     }
 
     /*
@@ -160,37 +179,107 @@ class Employee extends Model
     |--------------------------------------------------------------------------
     */
 
-    // public function setIdPictureAttribute($value)
-    // {
-    //     $attribute_name = "idPicture";
-    //     $disk = "local";
-    //     $destination_path = "/uploads/idPictures";       
-    //     $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
-    // }
-
-    public function setHalfPictureAttribute($value)
-    {
-        $attribute_name = "halfPicture";
-        $disk = "local";
-        $destination_path = "/uploads/halfPictures";       
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
-    }
-
-    public function setSignatureAttribute($value)
-    {
-        $attribute_name = "signature";
-        $disk = "local";
-        $destination_path = "/uploads/signatures";       
-        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path);
-    }
-
     public function setIdPictureAttribute($value)
     {
         $attribute_name = "idPicture";
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
         // destination path relative to the disk above
-        $destination_path = "public/uploads/images/idpictures";
+        $destination_path = "public/uploads/images/id-pictures";
+
+        // if the image was erased
+        if (empty($value)) {
+            // delete the image from disk
+            if (isset($this->{$attribute_name}) && !empty($this->{$attribute_name})) {
+                \Storage::disk($disk)->delete($this->{$attribute_name});  
+            }
+            // set null on database column
+            $this->attributes[$attribute_name] = null;
+        }
+
+        // if a base64 was sent, store it in the db
+        if (Str::startsWith($value, 'data:image'))
+        {
+            // 0. Make the image
+            $image = \Image::make($value)->encode('jpg', 90);
+
+            // 1. Generate a filename.
+            $filename = md5($value.time()).'.jpg';
+
+            // 2. Store the image on disk.
+            \Storage::disk($disk)->put($destination_path.'/'.$filename, $image->stream());
+
+            // 3. Delete the previous image, if there was one.
+            if (isset($this->{$attribute_name}) && !empty($this->{$attribute_name})) {
+                \Storage::disk($disk)->delete($this->{$attribute_name});
+            }
+
+            // 4. Save the public path to the database
+            // but first, remove "public/" from the path, since we're pointing to it
+            // from the root folder; that way, what gets saved in the db
+            // is the public URL (everything that comes after the domain name)
+            $public_destination_path = Str::replaceFirst('public/', '', $destination_path);
+            $this->attributes[$attribute_name] = $public_destination_path.'/'.$filename;
+        } elseif (!empty($value)) {
+            // if value isn't empty, but it's not an image, assume it's the model value for that attribute.
+            $this->attributes[$attribute_name] = $this->{$attribute_name};
+        }
+    }
+
+    public function setHalfPictureAttribute($value)
+    {
+        $attribute_name = "halfPicture";
+        // or use your own disk, defined in config/filesystems.php
+        $disk = config('backpack.base.root_disk_name');
+        // destination path relative to the disk above
+        $destination_path = "public/uploads/images/half-pictures";
+
+        // if the image was erased
+        if (empty($value)) {
+            // delete the image from disk
+            if (isset($this->{$attribute_name}) && !empty($this->{$attribute_name})) {
+                \Storage::disk($disk)->delete($this->{$attribute_name});  
+            }
+            // set null on database column
+            $this->attributes[$attribute_name] = null;
+        }
+
+        // if a base64 was sent, store it in the db
+        if (Str::startsWith($value, 'data:image'))
+        {
+            // 0. Make the image
+            $image = \Image::make($value)->encode('jpg', 90);
+
+            // 1. Generate a filename.
+            $filename = md5($value.time()).'.jpg';
+
+            // 2. Store the image on disk.
+            \Storage::disk($disk)->put($destination_path.'/'.$filename, $image->stream());
+
+            // 3. Delete the previous image, if there was one.
+            if (isset($this->{$attribute_name}) && !empty($this->{$attribute_name})) {
+                \Storage::disk($disk)->delete($this->{$attribute_name});
+            }
+
+            // 4. Save the public path to the database
+            // but first, remove "public/" from the path, since we're pointing to it
+            // from the root folder; that way, what gets saved in the db
+            // is the public URL (everything that comes after the domain name)
+            $public_destination_path = Str::replaceFirst('public/', '', $destination_path);
+            $this->attributes[$attribute_name] = $public_destination_path.'/'.$filename;
+        } elseif (!empty($value)) {
+            // if value isn't empty, but it's not an image, assume it's the model value for that attribute.
+            $this->attributes[$attribute_name] = $this->{$attribute_name};
+        }
+    }
+
+    public function setSignatureAttribute($value)
+    {
+        $attribute_name = "signature";
+        // or use your own disk, defined in config/filesystems.php
+        $disk = config('backpack.base.root_disk_name');
+        // destination path relative to the disk above
+        $destination_path = "public/uploads/images/signatures";
 
         // if the image was erased
         if (empty($value)) {

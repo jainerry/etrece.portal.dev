@@ -18,20 +18,20 @@ return new class extends Migration
             $table->string('ARPNo')->unique();
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
-            $table->string('primaryOwner');
+            $table->string('primaryOwnerId');
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTin')->nullable();
-            $table->string('administrator')->nullable();
+            $table->string('administratorId')->nullable();
             $table->string('administratorAddress')->nullable();
             $table->string('administratorTelephoneNo')->nullable();
             $table->string('administratorTin')->nullable();
-            $table->string('noOfStreet')->nullable();
-            $table->string('barangay')->nullable();
-            $table->string('city')->nullable();
-            $table->string('province')->nullable();
-            $table->string('landOwner')->nullable();
-            $table->string('buildingOwner')->nullable();
+            $table->string('streetId')->nullable();
+            $table->string('barangayId')->nullable();
+            $table->string('cityId')->nullable();
+            $table->string('provinceId')->nullable();
+            $table->string('landOwnerId')->nullable();
+            $table->string('buildingOwnerId')->nullable();
             $table->string('landOwnerPin')->nullable();
             $table->string('buildingOwnerPin')->nullable();
             $table->text('propertyAppraisal')->nullable();
@@ -48,6 +48,7 @@ return new class extends Migration
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

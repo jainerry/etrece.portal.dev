@@ -7,9 +7,12 @@ use App\Models\Appointment;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Employee;
+use App\Models\CitizenProfile;
 use Illuminate\Support\Facades\DB;
 use App\Models\Barangay;
 use Backpack\CRUD\app\Library\Widget;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Date;
 
 /**
  * Class EmployeeCrudController
@@ -23,6 +26,7 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation; 
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -44,13 +48,10 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
         
         CRUD::column('employeeId');
-        CRUD::addColumn([
-            'label'=>'Full Name',
-            'type'  => 'model_function',
-            'function_name' => 'getFullName',
-        ]);
+        CRUD::column('fullname');
         CRUD::addColumn([
             'label'=>'Section',
             'type'  => 'model_function',
@@ -362,14 +363,10 @@ class EmployeeCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name'=>'appointmentId',
-            'label'=>'Appointment',
+            'label'=>'Appointment Status',
             'type' => 'select',
             'entity' => 'appointment',
-            'model' => 'App\Models\Appointment',
             'attribute' => 'name',
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }),
             'allows_null' => false,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -397,11 +394,7 @@ class EmployeeCrudController extends CrudController
                 'label'=>'Position',
                 'type' => 'select',
                 'entity' => 'position',
-                'model' => 'App\Models\Position',
                 'attribute' => 'name',
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-                }),
                 'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
@@ -415,11 +408,7 @@ class EmployeeCrudController extends CrudController
                 'label'=>'Office',
                 'type' => 'select',
                 'entity' => 'office',
-                'model' => 'App\Models\Office',
                 'attribute' => 'name',
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-                }),
                 'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
@@ -433,11 +422,7 @@ class EmployeeCrudController extends CrudController
                 'label'=>'Division',
                 'type' => 'select',
                 'entity' => 'section',
-                'model' => 'App\Models\Section',
                 'attribute' => 'name',
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-                }),
                 'allows_null' => false,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
@@ -455,38 +440,42 @@ class EmployeeCrudController extends CrudController
             'tab' => 'Address Details',
         ]);
         $this->crud->addField([
+            'name'=>'residentialStreetId',
+            'label'=>'Street',
+            'type' => 'select',
+            'entity' => 'residentialStreet',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Address Details',
+        ]);
+        $this->crud->addField([
             'name'=>'residentialBarangayId',
             'label'=>'Barangay',
             'type' => 'select',
             'entity' => 'residentialBarangay',
-            'model' => 'App\Models\Barangay',
             'attribute' => 'name',
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }),
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Address Details',
         ]);
-        $this->crud->addField([
-            'name'=>'residentialStreetId',
-            'label'=>'Street/Purok',
-            'type' => 'select',
-            'entity' => 'residentialStreet',
-            'model' => 'App\Models\Street',
-            'attribute' => 'name',
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }),
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Address Details',
-        ]);
+        
         $this->crud->addField([
             'name'=>'permanentAddress',
             'label'=>'House/Block/Lot No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Address Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'permanentStreetId',
+            'label'=>'Street',
+            'type' => 'select',
+            'entity' => 'permanentStreet',
+            'attribute' => 'name',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -497,26 +486,7 @@ class EmployeeCrudController extends CrudController
             'label'=>'Barangay',
             'type' => 'select',
             'entity' => 'permanentBarangay',
-            'model' => 'App\Models\Barangay',
             'attribute' => 'name',
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }),
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Address Details',
-        ]);
-        $this->crud->addField([
-            'name'=>'permanentStreetId',
-            'label'=>'Street/Purok',
-            'type' => 'select',
-            'entity' => 'permanentStreet',
-            'model' => 'App\Models\Street',
-            'attribute' => 'name',
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-            }),
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -582,58 +552,50 @@ class EmployeeCrudController extends CrudController
         /* Emergency Contact Details */
 
         /* Uploads */
-        // $this->crud->addField([
-        //     'name' => 'idPicture',
-        //     'label' => 'Picture (2x2)',
-        //     'type' => 'upload',
-        //     'upload' => true,
-        //     'disk' => 'local',
-        //     'hint'=>'(optional)',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-12'
-        //     ],
-        //     'tab' => 'Uploads',
-        // ]);
-
         $this->crud->addField([
             'label' => "Picture (2x2)",
             'name' => "idPicture",
             'type' => 'image',
             'crop' => true, // set to true to allow cropping, false to disable
-            'aspect_ratio' => 1, // omit or set to 0 to allow any aspect ratio
+            'aspect_ratio' => 0, // omit or set to 0 to allow any aspect ratio
             // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
             // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
             'hint'=>'(optional)',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
         ]);
 
         $this->crud->addField([
-            'name' => 'halfPicture',
-            'label' => 'Picture (half)',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'local',
+            'label' => "Picture (half)",
+            'name' => "halfPicture",
+            'type' => 'image',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 0, // omit or set to 0 to allow any aspect ratio
+            // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
+            // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
             'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
-        ],'both');
+        ]);
+
         $this->crud->addField([
-            'name'=>'signature',
-            'label'=>'Signature',
-            'type' => 'upload',
-            'upload' => true,
-            'disk' => 'local',
+            'label' => "Signature",
+            'name' => "signature",
+            'type' => 'image',
+            'crop' => true, // set to true to allow cropping, false to disable
+            'aspect_ratio' => 0, // omit or set to 0 to allow any aspect ratio
+            // 'disk'      => 's3_bucket', // in case you need to show images from a different disk
+            // 'prefix'    => 'uploads/images/profile_pictures/' // in case your db value is only the file name (no path), you can use this to prepend your path to the image src (in HTML), before it's shown to the user;
             'hint'=>'(optional)',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Uploads',
-        ],'both');
+        ]);
         /* Uploads */
 
         
@@ -656,7 +618,6 @@ class EmployeeCrudController extends CrudController
             $IDNoCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
             //22-J001 (last two digit of current year)(-)(initial of appointment)(series)
             $IDNo = substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.$appointmentInitial.str_pad(($IDNoCtr->count), 3, "0", STR_PAD_LEFT);
-
             $entry->IDNo = $IDNo;
             $entry->employeeId = $employeeId;
         });
@@ -720,5 +681,60 @@ class EmployeeCrudController extends CrudController
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         //return view($this->crud->getEditView(), $this->data);
         return view('employee.edit', $this->data);
+    }
+
+    /**
+     * Define what happens when the api - /api/employee/ajaxsearch - has been called
+     * 
+     * 
+     * @return void
+     */
+    public function ajaxsearch(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $results = Employee::select(DB::raw('CONCAT(firstName," ",middleName," ",lastName) as fullname, id, residentialAddress, permanentAddress, residentialBarangayId, permanentBarangayId, residentialStreetId, permanentStreetId, employeeId, nickName, birthDate, sectionId, positionId, appointmentId, officeId'))
+                ->orWhereHas('residentialStreet', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('permanentStreet', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('residentialBarangay', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('permanentBarangay', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('section', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('position', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('appointment', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhereHas('office', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('employeeId', 'like', '%'.$search_term.'%')
+                ->orWhere('firstName', 'like', '%'.$search_term.'%')
+                ->orWhere('middleName', 'like', '%'.$search_term.'%')
+                ->orWhere('lastName', 'like', '%'.$search_term.'%')
+                ->orWhere('nickName', 'like', '%'.$search_term.'%')
+                ->orWhereDate('birthDate', '=', date($search_term))
+                ->orderBy('fullname','ASC')
+                ->get();
+        }
+        else
+        {
+            $results = Employee::orderBy('lastName','ASC')->paginate(10);
+        }
+
+        return $results;
     }
 }

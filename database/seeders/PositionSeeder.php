@@ -18,16 +18,16 @@ class PositionSeeder extends Seeder
     {
 
         $positions = [
-            'CITY SLAUGHTHERHOUSE',
-            'CITY INFORMATION COMMUNICATION AND TECHNOLOGY OFFICE',
-            'CITY MAYORS',
-            'CITY VICE MAYORS',
-            'CMO',
-            'CMO/CSU',
-            'CMO/SCHOOL GUARD',
-            'CMO/TRAFFICE DIVISION',
-            'CSO',
-            'CTO'
+            'ACCOUNT EXAMINER I',
+            'ADMINISTRATIVE AIDE II (BOOKBINDER II)',
+            'COMMUNICATION AFFAIRS OFFICER IV',
+            'COMMUNICATION EQUIPMENT OPERATOR II',
+            'CONSTRUCTION & MAINTENANCE FOREMAN',
+            'CONSTRUCTION & MAINTENANCE MAN',
+            'DAYCARE WORKER',
+            'DENTAL AIDE',
+            'DENTIST II',
+            'DISABILITY AFFAIRS OFFICER IV'
         ];
         $inputs = [];
         

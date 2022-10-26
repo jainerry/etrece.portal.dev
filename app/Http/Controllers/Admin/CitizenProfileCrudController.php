@@ -56,19 +56,6 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->enableExportButtons();
         
         CRUD::column('refID');
-        // CRUD::addColumn([
-        //     'name'=>'fName',
-        //     'label'=>'First Name'
-        // ]);
-        // CRUD::addColumn([
-        //     'name'=>'mName',
-        //     'label'=>'Middle Name'
-        // ]);
-        // CRUD::addColumn([
-        //     'name'=>'lName',
-        //     'label'=>'Last Name'
-        // ]);
-        
         CRUD::column('fullname');
         CRUD::column('suffix');
       
@@ -262,10 +249,14 @@ class CitizenProfileCrudController extends CrudController
        
     }
 
-
+    /**
+     * Define what happens when the api - /api/citizen-profile/ajaxsearch - has been called
+     * 
+     * 
+     * @return void
+     */
     public function ajaxsearch(Request $request){ // This is the function which I want to call from ajax
         //do something awesome with that post data 
-        //return "jai is using ajasx";
 
         $search_term = $request->input('q');
 
@@ -281,7 +272,6 @@ class CitizenProfileCrudController extends CrudController
                 ->orWhere('lName', 'like', '%'.$search_term.'%')
                 ->orWhere('suffix', 'like', '%'.$search_term.'%')
                 ->orWhere('address', 'like', '%'.$search_term.'%')
-                //->whereIn('id', [1, 2, 3])
                 ->orWhereDate('bdate', '=', date($search_term))
                 ->orderBy('fullname','ASC')
                 ->get();
