@@ -49,6 +49,3 @@
     </ul>
             
 </li>
-
-
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-other-secondary-owners') }}"><i class="nav-icon la la-question"></i> Faas other secondary owners</a></li>
