@@ -2,12 +2,12 @@
 
 {{-- See if we're using tabs --}}
 @if ($crud->tabsEnabled() && count($crud->getTabs()))
-    @include('faas_machinery.show_tabbed_fields')
+    @include('faas_other.show_tabbed_fields')
     <input type="hidden" name="_current_tab" value="{{ Str::slug($crud->getTabs()[0]) }}" />
 @else
   <div class="card">
     <div class="card-body row">
-        @include('faas_machinery.show_fields', ['fields' => $crud->fields()])
+        @include('faas_other.show_fields', ['fields' => $crud->fields()])
     </div>
   </div>
 @endif

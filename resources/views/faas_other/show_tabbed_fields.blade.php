@@ -10,11 +10,11 @@
 @if ($crud->getFieldsWithoutATab()->filter(function ($value, $key) { return $value['type'] != 'hidden'; })->count())
 <div class="card">
     <div class="card-body row">
-        @include('faas_machinery.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+        @include('faas_other.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
     </div>
 </div>
 @else
-    @include('faas_machinery.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
+    @include('faas_other.show_fields', ['fields' => $crud->getFieldsWithoutATab()])
 @endif
 
 <div class="tab-container {{ $horizontalTabs ? '' : 'container'}} mb-2 getFieldsWithATab">
@@ -40,7 +40,7 @@
             <div role="tabpanel" class="tab-pane {{ isset($tabWithError) ? ($tab == $tabWithError ? ' active' : '') : ($k == 0 ? ' active' : '') }}" id="tab_{{ Str::slug($tab) }}">
 
                 <div class="row">
-                    @include('faas_machinery.show_fields', ['fields' => $crud->getTabFields($tab)])
+                    @include('faas_other.show_fields', ['fields' => $crud->getTabFields($tab)])
                 </div>
             </div>
             @endforeach

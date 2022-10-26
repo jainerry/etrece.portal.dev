@@ -21,19 +21,21 @@ return new class extends Migration
             $table->string('octTctNo')->nullable();
             $table->string('lotNo')->nullable();
             $table->string('blkNo')->nullable();
-            $table->string('previousOwner')->nullable();
-            $table->string('primaryOwner');
-            $table->string('secondaryOwners')->nullable();
+            $table->string('previousOwnerId')->nullable();
+            $table->string('primaryOwnerId');
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
-            $table->string('administrator')->nullable();
+            $table->string('administratorId')->nullable();
             $table->string('administratorAddress')->nullable();
             $table->string('administratorTelephoneNo')->nullable();
-            $table->string('noOfStreet')->nullable();
-            $table->string('barangay')->nullable();
-            $table->string('city')->nullable();
-            $table->string('province')->nullable();
-            $table->string('propertyBoundaries')->nullable();
+            $table->string('streetId')->nullable();
+            $table->string('barangayId')->nullable();
+            $table->string('cityId')->nullable();
+            $table->string('provinceId')->nullable();
+            $table->string('propertyBoundaryNorth')->nullable();
+            $table->string('propertyBoundaryEast')->nullable();
+            $table->string('propertyBoundarySouth')->nullable();
+            $table->string('propertyBoundaryWest')->nullable();
             $table->string('landSketch')->nullable();
             $table->text('landAppraisal')->nullable();
             $table->text('otherImprovements')->nullable();
@@ -41,6 +43,7 @@ return new class extends Migration
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();
             $table->string('assessmentEffectivity')->nullable();
+            $table->string('assessmentEffectivityValue')->nullable();
             $table->string('assessedBy')->nullable();
             $table->string('assessedDate')->nullable();
             $table->string('recommendingPersonel')->nullable();
@@ -51,6 +54,7 @@ return new class extends Migration
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

@@ -6,8 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
 use App\Models\Employee;
-//use App\Models\FaasMachinerySecondaryOwners;
-//use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
+
 class FaasMachinery extends Model
 {
     use CrudTrait;
@@ -29,6 +28,7 @@ class FaasMachinery extends Model
 
     protected $casts = [
         'propertyAppraisal' => 'array',
+        'propertyAssessment' => 'array'
     ];
 
     protected $fillable = [
@@ -55,6 +55,7 @@ class FaasMachinery extends Model
         'propertyAssessment',
         'assessmentType',
         'assessmentEffectivity',
+        'assessmentEffectivityValue',
         'assessedBy',
         'assessedDate',
         'recommendingPersonel',
@@ -75,6 +76,15 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -83,6 +93,14 @@ class FaasMachinery extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
+    }
+
+    public function land_owner_citizen_profile(){
+        return $this->belongsTo(CitizenProfile::class,'landOwnerId','id');
+    }
+
+    public function building_owner_citizen_profile(){
+        return $this->belongsTo(CitizenProfile::class,'buildingOwnerId','id');
     }
 
     public function machinery_owner(){

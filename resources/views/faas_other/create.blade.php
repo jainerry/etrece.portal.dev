@@ -12,7 +12,7 @@
 @endphp
 
 @section('header')
-	<section class="container-fluid" id="section_faas_machinery">
+	<section class="container-fluid" id="section_faas_other">
 	  <h2>
         <span class="text-capitalize">{!! $crud->getHeading() ?? $crud->entity_name_plural !!}</span>
         <small>{!! $crud->getSubheading() ?? trans('backpack::crud.add').' '.$crud->entity_name !!}.</small>
@@ -26,7 +26,7 @@
 
 @section('content')
 
-<div class="row" id="page_content_faas_machinery">
+<div class="row" id="page_content_faas_other">
     <div class="col-md-12 bold-labels">
 		{{-- Default box --}}
 
@@ -41,8 +41,8 @@
 			  {!! csrf_field() !!}
 		      {{-- load the view from the application if it exists, otherwise load the one in the package --}}
                 
-                @if(view()->exists('faas_machinery.form_content'))
-                    @include('faas_machinery.form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
+                @if(view()->exists('faas_other.form_content'))
+                    @include('faas_other.form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
                 @else
                     @include('crud::form_content', [ 'fields' => $crud->fields(), 'action' => 'create' ])
                 @endif

@@ -4,16 +4,13 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Office;
 use App\Models\Section;
 use App\Models\Position;
 use App\Models\Appointment;
 use App\Models\Street;
 use App\Models\Barangay;
-use Intervention\Image\ImageManagerStatic as Image;
 use Illuminate\Support\Str;
-use Searchab;
 
 class Employee extends Model
 {
@@ -185,7 +182,7 @@ class Employee extends Model
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
         // destination path relative to the disk above
-        $destination_path = "public/uploads/images/id-pictures";
+        $destination_path = "public/uploads/images/employee/id-pictures";
 
         // if the image was erased
         if (empty($value)) {
@@ -232,7 +229,7 @@ class Employee extends Model
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
         // destination path relative to the disk above
-        $destination_path = "public/uploads/images/half-pictures";
+        $destination_path = "public/uploads/images/employee/half-pictures";
 
         // if the image was erased
         if (empty($value)) {
@@ -279,7 +276,7 @@ class Employee extends Model
         // or use your own disk, defined in config/filesystems.php
         $disk = config('backpack.base.root_disk_name');
         // destination path relative to the disk above
-        $destination_path = "public/uploads/images/signatures";
+        $destination_path = "public/uploads/images/employee/signatures";
 
         // if the image was erased
         if (empty($value)) {

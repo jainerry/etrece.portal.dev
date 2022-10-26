@@ -7,7 +7,6 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 use App\Models\FaasMachinery;
-use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Library\Widget;
 
 /**
@@ -22,6 +21,7 @@ class FaasMachineryCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -30,9 +30,6 @@ class FaasMachineryCrudController extends CrudController
      */
     public function setup()
     {
-        //Widget::add()->type('style')->content('assets/css/faas/machinery/styles.css');
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-
         CRUD::setModel(\App\Models\FaasMachinery::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-machinery');
         //CRUD::setEntityNameStrings('faas machinery', 'faas machineries');
@@ -47,11 +44,36 @@ class FaasMachineryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
         CRUD::column('ARPNo');
-        CRUD::column('primaryOwner');
-        //CRUD::column('secondaryOwners');
-        //CRUD::column('ownerAddress');
-        //CRUD::column('ownerTelephoneNo');
+        CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'primaryOwner',
+            'label' => 'Primary Owner', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'citizen_profile',
+            'attribute' => 'full_name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ],);
+        CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'machinery_owner',
+            'label' => 'Secondary Owners', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'machinery_owner',
+            'attribute' => 'full_name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ],);
+         CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -86,7 +108,7 @@ class FaasMachineryCrudController extends CrudController
 
         $this->crud->addField([   // n-n relationship
             'name' => 'machinery_owner', // JSON variable name
-            'label' => 'Secondary Owner', // human-readable label for the input
+            'label' => 'Secondary Owner/s', // human-readable label for the input
             'type' => 'secondary_owner',
             'entity' => 'machinery_owner',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
@@ -245,7 +267,7 @@ class FaasMachineryCrudController extends CrudController
             'label' => 'Land Owner',
             'type' => 'primary_owner_input',
             'name' => 'landOwnerId',
-            'entity' => 'citizen_profile',
+            'entity' => 'land_owner_citizen_profile',
             'attribute' => 'full_name',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
             'minimum_input_length' => 1,
@@ -265,10 +287,10 @@ class FaasMachineryCrudController extends CrudController
         ]);
 
         $this->crud->addField([   // n-n relationship
-            'label' => 'Land Owner',
+            'label' => 'Building Owner',
             'type' => 'primary_owner_input',
             'name' => 'buildingOwnerId',
-            'entity' => 'citizen_profile',
+            'entity' => 'building_owner_citizen_profile',
             'attribute' => 'full_name',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
             'minimum_input_length' => 1,
@@ -426,54 +448,50 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
 
+        $this->crud->addField([
+            'name'=>'assessmentType',
+            'label'=>'Assessment Type',
+            'type' => 'radio',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label; 
+                "Taxable" => "Taxable",
+                "Exempt" => "Exempt"
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'assessmentEffectivity',
+            'label'=>'Effectivity of Assessment/Reassessment',
+            'type' => 'radio',
+            'options'     => [
+                // the key will be stored in the db, the value will be shown as label; 
+                "Quarter" => "Quarter",
+                "Year" => "Year"
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue',
+            'label'=>'Effectivity of Assessment/Reassessment Value',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
         
-
-    $this->crud->addField([
-        'name'=>'assessmentType',
-        'label'=>'Assessment Type',
-        'type' => 'radio',
-        'options'     => [
-            // the key will be stored in the db, the value will be shown as label; 
-            "Taxable" => "Taxable",
-            "Exempt" => "Exempt"
-        ],
-        'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-4'
-        ],
-        'tab' => 'Property Assessment',
-    ]);
-
-    $this->crud->addField([
-        'name'=>'assessmentEffectivity',
-        'label'=>'Effectivity of Assessment/Reassessment',
-        'type' => 'radio',
-        'options'     => [
-            // the key will be stored in the db, the value will be shown as label; 
-            "Quarter" => "Quarter",
-            "Year" => "Year"
-        ],
-        'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-4'
-        ],
-        'tab' => 'Property Assessment',
-    ]);
-
-    $this->crud->addField([
-        'name'=>'assessmentEffectivityValue',
-        'label'=>'Effectivity of Assessment/Reassessment Value',
-        'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-4'
-        ],
-        'tab' => 'Property Assessment',
-    ]);
-        
-
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
-
 
         FaasMachinery::creating(function($entry) {
             $count = FaasMachinery::select(DB::raw('count(*) as count'))->where('ARPNo','like',"%".Date('mdY')."%")->first();
@@ -500,6 +518,9 @@ class FaasMachineryCrudController extends CrudController
      */
     public function create()
     {
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        
         $this->crud->hasAccessOrFail('create');
 
         // prepare the fields you need to show
@@ -519,6 +540,9 @@ class FaasMachineryCrudController extends CrudController
      */
     public function edit($id)
     {
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)
         $id = $this->crud->getCurrentEntryId() ?? $id;
