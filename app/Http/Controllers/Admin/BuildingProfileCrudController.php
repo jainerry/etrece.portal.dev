@@ -67,6 +67,32 @@ class BuildingProfileCrudController extends CrudController
          * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
+    protected function setupShowOperation()
+    {
+        $this->setupListOperation();
+        CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'primary_owner',
+            'label' => 'Primary Owner', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'citizen_profile',
+            'attribute' => 'full_name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ]);
+         CRUD::addColumn([
+            'name'  => 'roof',
+            'label' => 'Roof',
+            'type'  => 'table',
+            'columns' => [
+                'name'        => 'Name',
+            ]
+        ]);
+         
+         
+    }
+
 
     /**
      * Define what happens when the Create operation is loaded.
@@ -130,6 +156,7 @@ class BuildingProfileCrudController extends CrudController
             'value' => '<hr>',
             'tab'             => 'Main Information',
         ]);
+
         CRUD::addField([
             'name' => 'administrator',
             'label' => 'Administrator',
@@ -368,6 +395,14 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator2',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'   => 'General Description',
+        ]);
+
         CRUD::addField([
             'name' => 'area_first_floor',
             'label' => 'Area of 1st Floor',
@@ -404,6 +439,19 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
+
+        CRUD::addField([   // Checklist
+            'label'     => 'Roof',
+            'type'      => 'checklist',
+            'name'      => 'roof',
+            'entity'    => 'roofs',
+            'attribute' => 'name',
+            'model'     => "App\Models\StructuralRoofs",
+            'pivot'     => false,
+            // 'number_of_columns' => 3,
+            'tab'             => 'Structural Characteristic',
+        ]);
+
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - CRUD::field('price')->type('number');

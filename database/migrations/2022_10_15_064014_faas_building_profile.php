@@ -47,6 +47,16 @@ return new class extends Migration
             $table->string('area_second_floor')->nullable();
             $table->string('area_third_floor')->nullable();
             $table->string('area_fourth_floor')->nullable();
+            $table->string('roof')->nullable();
+            $table->string('flooring_1')->nullable();
+            $table->string('flooring_2')->nullable();
+            $table->string('flooring_3')->nullable();
+            $table->string('flooring_4')->nullable();
+            $table->string('walling_1')->nullable();
+            $table->string('walling_2')->nullable();
+            $table->string('walling_3')->nullable();
+            $table->string('walling_4')->nullable();
+            
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

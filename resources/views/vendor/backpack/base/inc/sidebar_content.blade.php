@@ -46,6 +46,8 @@
         <ul class="nav-dropdown-items">
         <li class="nav-item "><a class="nav-link" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-list"></i> Structural types</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-list"></i> Kind of buildings</a></li>   
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-list"></i> Structural roofs</a></li>
     </ul>
             
 </li>
+
