@@ -444,7 +444,7 @@ class BuildingProfileCrudController extends CrudController
             'label'     => 'Roof',
             'type'      => 'checklist',
             'name'      => 'roof',
-            'entity'    => 'roofs',
+            'entity'    => 'roof',
             'attribute' => 'name',
             'model'     => "App\Models\StructuralRoofs",
             'pivot'     => false,
@@ -478,6 +478,6 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-      
+        // dd($this->crud->model->first());
     }
 }

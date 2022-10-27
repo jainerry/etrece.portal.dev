@@ -31,7 +31,8 @@ class DatabaseSeeder extends Seeder
             EmployeeSeeder::class,
             DepartmentSeeder::class,
             ProvinceSeeder::class,
-            MunicipalitiesSeeder::class
+            MunicipalitiesSeeder::class,
+            structuralRoof::class
         ]);
     }
 }

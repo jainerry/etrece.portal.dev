@@ -34,7 +34,9 @@ class StructuralRoofs extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    function building_profiles(){
+        $this->hasMany(BuildingProfile::class,'roof','id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

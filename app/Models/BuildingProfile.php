@@ -25,7 +25,7 @@ class BuildingProfile extends Model
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected  $cast = [];
+    protected $casts = [ 'roof' => 'array' ];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
@@ -64,8 +64,8 @@ class BuildingProfile extends Model
     public function kind_of_building(){
         return $this->belongsTo(KindOfBuilding::class, 'kind_of_building_id', 'id');
     }
-    public function roofs(){
-        return $this->belongsTo(StructuralRoofs::class, 'roof', 'id');
+    public function roof(){
+        return $this->belongsTo(StructuralRoofs::class, 'id', 'roof');
     }
     
     
