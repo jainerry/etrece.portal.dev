@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FaasOtherRequest extends FormRequest
+class FaasLandIdleSecondaryOwnersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,12 +25,7 @@ class FaasOtherRequest extends FormRequest
     public function rules()
     {
         return [
-            'primaryOwnerId' => 'required',
-            'ownerAddress' => 'required',
-            'streetId' => 'required',
-            'barangayId' => 'required',
-            'cityId' => 'required',
-            'provinceId' => 'required',
+            // 'name' => 'required|min:5|max:255'
         ];
     }
 

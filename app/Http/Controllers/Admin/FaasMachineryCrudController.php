@@ -57,6 +57,29 @@ class FaasMachineryCrudController extends CrudController
             // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+        ],);
+        CRUD::column('ownerAddress');
+        CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'street',
+            'label' => 'Street', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'street',
+            'attribute' => 'name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ],);
+         CRUD::addColumn([
+            // run a function on the CRUD model and show its return value
+            'name'  => 'barangay',
+            'label' => 'Barangay', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'barangay',
+            'attribute' => 'name', 
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
@@ -132,6 +155,9 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'ownerTin',
             'label'=>'TIN',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_tin',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -141,6 +167,10 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'ownerTelephoneNo',
             'label'=>'Telephone No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_telephone',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -171,6 +201,9 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'administratorTin',
             'label'=>'TIN',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_tin',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -189,6 +222,10 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'administratorTelephoneNo',
             'label'=>'Telephone No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_telephone',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -352,14 +389,14 @@ class FaasMachineryCrudController extends CrudController
                 ],
                 [
                     'name'    => 'economicLifeEstimated',
-                    'type'    => 'text',
+                    'type'    => 'number',
                     'label'   => 'Economic Life - Estimated',
                     'hint'    => '(No. of Years)',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'economicLifeRemain',
-                    'type'    => 'text',
+                    'type'    => 'number',
                     'label'   => 'Economic Life - Remain',
                     'hint'    => '(No. of Years)',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -379,7 +416,58 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'  => 'originalCost',
                     'type'  => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
                     'label' => 'Original Cost',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'conversionFactor',
+                    'type'  => 'text',
+                    'label' => 'Conversion Factor',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'rcn',
+                    'type'  => 'text',
+                    'label' => 'RCN',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'noOfYearsUsed',
+                    'type'  => 'number',
+                    'label' => 'No. of Years Used',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'rateOfDepreciation',
+                    'type'  => 'text',
+                    'label' => 'Rate of Depreciation',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'totalDepreciationPercentage',
+                    'type'  => 'text',
+                    'label' => 'Total Depreciation - %',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'totalDepreciationValue',
+                    'type'  => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
+                    'label' => 'Total Depreciation - Value',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'  => 'depreciatedValue',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
+                    'label' => 'Depreciated Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ]
             ],
@@ -412,6 +500,9 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'    => 'marketValue',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -424,6 +515,9 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'  => 'assessedValue',
                     'type'  => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
                     'label' => 'Assessed Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -520,6 +614,8 @@ class FaasMachineryCrudController extends CrudController
     {
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
         
         $this->crud->hasAccessOrFail('create');
 
@@ -542,6 +638,8 @@ class FaasMachineryCrudController extends CrudController
     {
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
 
         $this->crud->hasAccessOrFail('update');
         // get entry ID from Request (makes sure its the last ID for nested resources)

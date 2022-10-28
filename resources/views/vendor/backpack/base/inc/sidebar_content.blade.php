@@ -1,14 +1,16 @@
 {{-- This file is used to store sidebar items, inside the Backpack admin panel --}}
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('dashboard') }}"><i class="la la-home nav-icon"></i> {{ trans('backpack::base.dashboard') }}</a></li>
 
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('citizen-profile') }}"><i class="nav-icon la la-list"></i> Citizen Profiles</a></li>
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('employee') }}"><i class="nav-icon la la-users"></i> Employee Profiles</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('citizen-profile') }}"><i class="nav-icon la la-list"></i> Citizens</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('employee') }}"><i class="nav-icon la la-users"></i> Employees</a></li>
 
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> FAAS Masterlist</a>
     <ul class="nav-dropdown-items">
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('building-profile') }}"><i class="nav-icon la la-list"></i> Building Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-machinery') }}"><i class="nav-icon la la-list"></i> Machineries Profile</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('building-profile') }}"><i class="nav-icon la la-list"></i> Buildings</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-machinery') }}"><i class="nav-icon la la-list"></i> Machineries</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land') }}"><i class="nav-icon la la-list"></i> Lands</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-idle') }}"><i class="nav-icon la la-list"></i> Idle Lands</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-other') }}"><i class="nav-icon la la-list"></i> Others</a></li>
     </ul>
 </li>
@@ -27,7 +29,7 @@
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i> Configurations</a>
     <ul class="nav-dropdown-items">
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office-location') }}"><i class="nav-icon la la-building"></i> Office locations</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office-location') }}"><i class="nav-icon la la-building"></i> Office Locations</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office') }}"><i class="nav-icon la la-building"></i> Offices</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('department') }}"><i class="nav-icon la la-list"></i> Departments</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li>
@@ -44,10 +46,8 @@
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i>FAAS Configurations</a>
         <ul class="nav-dropdown-items">
-        <li class="nav-item "><a class="nav-link" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-list"></i> Structural types</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-list"></i> Kind of buildings</a></li>   
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-list"></i> Structural roofs</a></li>
+        <li class="nav-item "><a class="nav-link" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-list"></i> Structural Types</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-list"></i> Kind of Buildings</a></li>   
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-list"></i> Structural Roofs</a></li>
     </ul>
-            
 </li>
-

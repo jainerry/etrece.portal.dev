@@ -25,7 +25,14 @@ class FaasMachineryRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'primaryOwnerId' => 'required',
+            'ownerAddress' => 'required',
+            'streetId' => 'required',
+            'barangayId' => 'required',
+            'cityId' => 'required',
+            'provinceId' => 'required',
+            'landOwnerId' => 'required',
+            'buildingOwnerId' => 'required',
         ];
     }
 

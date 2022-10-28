@@ -2,19 +2,19 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\FaasOtherRequest;
+use App\Http\Requests\FaasLandRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
-use App\Models\FaasOther;
+use App\Models\FaasLand;
 use Backpack\CRUD\app\Library\Widget;
 
 /**
- * Class FaasOtherCrudController
+ * Class FaasLandCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class FaasOtherCrudController extends CrudController
+class FaasLandCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -30,10 +30,10 @@ class FaasOtherCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\FaasOther::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-other');
-        // CRUD::setEntityNameStrings('faas other', 'faas others');
-        CRUD::setEntityNameStrings('other', 'others');
+        CRUD::setModel(\App\Models\FaasLand::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-land');
+        //CRUD::setEntityNameStrings('faas land', 'faas lands');
+        CRUD::setEntityNameStrings('land', 'lands');
     }
 
     /**
@@ -69,8 +69,8 @@ class FaasOtherCrudController extends CrudController
             // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
-        ],);
-        CRUD::addColumn([
+         ],);
+         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'barangay',
             'label' => 'Barangay', // Table column heading
@@ -80,13 +80,13 @@ class FaasOtherCrudController extends CrudController
             // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
-        ],);
+         ],);
         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
-            'name'  => 'other_owner',
+            'name'  => 'land_owner',
             'label' => 'Secondary Owners', // Table column heading
             'type'  => 'select',
-            'entity'    => 'other_owner',
+            'entity'    => 'land_owner',
             'attribute' => 'full_name', 
             // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
             // 'limit' => 100, // Limit the number of characters shown
@@ -113,7 +113,7 @@ class FaasOtherCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(FaasOtherRequest::class);
+        CRUD::setValidation(FaasLandRequest::class);
 
         $this->crud->addField([
             'name'=>'lotNo',
@@ -150,10 +150,10 @@ class FaasOtherCrudController extends CrudController
         ]);
 
         $this->crud->addField([   // n-n relationship
-            'name' => 'other_owner', // JSON variable name
+            'name' => 'land_owner', // JSON variable name
             'label' => 'Secondary Owner/s', // human-readable label for the input
             'type' => 'secondary_owner',
-            'entity' => 'other_owner',
+            'entity' => 'land_owner',
             'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
             'attribute' => 'full_name',
             'minimum_input_length' => 1,
@@ -175,6 +175,7 @@ class FaasOtherCrudController extends CrudController
         $this->crud->addField([
             'name'=>'ownerTin',
             'label'=>'TIN',
+            'type'=>'text',
             'attributes' => [
                 'class' => 'form-control text_input_mask_tin',
             ],
@@ -230,6 +231,7 @@ class FaasOtherCrudController extends CrudController
         $this->crud->addField([
             'name'=>'administratorTin',
             'label'=>'TIN',
+            'type'=>'text',
             'attributes' => [
                 'class' => 'form-control text_input_mask_tin',
             ],
@@ -340,7 +342,7 @@ class FaasOtherCrudController extends CrudController
             ],
             'tab' => 'Property Boundaries',
         ]);
-
+        
         $this->crud->addField([
             'name'=>'propertyBoundaryEast',
             'label'=>'East',
@@ -461,7 +463,7 @@ class FaasOtherCrudController extends CrudController
                 ],
                 [
                     'name'    => 'totalNumber',
-                    'type'    => 'text',
+                    'type'    => 'number',
                     'label'   => 'Total Number',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -652,8 +654,8 @@ class FaasOtherCrudController extends CrudController
          * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
          */
 
-        FaasOther::creating(function($entry) {
-            $count = FaasOther::select(DB::raw('count(*) as count'))->where('ARPNo','like',"%".Date('mdY')."%")->first();
+        FaasLand::creating(function($entry) {
+            $count = FaasLand::select(DB::raw('count(*) as count'))->where('ARPNo','like',"%".Date('mdY')."%")->first();
             $ARPNo = 'ARP'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->ARPNo = $ARPNo;
         });
@@ -690,7 +692,7 @@ class FaasOtherCrudController extends CrudController
         $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('faas_other.create', $this->data);
+        return view('faas_land.create', $this->data);
     }
 
     /**
@@ -720,7 +722,7 @@ class FaasOtherCrudController extends CrudController
         $this->data['id'] = $id;
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
-        return view('faas_other.edit', $this->data);
+        return view('faas_land.edit', $this->data);
     }
     
 }
