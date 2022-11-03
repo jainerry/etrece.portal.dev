@@ -29,10 +29,10 @@ class BuildingProfileCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\BuildingProfile::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/building-profile');
-        CRUD::setEntityNameStrings('building profile', 'building profiles');
-        CRUD::setCreateView('buildingProfile.create');
+        $this->crud->setModel(\App\Models\BuildingProfile::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/building-profile');
+        $this->crud->setEntityNameStrings('building profile', 'building profiles');
+        $this->crud->setCreateView('buildingProfile.create');
     }
 
     /**
@@ -43,10 +43,10 @@ class BuildingProfileCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        CRUD::column('arpNo');
+        $this->crud->column('arpNo');
         
-        CRUD::column('code');
-        CRUD::addColumn([
+        $this->crud->column('code');
+        $this->crud->addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'primary_owner',
             'label' => 'Primary Owner', // Table column heading
@@ -57,20 +57,20 @@ class BuildingProfileCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
-        CRUD::column('isActive');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        $this->crud->column('isActive');
+        $this->crud->column('created_at');
+        $this->crud->column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']);
+         * - $this->crud->column('price')->type('number');
+         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']);
          */
     }
     protected function setupShowOperation()
     {
         $this->setupListOperation();
-        CRUD::addColumn([
+        $this->crud->addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'primary_owner',
             'label' => 'Primary Owner', // Table column heading
@@ -81,7 +81,7 @@ class BuildingProfileCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ]);
-         CRUD::addColumn([
+         $this->crud->addColumn([
             'name'  => 'roof',
             'label' => 'Roof',
             'type'  => 'table',
@@ -102,8 +102,8 @@ class BuildingProfileCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BuildingProfileRequest::class);
-        CRUD::addField([
+        $this->crud->setValidation(BuildingProfileRequest::class);
+        $this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_input',
             'name' => 'primary_owner',
@@ -118,7 +118,7 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'Main Information',
         ]);
        
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'building_owner', // JSON variable name
             'label' => 'Secondary Owner', // human-readable label for the input
             'type' => 'secondary_owner',
@@ -130,7 +130,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'tel_no', 
             'label' => 'Tel No.', 
             'type' => 'text',
@@ -139,7 +139,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'owner_tin_no', 
             'label' => 'TIN Number:', 
             'type' => 'text',
@@ -150,14 +150,14 @@ class BuildingProfileCrudController extends CrudController
         ]);
       
         
-        CRUD::addField([   // CustomHTML
+        $this->crud->addField([   // CustomHTML
             'name'  => 'separator',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab'             => 'Main Information',
         ]);
 
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'administrator',
             'label' => 'Administrator',
             'type' => 'text',
@@ -166,7 +166,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'admin_address',
             'label' => 'Administrator Address',
             'type' => 'text',
@@ -175,7 +175,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'admin_tel_no',
             'label' => 'Administrator Tel No.',
             'type' => 'text',
@@ -184,7 +184,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'admin_tin_no',
             'label' => 'Administrator Tin No.',
             'type' => 'text',
@@ -193,7 +193,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Main Information',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'isActive',
             'label' => 'isActive',
             'type' => 'select_from_array',
@@ -206,7 +206,7 @@ class BuildingProfileCrudController extends CrudController
         ]);
 
         // Building Location
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'no_of_street',
             'label' => 'No. Of Street',
             'type' => 'text',
@@ -216,7 +216,7 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'Building Location',
         ]);
       
-        CRUD::addField([
+        $this->crud->addField([
             'label' => "Barangay",
             'type'=>'select',
             'name'=>'barangay_id',
@@ -228,7 +228,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name'=>'municipality_id',
             'label' => "Municipality",
             'type'=>'select',
@@ -239,7 +239,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name'=>'province_id',
             'label' => "Province",
             'type'=>'select',
@@ -250,7 +250,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'oct_tct_no',
             'label' => 'OCT/TCT No.',
             'type' => 'text',
@@ -259,7 +259,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'lot_no',
             'label' => 'Lot No.',
             'type' => 'text',
@@ -268,7 +268,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'block_no',
             'label' => 'Block No.',
             'type' => 'text',
@@ -277,7 +277,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'survey_no',
             'label' => 'Survey No.',
             'type' => 'text',
@@ -286,7 +286,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'Building Location',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'area',
             'label' => 'Area',
             'type' => 'text',
@@ -298,7 +298,7 @@ class BuildingProfileCrudController extends CrudController
 
         // General Description
        
-        CRUD::addField([
+        $this->crud->addField([
             'label' => "Kind of Building",
             'type'=>'select',
             'name'=>'kind_of_building_id',
@@ -311,7 +311,7 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'General Description',
         ]);
         
-        CRUD::addField([
+        $this->crud->addField([
             'label' => "Structural Type",
             'type'=>'select',
             'name'=>'structural_type_id',
@@ -323,7 +323,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'building_permit_no',
             'label' => 'Building Permit No',
             'type' => 'text',
@@ -332,7 +332,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'building_permit_date_issued',
             'label' => 'Building Permit Date No',
             'type' => 'date',
@@ -341,7 +341,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'condominium_certificate_of_title',
             'label' => 'Condominium Certificate of Title (CCT)',
             'type' => 'text',
@@ -350,7 +350,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'certificate_of_completion_issued_on',
             'label' => 'Certificate of Completion Issued On',
             'type' => 'text',
@@ -359,7 +359,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'certificate_of_occupancy_issued_on',
             'label' => 'Certificate of Occupancy Issued On',
             'type' => 'date',
@@ -368,7 +368,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'date_constructed',
             'label' => 'Date Constructed',
             'type' => 'date',
@@ -377,7 +377,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'date_occupied',
             'label' => 'Date Occupied',
             'type' => 'date',
@@ -386,7 +386,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'no_of_storeys',
             'label' => 'No. of Storeys',
             'type' => 'number',
@@ -396,14 +396,14 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'General Description',
         ]);
 
-        CRUD::addField([   // CustomHTML
+        $this->crud->addField([   // CustomHTML
             'name'  => 'separator2',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab'   => 'General Description',
         ]);
 
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'area_first_floor',
             'label' => 'Area of 1st Floor',
             'type' => 'text',
@@ -412,7 +412,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'area_second_floor',
             'label' => 'Area of 2nd Floor',
             'type' => 'text',
@@ -421,7 +421,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'area_third_floor',
             'label' => 'Area of 3rd Floor',
             'type' => 'text',
@@ -430,7 +430,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab'             => 'General Description',
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name' => 'area_fourth_floor',
             'label' => 'Area of 4th Floor',
             'type' => 'text',
@@ -440,22 +440,22 @@ class BuildingProfileCrudController extends CrudController
             'tab'             => 'General Description',
         ]);
 
-        CRUD::addField([   // Checklist
+       $this->crud->addField([   // Checklist
             'label'     => 'Roof',
             'type'      => 'checklist',
             'name'      => 'roof',
             'entity'    => 'roof',
             'attribute' => 'name',
             'model'     => "App\Models\StructuralRoofs",
-            'pivot'     => false,
+            'pivot'     => true,
             // 'number_of_columns' => 3,
             'tab'             => 'Structural Characteristic',
         ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number']));
+         * - $this->crud->field('price')->type('number');
+         * - $this->crud->addField(['name' => 'price', 'type' => 'number']));
          */
         BuildingProfile::creating(function ($entry) {
             // $req  = app(BuildingProfileRequest::class);
@@ -464,7 +464,9 @@ class BuildingProfileCrudController extends CrudController
                 ->where('arpNo', 'like', '%' . Date('mdY') . '%')
                 ->first();
             $arpNo = 'BPID' . Date('mdY') . '-' . str_pad($count->count, 4, '0', STR_PAD_LEFT);
+            // $entry->roof = json_encode($req->roof);
             $entry->arpNo = $arpNo;
+            
         });
     }
 
