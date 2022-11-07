@@ -23,6 +23,15 @@ class FaasOtherCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-others', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-others', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-others', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-others', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -521,6 +530,9 @@ class FaasOtherCrudController extends CrudController
                 [
                     'name'    => 'adjustmentFactorPercentage',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label'   => '% Adj',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -580,6 +592,9 @@ class FaasOtherCrudController extends CrudController
                 [
                     'name'    => 'assessmentLevel',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],

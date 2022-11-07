@@ -26,7 +26,16 @@ class EmployeeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation; 
+    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
+    
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-employees', ['only' => ['index','show']]);
+        $this->middleware('can:create-employees', ['only' => ['create','store']]);
+        $this->middleware('can:edit-employees', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-employees', ['only' => ['destroy']]);
+    }
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.

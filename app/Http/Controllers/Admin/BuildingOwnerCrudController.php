@@ -19,6 +19,15 @@ class BuildingOwnerCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-building-profiles', ['only' => ['index','show']]);
+        $this->middleware('can:create-building-profiles', ['only' => ['create','store']]);
+        $this->middleware('can:edit-building-profiles', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-building-profiles', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

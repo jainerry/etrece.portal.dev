@@ -19,6 +19,15 @@ class UserCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-users', ['only' => ['index','show']]);
+        $this->middleware('can:create-users', ['only' => ['create','store']]);
+        $this->middleware('can:edit-users', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-users', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

@@ -19,6 +19,15 @@ class FaasOtherSecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-others', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-others', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-others', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-others', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

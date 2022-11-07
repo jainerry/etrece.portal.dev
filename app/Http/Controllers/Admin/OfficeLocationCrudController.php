@@ -19,6 +19,15 @@ class OfficeLocationCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-office-locations', ['only' => ['index','show']]);
+        $this->middleware('can:create-office-locations', ['only' => ['create','store']]);
+        $this->middleware('can:edit-office-locations', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-office-locations', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

@@ -19,6 +19,15 @@ class StructuralRoofsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-structural-roofs', ['only' => ['index','show']]);
+        $this->middleware('can:create-structural-roofs', ['only' => ['create','store']]);
+        $this->middleware('can:edit-structural-roofs', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-structural-roofs', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

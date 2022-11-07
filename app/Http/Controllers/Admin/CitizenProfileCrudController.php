@@ -28,6 +28,15 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation; 
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-citizen-profiles', ['only' => ['index','show']]);
+        $this->middleware('can:create-citizen-profiles', ['only' => ['create','store']]);
+        $this->middleware('can:edit-citizen-profiles', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-citizen-profiles', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

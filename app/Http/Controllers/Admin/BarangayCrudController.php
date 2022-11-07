@@ -19,6 +19,15 @@ class BarangayCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-barangays', ['only' => ['index','show']]);
+        $this->middleware('can:create-barangays', ['only' => ['create','store']]);
+        $this->middleware('can:edit-barangays', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-barangays', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

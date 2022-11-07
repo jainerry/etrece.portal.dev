@@ -23,6 +23,15 @@ class FaasLandCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-lands', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-lands', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-lands', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-lands', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -523,6 +532,9 @@ class FaasLandCrudController extends CrudController
                 [
                     'name'    => 'adjustmentFactorPercentage',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label'   => '% Adj',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -582,6 +594,9 @@ class FaasLandCrudController extends CrudController
                 [
                     'name'    => 'assessmentLevel',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],

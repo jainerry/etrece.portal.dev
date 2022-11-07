@@ -19,6 +19,15 @@ class AppointmentCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-appointment-statuses', ['only' => ['index','show']]);
+        $this->middleware('can:create-appointment-statuses', ['only' => ['create','store']]);
+        $this->middleware('can:edit-appointment-statuses', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-appointment-statuses', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

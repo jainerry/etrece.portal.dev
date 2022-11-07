@@ -19,6 +19,15 @@ class FaasLandIdleSecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-idle-lands', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-idle-lands', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-idle-lands', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-idle-lands', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

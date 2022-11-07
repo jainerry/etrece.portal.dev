@@ -61,4 +61,10 @@ Route::group([
     Route::crud('faas-land', 'FaasLandCrudController');
     Route::crud('faas-land-secondary-owners', 'FaasLandSecondaryOwnersCrudController');
     Route::crud('faas-land-idle-secondary-owners', 'FaasLandIdleSecondaryOwnersCrudController');
+
+    Route::get('/rpt-building-profile', 'BuildingProfileCrudController@customView')->name('rpt-building-profile');
+    Route::get('/rpt-machinery', 'FaasMachineryCrudController@customView')->name('rpt-machinery');
+    Route::get('/rpt-land', 'FaasLandCrudController@customView')->name('rpt-land');
+    Route::get('/rpt-idle-land', 'FaasLandIdleCrudController@customView')->name('rpt-idle-land');
+    Route::get('/rpt-other', 'FaasOtherCrudController@customView')->name('rpt-other');
 }); // this should be the absolute last line of this file

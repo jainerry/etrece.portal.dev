@@ -19,6 +19,16 @@ class MunicipalityCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-municipalities', ['only' => ['index','show']]);
+        $this->middleware('can:create-municipalities', ['only' => ['create','store']]);
+        $this->middleware('can:edit-municipalities', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-municipalities', ['only' => ['destroy']]);
+    }
+
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

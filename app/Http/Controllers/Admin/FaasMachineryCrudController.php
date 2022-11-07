@@ -23,6 +23,15 @@ class FaasMachineryCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-machineries', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-machineries', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-machineries', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-machineries', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
@@ -373,7 +382,7 @@ class FaasMachineryCrudController extends CrudController
                 ],
                 [
                     'name'  => 'dateAcquired',
-                    'type'  => 'date',
+                    'type'  => 'text',
                     'label' => 'Date Acquired',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -443,6 +452,9 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'  => 'rateOfDepreciation',
                     'type'  => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label' => 'Rate of Depreciation',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -512,6 +524,9 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'    => 'assessmentLevel',
                     'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -700,5 +715,17 @@ class FaasMachineryCrudController extends CrudController
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
+    }
+
+    /**
+     * Custom View.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function customView()
+    {
+        $this->data['machineries'] = FaasMachinery::all();
+        //dd($this->data);
+        return view('faas_machinery.custom-view', $this->data);
     }
 }

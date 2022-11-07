@@ -19,6 +19,15 @@ class FaasMachinerySecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-faas-machineries', ['only' => ['index','show']]);
+        $this->middleware('can:create-faas-machineries', ['only' => ['create','store']]);
+        $this->middleware('can:edit-faas-machineries', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-faas-machineries', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

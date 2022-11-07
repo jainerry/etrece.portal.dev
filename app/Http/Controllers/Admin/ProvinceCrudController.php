@@ -19,6 +19,15 @@ class ProvinceCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-provinces', ['only' => ['index','show']]);
+        $this->middleware('can:create-provinces', ['only' => ['create','store']]);
+        $this->middleware('can:edit-provinces', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-provinces', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

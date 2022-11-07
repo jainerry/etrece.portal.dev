@@ -19,6 +19,15 @@ class KindOfBuildingCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-kind-of-buildings', ['only' => ['index','show']]);
+        $this->middleware('can:create-kind-of-buildings', ['only' => ['create','store']]);
+        $this->middleware('can:edit-kind-of-buildings', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-kind-of-buildings', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

@@ -19,6 +19,15 @@ class StructuralTypeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:view-structural-types', ['only' => ['index','show']]);
+        $this->middleware('can:create-structural-types', ['only' => ['create','store']]);
+        $this->middleware('can:edit-structural-types', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-structural-types', ['only' => ['destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 
