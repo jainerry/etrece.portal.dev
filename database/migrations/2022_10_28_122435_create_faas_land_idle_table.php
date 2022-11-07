@@ -66,6 +66,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('faas_land_idle');
+        Schema::dropIfExists('faas_land_idles');
     }
 };

@@ -21,6 +21,17 @@ Route::get('/dashboard', function () {
     return view('dashboard');
 })->middleware(['auth', 'verified'])->name('dashboard');
 
+
+
+Route::group([
+    'middleware' => ['auth', 'verified'],
+    'namespace'  => 'App\Http\Controllers',
+], function () { // custom web routes
+
+    Route::get('/my-account', 'MyAccountController@getAccountInfo')->name('my-account');
+
+});
+
 require __DIR__.'/auth.php';
 
 // Route::get('/linkstorage', function () {

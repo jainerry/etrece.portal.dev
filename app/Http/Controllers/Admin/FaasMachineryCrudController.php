@@ -58,7 +58,7 @@ class FaasMachineryCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
         ],);
-        CRUD::column('ownerAddress');
+        //CRUD::column('ownerAddress');
         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'street',
@@ -81,17 +81,17 @@ class FaasMachineryCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
-        CRUD::addColumn([
-            // run a function on the CRUD model and show its return value
-            'name'  => 'machinery_owner',
-            'label' => 'Secondary Owners', // Table column heading
-            'type'  => 'select',
-            'entity'    => 'machinery_owner',
-            'attribute' => 'full_name', 
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
-         ],);
+        // CRUD::addColumn([
+        //     // run a function on the CRUD model and show its return value
+        //     'name'  => 'machinery_owner',
+        //     'label' => 'Secondary Owners', // Table column heading
+        //     'type'  => 'select',
+        //     'entity'    => 'machinery_owner',
+        //     'attribute' => 'full_name', 
+        //     // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+        //     // 'limit' => 100, // Limit the number of characters shown
+        //     // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+        //  ],);
          CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -449,6 +449,9 @@ class FaasMachineryCrudController extends CrudController
                 [
                     'name'  => 'totalDepreciationPercentage',
                     'type'  => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent',
+                    ],
                     'label' => 'Total Depreciation - %',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -656,5 +659,46 @@ class FaasMachineryCrudController extends CrudController
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('faas_machinery.edit', $this->data);
+    }
+
+    // show whatever you want
+    protected function setupShowOperation()
+    {
+        CRUD::column('ARPNo');
+        CRUD::addColumn([
+            'name'  => 'primaryOwner',
+            'label' => 'Primary Owner',
+            'type'  => 'select',
+            'entity'    => 'citizen_profile',
+            'attribute' => 'full_name'
+        ],);
+        CRUD::column('ownerAddress')->limit(255);
+        CRUD::column('ownerTelephoneNo');
+        CRUD::addColumn([
+            'name'  => 'street',
+            'label' => 'Street',
+            'type'  => 'select',
+            'entity'    => 'street',
+            'attribute' => 'name'
+         ],);
+         CRUD::addColumn([
+            'name'  => 'barangay',
+            'label' => 'Barangay',
+            'type'  => 'select',
+            'entity'    => 'barangay',
+            'attribute' => 'name'
+         ],);
+        CRUD::addColumn([
+            'name'  => 'machinery_owner',
+            'label' => 'Secondary Owners', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'machinery_owner',
+            'attribute' => 'full_name'
+         ],);
+         CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
     }
 }
