@@ -91,7 +91,7 @@ class Employee extends Model
         $firstName = ucfirst($this->firstName);
         $middleName = ucfirst($this->middleName);
         $lastName = ucfirst($this->lastName);
-        return "{$firstName}  {$middleName} {$lastName}";
+        return "{$firstName} {$middleName} {$lastName}";
     }
 
     public function getEntryDataAttribute(){

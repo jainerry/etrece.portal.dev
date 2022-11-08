@@ -740,4 +740,15 @@ class FaasLandIdleCrudController extends CrudController
         return view('faas_land_idle.edit', $this->data);
     }
 
+    /**
+     * Custom View.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function customView()
+    {
+        $this->data['idleLands'] = FaasLandIdle::all();
+        return view('faas_land_idle.custom-view', $this->data);
+    }
+
 }

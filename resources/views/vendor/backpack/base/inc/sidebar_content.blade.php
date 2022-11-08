@@ -11,7 +11,7 @@
 
 @can('view-building-profiles')
 <li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> FAAS Masterlist</a>
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> RPT</a>
     <ul class="nav-dropdown-items">
         @can('view-building-profiles')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('building-profile') }}"><i class="nav-icon la la-list"></i> Buildings</a></li>
@@ -102,19 +102,12 @@
         @can('view-structural-roofs')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-list"></i> Structural Roofs</a></li>
         @endcan
-    </ul>
-</li>
-@endcan
-
-@can('rpt-view-requirements-assessment')
-<li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i>RPT</a>
-        <ul class="nav-dropdown-items">
-        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-building-profile') }}"><i class="nav-icon la la-list"></i> Buildings</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-machinery') }}"><i class="nav-icon la la-list"></i> Machineries</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-land') }}"><i class="nav-icon la la-list"></i> Lands</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-idle-land') }}"><i class="nav-icon la la-list"></i> Idle Lands</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-other') }}"><i class="nav-icon la la-list"></i> Others</a></li>
+        @can('view-faas-assessment-statuses')
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-assessment-status') }}"><i class="nav-icon la la-list"></i> Assessment Statuses</a></li>
+        @endcan
+        @can('view-faas-classifications')
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-classification') }}"><i class="nav-icon la la-list"></i> Land Classifications</a></li>
+        @endcan
     </ul>
 </li>
 @endcan

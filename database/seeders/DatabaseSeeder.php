@@ -30,7 +30,9 @@ class DatabaseSeeder extends Seeder
             DepartmentSeeder::class,
             ProvinceSeeder::class,
             MunicipalitiesSeeder::class,
-            structuralRoof::class
+            structuralRoof::class,
+            FaasAssessmentStatusSeeder::class,
+            FaasLandClassificationSeeder::class
         ]);
     }
 }

@@ -50,6 +50,8 @@ return new class extends Migration
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
+            $table->string('assessmentStatusId')->nullable();
+            
             $table->timestamps();
         });
     }

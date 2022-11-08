@@ -6,6 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
 use App\Models\Employee;
+use App\Models\FaasAssessmentStatus;
 
 class FaasMachinery extends Model
 {
@@ -65,7 +66,8 @@ class FaasMachinery extends Model
         'memoranda',
         'recordOfAssesmentEntryDate',
         'recordingPersonel',
-        'TDNo'
+        'TDNo',
+        'assessmentStatusId',
     ];
 
     
@@ -82,6 +84,40 @@ class FaasMachinery extends Model
         }
         else {
             return "InActive";
+        }
+    }
+
+    public function getPropertyAppraisal(){
+        if(!empty($this->propertyAppraisal && is_array($this->propertyAppraisal))){
+            $html = '<div class="row">';
+            foreach($this->propertyAppraisal as $propertyAppraisal) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
+        }
+    }
+
+    public function getPropertyAssessment(){
+        if(!empty($this->propertyAssessment) && is_array($this->propertyAssessment)){
+            $html = '<div class="row">';
+            foreach($this->propertyAppraisal as $propertyAppraisal) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
         }
     }
 
@@ -123,8 +159,12 @@ class FaasMachinery extends Model
         return $this->belongsTo(Province::class, 'provinceId', 'id');
     }
 
-    public function administrator(){
+    public function administrator_profile(){
         return $this->belongsTo(Employee::class, 'administratorId', 'id');
+    }
+
+    public function assessment_status(){
+        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
 
     /*

@@ -47,6 +47,8 @@ class UsersRolesAndPermissionsSeeder extends Seeder
             'structural-types',
             'kind-of-buildings',
             'structural-roofs',
+            'faas-assessment-statuses',
+            'faas-classifications'
         ];
 
         foreach ($objects as $object) {
@@ -108,6 +110,11 @@ class UsersRolesAndPermissionsSeeder extends Seeder
 
         $caoUser = Role::create(['name' => 'CAO User','guard_name' => 'backpack']);
         $caoUser->givePermissionTo([
+            'view-building-profiles',
+            'view-faas-machineries',
+            'view-faas-lands',
+            'view-faas-idle-lands',
+            'view-faas-others',
             'rpt-view-requirements-assessment',
             'rpt-verify-requirements',
             'rpt-field-inspection'

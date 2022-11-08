@@ -737,5 +737,16 @@ class FaasOtherCrudController extends CrudController
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('faas_other.edit', $this->data);
     }
+
+    /**
+     * Custom View.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function customView()
+    {
+        $this->data['others'] = FaasOther::all();
+        return view('faas_other.custom-view', $this->data);
+    }
     
 }

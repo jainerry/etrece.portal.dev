@@ -492,4 +492,15 @@ class BuildingProfileCrudController extends CrudController
         $this->setupCreateOperation();
         // dd($this->crud->model->first());
     }
+
+    /**
+     * Custom View.
+     *
+     * @return \Illuminate\Contracts\View\View
+     */
+    public function customView()
+    {
+        $this->data['buildingProfiles'] = BuildingProfile::all();
+        return view('buildingProfile.custom-view', $this->data);
+    }
 }
