@@ -49,6 +49,18 @@
         .secondary_owner_field_class {
             display: none;
         }
+        .select2-selection__clear::after {
+            content: ' Clear';
+        }
+        .select2-results__option {
+            padding: 10px !important;
+            border: 1px solid #e2e5ec;
+            border-radius: 5px;
+            margin: 10px;
+        }
+        .select2-container--bootstrap .select2-results>.select2-results__options {
+            max-height: 500px;
+        }
     </style>
     @endLoadOnce
 @endpush

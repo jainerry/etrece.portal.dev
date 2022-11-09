@@ -8,7 +8,7 @@ use App\Models\CitizenProfile;
 use App\Models\BuildingOwner;
 use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 use GuzzleHttp\Psr7\Request;
-
+use App\Models\FaasAssessmentStatus;
 
 
 class BuildingProfile extends Model
@@ -35,6 +35,15 @@ class BuildingProfile extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -66,6 +75,10 @@ class BuildingProfile extends Model
     }
     public function roof(){
         return $this->hasMany(StructuralRoofs::class, 'id','roof');
+    }
+
+    public function assessment_status(){
+        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
     
     

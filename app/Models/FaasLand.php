@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Street;
 use App\Models\Barangay;
 use Illuminate\Support\Str;
+use App\Models\FaasAssessmentStatus;
 
 class FaasLand extends Model
 {
@@ -46,10 +47,10 @@ class FaasLand extends Model
         'primaryOwnerId',
         'ownerAddress',
         'ownerTelephoneNo',
-        'administratorId',
+        'administrator',
         'administratorAddress',
         'administratorTelephoneNo',
-        'streetId',
+        'noOfStreet',
         'barangayId',
         'cityId',
         'provinceId',
@@ -74,7 +75,8 @@ class FaasLand extends Model
         'memoranda',
         'recordOfAssesmentEntryDate',
         'recordingPersonel',
-        'TDNo'
+        'TDNo',
+        'assessmentStatusId'
     ];
 
     /*
@@ -89,6 +91,74 @@ class FaasLand extends Model
         }
         else {
             return "InActive";
+        }
+    }
+
+    public function getLandAppraisal(){
+        if(!empty($this->landAppraisal && is_array($this->landAppraisal))){
+            $html = '<div class="row">';
+            foreach($this->landAppraisal as $landAppraisal) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$landAppraisal['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
+        }
+    }
+
+    public function getOtherImprovements(){
+        if(!empty($this->otherImprovements) && is_array($this->otherImprovements)){
+            $html = '<div class="row">';
+            foreach($this->otherImprovements as $otherImprovements) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$otherImprovements['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
+        }
+    }
+
+    public function getMarketValue(){
+        if(!empty($this->marketValue) && is_array($this->marketValue)){
+            $html = '<div class="row">';
+            foreach($this->marketValue as $marketValue) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$marketValue['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
+        }
+    }
+
+    public function getPropertyAssessment(){
+        if(!empty($this->propertyAssessment) && is_array($this->propertyAssessment)){
+            $html = '<div class="row">';
+            foreach($this->propertyAppraisal as $propertyAppraisal) {
+                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
+                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
+                
+            }
+            $html .= '</div>';
+            $html = '';
+            return $html;
+        }
+        else {
+            return "-";
         }
     }
 
@@ -110,10 +180,6 @@ class FaasLand extends Model
         return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','citizen_profile_id','land_profile_id');
     }
 
-    public function street(){
-        return $this->belongsTo(Street::class, 'streetId','id');
-    }
-
     public function barangay(){
         return $this->belongsTo(Barangay::class, 'barangayId','id');
     }
@@ -126,8 +192,8 @@ class FaasLand extends Model
         return $this->belongsTo(Province::class, 'provinceId', 'id');
     }
 
-    public function administrator(){
-        return $this->belongsTo(Employee::class, 'administratorId', 'id');
+    public function assessment_status(){
+        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
 
     /*

@@ -79,6 +79,15 @@
             .select2-selection__clear::after {
                 content: ' {{ trans('backpack::crud.clear') }}';
             }
+            .select2-results__option {
+                padding: 10px !important;
+                border: 1px solid #e2e5ec;
+                border-radius: 5px;
+                margin: 10px;
+            }
+            .select2-container--bootstrap .select2-results>.select2-results__options {
+                max-height: 500px;
+            }
         </style>
         @endLoadOnce
     @endif

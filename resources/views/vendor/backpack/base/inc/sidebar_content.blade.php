@@ -11,7 +11,7 @@
 
 @can('view-building-profiles')
 <li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> RPT</a>
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> FAAS Masterlist</a>
     <ul class="nav-dropdown-items">
         @can('view-building-profiles')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('building-profile') }}"><i class="nav-icon la la-list"></i> Buildings</a></li>
@@ -107,6 +107,21 @@
         @endcan
         @can('view-faas-classifications')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-classification') }}"><i class="nav-icon la la-list"></i> Land Classifications</a></li>
+        @endcan
+    </ul>
+</li>
+@endcan
+
+<!-- RPT -->
+@can('rpt-view-assessment-requests')
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> Real Property Tax</a>
+    <ul class="nav-dropdown-items">
+        @can('rpt-create-new-assessment-request')
+        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-new-assessment-request') }}"><i class="nav-icon la la-list"></i> <span>New Assessment Request</span></a></li>
+        @endcan
+        @can('rpt-view-assessment-requests')
+        <li class="nav-item"><a class="nav-link" href="{{ route('rpt-assessment-requests') }}"><i class="nav-icon la la-list"></i> <span>Assessment Requests</span></a></li>
         @endcan
     </ul>
 </li>

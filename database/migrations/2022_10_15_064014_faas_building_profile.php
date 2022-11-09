@@ -56,8 +56,8 @@ return new class extends Migration
             $table->string('walling_2')->nullable();
             $table->string('walling_3')->nullable();
             $table->string('walling_4')->nullable();
-            
             $table->char('isActive', 1)->default('Y');
+            $table->string('assessmentStatusId')->nullable();
             $table->timestamps();
         });
     }

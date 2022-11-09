@@ -53,8 +53,10 @@ class BuildingProfileCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->column('arpNo');
+        $this->crud->enableBulkActions();
+        $this->crud->enableExportButtons();
         
+        CRUD::column('ARPNo')->label('Reference No.');
         $this->crud->column('code');
         $this->crud->addColumn([
             // run a function on the CRUD model and show its return value
@@ -67,9 +69,18 @@ class BuildingProfileCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
-        $this->crud->column('isActive');
-        $this->crud->column('created_at');
-        $this->crud->column('updated_at');
+        CRUD::addColumn([
+            'name'  => 'assessment_status',
+            'label' => 'Assessment Status',
+            'type'  => 'select',
+            'entity'    => 'assessment_status',
+            'attribute' => 'name'
+        ],);
+        CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -210,15 +221,27 @@ class BuildingProfileCrudController extends CrudController
             'options' => ['Y' => 'TRUE', 'N' => 'FALSE'],
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-12',
+                'class' => 'form-group col-12 col-lg-4',
             ],
             'tab'             => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'assessmentStatusId',
+            'label'=>'Assessment Status',
+            'type'=>'select',
+            'entity' => 'assessment_status',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Main Information',
         ]);
 
         // Building Location
         $this->crud->addField([
             'name' => 'no_of_street',
-            'label' => 'No. Of Street',
+            'label' => 'No. of Street',
             'type' => 'text',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-6',
@@ -493,14 +516,4 @@ class BuildingProfileCrudController extends CrudController
         // dd($this->crud->model->first());
     }
 
-    /**
-     * Custom View.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function customView()
-    {
-        $this->data['buildingProfiles'] = BuildingProfile::all();
-        return view('buildingProfile.custom-view', $this->data);
-    }
 }

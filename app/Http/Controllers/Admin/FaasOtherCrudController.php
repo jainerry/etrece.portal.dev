@@ -55,7 +55,7 @@ class FaasOtherCrudController extends CrudController
     {
         $this->crud->enableExportButtons();
 
-        CRUD::column('ARPNo');
+        CRUD::column('ARPNo')->label('Reference No.');
         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'primaryOwner',
@@ -68,17 +68,7 @@ class FaasOtherCrudController extends CrudController
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
         CRUD::column('ownerAddress');
-        CRUD::addColumn([
-            // run a function on the CRUD model and show its return value
-            'name'  => 'street',
-            'label' => 'Street', // Table column heading
-            'type'  => 'select',
-            'entity'    => 'street',
-            'attribute' => 'name', 
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
-        ],);
+        CRUD::column('noOfStreet')->label('No. of Street');
         CRUD::addColumn([
             // run a function on the CRUD model and show its return value
             'name'  => 'barangay',
@@ -101,7 +91,14 @@ class FaasOtherCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
-         CRUD::addColumn([
+        CRUD::addColumn([
+            'name'  => 'assessment_status',
+            'label' => 'Assessment Status',
+            'type'  => 'select',
+            'entity'    => 'assessment_status',
+            'attribute' => 'name'
+        ],);
+        CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
             'function_name' => 'getStatus',
@@ -198,7 +195,7 @@ class FaasOtherCrudController extends CrudController
             'label'=>'Telephone No.',
             'type'=>'text',
             'attributes' => [
-                'class' => 'form-control text_input_mask_telephone',
+                'class' => 'form-control',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -214,24 +211,10 @@ class FaasOtherCrudController extends CrudController
         ]);
         
         $this->crud->addField([
-            'name'=>'administratorId',
+            'name'=>'administrator',
             'label'=>'Administrator',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-9'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        
-        $this->crud->addField([   // n-n relationship
-            'label' => 'Administrator',
-            'type' => 'employee_single_select_ajax',
-            'name' => 'administratorId',
-            'entity' => 'administrator',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/employee/ajaxsearch'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
+                'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Main Information',
         ]);
@@ -262,7 +245,7 @@ class FaasOtherCrudController extends CrudController
             'label'=>'Telephone No.',
             'type'=>'text',
             'attributes' => [
-                'class' => 'form-control text_input_mask_telephone',
+                'class' => 'form-control',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -286,6 +269,18 @@ class FaasOtherCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
 
+        $this->crud->addField([
+            'name'=>'assessmentStatusId',
+            'label'=>'Assessment Status',
+            'type'=>'select',
+            'entity' => 'assessment_status',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
         CRUD::addField([   // CustomHTML
             'name'  => 'separator2',
             'type'  => 'custom_html',
@@ -294,11 +289,9 @@ class FaasOtherCrudController extends CrudController
         ]);
 
         $this->crud->addField([
-            'name'=>'streetId',
-            'label'=>'Street',
-            'type'=>'select',
-            'entity' => 'street',
-            'attribute' => 'name',
+            'name'=>'noOfStreet',
+            'label'=>'No. of Street',
+            'type'=>'text',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
@@ -736,17 +729,6 @@ class FaasOtherCrudController extends CrudController
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('faas_other.edit', $this->data);
-    }
-
-    /**
-     * Custom View.
-     *
-     * @return \Illuminate\Contracts\View\View
-     */
-    public function customView()
-    {
-        $this->data['others'] = FaasOther::all();
-        return view('faas_other.custom-view', $this->data);
     }
     
 }

@@ -63,4 +63,8 @@ Route::group([
     Route::crud('faas-land-idle-secondary-owners', 'FaasLandIdleSecondaryOwnersCrudController');
     Route::crud('faas-assessment-status', 'FaasAssessmentStatusCrudController');
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
+
+    Route::get('/rpt-new-assessment-request', 'RPTController@newAssessmentRequest')->name('rpt-new-assessment-request');
+    Route::get('/rpt-assessment-requests', 'RPTController@assessmentRequests')->name('rpt-assessment-requests');
+    Route::post('/api/rpt/machineries/search', 'RPTController@machineriesSearch');
 }); // this should be the absolute last line of this file

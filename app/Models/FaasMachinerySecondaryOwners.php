@@ -26,7 +26,7 @@ class FaasMachinerySecondaryOwners extends Model
     protected $fillable = [
         'citizen_profile_id',
         'machinery_profile_id',
-    ]
+    ];
 
     /*
     |--------------------------------------------------------------------------

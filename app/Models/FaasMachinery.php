@@ -44,7 +44,7 @@ class FaasMachinery extends Model
         'administratorAddress',
         'administratorTelephoneNo',
         'administratorTin',
-        'streetId',
+        'noOfStreet',
         'barangayId',
         'cityId',
         'provinceId',
@@ -143,10 +143,6 @@ class FaasMachinery extends Model
         return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
     }
 
-    public function street(){
-        return $this->belongsTo(Street::class, 'streetId','id');
-    }
-
     public function barangay(){
         return $this->belongsTo(Barangay::class, 'barangayId','id');
     }
@@ -157,10 +153,6 @@ class FaasMachinery extends Model
 
     public function province(){
         return $this->belongsTo(Province::class, 'provinceId', 'id');
-    }
-
-    public function administrator_profile(){
-        return $this->belongsTo(Employee::class, 'administratorId', 'id');
     }
 
     public function assessment_status(){

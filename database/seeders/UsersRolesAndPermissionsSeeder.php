@@ -73,9 +73,12 @@ class UsersRolesAndPermissionsSeeder extends Seeder
         }
 
         //specific permissions
-        Permission::create(['name' => 'rpt-view-requirements-assessment','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-verify-requirements','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-field-inspection','guard_name' => 'backpack']);
+
+        Permission::create(['name' => 'rpt-view-assessment-requests','guard_name' => 'backpack']);
+        Permission::create(['name' => 'rpt-create-new-assessment-request','guard_name' => 'backpack']);
+        Permission::create(['name' => 'rpt-edit-assessment-request','guard_name' => 'backpack']);
+        Permission::create(['name' => 'rpt-delete-assessment-request','guard_name' => 'backpack']);
+        Permission::create(['name' => 'rpt-approve-assessment-request','guard_name' => 'backpack']);
 
         $superAdmin = Role::create(['name' => 'Super Admin','guard_name' => 'backpack']);
         $superAdmin->givePermissionTo(Permission::all());
@@ -85,24 +88,10 @@ class UsersRolesAndPermissionsSeeder extends Seeder
 
         $rptAdmin = Role::create(['name' => 'RPT Admin','guard_name' => 'backpack']);
         $rptAdmin->givePermissionTo([
-            'view-building-profiles',
-            'create-building-profiles',
-            'edit-building-profiles',
-            'view-faas-machineries',
-            'create-faas-machineries',
-            'edit-faas-machineries',
-            'view-faas-lands',
-            'create-faas-lands',
-            'edit-faas-lands',
-            'view-faas-idle-lands',
-            'create-faas-idle-lands',
-            'edit-faas-idle-lands',
-            'view-faas-others',
-            'create-faas-others',
-            'edit-faas-others',
-            'rpt-view-requirements-assessment',
-            'rpt-verify-requirements',
-            'rpt-field-inspection'
+            'rpt-view-assessment-requests',
+            'rpt-create-new-assessment-request',
+            'rpt-edit-assessment-request',
+            'rpt-approve-assessment-request',
         ]);
 
         $rptAdminUser = User::create(['name' => 'RPT Admin','email' => 'rptadmin@etreceportal.com','password' => Hash::make('rptadmin@etreceportal.com')]);
@@ -110,14 +99,8 @@ class UsersRolesAndPermissionsSeeder extends Seeder
 
         $caoUser = Role::create(['name' => 'CAO User','guard_name' => 'backpack']);
         $caoUser->givePermissionTo([
-            'view-building-profiles',
-            'view-faas-machineries',
-            'view-faas-lands',
-            'view-faas-idle-lands',
-            'view-faas-others',
-            'rpt-view-requirements-assessment',
-            'rpt-verify-requirements',
-            'rpt-field-inspection'
+            'rpt-view-assessment-requests',
+            'rpt-approve-assessment-request',
         ]);
 
         $caoUserUser = User::create(['name' => 'CAO User','email' => 'caouser@etreceportal.com','password' => Hash::make('caouser@etreceportal.com')]);

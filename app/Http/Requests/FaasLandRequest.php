@@ -27,7 +27,7 @@ class FaasLandRequest extends FormRequest
         return [
             'primaryOwnerId' => 'required',
             'ownerAddress' => 'required',
-            'streetId' => 'required',
+            'noOfStreet' => 'required',
             'barangayId' => 'required',
             'cityId' => 'required',
             'provinceId' => 'required',

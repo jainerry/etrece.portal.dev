@@ -22,11 +22,11 @@ return new class extends Migration
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTin')->nullable();
-            $table->string('administratorId')->nullable();
+            $table->string('administrator')->nullable();
             $table->string('administratorAddress')->nullable();
             $table->string('administratorTelephoneNo')->nullable();
             $table->string('administratorTin')->nullable();
-            $table->string('streetId')->nullable();
+            $table->string('noOfStreet')->nullable();
             $table->string('barangayId')->nullable();
             $table->string('cityId')->nullable();
             $table->string('provinceId')->nullable();
@@ -51,7 +51,6 @@ return new class extends Migration
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->string('assessmentStatusId')->nullable();
-            
             $table->timestamps();
         });
     }

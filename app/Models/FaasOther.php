@@ -9,6 +9,7 @@ use App\Models\Employee;
 use App\Models\Street;
 use App\Models\Barangay;
 use Illuminate\Support\Str;
+use App\Models\FaasAssessmentStatus;
 
 class FaasOther extends Model
 {
@@ -46,10 +47,10 @@ class FaasOther extends Model
         'primaryOwnerId',
         'ownerAddress',
         'ownerTelephoneNo',
-        'administratorId',
+        'administrator',
         'administratorAddress',
         'administratorTelephoneNo',
-        'streetId',
+        'noOfStreet',
         'barangayId',
         'cityId',
         'provinceId',
@@ -74,7 +75,8 @@ class FaasOther extends Model
         'memoranda',
         'recordOfAssesmentEntryDate',
         'recordingPersonel',
-        'TDNo'
+        'TDNo',
+        'assessmentStatusId'
     ];
 
     /*
@@ -110,10 +112,6 @@ class FaasOther extends Model
         return $this->belongsToMany(CitizenProfile::class,'faas_other_secondary_owners','citizen_profile_id','other_profile_id');
     }
 
-    public function street(){
-        return $this->belongsTo(Street::class, 'streetId','id');
-    }
-
     public function barangay(){
         return $this->belongsTo(Barangay::class, 'barangayId','id');
     }
@@ -126,8 +124,8 @@ class FaasOther extends Model
         return $this->belongsTo(Province::class, 'provinceId', 'id');
     }
 
-    public function administrator(){
-        return $this->belongsTo(Employee::class, 'administratorId', 'id');
+    public function assessment_status(){
+        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
 
     /*
