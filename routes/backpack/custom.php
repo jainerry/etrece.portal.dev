@@ -66,5 +66,20 @@ Route::group([
 
     Route::get('/rpt-new-assessment-request', 'RPTController@newAssessmentRequest')->name('rpt-new-assessment-request');
     Route::get('/rpt-assessment-requests', 'RPTController@assessmentRequests')->name('rpt-assessment-requests');
-    Route::post('/api/rpt/machineries/search', 'RPTController@machineriesSearch');
+
+    Route::post('/api/rpt/machineries/search', 'RPTAPIsController@machineriesSearch')->name('rpt-machineries-search');
+    Route::get('/rpt-view-machinery/{id}', 'RPTController@viewMachinery')->name('rpt-view-machinery');
+
+    Route::post('/api/rpt/buildings/search', 'RPTAPIsController@buildingsSearch')->name('rpt-buildings-search');
+    Route::get('/rpt-view-building/{id}', 'RPTController@viewBuilding')->name('rpt-view-building');
+
+    Route::post('/api/rpt/lands/search', 'RPTAPIsController@landsSearch')->name('rpt-lands-search');
+    Route::get('/rpt-view-land/{id}', 'RPTController@viewLand')->name('rpt-view-land');
+
+    Route::post('/api/rpt/idle-lands/search', 'RPTAPIsController@idleLandsSearch')->name('rpt-idle-lands-search');
+    Route::get('/rpt-view-idle-land/{id}', 'RPTController@viewIdleLand')->name('rpt-view-idle-land');
+
+    Route::post('/api/rpt/others/search', 'RPTAPIsController@othersSearch')->name('rpt-others-search');
+    Route::get('/rpt-view-other/{id}', 'RPTController@viewOther')->name('rpt-view-other');
+
 }); // this should be the absolute last line of this file

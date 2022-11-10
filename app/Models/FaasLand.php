@@ -97,9 +97,15 @@ class FaasLand extends Model
     public function getLandAppraisal(){
         if(!empty($this->landAppraisal && is_array($this->landAppraisal))){
             $html = '<div class="row">';
+            // "classification" => "RES"
+            // "subClass" => null
+            // "actualUse" => "1"
+            // "area" => "46.00"
+            // "unitValue" => "900.00"
+            // "baseMarketValue" => "41,400.00"
             foreach($this->landAppraisal as $landAppraisal) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$landAppraisal['kindOfMachinery'].'</div>';
+                $html .= '<div class="col-md-6">'.$landAppraisal['classification'].'</div>';
                 
             }
             $html .= '</div>';
@@ -114,9 +120,13 @@ class FaasLand extends Model
     public function getOtherImprovements(){
         if(!empty($this->otherImprovements) && is_array($this->otherImprovements)){
             $html = '<div class="row">';
+            // "kind" => null
+            // "totalNumber" => null
+            // "unitValue" => "0.00"
+            // "baseMarketValue" => "0.00"
             foreach($this->otherImprovements as $otherImprovements) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$otherImprovements['kindOfMachinery'].'</div>';
+                $html .= '<div class="col-md-6">'.$otherImprovements['kind'].'</div>';
                 
             }
             $html .= '</div>';
@@ -131,9 +141,14 @@ class FaasLand extends Model
     public function getMarketValue(){
         if(!empty($this->marketValue) && is_array($this->marketValue)){
             $html = '<div class="row">';
+            // "baseMarketValue" => "0.00"
+            // "adjustmentFactor" => null
+            // "adjustmentFactorPercentage" => null
+            // "valueAdjustment" => "0.00"
+            // "marketValue" => "0.00"
             foreach($this->marketValue as $marketValue) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$marketValue['kindOfMachinery'].'</div>';
+                $html .= '<div class="col-md-6">'.$marketValue['baseMarketValue'].'</div>';
                 
             }
             $html .= '</div>';
@@ -148,9 +163,13 @@ class FaasLand extends Model
     public function getPropertyAssessment(){
         if(!empty($this->propertyAssessment) && is_array($this->propertyAssessment)){
             $html = '<div class="row">';
-            foreach($this->propertyAppraisal as $propertyAppraisal) {
+            // "actualUse" => "1"
+            // "marketValue" => "41,400.00"
+            // "assessmentLevel" => "20%"
+            // "assessmentValue" => "8,280.00"
+            foreach($this->propertyAssessment as $propertyAssessment) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
+                $html .= '<div class="col-md-6">'.$propertyAssessment['actualUse'].'</div>';
                 
             }
             $html .= '</div>';

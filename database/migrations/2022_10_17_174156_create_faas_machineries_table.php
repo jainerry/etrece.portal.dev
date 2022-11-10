@@ -17,6 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('ARPNo')->unique();
             $table->string('pin')->nullable();
+            $table->string('octTctNo')->nullable();
             $table->string('transactionCode')->nullable();
             $table->string('primaryOwnerId');
             $table->string('ownerAddress')->nullable();

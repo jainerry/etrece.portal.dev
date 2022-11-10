@@ -31,6 +31,11 @@ class FaasLandRequest extends FormRequest
             'barangayId' => 'required',
             'cityId' => 'required',
             'provinceId' => 'required',
+            'isActive' => 'required',
+            'assessmentStatusId' => 'required',
+            'assessmentType' => 'required',
+            'assessmentEffectivity' => 'required',
+            'assessmentEffectivityValue' => 'required',
         ];
     }
 

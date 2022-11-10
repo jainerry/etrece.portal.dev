@@ -53,49 +53,106 @@ class FaasLandIdleCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableBulkActions();
         $this->crud->enableExportButtons();
 
         CRUD::column('ARPNo')->label('Reference No.');
+        
+        CRUD::column('octTctNo')->label('OCT/TCT No.');
+        CRUD::column('pin')->label('PIN');
+
+        CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
+        
         CRUD::addColumn([
-            // run a function on the CRUD model and show its return value
             'name'  => 'primaryOwner',
-            'label' => 'Primary Owner', // Table column heading
+            'label' => 'Primary Owner',
             'type'  => 'select',
             'entity'    => 'citizen_profile',
-            'attribute' => 'full_name', 
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
-         ],);
-        CRUD::column('ownerAddress');
+            'attribute' => 'full_name'
+        ],);
+        CRUD::column('ownerAddress')->limit(255)->label('Owner Address');
+        CRUD::column('ownerTelephoneNo')->label('Owner Telephone No.');
+        CRUD::column('ownerTin')->label('Owner TIN');
+        CRUD::column('administrator')->label('Administrator');
+        CRUD::column('administratorAddress')->limit(255)->label('Administrator Address');
+        CRUD::column('administratorTelephoneNo')->label('Administrator Telephone No.');
+        CRUD::column('administratorTin')->label('Administrator TIN');
         CRUD::column('noOfStreet')->label('No. of Street');
-         CRUD::addColumn([
-            // run a function on the CRUD model and show its return value
+        CRUD::addColumn([
             'name'  => 'barangay',
-            'label' => 'Barangay', // Table column heading
+            'label' => 'Barangay',
             'type'  => 'select',
             'entity'    => 'barangay',
-            'attribute' => 'name', 
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+            'attribute' => 'name'
          ],);
         CRUD::addColumn([
-            // run a function on the CRUD model and show its return value
             'name'  => 'land_idle_owner',
             'label' => 'Secondary Owners', // Table column heading
             'type'  => 'select',
             'entity'    => 'land_idle_owner',
-            'attribute' => 'full_name', 
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+            'attribute' => 'full_name'
          ],);
-         CRUD::addColumn([
+        CRUD::addColumn([
+            'name'  => 'assessment_status',
+            'label' => 'Assessment Status',
+            'type'  => 'select',
+            'entity'    => 'assessment_status',
+            'attribute' => 'name'
+        ],);
+        CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
+        CRUD::addColumn([
+            'name'  => 'municipality',
+            'label' => 'Municipality',
+            'type'  => 'select',
+            'entity'    => 'municipality',
+            'attribute' => 'name'
+         ],);
+         CRUD::addColumn([
+            'name'  => 'province',
+            'label' => 'Province',
+            'type'  => 'select',
+            'entity'    => 'province',
+            'attribute' => 'name'
+         ],);
+
+        CRUD::addColumn([
+            'label'=>'Land Appraisal',
+            'type'  => 'model_function',
+            'function_name' => 'getLandAppraisal',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Other Improvements',
+            'type'  => 'model_function',
+            'function_name' => 'getOtherImprovements',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Market Value',
+            'type'  => 'model_function',
+            'function_name' => 'getMarketValue',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Property Assessment',
+            'type'  => 'model_function',
+            'function_name' => 'getPropertyAssessment',
+        ]);
+
+        CRUD::column('assessmentType')->label('Assessment Type');
+        CRUD::column('assessmentEffectivity')->label('Assessment Effectivity');
+        CRUD::column('assessmentEffectivityValue')->label('Assessment Effectivity Qtr./Yr.');
+        CRUD::column('assessedBy')->label('Assessed By');
+        CRUD::column('assessedDate')->label('Assessed Date');
+        CRUD::column('recommendingPersonel')->label('Recommending Personel');
+        CRUD::column('recommendingApprovalDate')->label('Recommending Approval Date');
+        CRUD::column('approvedBy')->label('Approved By');
+        CRUD::column('approvedDate')->label('Approved Date');
+        CRUD::column('memoranda')->label('Memoranda');
+        CRUD::column('recordOfAssesmentEntryDate')->label('Record of Assessment Entry Date');
+        CRUD::column('recordingPersonel')->label('Recording Personel');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -115,22 +172,49 @@ class FaasLandIdleCrudController extends CrudController
         CRUD::setValidation(FaasLandIdleRequest::class);
 
         $this->crud->addField([
+            'name'=>'octTctNo',
+            'type'=>'text',
+            'label'=>'OCT/TCT No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'pin',
+            'type'=>'text',
+            'label'=>'PIN',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
             'name'=>'lotNo',
-            'type'=>'number',
+            'type'=>'text',
             'label'=>'Lot No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
 
         $this->crud->addField([
             'name'=>'blkNo',
-            'type'=>'number',
+            'type'=>'text',
             'label'=>'Block No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
+            'tab' => 'Main Information',
+        ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator0',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
             'tab' => 'Main Information',
         ]);
 
@@ -206,7 +290,7 @@ class FaasLandIdleCrudController extends CrudController
         
         $this->crud->addField([
             'name'=>'administrator',
-            'label'=>'Administrator',
+            'label'=>'Administrator/Occupant',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -398,9 +482,11 @@ class FaasLandIdleCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'  => 'actualUse',
-                    'type'  => 'text',
-                    'label' => 'Actual Use',
+                    'name'    => 'actualUse',
+                    'type'    => 'select',
+                    'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasLandClassification", // related model
+                    'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -564,8 +650,10 @@ class FaasLandIdleCrudController extends CrudController
             'subfields' => [ // also works as: "fields"
                 [
                     'name'    => 'actualUse',
-                    'type'    => 'text',
+                    'type'    => 'select',
                     'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasLandClassification", // related model
+                    'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -724,6 +812,114 @@ class FaasLandIdleCrudController extends CrudController
 
         // load the view from /resources/views/vendor/backpack/crud/ if it exists, otherwise load the one in the package
         return view('faas_land_idle.edit', $this->data);
+    }
+
+    /**
+     * Define what happens when the Show operation is loaded.
+     * 
+     * @see  https://backpackforlaravel.com/docs/crud-operation-show-entries
+     * @return void
+     */
+    protected function setupShowOperation()
+    {
+        CRUD::column('ARPNo')->label('Reference No.');
+        
+        CRUD::column('octTctNo')->label('OCT/TCT No.');
+        CRUD::column('pin')->label('PIN');
+
+        CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
+        
+        CRUD::addColumn([
+            'name'  => 'primaryOwner',
+            'label' => 'Primary Owner',
+            'type'  => 'select',
+            'entity'    => 'citizen_profile',
+            'attribute' => 'full_name'
+        ],);
+        CRUD::column('ownerAddress')->limit(255)->label('Owner Address');
+        CRUD::column('ownerTelephoneNo')->label('Owner Telephone No.');
+        CRUD::column('ownerTin')->label('Owner TIN');
+        CRUD::column('administrator')->label('Administrator');
+        CRUD::column('administratorAddress')->limit(255)->label('Administrator Address');
+        CRUD::column('administratorTelephoneNo')->label('Administrator Telephone No.');
+        CRUD::column('administratorTin')->label('Administrator TIN');
+        CRUD::column('noOfStreet')->label('No. of Street');
+        CRUD::addColumn([
+            'name'  => 'barangay',
+            'label' => 'Barangay',
+            'type'  => 'select',
+            'entity'    => 'barangay',
+            'attribute' => 'name'
+         ],);
+        CRUD::addColumn([
+            'name'  => 'land_idle_owner',
+            'label' => 'Secondary Owners', // Table column heading
+            'type'  => 'select',
+            'entity'    => 'land_idle_owner',
+            'attribute' => 'full_name'
+         ],);
+        CRUD::addColumn([
+            'name'  => 'assessment_status',
+            'label' => 'Assessment Status',
+            'type'  => 'select',
+            'entity'    => 'assessment_status',
+            'attribute' => 'name'
+        ],);
+        CRUD::addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
+        CRUD::addColumn([
+            'name'  => 'municipality',
+            'label' => 'Municipality',
+            'type'  => 'select',
+            'entity'    => 'municipality',
+            'attribute' => 'name'
+         ],);
+         CRUD::addColumn([
+            'name'  => 'province',
+            'label' => 'Province',
+            'type'  => 'select',
+            'entity'    => 'province',
+            'attribute' => 'name'
+         ],);
+
+        CRUD::addColumn([
+            'label'=>'Land Appraisal',
+            'type'  => 'model_function',
+            'function_name' => 'getLandAppraisal',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Other Improvements',
+            'type'  => 'model_function',
+            'function_name' => 'getOtherImprovements',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Market Value',
+            'type'  => 'model_function',
+            'function_name' => 'getMarketValue',
+        ]);
+        CRUD::addColumn([
+            'label'=>'Property Assessment',
+            'type'  => 'model_function',
+            'function_name' => 'getPropertyAssessment',
+        ]);
+
+        CRUD::column('assessmentType')->label('Assessment Type');
+        CRUD::column('assessmentEffectivity')->label('Assessment Effectivity');
+        CRUD::column('assessmentEffectivityValue')->label('Assessment Effectivity Qtr./Yr.');
+        CRUD::column('assessedBy')->label('Assessed By');
+        CRUD::column('assessedDate')->label('Assessed Date');
+        CRUD::column('recommendingPersonel')->label('Recommending Personel');
+        CRUD::column('recommendingApprovalDate')->label('Recommending Approval Date');
+        CRUD::column('approvedBy')->label('Approved By');
+        CRUD::column('approvedDate')->label('Approved Date');
+        CRUD::column('memoranda')->label('Memoranda');
+        CRUD::column('recordOfAssesmentEntryDate')->label('Record of Assessment Entry Date');
+        CRUD::column('recordingPersonel')->label('Recording Personel');
+    
     }
 
 }

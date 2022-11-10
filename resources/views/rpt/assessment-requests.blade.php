@@ -48,17 +48,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Buildings</h5>
-                                <table id='buildingsTable' class='display dataTable' style="width:100%">
+                                <table id='buildingsTable' class='bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns' style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -69,17 +77,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Machineries</h5>
-                                <table id='machineriesTable' class='display dataTable' style="width:100%">
+                                <table id='machineriesTable' class='bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns' style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -90,17 +106,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Lands</h5>
-                                <table id='landsTable' class='display dataTable' style="width:100%">
+                                <table id='landsTable' class='bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns' style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -111,17 +135,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Idle Lands</h5>
-                                <table id='idleLandsTable' class='display dataTable' style="width:100%">
+                                <table id='idleLandsTable' class='bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns' style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -132,17 +164,25 @@
                         <div class="row">
                             <div class="col-md-12">
                                 <h5>Others</h5>
-                                <table id='othersTable' class='display dataTable' style="width:100%">
+                                <table id='othersTable' class='bg-white table table-striped table-hover nowrap rounded shadow-xs border-xs mt-2 dataTable dtr-inline collapsed has-hidden-columns' style="width:100%">
                                     <thead>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </thead>
                                     <tfoot>
                                         <tr>
+                                            <th>Reference No.</th>
                                             <th>Owner</th>
                                             <th>Property Location</th>
+                                            <th>Assessment Status</th>
+                                            <th>Created At</th>
+                                            <th>Actions</th>
                                         </tr>
                                     </tfoot>
                                 </table>
@@ -163,16 +203,100 @@
 @endsection
 
 @section('after_scripts')
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
     <script src="https://cdn.datatables.net/1.11.5/js/jquery.dataTables.min.js"></script>
 
     <script>
         $(function(){
-            $('#buildingsTable').DataTable({});
-            $('#machineriesTable').DataTable({});
-            $('#landsTable').DataTable({});
-            $('#idleLandsTable').DataTable({});
-            $('#othersTable').DataTable({});
+            $('#buildingsTable').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax":{
+                    "url": "{{ route('rpt-buildings-search') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    { "data": "arpNo" },
+                    { "data": "primaryOwner" },
+                    { "data": "ownerAddress" },
+                    { "data": "assessmentStatus" },
+                    { "data": "created_at" },
+                    { "data": "options" }
+                ]
+            });
+            $('#machineriesTable').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax":{
+                    "url": "{{ route('rpt-machineries-search') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    { "data": "ARPNo" },
+                    { "data": "primaryOwner" },
+                    { "data": "ownerAddress" },
+                    { "data": "assessmentStatus" },
+                    { "data": "created_at" },
+                    { "data": "options" }
+                ]
+            });
+            $('#landsTable').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax":{
+                    "url": "{{ route('rpt-lands-search') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    { "data": "ARPNo" },
+                    { "data": "primaryOwner" },
+                    { "data": "ownerAddress" },
+                    { "data": "assessmentStatus" },
+                    { "data": "created_at" },
+                    { "data": "options" }
+                ]
+            });
+            $('#idleLandsTable').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax":{
+                    "url": "{{ route('rpt-idle-lands-search') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    { "data": "ARPNo" },
+                    { "data": "primaryOwner" },
+                    { "data": "ownerAddress" },
+                    { "data": "assessmentStatus" },
+                    { "data": "created_at" },
+                    { "data": "options" }
+                ]
+            });
+            $('#othersTable').DataTable({
+                "serverSide": true,
+                "processing": true,
+                "ajax":{
+                    "url": "{{ route('rpt-others-search') }}",
+                    "dataType": "json",
+                    "type": "POST",
+                    "data":{ _token: "{{csrf_token()}}"}
+                },
+                "columns": [
+                    { "data": "ARPNo" },
+                    { "data": "primaryOwner" },
+                    { "data": "ownerAddress" },
+                    { "data": "assessmentStatus" },
+                    { "data": "created_at" },
+                    { "data": "options" }
+                ]
+            });
         })
     </script>
 @endsection

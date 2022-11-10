@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('arpNo')->unique();
             $table->string('code')->nullable();
             $table->string('primary_owner')->nullable();
+            $table->string('ownerAddress')->nullable();
             $table->string('tel_no')->nullable();
             $table->string('owner_tin_no')->nullable();
             $table->string('administrator')->nullable();

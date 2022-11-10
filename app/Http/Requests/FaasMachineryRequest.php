@@ -31,8 +31,11 @@ class FaasMachineryRequest extends FormRequest
             'barangayId' => 'required',
             'cityId' => 'required',
             'provinceId' => 'required',
-            'landOwnerId' => 'required',
-            'buildingOwnerId' => 'required',
+            'isActive' => 'required',
+            'assessmentStatusId' => 'required',
+            'assessmentType' => 'required',
+            'assessmentEffectivity' => 'required',
+            'assessmentEffectivityValue' => 'required',
         ];
     }
 

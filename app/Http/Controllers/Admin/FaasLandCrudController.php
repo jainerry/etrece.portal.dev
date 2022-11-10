@@ -57,11 +57,13 @@ class FaasLandCrudController extends CrudController
         $this->crud->enableExportButtons();
 
         CRUD::column('ARPNo')->label('Reference No.');
-        CRUD::column('TDNo')->label('TD No.');
-        CRUD::column('pin')->label('PIN');
-        CRUD::column('transactionCode')->label('Transaction Code');
-
+        
         CRUD::column('octTctNo')->label('OCT/TCT No.');
+        CRUD::column('pin')->label('PIN');
+
+        CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
+
         CRUD::column('lotNo')->label('Lot No.');
         CRUD::column('blkNo')->label('Block No.');
         
@@ -88,7 +90,7 @@ class FaasLandCrudController extends CrudController
         CRUD::column('administratorTelephoneNo')->label('Administrator Telephone No.');
         CRUD::column('administratorTin')->label('Administrator TIN');
         CRUD::column('noOfStreet')->label('No. of Street');
-         CRUD::addColumn([
+        CRUD::addColumn([
             'name'  => 'barangay',
             'label' => 'Barangay',
             'type'  => 'select',
@@ -192,22 +194,49 @@ class FaasLandCrudController extends CrudController
         CRUD::setValidation(FaasLandRequest::class);
 
         $this->crud->addField([
+            'name'=>'octTctNo',
+            'type'=>'text',
+            'label'=>'OCT/TCT No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'pin',
+            'type'=>'text',
+            'label'=>'PIN',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
             'name'=>'lotNo',
-            'type'=>'number',
+            'type'=>'text',
             'label'=>'Lot No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
 
         $this->crud->addField([
             'name'=>'blkNo',
-            'type'=>'number',
+            'type'=>'text',
             'label'=>'Block No.',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
+            'tab' => 'Main Information',
+        ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator0',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
             'tab' => 'Main Information',
         ]);
 
@@ -283,7 +312,7 @@ class FaasLandCrudController extends CrudController
         
         $this->crud->addField([
             'name'=>'administrator',
-            'label'=>'Administrator',
+            'label'=>'Administrator/Occupant',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -475,9 +504,11 @@ class FaasLandCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'  => 'actualUse',
-                    'type'  => 'text',
-                    'label' => 'Actual Use',
+                    'name'    => 'actualUse',
+                    'type'    => 'select',
+                    'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasLandClassification", // related model
+                    'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -641,8 +672,10 @@ class FaasLandCrudController extends CrudController
             'subfields' => [ // also works as: "fields"
                 [
                     'name'    => 'actualUse',
-                    'type'    => 'text',
+                    'type'    => 'select',
                     'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasLandClassification", // related model
+                    'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -807,11 +840,13 @@ class FaasLandCrudController extends CrudController
     protected function setupShowOperation()
     {
         CRUD::column('ARPNo')->label('Reference No.');
-        CRUD::column('TDNo')->label('TD No.');
-        CRUD::column('pin')->label('PIN');
-        CRUD::column('transactionCode')->label('Transaction Code');
-
+        
         CRUD::column('octTctNo')->label('OCT/TCT No.');
+        CRUD::column('pin')->label('PIN');
+
+        CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
+
         CRUD::column('lotNo')->label('Lot No.');
         CRUD::column('blkNo')->label('Block No.');
         

@@ -35,9 +35,9 @@ class CitizenProfile extends Model
     */
     public function getFullNameAttribute(){
         $fName = ucfirst($this->fName);
-        $mName = ucfirst($this->mName);
+        $mName = " ".ucfirst($this->mName)." ";
         $lName = ucfirst($this->lName);
-        return "{$fName} {$mName} {$lName}";
+        return "{$fName}{$mName}{$lName}";
     }
     public function getEntryDataAttribute(){
         $fName = ucfirst($this->fName);
@@ -45,7 +45,7 @@ class CitizenProfile extends Model
         $lName = ucfirst($this->lName);
         $bdate = $this->bdate;
         $baranggay = ($this->barangay == null) ? $this->barangay:$this->barangay->name;
-        return "{$fName}  ".($mName == null ?"": $mName." ")."{$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
+        return "{$fName} ".($mName == null ?"": $mName." ")."{$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
     }
     /*
     |--------------------------------------------------------------------------

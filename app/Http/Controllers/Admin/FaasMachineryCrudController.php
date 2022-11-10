@@ -59,9 +59,12 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->enableExportButtons();
         
         CRUD::column('ARPNo')->label('Reference No.');
-        CRUD::column('TDNo')->label('TD No.');
+       
+        CRUD::column('octTctNo')->label('OCT/TCT No.');
         CRUD::column('pin')->label('PIN');
+
         CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
         
         CRUD::addColumn([
             'name'  => 'primaryOwner',
@@ -98,7 +101,7 @@ class FaasMachineryCrudController extends CrudController
             'type'  => 'select',
             'entity'    => 'assessment_status',
             'attribute' => 'name'
-        ]);
+        ],);
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -135,13 +138,11 @@ class FaasMachineryCrudController extends CrudController
         ],);
         CRUD::column('buildingOwnerPin')->label('Building Owner TIN');
 
-        // CRUD::column('propertyAppraisal')->label('Property Appraisal');
         CRUD::addColumn([
             'label'=>'Property Appraisal',
             'type'  => 'model_function',
             'function_name' => 'getPropertyAppraisal',
         ]);
-        // CRUD::column('propertyAssessment')->label('Property Assessment');
         CRUD::addColumn([
             'label'=>'Property Assessment',
             'type'  => 'model_function',
@@ -158,7 +159,7 @@ class FaasMachineryCrudController extends CrudController
         CRUD::column('approvedBy')->label('Approved By');
         CRUD::column('approvedDate')->label('Approved Date');
         CRUD::column('memoranda')->label('Memoranda');
-        CRUD::column('recordOfAssesmentEntryDate')->label('Record of Assesment Entry Date');
+        CRUD::column('recordOfAssesmentEntryDate')->label('Record of Assessment Entry Date');
         CRUD::column('recordingPersonel')->label('Recording Personel');
 
         /**
@@ -177,6 +178,33 @@ class FaasMachineryCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(FaasMachineryRequest::class);
+
+        $this->crud->addField([
+            'name'=>'octTctNo',
+            'type'=>'text',
+            'label'=>'OCT/TCT No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'pin',
+            'type'=>'text',
+            'label'=>'PIN',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator0',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Main Information',
+        ]);
 
         $this->crud->addField([   // n-n relationship
             'label' => 'Primary Owner',
@@ -249,7 +277,7 @@ class FaasMachineryCrudController extends CrudController
 
         $this->crud->addField([
             'name'=>'administrator',
-            'label'=>'Administrator',
+            'label'=>'Administrator/Occupant',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
@@ -738,13 +766,21 @@ class FaasMachineryCrudController extends CrudController
         return view('faas_machinery.edit', $this->data);
     }
 
-    // show whatever you want
+    /**
+     * Define what happens when the Show operation is loaded.
+     * 
+     * @see  https://backpackforlaravel.com/docs/crud-operation-show-entries
+     * @return void
+     */
     protected function setupShowOperation()
     {
         CRUD::column('ARPNo')->label('Reference No.');
-        CRUD::column('TDNo')->label('TD No.');
+       
+        CRUD::column('octTctNo')->label('OCT/TCT No.');
         CRUD::column('pin')->label('PIN');
+
         CRUD::column('transactionCode')->label('Transaction Code');
+        CRUD::column('TDNo')->label('TD No.');
         
         CRUD::addColumn([
             'name'  => 'primaryOwner',
@@ -818,13 +854,11 @@ class FaasMachineryCrudController extends CrudController
         ],);
         CRUD::column('buildingOwnerPin')->label('Building Owner TIN');
 
-        // CRUD::column('propertyAppraisal')->label('Property Appraisal');
         CRUD::addColumn([
             'label'=>'Property Appraisal',
             'type'  => 'model_function',
             'function_name' => 'getPropertyAppraisal',
         ]);
-        // CRUD::column('propertyAssessment')->label('Property Assessment');
         CRUD::addColumn([
             'label'=>'Property Assessment',
             'type'  => 'model_function',

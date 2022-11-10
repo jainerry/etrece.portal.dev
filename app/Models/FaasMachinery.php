@@ -35,6 +35,7 @@ class FaasMachinery extends Model
     protected $fillable = [
         'ARPNo',
         'pin',
+        'octTctNo',
         'transactionCode',
         'primaryOwnerId',
         'ownerAddress',
@@ -90,6 +91,23 @@ class FaasMachinery extends Model
     public function getPropertyAppraisal(){
         if(!empty($this->propertyAppraisal && is_array($this->propertyAppraisal))){
             $html = '<div class="row">';
+            // "kindOfMachinery" => "Mixed machineries"
+            // "brandModel" => "test only"
+            // "capacity" => "test only"
+            // "dateAcquired" => "2019"
+            // "conditionWhenAcquired" => "New"
+            // "economicLifeEstimated" => "12"
+            // "economicLifeRemain" => "11"
+            // "yearInstalled" => "2019"
+            // "yearOfInitialOperation" => "2019"
+            // "originalCost" => "454,567.00"
+            // "conversionFactor" => "test only"
+            // "rcn" => "test only"
+            // "noOfYearsUsed" => "2"
+            // "rateOfDepreciation" => "10%"
+            // "totalDepreciationPercentage" => "10%"
+            // "totalDepreciationValue" => "10,000.00"
+            // "depreciatedValue" => "14,566.00"
             foreach($this->propertyAppraisal as $propertyAppraisal) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
                 $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
@@ -107,9 +125,14 @@ class FaasMachinery extends Model
     public function getPropertyAssessment(){
         if(!empty($this->propertyAssessment) && is_array($this->propertyAssessment)){
             $html = '<div class="row">';
-            foreach($this->propertyAppraisal as $propertyAppraisal) {
+            // "actualUse" => "1"
+            // "marketValue" => "35,345.00"
+            // "assessmentLevel" => "34%"
+            // "assessedValue" => "12,345.00"
+            // "yearOfEffectivity" => "2023"
+            foreach($this->propertyAssessment as $propertyAssessment) {
                 $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
+                $html .= '<div class="col-md-6">'.$propertyAssessment['actualUse'].'</div>';
                 
             }
             $html .= '</div>';
