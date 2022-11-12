@@ -32,7 +32,10 @@ class DatabaseSeeder extends Seeder
             MunicipalitiesSeeder::class,
             structuralRoof::class,
             FaasAssessmentStatusSeeder::class,
-            FaasLandClassificationSeeder::class
+            FaasLandClassificationSeeder::class,
+            StructuralTypes::class,
+            StructuralFlooring::class,
+            StructuralWalling::class,
         ]);
     }
 }

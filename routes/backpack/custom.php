@@ -82,4 +82,6 @@ Route::group([
     Route::post('/api/rpt/others/search', 'RPTAPIsController@othersSearch')->name('rpt-others-search');
     Route::get('/rpt-view-other/{id}', 'RPTController@viewOther')->name('rpt-view-other');
 
+    Route::crud('structural-flooring', 'StructuralFlooringCrudController');
+    Route::crud('structural-walling', 'StructuralWallingCrudController');
 }); // this should be the absolute last line of this file

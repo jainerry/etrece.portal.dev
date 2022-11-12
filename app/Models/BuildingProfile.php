@@ -21,12 +21,11 @@ class BuildingProfile extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'building_profiles';
+    protected $table = 'faas_building_profiles';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
-    protected $casts = ['roof' => 'array' ];
-    // protected $fillable = [];
+    // protected $fillable = ['roof'];
     // protected $hidden = [];
     // protected $dates = [];
 
@@ -74,9 +73,14 @@ class BuildingProfile extends Model
         return $this->belongsTo(KindOfBuilding::class, 'kind_of_building_id', 'id');
     }
     public function roof(){
-        return $this->hasMany(StructuralRoofs::class, 'id','roof');
+        return $this->belongsToMany(StructuralRoofs::class,HasRoofs::class,'faas_building_profiles_id','structural_roofs_id');
     }
-
+    public function flooring(){
+        return $this->belongsToMany(StructuralFlooring::class,HasFlooring::class,'faas_building_profiles_id','structural_flooring_id');
+    }
+    public function walling(){
+        return $this->belongsToMany(StructuralFlooring::class,HasFlooring::class,'faas_building_profiles_id','structural_flooring_id');
+    }
     public function assessment_status(){
         return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }

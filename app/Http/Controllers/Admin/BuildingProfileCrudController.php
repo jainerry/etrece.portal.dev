@@ -56,7 +56,8 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->enableBulkActions();
         $this->crud->enableExportButtons();
         
-        CRUD::column('ARPNo')->label('Reference No.');
+        CRUD::column('arpNo')->label('Reference No.');
+     
         $this->crud->column('code');
         $this->crud->addColumn([
             // run a function on the CRUD model and show its return value
@@ -102,14 +103,7 @@ class BuildingProfileCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ]);
-         $this->crud->addColumn([
-            'name'  => 'roof',
-            'label' => 'Roof',
-            'type'  => 'table',
-            'columns' => [
-                'name'        => 'Name',
-            ]
-        ]);
+         $this->crud->addColumn('roof');
          
          
     }
@@ -481,10 +475,28 @@ class BuildingProfileCrudController extends CrudController
             'attribute' => 'name',
             'model'     => "App\Models\StructuralRoofs",
             'pivot'     => true,
-            // 'number_of_columns' => 3,
             'tab'             => 'Structural Characteristic',
         ]);
-
+        $this->crud->addField([   // Checklist
+            'label'     => 'Flooring',
+            'type'      => 'checklist',
+            'name'      => 'flooring',
+            'entity'    => 'flooring',
+            'attribute' => 'name',
+            'model'     => "App\Models\StructuralFlooring",
+            'pivot'     => true,
+            'tab'             => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([   // Checklist
+            'label'     => 'Walling',
+            'type'      => 'checklist',
+            'name'      => 'walling',
+            'entity'    => 'walling',
+            'attribute' => 'name',
+            'model'     => "App\Models\StructuralWalling",
+            'pivot'     => true,
+            'tab'             => 'Structural Characteristic',
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - $this->crud->field('price')->type('number');
@@ -513,7 +525,7 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        // dd($this->crud->model->first());
+       
     }
 
 }

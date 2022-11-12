@@ -108,6 +108,9 @@
         @can('view-faas-classifications')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-classification') }}"><i class="nav-icon la la-list"></i> Land Classifications</a></li>
         @endcan
+
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-flooring') }}"><i class="nav-icon la la-list"></i> Structural Floorings</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-walling') }}"><i class="nav-icon la la-list"></i> Structural Wallings</a></li>
     </ul>
 </li>
 @endcan
@@ -126,3 +129,4 @@
     </ul>
 </li>
 @endcan
+

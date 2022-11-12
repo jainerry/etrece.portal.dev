@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class StructuralRoofs extends Model
+class StructuralFlooring extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class StructuralRoofs extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'structural_roofs';
+    protected $table = 'faas_structural_flooring';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -34,9 +34,7 @@ class StructuralRoofs extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    function building_profile(){
-        return $this->hasMany(BuildingProfile::class);
-    }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

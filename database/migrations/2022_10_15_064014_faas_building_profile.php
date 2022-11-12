@@ -13,7 +13,7 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('building_profiles', function (Blueprint $table) {
+        Schema::create('faas_building_profiles', function (Blueprint $table) {
             $table->id();
             $table->string('arpNo')->unique();
             $table->string('code')->nullable();
@@ -48,7 +48,6 @@ return new class extends Migration
             $table->string('area_second_floor')->nullable();
             $table->string('area_third_floor')->nullable();
             $table->string('area_fourth_floor')->nullable();
-            $table->string('roof')->nullable();
             $table->string('flooring_1')->nullable();
             $table->string('flooring_2')->nullable();
             $table->string('flooring_3')->nullable();
@@ -70,6 +69,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('building_profiles');
+        Schema::dropIfExists('faas_building_profiles');
     }
 };
