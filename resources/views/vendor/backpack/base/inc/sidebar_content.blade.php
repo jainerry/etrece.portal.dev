@@ -111,6 +111,8 @@
 
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-flooring') }}"><i class="nav-icon la la-list"></i> Structural Floorings</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-walling') }}"><i class="nav-icon la la-list"></i> Structural Wallings</a></li>
+        
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-additional-items') }}"><i class="nav-icon la la-list"></i> Structural additional items</a></li>
     </ul>
 </li>
 @endcan

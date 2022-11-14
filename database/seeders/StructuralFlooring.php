@@ -22,6 +22,7 @@ class StructuralFlooring extends Seeder
             ['name'=>'Marble'],
             ['name'=>'Wood'],
             ['name'=>'Tiles'],
+            ['name'=>'Others']
           
         ]);
     }

@@ -497,6 +497,18 @@ class BuildingProfileCrudController extends CrudController
             'pivot'     => true,
             'tab'             => 'Structural Characteristic',
         ]);
+        $this->crud->addField([   // Checklist
+            'label'     => 'Additional Items',
+            'name' => 'additional_items',
+            'type'      => 'relationship',
+            'tab'       => 'Structural Characteristic',
+            'subfields'       => [
+                [
+                    'name'=>'name',
+                    'type' => 'text',
+                ]
+            ],
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * - $this->crud->field('price')->type('number');

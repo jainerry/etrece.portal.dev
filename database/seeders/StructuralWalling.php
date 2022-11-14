@@ -23,7 +23,8 @@ class StructuralWalling extends Seeder
             ['name'=>'G.I. Sheet'],
             ['name'=>'Build-a-wall'],
             ['name'=>'Sawali'],
-            ['name'=>'Bamboo']
+            ['name'=>'Bamboo'],
+            ['name'=>'Others']
         ]);
     }
 }

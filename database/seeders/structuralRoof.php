@@ -23,7 +23,8 @@ class structuralRoof extends Seeder
             ['name'=>'Asbestos'],
             ['name'=>'Long Span'],
             ['name'=>'Concrete Desk'],
-            ['name'=>'Nipa/Anahaw/Cogon']
+            ['name'=>'Nipa/Anahaw/Cogon'],
+            ['name'=>'Others']
         ]);
     }
 }

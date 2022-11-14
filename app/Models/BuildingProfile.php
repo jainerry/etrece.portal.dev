@@ -79,12 +79,14 @@ class BuildingProfile extends Model
         return $this->belongsToMany(StructuralFlooring::class,HasFlooring::class,'faas_building_profiles_id','structural_flooring_id');
     }
     public function walling(){
-        return $this->belongsToMany(StructuralFlooring::class,HasFlooring::class,'faas_building_profiles_id','structural_flooring_id');
+        return $this->belongsToMany(StructuralWalling::class,HasWalling::class,'faas_building_profiles_id','structural_walling_id');
     }
     public function assessment_status(){
         return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
-    
+    public function additional_items(){
+        return $this->hasMany(StructuralAdditionalItems::class);
+    }
     
     /*
     |--------------------------------------------------------------------------
