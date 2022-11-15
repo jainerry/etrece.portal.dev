@@ -11,7 +11,7 @@ use App\Models\Barangay;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
-
+use App\Models\TransactionLogs;
 /**
  * Class CitizenProfileCrudController
  * @package App\Http\Controllers\Admin
@@ -292,6 +292,7 @@ class CitizenProfileCrudController extends CrudController
             $refId = 'CID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
 
             $entry->refID = $refId;
+            // TransactionLogs::create(['']);
         });
     }
 

@@ -3,7 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-
+use Illuminate\Support\Facades\DB;
 return new class extends Migration
 {
     /**
@@ -15,7 +15,7 @@ return new class extends Migration
     {
         //
         Schema::create('citizen_profiles', function (Blueprint $table) {
-            $table->uuid('id')->nullable(false)->primary();
+            $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('fName')->nullable();
             $table->string('mName')->nullable();

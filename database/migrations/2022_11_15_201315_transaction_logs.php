@@ -14,11 +14,14 @@ return new class extends Migration
     public function up()
     {
         Schema::create('transaction_logs', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            // transaction RefID : TRANS-11152021-0000
             $table->string('refId')->nullable();
+            // refID of subject
             $table->string('transID')->nullable();
-            // what module
+            //category: module name
             $table->string('category')->nullable();
+            // action
             $table->string('type')->nullable();
             $table->timestamps();
         });

@@ -8,7 +8,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Faker\Generator as Faker;
 use App\Models\CitizenProfile as cp;
-
+use Illuminate\Support\Str;
 class CitizenProfileSeeder extends Seeder
 {
     /**
@@ -20,6 +20,7 @@ class CitizenProfileSeeder extends Seeder
     {
         $users = [
             [
+                'id'    =>Str::uuid(),
                 'refId' => 'CID'.Date('mdY').'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John Carlo',
                 'mName' => 'Sacro',
@@ -34,6 +35,7 @@ class CitizenProfileSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
+                'id'    =>Str::uuid(),
                 'refId' => 'CID'.Date('mdY').'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John ',
                 'mName' => 'Sacro',
@@ -52,6 +54,7 @@ class CitizenProfileSeeder extends Seeder
         for($i=0; 500>=$i; $i++ ){
             $faker =app(Faker::class);
             array_push($users, [
+                'id'    =>Str::uuid(),
                 'refId' => 'CID'.Date('mdY').'-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),
                 'fName' => $faker->firstNameMale(),
                 'mName' => '',

@@ -16,6 +16,7 @@ class CitizenProfile extends Model
 {
     use CrudTrait;
     use HasUuids;
+    
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
