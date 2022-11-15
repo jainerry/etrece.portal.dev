@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\TransactionLogsRequest;
+use App\Models\TransactionLogs;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
@@ -39,12 +40,69 @@ class TransactionLogsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+      
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');  
+        $this->crud->removeButton('update');  
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+         
+         
+         
+
+
+          $this->crud->addFilter([
+            'type'  => 'dropdown',
+            'name'  => 'type',
+            'label' => 'Type',
+          ],
+          function(){
+            $logs = TransactionLogs::select(['type'])->groupBy('type')->get()->toArray();
+            $typeFilter = [];
+            foreach($logs as $index => $log){
+                $typeFilter[$log['type']] =$log['type'];
+                //  array_merge($typeFilter,[$log['type']=>$log['type']]);
+              }
+              return $typeFilter;
+          },
+            function($value){
+                $this->crud->addClause('where','type', $value);
+            }
+         );
+         $this->crud->addFilter([
+            'type'  => 'dropdown',
+            'name'  => 'category',
+            'label' => 'Category',
+          ],
+          function(){
+            $logs = TransactionLogs::select(['category'])->groupBy('category')->get()->toArray();
+            $typeFilter = [];
+            foreach($logs as $index => $log){
+                $typeFilter[$log['category']] =$log['category'];
+                //  array_merge($typeFilter,[$log['type']=>$log['type']]);
+              }
+              return $typeFilter;
+          },
+            function($value){
+                $this->crud->addClause('where','category', $value);
+            }
+         );
+
+
+
         CRUD::column('refId');
         CRUD::column('transId');
         CRUD::column('category');
         CRUD::column('type');
         CRUD::column('created_at');
-        CRUD::column('updated_at');
+
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
