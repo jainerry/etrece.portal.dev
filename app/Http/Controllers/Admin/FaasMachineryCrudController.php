@@ -9,6 +9,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\FaasMachinery;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Support\Facades\Auth;
+use App\Models\TransactionLogs;
 
 /**
  * Class FaasMachineryCrudController
@@ -605,7 +606,7 @@ class FaasMachineryCrudController extends CrudController
                     'name'    => 'actualUse',
                     'type'    => 'select',
                     'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasLandClassification", // related model
+                    'model'     => "App\Models\FaasMachineryClassifications", // related model
                     'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -620,7 +621,9 @@ class FaasMachineryCrudController extends CrudController
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'    => 'text',
+                    'type'    => 'select',
+                    'model'     => "App\Models\FaasMachineryClassifications", // related model
+                    'attribute' => 'assessmentLevel',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent',
                     ],
@@ -706,6 +709,12 @@ class FaasMachineryCrudController extends CrudController
             $count = FaasMachinery::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
             $refID = 'MACHINERY-'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
+
+            TransactionLogs::create([
+                'transId' =>$refID,
+                'category' =>'faas_land',
+                'type' =>'create',
+            ]);
         });
     }
 
@@ -718,6 +727,15 @@ class FaasMachineryCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        FaasMachinery::updating(function($entry) {
+          
+            TransactionLogs::create([
+                'transId' =>$entry->refID,
+                'category' =>'faas_machinery',
+                'type' =>'update',
+            ]);
+        });
     }
 
     /**

@@ -8,6 +8,7 @@ use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionLogs;
 
 /**
  * Class BuildingProfileCrudController
@@ -508,6 +509,12 @@ class BuildingProfileCrudController extends CrudController
             $refID = 'BPID' . Date('mdY') . '-' . str_pad($count->count, 4, '0', STR_PAD_LEFT);
             // $entry->roof = json_encode($req->roof);
             $entry->refID = $refID;
+
+            TransactionLogs::create([
+                'transId' =>$refID,
+                'category' =>'faas_building',
+                'type' =>'create',
+            ]);
             
         });
     }
@@ -522,6 +529,15 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        BuildingProfile::updating(function($entry) {
+          
+            TransactionLogs::create([
+                'transId' =>$entry->refID,
+                'category' =>'faas_building',
+                'type' =>'update',
+            ]);
+        });
        
     }
 

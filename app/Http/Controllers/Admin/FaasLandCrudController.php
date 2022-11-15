@@ -8,6 +8,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 use App\Models\FaasLand;
 use Backpack\CRUD\app\Library\Widget;
+use App\Models\TransactionLogs;
 
 /**
  * Class FaasLandCrudController
@@ -777,6 +778,12 @@ class FaasLandCrudController extends CrudController
             $count = FaasLand::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
             $refID = 'LAND-'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
+
+            TransactionLogs::create([
+                'transId' =>$refID,
+                'category' =>'faas_land',
+                'type' =>'create',
+            ]);
         });
     }
 
@@ -789,6 +796,15 @@ class FaasLandCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        BuildingProfile::updating(function($entry) {
+          
+            FaasLand::create([
+                'transId' =>$entry->refID,
+                'category' =>'faas_land',
+                'type' =>'update',
+            ]);
+        });
     }
 
     /**
