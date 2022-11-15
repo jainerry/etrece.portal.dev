@@ -309,6 +309,16 @@ class CitizenProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+
+        CitizenProfile::updating(function($entry) {
+          
+            TransactionLogs::create([
+                'transId' =>$entry->refID,
+                'category' =>'citizen_profile',
+                'type' =>'update',
+            ]);
+        });
        
     }
 
