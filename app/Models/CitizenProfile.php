@@ -37,7 +37,8 @@ class CitizenProfile extends Model
         $fName = ucfirst($this->fName)." ";
         $mName = ($this->mName == null? "":" ").ucfirst($this->mName)." ";
         $lName = ucfirst($this->lName);
-        return "{$fName}{$mName}{$lName}";
+        $suffix = ($this->suffix == null || $this->suffix == ""? "":" ").ucfirst($this->suffix);
+        return "{$fName}{$mName}{$lName}{$suffix}";
     }
     public function getEntryDataAttribute(){
         $fName = ucfirst($this->fName);

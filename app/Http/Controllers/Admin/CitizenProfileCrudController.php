@@ -103,7 +103,6 @@ class CitizenProfileCrudController extends CrudController
             }
 
         ]);
-        $this->crud->column('suffix');
       
         $this->crud->column('bdate');
         $this->crud->addColumn([
