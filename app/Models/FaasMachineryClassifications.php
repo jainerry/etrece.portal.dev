@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 
-class Department extends Model
+class FaasMachineryClassifications extends Model
 {
     use CrudTrait;
 
@@ -15,7 +15,7 @@ class Department extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'departments';
+    protected $table = 'faas_machinery_classifications';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -28,6 +28,14 @@ class Department extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

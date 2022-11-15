@@ -17,7 +17,7 @@ class TransactionLogsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -30,6 +30,7 @@ class TransactionLogsCrudController extends CrudController
         CRUD::setModel(\App\Models\TransactionLogs::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction-logs');
         CRUD::setEntityNameStrings('transaction logs', 'transaction logs');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -40,7 +41,7 @@ class TransactionLogsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-      
+        $this->crud->enableExportButtons(); 
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
@@ -53,10 +54,6 @@ class TransactionLogsCrudController extends CrudController
           function ($value) { // if the filter is active, apply these constraints
             $this->crud->addClause('whereDate', 'created_at', $value);
           });
-         
-         
-         
-
 
           $this->crud->addFilter([
             'type'  => 'dropdown',
@@ -94,8 +91,6 @@ class TransactionLogsCrudController extends CrudController
                 $this->crud->addClause('where','category', $value);
             }
          );
-
-
 
         CRUD::column('refId');
         CRUD::column('transId');

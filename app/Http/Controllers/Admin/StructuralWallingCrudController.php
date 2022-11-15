@@ -16,7 +16,7 @@ class StructuralWallingCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -29,6 +29,7 @@ class StructuralWallingCrudController extends CrudController
         CRUD::setModel(\App\Models\StructuralWalling::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/structural-walling');
         CRUD::setEntityNameStrings('structural walling', 'structural wallings');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -39,6 +40,10 @@ class StructuralWallingCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
         
         $this->crud->addColumn('name');
 

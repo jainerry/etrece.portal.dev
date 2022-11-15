@@ -27,15 +27,15 @@ class DatabaseSeeder extends Seeder
             AppointmentSeeder::class,
             StreetSeeder::class,
             EmployeeSeeder::class,
-            DepartmentSeeder::class,
             ProvinceSeeder::class,
             MunicipalitiesSeeder::class,
             structuralRoof::class,
-            FaasAssessmentStatusSeeder::class,
             FaasLandClassificationSeeder::class,
             StructuralTypes::class,
             StructuralFlooring::class,
             StructuralWalling::class,
+            FaasBuildingClassificationSeeder::class,
+            FaasMachineryClassificationSeeder::class,
         ]);
     }
 }

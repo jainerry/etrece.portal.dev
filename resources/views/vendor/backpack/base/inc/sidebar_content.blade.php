@@ -22,12 +22,6 @@
         @can('view-faas-lands')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land') }}"><i class="nav-icon la la-list"></i> Lands</a></li>
         @endcan
-        @can('view-faas-idle-lands')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-idle') }}"><i class="nav-icon la la-list"></i> Idle Lands</a></li>
-        @endcan
-        @can('view-faas-others')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-other') }}"><i class="nav-icon la la-list"></i> Others</a></li>
-        @endcan
     </ul>
 </li>
 @endcan
@@ -61,9 +55,6 @@
         @can('view-offices')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office') }}"><i class="nav-icon la la-building"></i> Offices</a></li>
         @endcan
-        @can('view-departments')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('department') }}"><i class="nav-icon la la-list"></i> Departments</a></li>
-        @endcan
         @can('view-sections')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li>
         @endcan
@@ -96,23 +87,30 @@
         @can('view-structural-types')
         <li class="nav-item "><a class="nav-link" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-list"></i> Structural Types</a></li>
         @endcan
-        @can('view-ind-of-buildings')
+        @can('view-kind-of-buildings')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-list"></i> Kind of Buildings</a></li>   
         @endcan
         @can('view-structural-roofs')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-list"></i> Structural Roofs</a></li>
         @endcan
-        @can('view-faas-assessment-statuses')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-assessment-status') }}"><i class="nav-icon la la-list"></i> Assessment Statuses</a></li>
-        @endcan
-        @can('view-faas-classifications')
+        @can('view-land-classifications')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-land-classification') }}"><i class="nav-icon la la-list"></i> Land Classifications</a></li>
         @endcan
-
+        @can('view-building-classifications')
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-building-classifications') }}"><i class="nav-icon la la-list"></i> Building classifications</a></li>
+        @endcan
+        @can('view-machinery-classifications')
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('faas-machinery-classifications') }}"><i class="nav-icon la la-list"></i> Machinery classifications</a></li>
+        @endcan
+        @can('view-structural-floorings')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-flooring') }}"><i class="nav-icon la la-list"></i> Structural Floorings</a></li>
+        @endcan
+        @can('view-structural-wallings')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-walling') }}"><i class="nav-icon la la-list"></i> Structural Wallings</a></li>
-        
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-additional-items') }}"><i class="nav-icon la la-list"></i> Structural additional items</a></li>
+        @endcan
+        @can('view-structural-additional-items')
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('structural-additional-items') }}"><i class="nav-icon la la-list"></i> Structural additional items</a></li>
+        @endcan
     </ul>
 </li>
 @endcan
@@ -132,5 +130,6 @@
 </li>
 @endcan
 
-
+@can('view-transaction-logs')
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-question"></i> Transaction logs</a></li>
+@endcan

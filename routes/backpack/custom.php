@@ -46,22 +46,16 @@ Route::group([
     Route::crud('appointment', 'AppointmentCrudController');
     Route::crud('street', 'StreetCrudController');
     Route::crud('faas-machinery', 'FaasMachineryCrudController');
-    Route::crud('faas-other', 'FaasOtherCrudController');
     Route::crud('building-profile', 'BuildingProfileCrudController');
     Route::crud('barangay', 'BarangayCrudController');
     Route::crud('municipality', 'MunicipalityCrudController');
     Route::crud('province', 'ProvinceCrudController');
     Route::crud('structural-type', 'StructuralTypeCrudController');
     Route::crud('kind-of-building', 'KindOfBuildingCrudController');
-    Route::crud('faas-other-secondary-owners', 'FaasOtherSecondaryOwnersCrudController');
-    Route::crud('department', 'DepartmentCrudController');
     Route::crud('faas-machinery-secondary-owners', 'FaasMachinerySecondaryOwnersCrudController');
     Route::crud('structural-roofs', 'StructuralRoofsCrudController');
-    Route::crud('faas-land-idle', 'FaasLandIdleCrudController');
     Route::crud('faas-land', 'FaasLandCrudController');
     Route::crud('faas-land-secondary-owners', 'FaasLandSecondaryOwnersCrudController');
-    Route::crud('faas-land-idle-secondary-owners', 'FaasLandIdleSecondaryOwnersCrudController');
-    Route::crud('faas-assessment-status', 'FaasAssessmentStatusCrudController');
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
 
     Route::get('/rpt-new-assessment-request', 'RPTController@newAssessmentRequest')->name('rpt-new-assessment-request');
@@ -76,14 +70,10 @@ Route::group([
     Route::post('/api/rpt/lands/search', 'RPTAPIsController@landsSearch')->name('rpt-lands-search');
     Route::get('/rpt-view-land/{id}', 'RPTController@viewLand')->name('rpt-view-land');
 
-    Route::post('/api/rpt/idle-lands/search', 'RPTAPIsController@idleLandsSearch')->name('rpt-idle-lands-search');
-    Route::get('/rpt-view-idle-land/{id}', 'RPTController@viewIdleLand')->name('rpt-view-idle-land');
-
-    Route::post('/api/rpt/others/search', 'RPTAPIsController@othersSearch')->name('rpt-others-search');
-    Route::get('/rpt-view-other/{id}', 'RPTController@viewOther')->name('rpt-view-other');
-
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');
     Route::crud('structural-additional-items', 'StructuralAdditionalItemsCrudController');
     Route::crud('transaction-logs', 'TransactionLogsCrudController');
+    Route::crud('faas-building-classifications', 'FaasBuildingClassificationsCrudController');
+    Route::crud('faas-machinery-classifications', 'FaasMachineryClassificationsCrudController');
 }); // this should be the absolute last line of this file

@@ -45,11 +45,22 @@
                     </div> --}}
 
                     @foreach($requestData as $data)
+                        @php
+                            $primaryOwner = null;
+                            if($data['citizen_profile']) {
+                                if($data['citizen_profile']['mName']) {
+                                    $primaryOwner = $data['citizen_profile']['fName']." ".$data['citizen_profile']['mName']." ".$data['citizen_profile']['lName'];
+                                }
+                                else {
+                                    $primaryOwner = $data['citizen_profile']['fName']." ".$data['citizen_profile']['lName'];
+                                }
+                            }
+                        @endphp
                         <div class="form-group col-12 col-md-3">
                             <b>Reference No.:</b> <span>{{ $data['ARPNo'] ?? '-' }}</span>
                         </div>
                         <div class="form-group col-12 col-md-3">
-                            <b>OCT/TCT No.:</b> <span>{{ $data['octTctNo'] ?? '-' }}</span>
+                            <b>OCT/T CT No.:</b> <span>{{ $data['octTctNo'] ?? '-' }}</span>
                         </div>
                         <div class="form-group col-12 col-md-3">
                             <b>PIN:</b> <span>{{ $data['pin'] ?? '-' }}</span>
@@ -60,8 +71,9 @@
                         <div class="form-group col-12 col-md-3">
                             <b>TD No:</b> <span>{{ $data['tdNo'] ?? '-' }}</span>
                         </div>
+                        
                         <div class="form-group col-12 col-md-3">
-                            <b>TD No:</b> <span>{{ $data['transactionCode'] ?? '-' }}</span>
+                            <b>Primary Owner:</b> <span>{{ $primaryOwner ?? '-' }}</span>
                         </div>
                         <div class="form-group col-12 col-md-3">
                             <b>TD No:</b> <span>{{ $data['transactionCode'] ?? '-' }}</span>

@@ -16,7 +16,7 @@ class StructuralFlooringCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -29,6 +29,7 @@ class StructuralFlooringCrudController extends CrudController
         CRUD::setModel(\App\Models\StructuralFlooring::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/structural-flooring');
         CRUD::setEntityNameStrings('structural flooring', 'structural floorings');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -39,6 +40,11 @@ class StructuralFlooringCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
+        
         $this->crud->addColumn('name');
         /**
          * Columns can be defined using the fluent syntax or array syntax:

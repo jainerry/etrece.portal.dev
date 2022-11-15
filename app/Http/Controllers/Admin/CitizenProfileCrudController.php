@@ -24,7 +24,7 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
 
@@ -50,7 +50,7 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         $this->crud->setEntityNameStrings('citizen profile', 'citizen profiles');
         $this->crud->setCreateContentClass('col-md-12 asdasd');
-        // dd($this->crud);
+        $this->crud->removeButton('delete');
       
     }
     

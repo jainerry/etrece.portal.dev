@@ -16,7 +16,7 @@ class FaasLandSecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -38,6 +38,7 @@ class FaasLandSecondaryOwnersCrudController extends CrudController
         CRUD::setModel(\App\Models\FaasLandSecondaryOwners::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-land-secondary-owners');
         CRUD::setEntityNameStrings('faas land secondary owners', 'faas land secondary owners');
+        $this->crud->removeButton('delete');
     }
 
     /**

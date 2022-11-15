@@ -10,10 +10,12 @@ use App\Models\Street;
 use App\Models\Barangay;
 use Illuminate\Support\Str;
 use App\Models\FaasAssessmentStatus;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class FaasLand extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -34,49 +36,6 @@ class FaasLand extends Model
         'otherImprovements' => 'array',
         'marketValue' => 'array',
         'propertyAssessment' => 'array'
-    ];
-
-    protected $fillable = [
-        'ARPNo',
-        'pin',
-        'transactionCode',
-        'octTctNo',
-        'lotNo',
-        'blkNo',
-        'previousOwnerId',
-        'primaryOwnerId',
-        'ownerAddress',
-        'ownerTelephoneNo',
-        'administrator',
-        'administratorAddress',
-        'administratorTelephoneNo',
-        'noOfStreet',
-        'barangayId',
-        'cityId',
-        'provinceId',
-        'propertyBoundaryNorth',
-        'propertyBoundaryEast',
-        'propertyBoundarySouth',
-        'propertyBoundaryWest',
-        'landSketch',
-        'landAppraisal',
-        'otherImprovements',
-        'marketValue',
-        'propertyAssessment',
-        'assessmentType',
-        'assessmentEffectivity',
-        'assessmentEffectivityValue',
-        'assessedBy',
-        'assessedDate',
-        'recommendingPersonel',
-        'recommendingApprovalDate',
-        'approvedBy',
-        'approvedDate',
-        'memoranda',
-        'recordOfAssesmentEntryDate',
-        'recordingPersonel',
-        'TDNo',
-        'assessmentStatusId'
     ];
 
     /*

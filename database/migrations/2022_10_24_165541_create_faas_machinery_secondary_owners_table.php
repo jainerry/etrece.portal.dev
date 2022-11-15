@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_machinery_secondary_owners', function (Blueprint $table) {
-            $table->id();
-            $table->string('citizen_profile_id')->nullable();
-            $table->string('machinery_profile_id')->nullable();
+            $table->uuid('id');
+            $table->foreignUuid('citizen_profile_id')->nullable();
+            $table->foreignUuid('machinery_profile_id')->nullable();
             $table->timestamps();
         });
     }

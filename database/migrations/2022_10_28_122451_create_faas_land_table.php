@@ -14,7 +14,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_lands', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
+            $table->string('refID')->unique();
             $table->string('ARPNo')->unique();
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
@@ -22,7 +23,7 @@ return new class extends Migration
             $table->string('lotNo')->nullable();
             $table->string('blkNo')->nullable();
             $table->string('previousOwnerId')->nullable();
-            $table->string('primaryOwnerId');
+            $table->foreignUuid('primaryOwnerId');
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('administrator')->nullable();
@@ -55,7 +56,6 @@ return new class extends Migration
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->string('assessmentStatusId')->nullable();
             $table->timestamps();
         });
     }

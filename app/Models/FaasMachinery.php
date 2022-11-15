@@ -7,10 +7,12 @@ use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
 use App\Models\Employee;
 use App\Models\FaasAssessmentStatus;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class FaasMachinery extends Model
 {
     use CrudTrait;
+    use HasUuids;
     //use HasIdentifiableAttribute;
 
     /*
@@ -31,47 +33,6 @@ class FaasMachinery extends Model
         'propertyAppraisal' => 'array',
         'propertyAssessment' => 'array'
     ];
-
-    protected $fillable = [
-        'ARPNo',
-        'pin',
-        'octTctNo',
-        'transactionCode',
-        'primaryOwnerId',
-        'ownerAddress',
-        'ownerTelephoneNo',
-        'ownerTin',
-        'administrator',
-        'administratorAddress',
-        'administratorTelephoneNo',
-        'administratorTin',
-        'noOfStreet',
-        'barangayId',
-        'cityId',
-        'provinceId',
-        'landOwnerId',
-        'buildingOwnerId',
-        'landOwnerPin',
-        'buildingOwnerPin',
-        'propertyAppraisal',
-        'propertyAssessment',
-        'assessmentType',
-        'assessmentEffectivity',
-        'assessmentEffectivityValue',
-        'assessedBy',
-        'assessedDate',
-        'recommendingPersonel',
-        'recommendingApprovalDate',
-        'approvedBy',
-        'approvedDate',
-        'memoranda',
-        'recordOfAssesmentEntryDate',
-        'recordingPersonel',
-        'TDNo',
-        'assessmentStatusId',
-    ];
-
-    
 
     /*
     |--------------------------------------------------------------------------
@@ -142,6 +103,10 @@ class FaasMachinery extends Model
         else {
             return "-";
         }
+    }
+
+    public function getReferenceId(){
+        return '<a href="'.url('/admin/faas-machinery/').'">'.$this->id.'</a>';
     }
 
     /*
