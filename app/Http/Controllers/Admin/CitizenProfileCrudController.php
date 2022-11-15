@@ -292,7 +292,11 @@ class CitizenProfileCrudController extends CrudController
             $refId = 'CID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
 
             $entry->refID = $refId;
-            // TransactionLogs::create(['']);
+            TransactionLogs::create([
+                'transId' =>$refId,
+                'category' =>'citizen_profile',
+                'type' =>'create',
+            ]);
         });
     }
 

@@ -5,6 +5,8 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Illuminate\Support\Facades\DB;
 class TransactionLogs extends Model
 {
     use CrudTrait;
@@ -22,7 +24,9 @@ class TransactionLogs extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
+    protected $attributes = [
+        'refId' => ''
+    ];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -40,7 +44,25 @@ class TransactionLogs extends Model
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    protected static function boot(){
+        parent::boot();
+        $count =  TransactionLogs::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
+        $refId = 'TRANSID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+        TransactionLogs::creating(function($model) use($refId){
+            $model->refId = $refId;
+        });
+      
+    }
+    // protected function refId(): Attribute
+    // {
+    //     return Attribute::make(
+    //         set: function ($value){
+    //            $count =  $this->select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
+    //            $refId = 'TRANSID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+    //            return $refId;
+    //         },
+    //     );
+    // }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

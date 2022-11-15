@@ -40,7 +40,7 @@ class TransactionLogsCrudController extends CrudController
     protected function setupListOperation()
     {
         CRUD::column('refId');
-        CRUD::column('transID');
+        CRUD::column('transId');
         CRUD::column('category');
         CRUD::column('type');
         CRUD::column('created_at');
@@ -62,9 +62,7 @@ class TransactionLogsCrudController extends CrudController
     protected function setupCreateOperation()
     {
         CRUD::setValidation(TransactionLogsRequest::class);
-
-        CRUD::field('refId');
-        CRUD::field('transID');
+        CRUD::field('transId');
         CRUD::field('category');
         CRUD::field('type');
 

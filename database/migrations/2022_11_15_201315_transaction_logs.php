@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('transaction_logs', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            // transaction RefID : TRANS-11152021-0000
+            // transaction RefID : TRANSID-11152021-0000
             $table->string('refId')->nullable();
             // refID of subject
-            $table->string('transID')->nullable();
+            $table->string('transId')->nullable();
             //category: module name
             $table->string('category')->nullable();
             // action
