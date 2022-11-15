@@ -85,4 +85,5 @@ Route::group([
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');
     Route::crud('structural-additional-items', 'StructuralAdditionalItemsCrudController');
+    Route::crud('transaction-logs', 'TransactionLogsCrudController');
 }); // this should be the absolute last line of this file

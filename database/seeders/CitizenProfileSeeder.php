@@ -7,7 +7,7 @@ use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Facades\DB;
 use Faker\Generator as Faker;
-
+use App\Models\CitizenProfile as cp;
 
 class CitizenProfileSeeder extends Seeder
 {
@@ -68,7 +68,7 @@ class CitizenProfileSeeder extends Seeder
             
         }
 
-        DB::table('citizen_profiles')->insert($users);
+        cp::insert($users);
 
     }
 }

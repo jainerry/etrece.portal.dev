@@ -26,7 +26,7 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation; 
+
 
     public function __construct()
     {
@@ -50,7 +50,6 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         $this->crud->setEntityNameStrings('citizen profile', 'citizen profiles');
         $this->crud->setCreateContentClass('col-md-12 asdasd');
-        $this->crud->removeButton('delete');
         // dd($this->crud);
       
     }
@@ -117,7 +116,8 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->column('isActive');
         $this->crud->column('placeOfOrigin');
         $this->crud->column('purokID');
-        $this->crud->column('sex');
+        $this->crud->addColumn([
+            'name' =>'sex']);
         $this->crud->column('updated_at');
 
         /**

@@ -15,7 +15,7 @@ return new class extends Migration
     {
         //
         Schema::create('citizen_profiles', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->nullable(false)->primary();
             $table->string('refID')->unique();
             $table->string('fName')->nullable();
             $table->string('mName')->nullable();

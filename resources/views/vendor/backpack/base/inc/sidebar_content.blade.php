@@ -132,3 +132,5 @@
 </li>
 @endcan
 
+
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-question"></i> Transaction logs</a></li>

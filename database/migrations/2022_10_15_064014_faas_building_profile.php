@@ -16,6 +16,7 @@ return new class extends Migration
         Schema::create('faas_building_profiles', function (Blueprint $table) {
             $table->id();
             $table->string('arpNo')->unique();
+            $table->string('refID')->unique();
             $table->string('code')->nullable();
             $table->string('primary_owner')->nullable();
             $table->string('ownerAddress')->nullable();
