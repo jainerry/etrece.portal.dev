@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
 use Illuminate\Support\Str;
 
-class FaasLandClassificationSeeder extends Seeder
+class FaasBuildingClassificationSeeder extends Seeder
 {
     /**
      * Run the database seeds.
@@ -45,7 +45,7 @@ class FaasLandClassificationSeeder extends Seeder
             ],
         ];
 
-        DB::table('faas_land_classifications')->insert($classifications);
+        DB::table('faas_building_classifications')->insert($classifications);
 
     }
 

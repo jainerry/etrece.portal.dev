@@ -5,8 +5,6 @@ use Illuminate\Http\Request;
 use App\Models\FaasMachinery;
 use App\Models\BuildingProfile;
 use App\Models\FaasLand;
-use App\Models\FaasLandIdle;
-use App\Models\FaasOther;
 use App\Models\FaasAssessmentStatus;
 
 /**
@@ -16,11 +14,6 @@ use App\Models\FaasAssessmentStatus;
  */
 class RPTController
 {
-
-    public function __construct()
-    {
-        $this->assessmentStatuses = FaasAssessmentStatus::all();
-    }
 
     /**
      * Display rpt assessment requests.
@@ -51,14 +44,6 @@ class RPTController
             [
                 'value' => 'FaasLand',
                 'text' => 'Land'
-            ],
-            [
-                'value' => 'FaasLandIdle',
-                'text' => 'Idle Land'
-            ],
-            [
-                'value' => 'FaasOther',
-                'text' => 'Other'
             ]
         ];
 
@@ -72,7 +57,14 @@ class RPTController
      */
     public function viewMachinery($id)
     {
-        $this->data['requestData'] = FaasMachinery::where('id','=',$id)->get();
+        $this->data['requestData'] = FaasMachinery::where('id','=',$id)
+            ->with('citizen_profile', function ($query) {
+                $query->select('id','fName','mName','lName');
+            })
+            ->with('assessment_status', function ($query) {
+                $query->select('id','name');
+            })
+            ->get();
         $this->data['assessmentStatuses'] = $this->assessmentStatuses;
 
         return view('rpt.view-assessment-request', $this->data);
@@ -99,32 +91,6 @@ class RPTController
     public function viewLand($id)
     {
         $this->data['requestData'] = FaasLand::find($id);
-        $this->data['assessmentStatuses'] = $this->assessmentStatuses;
-
-        return view('rpt.view-assessment-request', $this->data);
-    }
-
-    /**
-     * Open rpt idle-land assessment requests.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function viewIdleLand($id)
-    {
-        $this->data['requestData'] = FaasLandIdle::find($id);
-        $this->data['assessmentStatuses'] = $this->assessmentStatuses;
-
-        return view('rpt.view-assessment-request', $this->data);
-    }
-
-    /**
-     * Open rpt other assessment requests.
-     *
-     * @return \Illuminate\View\View
-     */
-    public function viewOther($id)
-    {
-        $this->data['requestData'] = FaasOther::find($id);
         $this->data['assessmentStatuses'] = $this->assessmentStatuses;
 
         return view('rpt.view-assessment-request', $this->data);

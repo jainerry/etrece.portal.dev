@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_machineries', function (Blueprint $table) {
-            $table->id();
-            $table->string('ARPNo')->unique();
+            $table->uuid('id');
+            $table->string('refID')->unique();
+            $table->string('ARPNo')->nullable();
             $table->string('pin')->nullable();
-            $table->string('octTctNo')->nullable();
             $table->string('transactionCode')->nullable();
-            $table->string('primaryOwnerId');
+            $table->foreignUuid('primaryOwnerId');
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTin')->nullable();
@@ -32,8 +32,8 @@ return new class extends Migration
             $table->string('cityId')->nullable();
             $table->string('provinceId')->nullable();
             $table->string('landOwnerId')->nullable();
-            $table->string('buildingOwnerId')->nullable();
-            $table->string('landOwnerPin')->nullable();
+            $table->foreignUuid('buildingOwnerId')->nullable();
+            $table->foreignUuid('landOwnerPin')->nullable();
             $table->string('buildingOwnerPin')->nullable();
             $table->text('propertyAppraisal')->nullable();
             $table->text('propertyAssessment')->nullable();
@@ -51,7 +51,6 @@ return new class extends Migration
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->string('assessmentStatusId')->nullable();
             $table->timestamps();
         });
     }

@@ -14,10 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_land_classifications', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->string('name')->unique();
             $table->string('code')->nullable();
-            $table->string('marketValuePercentage')->nullable();
+            $table->string('rangeFrom')->nullable();
+            $table->string('rangeTo')->nullable();
+            $table->string('assessmentLevel')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

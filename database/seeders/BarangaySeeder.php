@@ -16,7 +16,6 @@ class BarangaySeeder extends Seeder
      */
     public function run()
     {
-        //
         $barangays = ['Aguado',
                 'Cabezas',
                 'Cabuco',

@@ -16,7 +16,7 @@ class FaasMachinerySecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -38,6 +38,7 @@ class FaasMachinerySecondaryOwnersCrudController extends CrudController
         CRUD::setModel(\App\Models\FaasMachinerySecondaryOwners::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-machinery-secondary-owners');
         CRUD::setEntityNameStrings('faas machinery secondary owners', 'faas machinery secondary owners');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -48,6 +49,10 @@ class FaasMachinerySecondaryOwnersCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
         
         CRUD::column('citizen_profile_id');
         CRUD::column('machinery_profile_id');

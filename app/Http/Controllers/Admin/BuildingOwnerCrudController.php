@@ -16,7 +16,7 @@ class BuildingOwnerCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -38,6 +38,7 @@ class BuildingOwnerCrudController extends CrudController
         CRUD::setModel(\App\Models\BuildingOwner::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/building-owner');
         CRUD::setEntityNameStrings('building owner', 'building owners');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -48,6 +49,11 @@ class BuildingOwnerCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
+
         CRUD::column('citizen_profile_id');
         CRUD::column('building_profile_id');
         CRUD::column('isPrimary');

@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class FaasLandClassification extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -22,13 +24,6 @@ class FaasLandClassification extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
-    protected $fillable = [
-        'name',
-        'code',
-        'marketValuePercentage',
-        'isActive',
-    ];
 
     /*
     |--------------------------------------------------------------------------

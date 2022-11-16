@@ -16,7 +16,7 @@ class KindOfBuildingCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -38,6 +38,7 @@ class KindOfBuildingCrudController extends CrudController
         CRUD::setModel(\App\Models\KindOfBuilding::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/kind-of-building');
         CRUD::setEntityNameStrings('kind of building', 'kind of buildings');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -48,6 +49,11 @@ class KindOfBuildingCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
+
         CRUD::column('created_at');
         CRUD::column('name');
         CRUD::column('updated_at');

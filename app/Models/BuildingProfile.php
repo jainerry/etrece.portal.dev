@@ -8,7 +8,6 @@ use App\Models\CitizenProfile;
 use App\Models\BuildingOwner;
 use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 use GuzzleHttp\Psr7\Request;
-use App\Models\FaasAssessmentStatus;
 
 
 class BuildingProfile extends Model
@@ -80,9 +79,6 @@ class BuildingProfile extends Model
     }
     public function walling(){
         return $this->belongsToMany(StructuralWalling::class,HasWalling::class,'faas_building_profiles_id','structural_walling_id');
-    }
-    public function assessment_status(){
-        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
     public function additional_items(){
         return $this->hasMany(StructuralAdditionalItems::class);

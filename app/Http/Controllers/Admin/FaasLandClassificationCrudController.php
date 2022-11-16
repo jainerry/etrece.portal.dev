@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\FaasLandClassificationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use Backpack\CRUD\app\Library\Widget;
 
 /**
  * Class FaasLandClassificationCrudController
@@ -16,16 +17,16 @@ class FaasLandClassificationCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-faas-classifications', ['only' => ['index','show']]);
-        $this->middleware('can:create-faas-classifications', ['only' => ['create','store']]);
-        $this->middleware('can:edit-faas-classifications', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-faas-classifications', ['only' => ['destroy']]);
+        $this->middleware('can:view-land-classifications', ['only' => ['index','show']]);
+        $this->middleware('can:create-land-classifications', ['only' => ['create','store']]);
+        $this->middleware('can:edit-land-classifications', ['only' => ['edit','update']]);
+        $this->middleware('can:delete-land-classifications', ['only' => ['destroy']]);
     }
 
     /**
@@ -38,6 +39,7 @@ class FaasLandClassificationCrudController extends CrudController
         CRUD::setModel(\App\Models\FaasLandClassification::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-land-classification');
         CRUD::setEntityNameStrings('faas land classification', 'faas land classifications');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -48,8 +50,16 @@ class FaasLandClassificationCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
+
         CRUD::column('name');
-        CRUD::column('marketValuePercentage');
+        CRUD::column('code');
+        CRUD::column('rangeFrom');
+        CRUD::column('rangeTo');
+        CRUD::column('assessmentLevel');
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -71,8 +81,72 @@ class FaasLandClassificationCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
+
         CRUD::setValidation(FaasLandClassificationRequest::class);
 
+        $this->crud->addField(
+            [
+                'name'=>'name',
+                'label'=>'Name',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'code',
+                'label'=>'Code',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'rangeFrom',
+                'label'=>'From',
+                'attributes' => [
+                    'class' => 'form-control text_input_mask_currency',
+                ],
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'rangeTo',
+                'label'=>'To',
+                'attributes' => [
+                    'class' => 'form-control text_input_mask_currency',
+                ],
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'assessmentLevel',
+                'label'=>'Assessment Level',
+                'attributes' => [
+                    'class' => 'form-control text_input_mask_percent',
+                ],
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -85,31 +159,8 @@ class FaasLandClassificationCrudController extends CrudController
                 'allows_null' => false,
                 'default'     => 'Y',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
+                    'class' => 'form-group col-12 col-md-6'
                 ],
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'name',
-                'label'=>'Name',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-12'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'marketValuePercentage',
-                'label'=>'Market Value %',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_percent',
-                ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
             ]
         );
 
@@ -128,6 +179,11 @@ class FaasLandClassificationCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
+
         $this->setupCreateOperation();
     }
 }

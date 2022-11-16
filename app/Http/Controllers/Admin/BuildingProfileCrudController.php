@@ -8,6 +8,7 @@ use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
+use App\Models\TransactionLogs;
 
 /**
  * Class BuildingProfileCrudController
@@ -19,7 +20,7 @@ class BuildingProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
@@ -43,6 +44,7 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/building-profile');
         $this->crud->setEntityNameStrings('building profile', 'building profiles');
         $this->crud->setCreateView('buildingProfile.create');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -53,8 +55,10 @@ class BuildingProfileCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->enableBulkActions();
         $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
         
         CRUD::column('arpNo')->label('Reference No.');
      
@@ -70,13 +74,7 @@ class BuildingProfileCrudController extends CrudController
             // 'limit' => 100, // Limit the number of characters shown
             // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
          ],);
-        CRUD::addColumn([
-            'name'  => 'assessment_status',
-            'label' => 'Assessment Status',
-            'type'  => 'select',
-            'entity'    => 'assessment_status',
-            'attribute' => 'name'
-        ],);
+        
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -218,18 +216,6 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-lg-4',
             ],
             'tab'             => 'Main Information',
-        ]);
-
-        $this->crud->addField([
-            'name'=>'assessmentStatusId',
-            'label'=>'Assessment Status',
-            'type'=>'select',
-            'entity' => 'assessment_status',
-            'attribute' => 'name',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Main Information',
         ]);
 
         // Building Location
@@ -523,6 +509,12 @@ class BuildingProfileCrudController extends CrudController
             $refID = 'BPID' . Date('mdY') . '-' . str_pad($count->count, 4, '0', STR_PAD_LEFT);
             // $entry->roof = json_encode($req->roof);
             $entry->refID = $refID;
+
+            TransactionLogs::create([
+                'transId' =>$refID,
+                'category' =>'faas_building',
+                'type' =>'create',
+            ]);
             
         });
     }
@@ -537,6 +529,15 @@ class BuildingProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        BuildingProfile::updating(function($entry) {
+          
+            TransactionLogs::create([
+                'transId' =>$entry->refID,
+                'category' =>'faas_building',
+                'type' =>'update',
+            ]);
+        });
        
     }
 

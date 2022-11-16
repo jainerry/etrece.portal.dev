@@ -13,10 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('departments', function (Blueprint $table) {
-            $table->id();
+        Schema::create('faas_building_classifications', function (Blueprint $table) {
+            $table->uuid('id');
             $table->string('name')->unique();
             $table->string('code')->nullable();
+            $table->string('rangeFrom')->nullable();
+            $table->string('rangeTo')->nullable();
+            $table->string('assessmentLevel')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
@@ -29,6 +32,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('departments');
+        Schema::dropIfExists('faas_building_classifications');
     }
 };

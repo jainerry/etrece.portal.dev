@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
-class FaasLandIdleSecondaryOwners extends Model
+class FaasBuildingClassifications extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -15,7 +17,7 @@ class FaasLandIdleSecondaryOwners extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'faas_land_idle_secondary_owners';
+    protected $table = 'faas_building_classifications';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -28,6 +30,14 @@ class FaasLandIdleSecondaryOwners extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
 
     /*
     |--------------------------------------------------------------------------

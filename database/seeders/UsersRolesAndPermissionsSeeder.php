@@ -36,7 +36,6 @@ class UsersRolesAndPermissionsSeeder extends Seeder
             'permissions',
             'office-locations',
             'offices',
-            'departments',
             'sections',
             'positions',
             'appointment-statuses',
@@ -47,13 +46,18 @@ class UsersRolesAndPermissionsSeeder extends Seeder
             'structural-types',
             'kind-of-buildings',
             'structural-roofs',
-            'faas-assessment-statuses',
-            'faas-classifications'
+            'land-classifications',
+            'building-classifications',
+            'machinery-classifications',
+            'structural-floorings',
+            'structural-wallings',
+            'structural-additional-items',
+            'transaction-logs'
         ];
 
         foreach ($objects as $object) {
 
-            for($i=0; $i<4; $i++ ){
+            for($i=0; $i<3; $i++ ){
                 switch ($i) {
                 case 0:
                     $permission_name = 'view-'.$object;
@@ -61,11 +65,8 @@ class UsersRolesAndPermissionsSeeder extends Seeder
                 case 1:
                     $permission_name = 'create-'.$object;
                     break;
-                case 2:
-                    $permission_name = 'edit-'.$object;
-                    break;
                 default:
-                    $permission_name = 'delete-'.$object;
+                    $permission_name = 'edit-'.$object;
                 }
 
                 Permission::create(['name' => $permission_name,'guard_name' => 'backpack']);

@@ -16,7 +16,7 @@ class StructuralAdditionalItemsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     /**
@@ -29,6 +29,7 @@ class StructuralAdditionalItemsCrudController extends CrudController
         CRUD::setModel(\App\Models\StructuralAdditionalItems::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/structural-additional-items');
         CRUD::setEntityNameStrings('structural additional items', 'structural additional items');
+        $this->crud->removeButton('delete');
     }
 
     /**
@@ -39,6 +40,10 @@ class StructuralAdditionalItemsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        $this->crud->enableExportButtons();
+
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');
         
         $this->crud->addColumn('name');
         /**
