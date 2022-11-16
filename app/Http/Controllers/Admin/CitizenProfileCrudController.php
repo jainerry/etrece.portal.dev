@@ -370,11 +370,15 @@ class CitizenProfileCrudController extends CrudController
         $count = CitizenProfile::select(DB::raw('count(*) as count'))
         ->where('fName',strtolower($req->fName))
         ->where('lName',strtolower($req->lName))
-        ->where('suffix',strtolower($req->suffix))
-        ->where('bdate',"{$req->bdate}")
-        ->first();
+        ->where('bdate',"{$req->bdate}");
 
-        return response()->json($count);
+        if(isset($req->mName)){
+            $count->where('mName',strtolower($req->lName));
+        }
+        if(isset($req->suffix)){
+            $count->where('suffix',strtolower($req->suffix));
+        }
+        return response()->json($count->first());
     }
     /**
      * Define what happens when the api - /api/citizen-profile/ajaxsearch - has been called
