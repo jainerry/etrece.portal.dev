@@ -4,69 +4,40 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Barangay;
-use App\Models\BuildingProfile;
-use App\Models\BuildingOwner;
-use App\Models\FaasMachinery;
-use Searchab;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-use Illuminate\Database\Eloquent\Casts\Attribute;
-class CitizenProfile extends Model
+class Clusters extends Model
 {
     use CrudTrait;
     use HasUuids;
-    
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'citizen_profiles';
+    protected $table = 'clusters';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['full_name'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
 
-    public function getFullNameAttribute(){
-        $fName = ucfirst($this->fName)." ";
-        $mName = ($this->mName == null? "":" ").ucfirst($this->mName)." ";
-        $lName = ucfirst($this->lName);
-        $suffix = ($this->suffix == null || $this->suffix == ""? "":" ").ucfirst($this->suffix);
-        return "{$fName}{$mName}{$lName}{$suffix}";
-    }
-
-    public function getAddressWithBaranggay(){
-        return trim($this->address." ".$this->address." ".$this->barangay->name);
-    }
-   
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    
     public function barangay(){
-    return $this->belongsTo(Barangay::class, 'brgyID', 'id');
+       return $this->belongsTo(Barangay::class);
     }
-    
-    public function building_profile(){
-        return $this->hasMany(Building::class);
-    }
-
-    public function machinery_profile(){
-        return $this->hasMany(FaasMachinery::class);
-    }
-
     /*
     |--------------------------------------------------------------------------
     | SCOPES
@@ -84,16 +55,4 @@ class CitizenProfile extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    protected function sex(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 1? 'Male':'Female'),
-        );
-    }
-    protected function isActive(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 'y'? 'Yes':'No'),
-        );
-    }
 }

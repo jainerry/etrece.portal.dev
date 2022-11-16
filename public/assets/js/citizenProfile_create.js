@@ -41,7 +41,7 @@ $(function () {
 									timer: 4000,
 									buttons: false,
 								});
-								$.each($('form input, form select, form textarea'),function(e){
+								$.each($('form input, form textarea'),function(e){
 									if($(this).attr('name')=="brgyID"){
 										
 									}else{

@@ -32,6 +32,7 @@ Route::group([
         ->orderBy('fullname');
         return $query->get();
     });
+    Route::get('/citizen-profile/cluster','CitizenProfileCrudController@getCluster');
     Route::post('/citizen-profile/check-duplicate','CitizenProfileCrudController@checkDuplicate');
     Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
     Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
@@ -76,4 +77,5 @@ Route::group([
     Route::crud('transaction-logs', 'TransactionLogsCrudController');
     Route::crud('faas-building-classifications', 'FaasBuildingClassificationsCrudController');
     Route::crud('faas-machinery-classifications', 'FaasMachineryClassificationsCrudController');
+    Route::crud('clusters', 'ClustersCrudController');
 }); // this should be the absolute last line of this file
