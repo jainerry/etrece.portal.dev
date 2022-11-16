@@ -451,7 +451,7 @@ return [
         // "zu_ZA" => "Zulu (South Africa)",
         // "zu" => "Zulu"
     ],
-
+   
     'view_namespaces' => [
         'buttons' => [
             'crud::buttons', // falls back to 'resources/views/vendor/backpack/crud/buttons'

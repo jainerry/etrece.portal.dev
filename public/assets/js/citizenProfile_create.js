@@ -4,7 +4,7 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-    let inputs = $('input[name=fName], input[name=mName], input[name=lName], select[name=suffix], select[name=brgyID],textarea[name=address]')
+    let inputs = $('input[name=fName], input[name=mName], input[name=lName], select[name=suffix], input[name=bdate]')
     delayTrigger = 0;
     inputs.on('change', function () {
         clearTimeout(delayTrigger);

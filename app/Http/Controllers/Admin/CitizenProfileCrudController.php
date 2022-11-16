@@ -25,8 +25,8 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    // use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     
 
     public function __construct()
@@ -51,7 +51,8 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         $this->crud->setEntityNameStrings('citizen profile', 'citizen profiles');
         $this->crud->setCreateContentClass('col-md-12 asdasd');
-        $this->crud->removeButton('delete');
+    
+        // dd($this->crud);
       
     }
     
@@ -70,7 +71,19 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->enableExportButtons();
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
-        $this->crud->column('refID');
+        $this->crud->removeButton('update');  
+        $this->crud->addColumn([
+            // Select
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID', // the db column for the foreign key
+            'wrapper'   => [
+                // 'element' => 'a', // the element will default to "a" so you can skip it here
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('citizen-profile.edit',$entry->id);
+                },
+            ],
+          ]);
         $this->crud->addFilter([
             'type'  => 'date',
             'name'  => 'created_at',
@@ -105,21 +118,29 @@ class CitizenProfileCrudController extends CrudController
         ]);
       
         $this->crud->column('bdate');
+        // $this->crud->addColumn([
+        //     'name'=>'brgyID',
+        //     'label' => "Barangay",
+        //     'type'=>'select',
+        //     'entity' => 'barangay',
+        //     'attribute' => 'name',
+        // ]);
         $this->crud->addColumn([
-            'name'=>'brgyID',
-            'label' => "Barangay",
-            'type'=>'select',
-            'entity' => 'barangay',
-            'attribute' => 'name',
-        ]);
-        $this->crud->column('address');
+            // run a function on the CRUD model and show its return value
+            'name'  => 'address',
+            'label' => 'Address', // Table column heading
+            'type'  => 'model_function',
+            'function_name' => 'getAddressWithBaranggay', // the method in your Model
+            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
+            // 'limit' => 100, // Limit the number of characters shown
+            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+         ]);
         $this->crud->column('created_at');
         $this->crud->column('isActive');
-        $this->crud->column('placeOfOrigin');
-        $this->crud->column('purokID');
-        $this->crud->addColumn([
-            'name' =>'sex']);
-        $this->crud->column('updated_at');
+        // $this->crud->column('placeOfOrigin');
+        // $this->crud->column('purokID');
+        $this->crud->column('sex');
+        // $this->crud->column('updated_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -136,12 +157,12 @@ class CitizenProfileCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
+   
         $this->crud->setValidation(CitizenProfileRequest::class);
         Widget::add([
             'type'     => 'script',
+            'name'      => 'custom_script',
             'content'  => '/assets/js/citizenProfile_create.js',
-            // optional
-            // 'stack'    => 'before_scripts', // default is after_scripts
         ]);
         $brgys = Barangay::all();
         $brgy = [];
@@ -226,7 +247,7 @@ class CitizenProfileCrudController extends CrudController
             'type'        => 'select_from_array',
             'options'     => ['1' => 'Male', '0' => 'Female'],
             'allows_null' => false,
-            'default'     => '1',
+           
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-4'
             ]
@@ -315,10 +336,9 @@ class CitizenProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-
-
+        Widget::name('custom_script')->remove();
+     
         CitizenProfile::updating(function($entry) {
-          
             TransactionLogs::create([
                 'transId' =>$entry->refID,
                 'category' =>'citizen_profile',
@@ -335,7 +355,7 @@ class CitizenProfileCrudController extends CrudController
         ->where('fName',strtolower($req->fName))
         ->where('lName',strtolower($req->lName))
         ->where('suffix',strtolower($req->suffix))
-        ->where('brgyID',"{$req->brgyID}")
+        ->where('bdate',"{$req->bdate}")
         ->first();
 
         return response()->json($count);
