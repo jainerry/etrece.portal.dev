@@ -30,7 +30,7 @@ class CitizenProfile extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-    protected $appends = ['entry_data','full_name'];
+    protected $appends = ['full_name'];
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -43,14 +43,7 @@ class CitizenProfile extends Model
         $suffix = ($this->suffix == null || $this->suffix == ""? "":" ").ucfirst($this->suffix);
         return "{$fName}{$mName}{$lName}{$suffix}";
     }
-    public function getEntryDataAttribute(){
-        $fName = ucfirst($this->fName);
-        $mName = ucfirst($this->mName);
-        $lName = ucfirst($this->lName);
-        $bdate = $this->bdate;
-        $baranggay = ($this->barangay == null) ? $this->barangay:$this->barangay->name;
-        return "{$fName} ".($mName == null ?"": $mName." ")."{$lName} - {$this->refID} - {$baranggay} - BDATE({$bdate})";
-    }
+   
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

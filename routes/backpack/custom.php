@@ -32,7 +32,7 @@ Route::group([
         ->orderBy('fullname');
         return $query->get();
     });
-
+    Route::post('/citizen-profile/check-duplicate','CitizenProfileCrudController@checkDuplicate');
     Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
     Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
 

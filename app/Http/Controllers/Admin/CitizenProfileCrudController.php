@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
 use App\Models\TransactionLogs;
+use \Backpack\CRUD\app\Library\Widget;
 /**
  * Class CitizenProfileCrudController
  * @package App\Http\Controllers\Admin
@@ -26,7 +27,7 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
+    
 
     public function __construct()
     {
@@ -136,7 +137,12 @@ class CitizenProfileCrudController extends CrudController
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(CitizenProfileRequest::class);
-
+        Widget::add([
+            'type'     => 'script',
+            'content'  => '/assets/js/citizenProfile_create.js',
+            // optional
+            // 'stack'    => 'before_scripts', // default is after_scripts
+        ]);
         $brgys = Barangay::all();
         $brgy = [];
         foreach($brgys as $br){
@@ -322,6 +328,18 @@ class CitizenProfileCrudController extends CrudController
        
     }
 
+    public function checkDuplicate(Request $req){
+        $input = $req->all();
+     
+        $count = CitizenProfile::select(DB::raw('count(*) as count'))
+        ->where('fName',strtolower($req->fName))
+        ->where('lName',strtolower($req->lName))
+        ->where('suffix',strtolower($req->suffix))
+        ->where('brgyID',"{$req->brgyID}")
+        ->first();
+
+        return response()->json($count);
+    }
     /**
      * Define what happens when the api - /api/citizen-profile/ajaxsearch - has been called
      * 
