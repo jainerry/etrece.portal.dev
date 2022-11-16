@@ -11,11 +11,11 @@ use App\Models\Appointment;
 use App\Models\Street;
 use App\Models\Barangay;
 use Illuminate\Support\Str;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class Employee extends Model
 {
     use CrudTrait;
-
+    use HasUuids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -38,47 +38,47 @@ class Employee extends Model
         'lastName',
         'firstName',
         'middleName',
-        'nickName',
+        // 'nickName',
         'birthDate',
-        'bloodType',
-        'tinNo',
-        'gsisNo',
-        'emergencyContactPerson',
-        'emergencyContactRelationship',
-        'emergencyContactNo',
-        'emergencyContactAddress1',
-        'emergencyContactAddress2',
-        'oldIDNo',
-        'isActive',
-        'sectionId',
-        'positionId',
-        'idPicture',
-        'halfPicture',
-        'signature',
-        'appointmentId',
-        'remarks',
-        'cellphoneNo',
+        // 'bloodType',
+        // 'tinNo',
+        // 'gsisNo',
+        // 'emergencyContactPerson',
+        // 'emergencyContactRelationship',
+        // 'emergencyContactNo',
+        // 'emergencyContactAddress1',
+        // 'emergencyContactAddress2',
+        // 'oldIDNo',
+        // 'isActive',
+        // 'sectionId',
+        // 'positionId',
+        // 'idPicture',
+        // 'halfPicture',
+        // 'signature',
+        // 'appointmentId',
+        // 'remarks',
+        // 'cellphoneNo',
         'suffix',
-        'birthPlace',
-        'civilStatus',
-        'citizenShip',
-        'citizenShipAcquisition',
-        'dualCitizenCountry',
-        'sex',
-        'height',
-        'weight',
-        'pagibigNo',
-        'philhealthNo',
-        'sssNo',
-        'telephoneNo',
-        'email',
-        'residentialAddress',
-        'permanentAddress',
-        'residentialBarangayId',
-        'permanentBarangayId',
-        'residentialStreetId',
-        'permanentStreetId',
-        'officeId'
+        // 'birthPlace',
+        // 'civilStatus',
+        // 'citizenShip',
+        // 'citizenShipAcquisition',
+        // 'dualCitizenCountry',
+        // 'sex',
+        // 'height',
+        // 'weight',
+        // 'pagibigNo',
+        // 'philhealthNo',
+        // 'sssNo',
+        // 'telephoneNo',
+        // 'email',
+        // 'residentialAddress',
+        // 'permanentAddress',
+        // 'residentialBarangayId',
+        // 'permanentBarangayId',
+        // 'residentialStreetId',
+        // 'permanentStreetId',
+        // 'officeId'
     ];
 
     /*
@@ -89,9 +89,11 @@ class Employee extends Model
 
     public function getFullNameAttribute(){
         $firstName = ucfirst($this->firstName);
-        $middleName = ucfirst($this->middleName);
+        $middleName = ($this->middleName == null || $this->middleName == "" ? "":" ").ucfirst($this->middleName)." ";
         $lastName = ucfirst($this->lastName);
-        return "{$firstName} {$middleName} {$lastName}";
+        $suffix = ($this->suffix == null || $this->suffix == "" ? "":" ").ucfirst($this->suffix);
+
+        return "{$firstName}{$middleName}{$lastName}{$suffix}";
     }
 
     public function getEntryDataAttribute(){

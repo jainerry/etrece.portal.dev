@@ -92,32 +92,6 @@ class StreetCrudController extends CrudController
 
         $this->crud->addField(
             [
-                'name'=>'isActive',
-                'label'=>'Status',
-                'type' => 'select_from_array',
-                'options' => [
-                    'Y' => 'Active', 
-                    'N' => 'Inactive'
-                ],
-                'allows_null' => false,
-                'default'     => 'Y',
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ],
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'name',
-                'label'=>'Name',
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-12'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
                 'name'=>'barangayId',
                 'label'=>'Barangay',
                 'type' => 'select',
@@ -131,6 +105,33 @@ class StreetCrudController extends CrudController
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
                ]
+            ]
+        );
+        $this->crud->addField(
+            [
+                'name'=>'name',
+                'label'=>'Name',
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+                ]
+            ]
+        );
+        
+        $this->crud->addField(
+            [
+                'name'=>'isActive',
+                'label'=>'Status',
+                'type' => 'select_from_array',
+                'options' => [
+                    'Y' => 'Active', 
+                    'N' => 'Inactive'
+                ],
+                'allows_null' => false,
+                'default'     => 'Y',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ],
             ]
         );
 

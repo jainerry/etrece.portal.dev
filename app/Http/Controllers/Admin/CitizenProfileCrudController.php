@@ -73,6 +73,7 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
+
         $this->crud->addColumn([
             // Select
             'label'     => 'Reference ID',
@@ -381,7 +382,7 @@ class CitizenProfileCrudController extends CrudController
         ->where('bdate',"{$req->bdate}");
 
         if(isset($req->mName)){
-            $count->where('mName',strtolower($req->lName));
+            $count->where('mName',strtolower($req->mName));
         }
         if(isset($req->suffix)){
             $count->where('suffix',strtolower($req->suffix));
