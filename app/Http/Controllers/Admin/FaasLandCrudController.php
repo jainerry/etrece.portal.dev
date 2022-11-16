@@ -61,7 +61,19 @@ class FaasLandCrudController extends CrudController
         $this->crud->removeButton('show');
 
         // CRUD::column('ARPNo')->label('Reference No.');
-        CRUD::column('refID')->label('Reference ID');
+        $this->crud->removeButton('update');  
+        $this->crud->addColumn([
+            // Select
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID', // the db column for the foreign key
+            'wrapper'   => [
+                // 'element' => 'a', // the element will default to "a" so you can skip it here
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-land.edit',$entry->id);
+                },
+            ],
+        ]);
         
        /* CRUD::column('octTctNo')->label('OCT/TCT No.');
         CRUD::column('pin')->label('PIN');
@@ -729,6 +741,13 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
 
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator3',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
@@ -764,6 +783,23 @@ class FaasLandCrudController extends CrudController
             'label'=>'Effectivity of Assessment/Reassessment Value',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator4',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'memoranda',
+            'label'=>'Memoranda',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Property Assessment',
         ]);

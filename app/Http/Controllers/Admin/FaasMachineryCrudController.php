@@ -21,9 +21,7 @@ class FaasMachineryCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\BulkDeleteOperation;
 
     public function __construct()
     {
@@ -43,7 +41,6 @@ class FaasMachineryCrudController extends CrudController
     {
         CRUD::setModel(\App\Models\FaasMachinery::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-machinery');
-        //CRUD::setEntityNameStrings('faas machinery', 'faas machineries');
         CRUD::setEntityNameStrings('machinery', 'machineries');
         $this->crud->removeButton('delete');
     }
@@ -56,17 +53,23 @@ class FaasMachineryCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-
-        //$this->crud->enableBulkActions();
         $this->crud->enableExportButtons();
-
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-        //$this->crud->removeButton('update');  
+        $this->crud->removeButton('update'); 
+        
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID', // the db column for the foreign key
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-machinery.edit',$entry->id);
+                },
+            ],
+        ]);
         
         // CRUD::column('ARPNo')->label('Reference No.');
-
-        CRUD::column('refID')->label('Reference ID');
        
         /*CRUD::column('octTctNo')->label('OCT/TCT No.');
         CRUD::column('pin')->label('PIN');
@@ -660,6 +663,13 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
 
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator3',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
@@ -695,6 +705,23 @@ class FaasMachineryCrudController extends CrudController
             'label'=>'Effectivity of Assessment/Reassessment Value',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+
+        CRUD::addField([   // CustomHTML
+            'name'  => 'separator4',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'memoranda',
+            'label'=>'Memoranda',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
             ],
             'tab' => 'Property Assessment',
         ]);
