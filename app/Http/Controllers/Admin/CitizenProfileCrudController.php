@@ -236,16 +236,24 @@ class CitizenProfileCrudController extends CrudController
             ]
             // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
-       
-        $this->crud->addField([
-            'name'=>'bdate',
-            'label'=>'Birthday',
-            'allows_null' => false,
+    //   dd(Carbon::now()->subYears(130)->format('Y-m-d'));
+        $this->crud->addField([   // date_picker
+            'name'  => 'bdate',
+            'type'  => 'date_picker',
+            'label' => 'Birthdate',
+            
+            // optional:
+            'date_picker_options' => [
+               'todayBtn' => 'linked',
+               'format'   => 'yyyy-mm-dd',
+               'language' => 'fr',
+               'endDate' => '0d',
+               'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-lg-4'
-           ]
-           
-        ]);
+            ]
+         ]);
         
         $this->crud->addField([ 
             'name'        => 'sex',
