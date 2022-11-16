@@ -8,7 +8,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\Date;
 use App\Models\Barangay;
-use App\Models\Clusters;
+use App\Models\Street;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -356,11 +356,11 @@ class CitizenProfileCrudController extends CrudController
     public function getCluster(Request $req){
         if($req->selected == true){
             return response()->json([
-                "data"=>Clusters::select('name','id')->where('barangay_id',$req->barangay_id)->get(),
+                "data"=>Street::select('name','id')->where('barangayId',$req->barangay_id)->get(),
                 'selected'=>CitizenProfile::select('purokID')->where('id',$req->id)->first()
             ]);
         }else{
-            return response()->json(Clusters::select('name','id')->where('barangay_id',$req->barangay_id)->get());
+            return response()->json(Street::select('name','id')->where('barangayId',$req->barangay_id)->get());
         }
         
     }

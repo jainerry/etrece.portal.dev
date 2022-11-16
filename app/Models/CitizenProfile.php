@@ -66,6 +66,9 @@ class CitizenProfile extends Model
     public function machinery_profile(){
         return $this->hasMany(FaasMachinery::class);
     }
+    public function street(){
+        return $this->belongsTo(Street::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

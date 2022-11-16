@@ -77,5 +77,5 @@ Route::group([
     Route::crud('transaction-logs', 'TransactionLogsCrudController');
     Route::crud('faas-building-classifications', 'FaasBuildingClassificationsCrudController');
     Route::crud('faas-machinery-classifications', 'FaasMachineryClassificationsCrudController');
-    Route::crud('clusters', 'ClustersCrudController');
+   
 }); // this should be the absolute last line of this file
