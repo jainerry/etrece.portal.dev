@@ -19,6 +19,7 @@ return new class extends Migration
             $table->string('code')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
+            
         });
     }
 

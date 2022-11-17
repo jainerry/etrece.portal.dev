@@ -19,7 +19,7 @@ class ProvinceSeeder extends Seeder
 
         Province::create([
             'id' => STR::uuid(),
-            
+            'refID'
             'name'=>'Cavite']);
     }
 }
