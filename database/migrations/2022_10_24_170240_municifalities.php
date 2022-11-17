@@ -18,6 +18,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('name')->unique();
+            $table->string('zipcode')->unique()->nullable();
             $table->foreignUuid('province_id')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();

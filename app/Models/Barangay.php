@@ -30,14 +30,29 @@ class Barangay extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
     public function building_profile(){
         return $this->belongsTo(BuildingProfile::class,'barangay_id','id');
     }
+
+    public function getStatus(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "InActive";
+        }
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function municipality(){
+        return $this->belongsTo(Municipality::class);
+    }
 
     /*
     |--------------------------------------------------------------------------

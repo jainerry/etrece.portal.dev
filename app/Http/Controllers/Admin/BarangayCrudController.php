@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\BarangayRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\Barangay;
+use App\Models\TransactionLogs;
 
 /**
  * Class BarangayCrudController
@@ -16,7 +18,6 @@ class BarangayCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -50,21 +51,26 @@ class BarangayCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->enableExportButtons();
-
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-        
-        CRUD::column('refID');
-        CRUD::column('name');
-        CRUD::column('isActive');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        $this->crud->removeButton('update'); 
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('barangay.edit',$entry->id);
+                },
+            ]
+        ]);
+        $this->crud->column('name');
+        $this->crud->column('municipality');
+        $this->crud->addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
     }
 
     /**
@@ -77,15 +83,59 @@ class BarangayCrudController extends CrudController
     {
         CRUD::setValidation(BarangayRequest::class);
 
-        CRUD::field('refID');
-        CRUD::field('name');
-        CRUD::field('isActive');
+        $this->crud->addField([
+            'name' => 'name',
+            'label' => 'Barangay',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4',
+            ]
+        ]);
+        $this->crud->addField([
+            'name'=>'municipalityId',
+            'label' => "City",
+            'type'=>'select',
+            'entity' => 'municipality',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4',
+            ]
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator2a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+        ]);
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        Barangay::creating(function($entry) {
+            $count = Barangay::count();
+            $refID = 'BRGY-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $entry->refID = $refID;
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$refID,
+                'category' =>'barangay',
+                'type' =>'create',
+            ]);
+        });
     }
 
     /**
@@ -97,5 +147,18 @@ class BarangayCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        Barangay::updating(function($entry) {
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+          
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$entry->refID,
+                'category' =>'barangay',
+                'type' =>'update',
+            ]);
+        });
     }
 }

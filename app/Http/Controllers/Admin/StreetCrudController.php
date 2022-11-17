@@ -6,6 +6,8 @@ use App\Http\Requests\StreetRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Barangay;
+use App\Models\Street;
+use App\Models\TransactionLogs;
 
 /**
  * Class StreetCrudController
@@ -17,7 +19,6 @@ class StreetCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -51,27 +52,30 @@ class StreetCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->enableExportButtons();
-
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-        
-        CRUD::column('name');
-        CRUD::addColumn([
+        $this->crud->removeButton('update'); 
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('barangay.edit',$entry->id);
+                },
+            ]
+        ]);
+        $this->crud->column('name');
+        $this->crud->addColumn([
             'label'=>'Barangay',
             'type'  => 'model_function',
             'function_name' => 'getBarangay',
         ]);
-        CRUD::addColumn([
+        $this->crud->addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
     }
 
     /**
@@ -84,40 +88,31 @@ class StreetCrudController extends CrudController
     {
         CRUD::setValidation(StreetRequest::class);
 
-        // $barangays = Barangay::select('id','name')->where('city_id','042122')->get();
-        // $barangayOptions = [];
-        // foreach($barangays as $barangay){
-        //     $barangayOptions += [$barangay->id => $barangay->name];
-        // }
-
-        $this->crud->addField(
-            [
-                'name'=>'barangayId',
-                'label'=>'Barangay',
-                'type' => 'select',
-                'entity' => 'barangay',
-                'model' => 'App\Models\Barangay',
-                'attribute' => 'name',
-                'options'   => (function ($query) {
-                    return $query->orderBy('name', 'ASC')->where('isActive', 'Y')->get();
-                }),
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-               ]
+        $this->crud->addField([
+            'name'=>'barangayId',
+            'label' => "Barangay",
+            'type'=>'select',
+            'entity' => 'barangay',
+            'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4',
             ]
-        );
+        ]);
         $this->crud->addField(
             [
                 'name'=>'name',
                 'label'=>'Name',
                 'allows_null' => false,
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-4'
                 ]
             ]
         );
-        
+        $this->crud->addField([
+            'name'  => 'separator2a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+        ]);
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -135,11 +130,21 @@ class StreetCrudController extends CrudController
             ]
         );
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        Street::creating(function($entry) {
+            $count = Street::count();
+            $refID = 'STREET-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $entry->refID = $refID;
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$refID,
+                'category' =>'street',
+                'type' =>'create',
+            ]);
+        });
     }
 
     /**
@@ -151,5 +156,18 @@ class StreetCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        Street::updating(function($entry) {
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+          
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$entry->refID,
+                'category' =>'street',
+                'type' =>'update',
+            ]);
+        });
     }
 }

@@ -73,7 +73,7 @@ class BuildingProfileCrudController extends CrudController
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('faas-machinery.edit',$entry->id);
+                    return route('building-profile.edit',$entry->id);
                 },
             ]
         ]);
@@ -107,7 +107,7 @@ class BuildingProfileCrudController extends CrudController
     {
         $this->crud->setValidation(BuildingProfileRequest::class);
         
-        /*Main Information Tab*/
+        /*Main Information*/
         $this->crud->addField([
             'label' => 'ARP No.',
             'type' => 'text',
@@ -575,20 +575,6 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'General Description',
         ]);
-        /*Structural Characteristic*/
-        /*$this->crud->addField([
-            'label'     => 'Roof',
-            'type'      => 'radio',
-            'name'      => 'roof',
-            'entity'    => 'roof',
-            'attribute' => 'name',
-            'model'     => "App\Models\StructuralRoofs",
-            'pivot'     => true,
-            'attributes' => [
-                'class' => 'structural-roof-checklist',
-            ],
-            'tab' => 'Structural Characteristic',
-        ]);*/
         $structuralRoofs = StructuralRoofs::where('isActive','=','Y')->get();
         $structuralRoofsArray = [];
         foreach($structuralRoofs as $structuralRoof){

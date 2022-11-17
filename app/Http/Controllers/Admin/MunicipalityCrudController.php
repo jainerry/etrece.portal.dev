@@ -5,6 +5,8 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\MunicipalityRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
+use App\Models\Municipality;
+use App\Models\TransactionLogs;
 
 /**
  * Class MunicipalityCrudController
@@ -16,7 +18,6 @@ class MunicipalityCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -51,17 +52,26 @@ class MunicipalityCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->enableExportButtons();
-
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-        
+        $this->crud->removeButton('update'); 
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('municipality.edit',$entry->id);
+                },
+            ]
+        ]);
         $this->crud->column('name');
         $this->crud->column('province');
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - $this->crud->column('price')->type('number');
-         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        $this->crud->addColumn([
+            'label'=>'Status',
+            'type'  => 'model_function',
+            'function_name' => 'getStatus',
+        ]);
     }
 
     /**
@@ -75,11 +85,19 @@ class MunicipalityCrudController extends CrudController
         $this->crud->setValidation(MunicipalityRequest::class);
         $this->crud->addField([
             'name' => 'name',
-            'label' => 'Municipality Name',
+            'label' => 'City',
             'type' => 'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-6',
+                'class' => 'form-group col-12 col-md-4',
             ]
+        ]);
+        $this->crud->addField([
+            'label' => 'ZIP Code',
+            'type' => 'text',
+            'name' => 'code',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4',
+            ],
         ]);
         $this->crud->addField([
             'name'=>'province',
@@ -88,16 +106,44 @@ class MunicipalityCrudController extends CrudController
             'entity' => 'province',
             'attribute' => 'name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-6',
+                'class' => 'form-group col-12 col-md-4',
             ]
         ]);
-        
+        $this->crud->addField([
+            'name'  => 'separator2a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+        ]);
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - $this->crud->field('price')->type('number');
-         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        Municipality::creating(function($entry) {
+            $count = Municipality::count();
+            $refID = 'MUNICIPALITY-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $entry->refID = $refID;
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$refID,
+                'category' =>'municipality',
+                'type' =>'create',
+            ]);
+        });
     }
 
     /**
@@ -109,5 +155,18 @@ class MunicipalityCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+
+        Municipality::updating(function($entry) {
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+          
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$entry->refID,
+                'category' =>'municipality',
+                'type' =>'update',
+            ]);
+        });
     }
 }
