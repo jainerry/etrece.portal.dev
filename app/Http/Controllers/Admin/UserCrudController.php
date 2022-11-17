@@ -50,7 +50,7 @@ class UserCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->enableExportButtons();
-
+        
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         

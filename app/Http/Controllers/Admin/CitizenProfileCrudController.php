@@ -73,7 +73,8 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
-
+        $this->crud->orderBy('refID','desc');
+        $this->crud->addClause('where', 'isActive', '=', 'y');
         $this->crud->addColumn([
             // Select
             'label'     => 'Reference ID',
@@ -95,6 +96,7 @@ class CitizenProfileCrudController extends CrudController
           function ($value) { // if the filter is active, apply these constraints
             $this->crud->addClause('whereDate', 'created_at', $value);
           });
+          
           $this->crud->addFilter([
             'type'  => 'select2',
             'name'  => 'brgyID',
@@ -351,7 +353,7 @@ class CitizenProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        Widget::name('custom_script')->remove();
+        // Widget::name('custom_script')->remove();
      
         CitizenProfile::updating(function($entry) {
             TransactionLogs::create([
@@ -386,6 +388,9 @@ class CitizenProfileCrudController extends CrudController
         }
         if(isset($req->suffix)){
             $count->where('suffix',strtolower($req->suffix));
+        }
+        if(isset($req->id)){
+            $count->where('id',"<>",strtolower($req->id));
         }
         return response()->json($count->first());
     }

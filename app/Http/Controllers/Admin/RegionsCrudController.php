@@ -2,32 +2,23 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\ProvinceRequest;
-use App\Models\Province;
+use App\Http\Requests\RegionsRequest;
+use App\Models\Regions;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 /**
- * Class ProvinceCrudController
+ * Class RegionsCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class ProvinceCrudController extends CrudController
+class RegionsCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware('can:view-provinces', ['only' => ['index','show']]);
-        $this->middleware('can:create-provinces', ['only' => ['create','store']]);
-        $this->middleware('can:edit-provinces', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-provinces', ['only' => ['destroy']]);
-    }
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -36,10 +27,9 @@ class ProvinceCrudController extends CrudController
      */
     public function setup()
     {
-       $this->crud->setModel(\App\Models\Province::class);
-       $this->crud->setRoute(config('backpack.base.route_prefix') . '/province');
-       $this->crud->setEntityNameStrings('province', 'provinces');
-        $this->crud->removeButton('delete');
+       $this->crud->setModel(\App\Models\Regions::class);
+       $this->crud->setRoute(config('backpack.base.route_prefix') . '/regions');
+       $this->crud->setEntityNameStrings('regions', 'regions');
     }
 
     /**
@@ -50,13 +40,11 @@ class ProvinceCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->enableExportButtons();
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
         $this->crud->orderBy('refID','desc');
         $this->crud->addClause('where', 'isActive', '=', 'y');
-
 
         $this->crud->addColumn([
             // Select
@@ -66,16 +54,16 @@ class ProvinceCrudController extends CrudController
             'wrapper'   => [
                 // 'element' => 'a', // the element will default to "a" so you can skip it here
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('province.edit',$entry->id);
+                    return route('regions.edit',$entry->id);
                 },
             ],
           ]);
 
+       $this->crud->column('name');
+       $this->crud->column('isActive');
+       $this->crud->column('created_at');
+       $this->crud->column('updated_at');
 
-        $this->crud->removeButton('delete');  
-        $this->crud->removeButton('show');
-       $this->crud->Column('region_id');
-       $this->crud->Column('name');
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * -$this->crud->column('price')->type('number');
@@ -91,37 +79,40 @@ class ProvinceCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-       $this->crud->setValidation(ProvinceRequest::class);
-       $this->crud->addField([  // Select
-        'label'     => "Region",
-        'type'      => 'select',
-        'name'      => 'region_id', 
-        'entity'    => 'region',
-     
-        // optional - manually specify the related model and attribute
-        'model'     => "App\Models\Regions", // related model
-        'attribute' => 'name', // foreign key attribute that is shown to user
-     
-        // optional - force the related options to be a custom query, instead of all();
-        'options'   => (function ($query) {
-             return $query->orderBy('name', 'ASC')->get();
-         }), //  you can use this to filter the results show in the select
-     ]);
-        
+       $this->crud->setValidation(RegionsRequest::class);
        $this->crud->addField([
-            'name' => 'name',
-            'label' => 'Province Name',
-            'type' => 'text',
+            "name"=>'name',
+            'type'=>'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-6',
+                'class' => 'form-group col-12 col-lg-4'
+            ]
+        ]);
+        $this->crud->addField([   
+            'name'        => 'isActive',
+            'label'       => "isActive",
+            'type'        => 'select_from_array',
+            'options'     => ['y'=>'TRUE','n'=>'FALSE'],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-lg-4'
             ]
         ]);
 
-        Province::creating(function($entry) {
-            $count = Province::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
-            $refId = 'PROV'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+
+        Regions::creating(function($entry) {
+            $count = Regions::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
+            $refId = 'REG'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refId;
+
+
         });
+
+
+        /**
+         * Fields can be defined using the fluent syntax or array syntax:
+         * -$this->crud->field('price')->type('number');
+         * -$this->crud->addField(['name' => 'price', 'type' => 'number'])); 
+         */
     }
 
     /**

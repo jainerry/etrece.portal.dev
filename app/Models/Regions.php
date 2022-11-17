@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-class Province extends Model
+class Regions extends Model
 {
     use CrudTrait;
     use HasUuids;
@@ -15,7 +15,7 @@ class Province extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'provinces';
+    protected $table = 'regions';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -28,9 +28,7 @@ class Province extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function region(){
-        return $this->belongsTo(Regions::class);
-    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

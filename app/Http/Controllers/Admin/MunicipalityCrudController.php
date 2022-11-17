@@ -36,9 +36,9 @@ class MunicipalityCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Municipality::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/municipality');
-        CRUD::setEntityNameStrings('municipality', 'municipalities');
+        $this->crud->setModel(\App\Models\Municipality::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/municipality');
+        $this->crud->setEntityNameStrings('municipality', 'municipalities');
         $this->crud->removeButton('delete');
     }
 
@@ -55,11 +55,12 @@ class MunicipalityCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         
-        CRUD::column('name');
+        $this->crud->column('name');
+        $this->crud->column('province');
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - $this->crud->column('price')->type('number');
+         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -71,8 +72,8 @@ class MunicipalityCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(MunicipalityRequest::class);
-        CRUD::addField([
+        $this->crud->setValidation(MunicipalityRequest::class);
+        $this->crud->addField([
             'name' => 'name',
             'label' => 'Municipality Name',
             'type' => 'text',
@@ -80,7 +81,7 @@ class MunicipalityCrudController extends CrudController
                 'class' => 'form-group col-12 col-lg-6',
             ]
         ]);
-        CRUD::addField([
+        $this->crud->addField([
             'name'=>'province',
             'label' => "Province",
             'type'=>'select',
@@ -94,8 +95,8 @@ class MunicipalityCrudController extends CrudController
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - $this->crud->field('price')->type('number');
+         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 

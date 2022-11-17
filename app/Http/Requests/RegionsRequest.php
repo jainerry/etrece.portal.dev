@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class ProvinceRequest extends FormRequest
+class RegionsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,8 +25,7 @@ class ProvinceRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:provinces,name,'.$this->id,
-            'region_id' => 'required'
+            'name' => 'required|unique:regions,name'.$this->id
         ];
     }
 

@@ -50,23 +50,25 @@
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i> Configurations</a>
     <ul class="nav-dropdown-items">
         @can('view-office-locations')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office-location') }}"><i class="nav-icon la la-building"></i> Office Locations</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office-location') }}"><i class="nav-icon la la-building"></i> Office Locations</a></li> --}}
         @endcan
         @can('view-offices')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office') }}"><i class="nav-icon la la-building"></i> Offices</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('office') }}"><i class="nav-icon la la-building"></i> Offices</a></li> --}}
         @endcan
         @can('view-sections')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('section') }}"><i class="nav-icon la la-list"></i> Sections</a></li> --}}
         @endcan
         @can('view-positions')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('position') }}"><i class="nav-icon la la-list"></i> Positions</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('position') }}"><i class="nav-icon la la-list"></i> Positions</a></li> --}}
         @endcan
         @can('view-appointment-statuses')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('appointment') }}"><i class="nav-icon la la-list"></i> Appointment Statuses</a></li>
+        {{-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('appointment') }}"><i class="nav-icon la la-list"></i> Appointment Statuses</a></li> --}}
         @endcan
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('regions') }}"><i class="nav-icon la la-list"></i> Regions</a></li>
         @can('view-provinces')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('province') }}"><i class="nav-icon la la-list"></i> Provinces</a></li>
         @endcan
+        
         @can('view-municipalities')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('municipality') }}"><i class="nav-icon la la-list"></i> Municipalities</a></li>
         @endcan

@@ -61,8 +61,10 @@ return new class extends Migration
             // $table->string('permanentBarangayId')->nullable();
             // $table->string('residentialStreetId')->nullable();
             // $table->string('permanentStreetId')->nullable();
-
+            
             $table->timestamps();
+
+            $table->unique(["firstName", "middleName","lastName","birthDate"], 'uq_columns');
         });
     }
 

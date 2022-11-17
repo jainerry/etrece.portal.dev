@@ -14,8 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('provinces', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
+            $table->string('refID')->nullable();
+            $table->string('region_id')->nullable();
             $table->string('name')->nullable();
+            $table->char('isActive', 1)->default('y');
             $table->timestamps();
         });
     }

@@ -5,6 +5,7 @@ namespace Database\Seeders;
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 
 use App\Models\Municipality;
+use App\Models\Regions;
 use Illuminate\Database\Seeder;
 
 class DatabaseSeeder extends Seeder
@@ -27,7 +28,6 @@ class DatabaseSeeder extends Seeder
             AppointmentSeeder::class,
             StreetSeeder::class,
             EmployeeSeeder::class,
-            ProvinceSeeder::class,
             MunicipalitiesSeeder::class,
             structuralRoof::class,
             FaasLandClassificationSeeder::class,
@@ -36,6 +36,7 @@ class DatabaseSeeder extends Seeder
             StructuralWalling::class,
             FaasBuildingClassificationSeeder::class,
             FaasMachineryClassificationSeeder::class,
+            regionSeeder::class,
         ]);
     }
 }

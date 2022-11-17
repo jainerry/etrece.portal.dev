@@ -13,12 +13,13 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('clusters', function (Blueprint $table) {
-            $table->uuid('id');
-            $table->string('name')->nullable();
-            $table->string('barangay_id')->nullable();
-            $table->char('isActive', 1)->default('Y');
+        Schema::create('regions', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('refID')->unique();
+            $table->string('name')->unique();
+            $table->char('isActive', 1)->default('y');
             $table->timestamps();
+            // $table->unique('name', 'uq_columns');
         });
     }
 
@@ -29,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        //
+        Schema::dropIfExists('regions');
     }
 };
