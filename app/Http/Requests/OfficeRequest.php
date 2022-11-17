@@ -25,7 +25,7 @@ class OfficeRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:offices,name,'.$this->id,
             'officeLocationId' => 'required'
         ];
     }

@@ -15,10 +15,10 @@ return new class extends Migration
     {
         Schema::create('provinces', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('refID')->nullable();
-            $table->string('region_id')->nullable();
-            $table->string('name')->nullable();
-            $table->char('isActive', 1)->default('y');
+            $table->string('refID')->unique();
+            $table->foreignUuid('region_id')->nullable();
+            $table->string('name')->unique();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

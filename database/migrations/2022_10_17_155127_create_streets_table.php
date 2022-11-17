@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('streets', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name')->unique();
-            $table->string('code')->nullable();
-            $table->string('barangayId');
+            $table->string('refID')->unique();
+            $table->foreignUuid('barangayId')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

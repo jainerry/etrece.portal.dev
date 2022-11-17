@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class BarangaySeeder extends Seeder
 {
@@ -32,8 +33,10 @@ class BarangaySeeder extends Seeder
         
         foreach($barangays as $index =>$brgy){
             array_push($inputs,[
-                'refID'=>str_pad(($index+1), 3, "0", STR_PAD_LEFT),
+                'id' => STR::uuid(),
+                'refID'=>'BRGY'.'-'.str_pad(($index), 4, "0", STR_PAD_LEFT),
                 'name'=>$brgy,
+                'municipalityId'=>'db3510e6-3add-4d81-8809-effafbbaa6fd',
                 'created_at'=>Carbon::now()
             ]);
         }

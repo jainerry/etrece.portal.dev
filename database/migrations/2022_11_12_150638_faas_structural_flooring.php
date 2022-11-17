@@ -15,7 +15,9 @@ return new class extends Migration
     {
         Schema::create('faas_structural_flooring', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('name')->nullable();
+            $table->string('refID')->unique();
+            $table->string('name')->unique();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

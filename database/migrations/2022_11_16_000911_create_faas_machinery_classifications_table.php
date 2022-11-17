@@ -14,9 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_machinery_classifications', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
+            $table->string('refID')->unique();
+            $table->string('code')->unique();
             $table->string('name')->unique();
-            $table->string('code')->nullable();
             $table->string('rangeFrom')->nullable();
             $table->string('rangeTo')->nullable();
             $table->string('assessmentLevel')->nullable();

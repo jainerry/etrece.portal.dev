@@ -5,10 +5,12 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Barangay;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Street extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------

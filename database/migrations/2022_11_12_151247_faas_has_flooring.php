@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_has_flooring', function (Blueprint $table) {
-            $table->id();
-            $table->string('faas_building_profiles_id')->nullable();
-            $table->string('structural_flooring_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('faas_building_profiles_id')->nullable();
+            $table->foreignUuid('structural_flooring_id')->nullable();
             $table->timestamps();
         });
     }

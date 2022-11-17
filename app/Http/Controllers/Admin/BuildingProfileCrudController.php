@@ -50,6 +50,7 @@ class BuildingProfileCrudController extends CrudController
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
+        Widget::add()->type('script')->content('assets/js/faas/building/function.js');
     }
 
     /**
@@ -369,7 +370,7 @@ class BuildingProfileCrudController extends CrudController
             'entity' => 'kind_of_building',
             'attribute' => 'name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
+                'class' => 'form-group col-12 col-md-4',
             ],
             'tab' => 'General Description',
         ]);
@@ -378,7 +379,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Building Age',
             'type' => 'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
+                'class' => 'form-group col-12 col-md-4',
             ],
             'tab' => 'General Description',
         ]);
@@ -390,7 +391,7 @@ class BuildingProfileCrudController extends CrudController
             'attribute' => 'name',
 
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
+                'class' => 'form-group col-12 col-md-4',
             ],
             'tab' => 'General Description',
         ]);
@@ -423,15 +424,21 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Condominium Certificate of Title (CCT)',
             'type' => 'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12',
+                'class' => 'form-group col-12 col-md-6',
             ],
             'tab'  => 'General Description',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator2ca',
+            'type'  => 'custom_html',
+            'value' => '',
+            'tab' => 'General Description',
         ]);
         $this->crud->addField([
             'name' => 'certificate_of_completion_issued_on',
             'label' => 'Certificate of Completion Issued On',
             'type' => 'date',
-            'date' => [
+            'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'General Description',
@@ -579,7 +586,7 @@ class BuildingProfileCrudController extends CrudController
         /*Additional Items (Repeatable)*/
         $this->crud->addField([   
             'name'  => 'additional_items',
-            'label' => '',
+            'label' => 'Additional Items',
             'type'  => 'repeatable',
             'subfields' => [
                 [
@@ -694,7 +701,7 @@ class BuildingProfileCrudController extends CrudController
         /*Property Assessment*/
         $this->crud->addField([   
             'name'  => 'propertyAssessment',
-            'label' => '',
+            'label' => 'Property Assessment',
             'type'  => 'repeatable',
             'subfields' => [
                 [
@@ -804,19 +811,9 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - $this->crud->field('price')->type('number');
-         * - $this->crud->addField(['name' => 'price', 'type' => 'number']));
-         */
-        BuildingProfile::creating(function ($entry) {
-            // $req  = app(BuildingProfileRequest::class);
-            // dd($req);
-            $count = BuildingProfile::select(DB::raw('count(*) as count'))
-                ->where('arpNo', 'like', '%' . Date('mdY') . '%')
-                ->first();
-            $refID = 'BPID' . Date('mdY') . '-' . str_pad($count->count, 4, '0', STR_PAD_LEFT);
-            // $entry->roof = json_encode($req->roof);
+        BuildingProfile::creating(function($entry) {
+            $count = BuildingProfile::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
+            $refID = 'BUILDING-'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
             TransactionLogs::create([
@@ -824,7 +821,6 @@ class BuildingProfileCrudController extends CrudController
                 'category' =>'faas_building',
                 'type' =>'create',
             ]);
-            
         });
     }
 

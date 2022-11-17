@@ -6,10 +6,12 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\Employee;
 use App\Models\OfficeLocation;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class Office extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------

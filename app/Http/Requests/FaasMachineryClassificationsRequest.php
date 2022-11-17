@@ -25,7 +25,7 @@ class FaasMachineryClassificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required|unique:faas_machinery_classifications,name,'.$this->id,
         ];
     }
 

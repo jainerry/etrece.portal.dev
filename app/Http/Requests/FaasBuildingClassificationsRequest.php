@@ -25,7 +25,7 @@ class FaasBuildingClassificationsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required|unique:faas_building_classifications,name,'.$this->id,
         ];
     }
 

@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class OfficeSeeder extends Seeder
 {
@@ -33,8 +34,10 @@ class OfficeSeeder extends Seeder
         
         foreach($offices as $index =>$office){
             array_push($inputs,[
+                'id' => Str::uuid(),
+                'refID' => 'OFFICE'.'-'.str_pad(($index), 4, "0", STR_PAD_LEFT),
                 'name'=>$office,
-                'officeLocationId'=>'1',
+                'officeLocationId'=>'56cf08b2-8444-4fb2-ba9b-4e3fd0779e87',
                 'created_at'=>Carbon::now()
             ]);
         }

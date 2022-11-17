@@ -25,7 +25,9 @@ class UserRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'name' => 'required',
+            'username' => 'required|unique:users,username'.$this->id,
+            'email' => 'required|unique:users,email'.$this->id,
         ];
     }
 

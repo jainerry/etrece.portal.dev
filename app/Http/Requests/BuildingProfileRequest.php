@@ -30,9 +30,9 @@ class BuildingProfileRequest extends FormRequest
             'ownerAddress' => 'required',
             'no_of_street' => 'required',
             'barangay_id' => 'required',
-            // 'assessmentType' => 'required',
-            // 'assessmentEffectivity' => 'required',
-            // 'assessmentEffectivityValue' => 'required',
+            'assessmentType' => 'required',
+            'assessmentEffectivity' => 'required',
+            'assessmentEffectivityValue' => 'required',
         ];
     }
 

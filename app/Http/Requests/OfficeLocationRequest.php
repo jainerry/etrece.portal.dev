@@ -25,7 +25,7 @@ class OfficeLocationRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required|unique:office_locations,name,'.$this->id,
         ];
     }
 

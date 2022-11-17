@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\Province;
 use Illuminate\Support\Str;
+
 class ProvinceSeeder extends Seeder
 {
     /**
@@ -15,11 +16,9 @@ class ProvinceSeeder extends Seeder
      */
     public function run()
     {
-        //
-
         Province::create([
-            'id' => STR::uuid(),
-            'refID'
+            'id' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
+            'refID' => 'PROVINCE'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
             'name'=>'Cavite']);
     }
 }

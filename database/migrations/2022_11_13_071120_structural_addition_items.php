@@ -14,9 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_structural_additional_items', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('building_profile_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->string('item1')->nullable();
+            $table->string('item2')->nullable();
+            $table->string('item3')->nullable();
+            $table->string('item4')->nullable();
+            $table->foreignUuid('building_profile_id')->nullable();
             $table->timestamps();
         });
     }

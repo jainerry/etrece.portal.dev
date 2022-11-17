@@ -14,9 +14,9 @@ return new class extends Migration
     public function up()
     {
         Schema::create('building_owners', function (Blueprint $table) {
-            $table->id();
-            $table->string('citizen_profile_id')->nullable();
-            $table->string('building_profile_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->foreignUuid('citizen_profile_id')->nullable();
+            $table->foreignUuid('building_profile_id')->nullable();
             $table->timestamps();
         });
     }

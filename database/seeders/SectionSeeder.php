@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class SectionSeeder extends Seeder
 {
@@ -33,8 +34,10 @@ class SectionSeeder extends Seeder
         
         foreach($sections as $index =>$section){
             array_push($inputs,[
+                'id' => STR::uuid(),
+                'refID' => 'SECTION-'.str_pad(($index), 4, "0", STR_PAD_LEFT),
                 'name'=>$section,
-                'officeId'=>rand(1,9),
+                //'officeId'=>rand(1,9),
                 'created_at'=>Carbon::now()
             ]);
         }

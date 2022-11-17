@@ -14,12 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('positions', function (Blueprint $table) {
-            $table->id();
-            $table->string('name');
-            $table->string('code')->nullable();
+            $table->uuid('id')->primary();
+            $table->string('name')->unique();
+            $table->string('refID')->unique();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
-            
         });
     }
 

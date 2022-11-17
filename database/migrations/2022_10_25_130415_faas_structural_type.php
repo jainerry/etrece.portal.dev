@@ -14,8 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('structural_types', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
+            $table->uuid('id')->primary();
+            $table->string('refID')->unique();
+            $table->string('name')->unique();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

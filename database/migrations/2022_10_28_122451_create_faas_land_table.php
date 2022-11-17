@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_lands', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('ARPNo')->unique();
             $table->string('pin')->nullable();
@@ -22,17 +22,17 @@ return new class extends Migration
             $table->string('octTctNo')->nullable();
             $table->string('lotNo')->nullable();
             $table->string('blkNo')->nullable();
-            $table->string('previousOwnerId')->nullable();
-            $table->foreignUuid('primaryOwnerId');
+            $table->foreignUuid('previousOwnerId')->nullable();
+            $table->foreignUuid('primaryOwnerId')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('administrator')->nullable();
             $table->string('administratorAddress')->nullable();
             $table->string('administratorTelephoneNo')->nullable();
             $table->string('noOfStreet')->nullable();
-            $table->string('barangayId')->nullable();
-            $table->string('cityId')->nullable();
-            $table->string('provinceId')->nullable();
+            $table->foreignUuid('barangayId')->nullable();
+            $table->foreignUuid('cityId')->nullable();
+            $table->foreignUuid('provinceId')->nullable();
             $table->string('propertyBoundaryNorth')->nullable();
             $table->string('propertyBoundaryEast')->nullable();
             $table->string('propertyBoundarySouth')->nullable();

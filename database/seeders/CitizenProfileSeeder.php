@@ -21,7 +21,7 @@ class CitizenProfileSeeder extends Seeder
         $users = [
             [
                 'id'    =>Str::uuid(),
-                'refId' => 'CID'.Date('mdY').'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
+                'refId' => 'CITIZEN-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John Carlo',
                 'mName' => 'Sacro',
                 'lName' => 'Salazar',
@@ -36,7 +36,7 @@ class CitizenProfileSeeder extends Seeder
             ],
             [
                 'id'    =>Str::uuid(),
-                'refId' => 'CID'.Date('mdY').'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
+                'refId' => 'CITIZEN-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John ',
                 'mName' => 'Sacro',
                 'lName' => 'Salazar',
@@ -55,7 +55,7 @@ class CitizenProfileSeeder extends Seeder
             $faker =app(Faker::class);
             array_push($users, [
                 'id'    =>Str::uuid(),
-                'refId' => 'CID'.Date('mdY').'-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),
+                'refId' => 'CITIZEN-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),
                 'fName' => $faker->firstNameMale(),
                 'mName' => '',
                 'lName' => $faker->lastName(),

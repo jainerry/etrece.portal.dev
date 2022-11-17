@@ -15,9 +15,11 @@ return new class extends Migration
     {
         
         Schema::create('municipalities', function (Blueprint $table) {
-            $table->id();
-            $table->string('name')->nullable();
-            $table->string('province_id')->nullable();
+            $table->uuid('id')->primary();
+            $table->string('refID')->unique();
+            $table->string('name')->unique();
+            $table->foreignUuid('province_id')->nullable();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }

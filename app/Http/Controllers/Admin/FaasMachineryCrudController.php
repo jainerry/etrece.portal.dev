@@ -739,7 +739,7 @@ class FaasMachineryCrudController extends CrudController
 
             TransactionLogs::create([
                 'transId' =>$refID,
-                'category' =>'faas_land',
+                'category' =>'faas_machinery',
                 'type' =>'create',
             ]);
         });

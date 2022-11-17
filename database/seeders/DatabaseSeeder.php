@@ -28,6 +28,7 @@ class DatabaseSeeder extends Seeder
             AppointmentSeeder::class,
             StreetSeeder::class,
             EmployeeSeeder::class,
+            ProvinceSeeder::class,
             MunicipalitiesSeeder::class,
             structuralRoof::class,
             FaasLandClassificationSeeder::class,
@@ -37,6 +38,7 @@ class DatabaseSeeder extends Seeder
             FaasBuildingClassificationSeeder::class,
             FaasMachineryClassificationSeeder::class,
             regionSeeder::class,
+            KindOfBuildingSeeder::class,
         ]);
     }
 }

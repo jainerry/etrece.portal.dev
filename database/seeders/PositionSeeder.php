@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Str;
 
 class PositionSeeder extends Seeder
 {
@@ -33,6 +34,8 @@ class PositionSeeder extends Seeder
         
         foreach($positions as $index =>$position){
             array_push($inputs,[
+                'id' => Str::uuid(),
+                'refID' => 'POSITION'.'-'.str_pad(($index), 4, "0", STR_PAD_LEFT),
                 'name'=>$position,
                 'created_at'=>Carbon::now()
             ]);

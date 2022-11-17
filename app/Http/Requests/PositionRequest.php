@@ -25,7 +25,7 @@ class PositionRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required'
+            'name' => 'required|unique:positions,name,'.$this->id,
         ];
     }
 

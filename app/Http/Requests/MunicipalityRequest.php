@@ -25,7 +25,7 @@ class MunicipalityRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required',
+            'name' => 'required|unique:municipalities,name,'.$this->id,
             'province' => 'required'
         ];
     }

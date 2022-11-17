@@ -14,12 +14,12 @@ return new class extends Migration
     public function up()
     {
         Schema::create('sections', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id')->primary();
             $table->string('name')->unique();
-            $table->string('code')->nullable();
-            $table->string('officeId');
+            $table->string('refID')->unique();
+            $table->foreignUuid('officeId')->nullable();
             $table->string('contactNo')->nullable();
-            $table->string('headId')->nullable();
+            $table->foreignUuid('headId')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

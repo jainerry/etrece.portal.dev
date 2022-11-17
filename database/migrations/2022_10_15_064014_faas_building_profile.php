@@ -14,11 +14,11 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_building_profiles', function (Blueprint $table) {
-            $table->uuid('id');
+            $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('ARPNo')->nullable();
             $table->string('transactionCode')->nullable();
-            $table->string('primary_owner')->nullable();
+            $table->foreignUuid('primary_owner')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('tel_no')->nullable();
             $table->string('owner_tin_no')->nullable();
@@ -27,16 +27,16 @@ return new class extends Migration
             $table->string('admin_tel_no')->nullable();
             $table->string('admin_tin_no')->nullable();
             $table->string('no_of_street')->nullable();
-            $table->string('barangay_id')->nullable();
-            $table->string('municipality_id')->nullable();
-            $table->string('province_id')->nullable();
+            $table->foreignUuid('barangay_id')->nullable();
+            $table->foreignUuid('municipality_id')->nullable();
+            $table->foreignUuid('province_id')->nullable();
             $table->string('oct_tct_no')->nullable();
             $table->string('lot_no')->nullable();
             $table->string('survey_no')->nullable();
             $table->string('block_no')->nullable();
             $table->string('area')->nullable();
-            $table->string('kind_of_building_id')->nullable();
-            $table->string('structural_type_id')->nullable();
+            $table->foreignUuid('kind_of_building_id')->nullable();
+            $table->foreignUuid('structural_type_id')->nullable();
             $table->string('building_permit_no')->nullable();
             $table->string('building_permit_date_issued')->nullable();
             $table->string('condominium_certificate_of_title')->nullable();
@@ -58,7 +58,6 @@ return new class extends Migration
             $table->string('walling_3')->nullable();
             $table->string('walling_4')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->string('assessmentStatusId')->nullable();
             $table->timestamps();
         });
     }
