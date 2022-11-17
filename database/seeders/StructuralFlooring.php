@@ -16,17 +16,13 @@ class StructuralFlooring extends Seeder
     public function run()
     {
         sf::insert([
-            [
-            'id'=>Str::uuid(),  
-            'name'=>'Reinforced Concrete
+            ['id' => STR::uuid(),'name'=>'Reinforced Concrete
             (for upper floors)'],
-            [
-                'id'=>Str::uuid(),  
-                'name'=>'Plain Cement'],
-            ['id'=>Str::uuid(),'name'=>'Marble'],
-            ['id'=>Str::uuid(),  'name'=>'Wood'],
-            ['id'=>Str::uuid(),  'name'=>'Tiles'],
-            ['id'=>Str::uuid(),  'name'=>'Others']
+            ['id' => STR::uuid(),'name'=>'Plain Cement'],
+            ['id' => STR::uuid(),'name'=>'Marble'],
+            ['id' => STR::uuid(),'name'=>'Wood'],
+            ['id' => STR::uuid(),'name'=>'Tiles'],
+            ['id' => STR::uuid(),'name'=>'Others']
           
         ]);
     }
