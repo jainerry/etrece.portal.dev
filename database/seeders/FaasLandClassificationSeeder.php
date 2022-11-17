@@ -24,6 +24,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'refID' => 'LAND-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
+                'assessmentLevel' => '20%',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -31,6 +32,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'refID' => 'LAND-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
+                'assessmentLevel' => '50%',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -38,6 +40,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'refID' => 'LAND-CLASS'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Agricultural',
                 'code' => 'AGR',
+                'assessmentLevel' => '40%',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -45,6 +48,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'refID' => 'LAND-CLASS'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
                 'name' => 'Industrial',
                 'code' => 'IND',
+                'assessmentLevel' => '50%',
                 'created_at' => Carbon::now(),
             ],
         ];

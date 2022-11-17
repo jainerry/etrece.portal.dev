@@ -10,6 +10,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 use App\Models\TransactionLogs;
 use Backpack\CRUD\app\Library\Widget;
+use App\Models\StructuralRoofs;
 
 /**
  * Class BuildingProfileCrudController
@@ -48,9 +49,10 @@ class BuildingProfileCrudController extends CrudController
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('style')->content('assets/css/faas/building/styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        Widget::add()->type('script')->content('assets/js/faas/building/function.js');
+        Widget::add()->type('script')->content('assets/js/faas/building/functions.js');
     }
 
     /**
@@ -288,6 +290,12 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'Building Location',
         ]);
         $this->crud->addField([
+            'name'  => 'municipality_id',
+            'type'  => 'hidden',
+            'value' => 'db3510e6-3add-4d81-8809-effafbbaa6fd',
+            'tab' => 'Building Location',
+        ]);
+        $this->crud->addField([
             'name'=>'province_id_fake',
             'label' => "Province",
             'type'=>'text',
@@ -299,6 +307,12 @@ class BuildingProfileCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
+            'tab' => 'Building Location',
+        ]);
+        $this->crud->addField([
+            'name'  => 'province_id',
+            'type'  => 'hidden',
+            'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
             'tab' => 'Building Location',
         ]);
         /*Land Reference Tab*/
@@ -357,6 +371,9 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area',
             'label' => 'Area',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -495,6 +512,9 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area_first_floor',
             'label' => 'Area of 1st Floor',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency nth-floor-area',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -504,6 +524,9 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area_second_floor',
             'label' => 'Area of 2nd Floor',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency nth-floor-area',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -513,6 +536,9 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area_third_floor',
             'label' => 'Area of 3rd Floor',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency nth-floor-area',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -522,6 +548,9 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area_fourth_floor',
             'label' => 'Area of 4th Floor',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency nth-floor-area',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -537,20 +566,52 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'totalFloorArea',
             'label' => 'Total Floor Area',
             'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'General Description',
         ]);
         /*Structural Characteristic*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'label'     => 'Roof',
-            'type'      => 'checklist',
+            'type'      => 'radio',
             'name'      => 'roof',
             'entity'    => 'roof',
             'attribute' => 'name',
             'model'     => "App\Models\StructuralRoofs",
             'pivot'     => true,
+            'attributes' => [
+                'class' => 'structural-roof-checklist',
+            ],
+            'tab' => 'Structural Characteristic',
+        ]);*/
+        $structuralRoofs = StructuralRoofs::where('isActive','=','Y')->get();
+        $structuralRoofsArray = [];
+        foreach($structuralRoofs as $structuralRoof){
+            $structuralRoofsArray += [$structuralRoof->id => $structuralRoof->name];
+        }
+        $this->crud->addField([
+            'name'        => 'roof',
+            'label'       => 'Roof',
+            'type'        => 'radio',
+            'options'     => $structuralRoofsArray,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 structural-roof-checklist',
+            ],
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name' => 'other_roof',
+            'label' => 'Others',
+            'type' => 'text',
+            'hint'=>'(Please specify)',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden other_roof',
+            ],
             'tab' => 'Structural Characteristic',
         ]);
         $this->crud->addField([
@@ -708,7 +769,7 @@ class BuildingProfileCrudController extends CrudController
                     'name'    => 'actualUse',
                     'type'    => 'select',
                     'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasMachineryClassifications",
+                    'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -723,12 +784,8 @@ class BuildingProfileCrudController extends CrudController
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'model'     => "App\Models\FaasMachineryClassifications",
-                    'attribute' => 'assessmentLevel',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_percent',
-                    ],
+                    'type'        => 'select_from_array',
+                    'options'     => [],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -812,11 +869,15 @@ class BuildingProfileCrudController extends CrudController
         ]);
 
         BuildingProfile::creating(function($entry) {
-            $count = BuildingProfile::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
-            $refID = 'BUILDING-'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+            $count = BuildingProfile::count();
+            $refID = 'BUILDING-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
             TransactionLogs::create([
+                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'faas_building',
                 'type' =>'create',
@@ -836,8 +897,12 @@ class BuildingProfileCrudController extends CrudController
         $this->setupCreateOperation();
 
         BuildingProfile::updating(function($entry) {
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
+                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'faas_building',
                 'type' =>'update',

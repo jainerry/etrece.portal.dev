@@ -6,6 +6,8 @@ use App\Http\Requests\FaasBuildingClassificationsRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use App\Models\FaasBuildingClassifications;
+use App\Models\TransactionLogs;
 
 /**
  * Class FaasBuildingClassificationsCrudController
@@ -17,7 +19,6 @@ class FaasBuildingClassificationsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -40,6 +41,11 @@ class FaasBuildingClassificationsCrudController extends CrudController
         CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-building-classifications');
         CRUD::setEntityNameStrings('faas building classifications', 'faas building classifications');
         $this->crud->removeButton('delete');
+
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
     }
 
     /**
@@ -51,26 +57,27 @@ class FaasBuildingClassificationsCrudController extends CrudController
     protected function setupListOperation()
     {
         $this->crud->enableExportButtons();
-
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-        
+        $this->crud->removeButton('update'); 
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-building-classifications.edit',$entry->id);
+                },
+            ]
+        ]);
         CRUD::column('name');
         CRUD::column('code');
-        CRUD::column('rangeFrom');
-        CRUD::column('rangeTo');
         CRUD::column('assessmentLevel');
         CRUD::addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
-         */
     }
 
     /**
@@ -81,11 +88,6 @@ class FaasBuildingClassificationsCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        Widget::add()->type('style')->content('assets/css/faas/styles.css');
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
-        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-
         CRUD::setValidation(FaasBuildingClassificationsRequest::class);
 
         $this->crud->addField(
@@ -147,6 +149,11 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 ]
             ]
         );
+        $this->crud->addField([
+            'name'  => 'separator',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+        ]);
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -159,16 +166,26 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 'allows_null' => false,
                 'default'     => 'Y',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-3'
                 ],
             ]
         );
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        FaasBuildingClassifications::creating(function($entry) {
+            $count = FaasBuildingClassifications::count();
+            $refID = 'BLDG-CLASS'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $entry->refID = $refID;
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$refID,
+                'category' =>'faas_building_classifications',
+                'type' =>'create',
+            ]);
+        });
     }
 
     /**
@@ -179,11 +196,19 @@ class FaasBuildingClassificationsCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        Widget::add()->type('style')->content('assets/css/faas/styles.css');
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
-        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        
         $this->setupCreateOperation();
+
+        FaasBuildingClassifications::updating(function($entry) {
+
+            $transCount = TransactionLogs::count();
+            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+          
+            TransactionLogs::create([
+                'refID' => $transRefID,
+                'transId' =>$entry->refID,
+                'category' =>'faas_building_classifications',
+                'type' =>'update',
+            ]);
+        });
     }
 }

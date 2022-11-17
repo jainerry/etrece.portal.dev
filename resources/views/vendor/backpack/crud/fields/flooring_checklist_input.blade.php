@@ -56,68 +56,63 @@
 		</div>
 	</div>
 
-	<input type="hidden" value="[]" name="flooring_floor1">
-	<input type="hidden" value="[]" name="flooring_floor2">
-	<input type="hidden" value="[]" name="flooring_floor3">
-	<input type="hidden" value="[]" name="flooring_floor4">
-
 	@foreach ($field['options'] as $key => $option)
 
-		<div class="row flooringOptionId_{{ $key }}" id="flooringOptionId_{{ $key }}">
+		<div class="row flooringOptionItem">
 			<div class="col-sm-4">
 				<div class="checkbox">
 					<label class="font-weight-normal">{{ $option }}</label>
 				</div>
 			</div>
-			<div class="col-sm-2 flooringCheckbox" data-for-floor="1">
+			<div class="col-sm-2 flooringCheckbox_1">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor_1" value="{{ $key }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor1_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
-			<div class="col-sm-2 flooringCheckbox" data-for-floor="2">
+			<div class="col-sm-2 flooringCheckbox_2">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor_2" value="{{ $key }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor2_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
-			<div class="col-sm-2 flooringCheckbox" data-for-floor="3">
+			<div class="col-sm-2 flooringCheckbox_3">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor_3" value="{{ $key }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor3_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
-			<div class="col-sm-2 flooringCheckbox" data-for-floor="4">
+			<div class="col-sm-2 flooringCheckbox_4">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor_4" value="{{ $key }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor4_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 		</div>
 
 	@endforeach
 
-	<div class="row">
+	<div class="row flooringOtherWrapper">
 		<div class="col-sm-4">
 		</div>
-		<div class="col-sm-2">
+		<div class="col-sm-2 flooringOther flooringOther_1 hidden">
 			<div class="checkbox">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="flooring_floor1_other" id="flooring_floor1_other" value="" />
+				<input type="text" class="form-control" name="floor1_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2">
+		<div class="col-sm-2 flooringOther flooringOther_2 hidden">
 			<div class="checkbox">
 			<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="flooring_floor2_other" id="flooring_floor2_other" value="" />
+				<input type="text" class="form-control" name="floor2_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2">
+		<div class="col-sm-2 flooringOther flooringOther_3 hidden">
 			<div class="checkbox">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="flooring_floor3_other" id="flooring_floor3_other" value="" />
+				<input type="text" class="form-control" name="floor3_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2">
+		<div class="col-sm-2 flooringOther flooringOther_4 hidden">
 			<div class="checkbox">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="flooring_floor4_other" id="flooring_floor4_other" value="" />
+				<input type="text" class="form-control" name="floor4_otherFlooring" value="" />
 			</div>
 		</div>
 	</div>
