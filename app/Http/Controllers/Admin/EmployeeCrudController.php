@@ -64,7 +64,16 @@ class EmployeeCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update');
-        
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+          
         $this->crud->addColumn([
             'label'     => 'Employee ID',
             'type'      => 'text',
@@ -77,9 +86,11 @@ class EmployeeCrudController extends CrudController
             ],
           ]);
 
+          
         // CRUD::column('employeeId');
         CRUD::column('fullname');
         CRUD::column('birthDate');
+        CRUD::column('created_at');
         // CRUD::addColumn([
         //     'label'=>'Section',
         //     'type'  => 'model_function',
