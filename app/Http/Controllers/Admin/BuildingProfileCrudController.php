@@ -771,7 +771,7 @@ class BuildingProfileCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
                 ],
                 [
                     'name'    => 'marketValue',
@@ -780,14 +780,15 @@ class BuildingProfileCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency',
                     ],
                     'label'   => 'Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'        => 'select_from_array',
-                    'options'     => [],
+                    'type'    => 'select',
                     'label'   => 'Assessment Level',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'model'     => "App\Models\FaasBuildingClassifications",
+                    'attribute' => 'assessmentLevel',
+                    'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
                 ],
                 [
                     'name'  => 'assessedValue',
@@ -796,7 +797,7 @@ class BuildingProfileCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency',
                     ],
                     'label' => 'Assessed Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
                 ],
                 [
                     'name'  => 'yearOfEffectivity',
