@@ -8,12 +8,13 @@ use App\Models\CitizenProfile;
 use App\Models\BuildingOwner;
 use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 use GuzzleHttp\Psr7\Request;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class BuildingProfile extends Model
 {
     use CrudTrait;
     use HasIdentifiableAttribute;
+    use HasUuids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES

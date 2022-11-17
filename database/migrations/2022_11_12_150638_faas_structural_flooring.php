@@ -14,7 +14,7 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_structural_flooring', function (Blueprint $table) {
-            $table->id();
+            $table->uuid('id');
             $table->string('name')->nullable();
             $table->timestamps();
         });

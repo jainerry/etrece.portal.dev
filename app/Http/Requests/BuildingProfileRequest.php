@@ -25,7 +25,14 @@ class BuildingProfileRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'isActive' => 'required',
+            'primary_owner' => 'required',
+            'ownerAddress' => 'required',
+            'no_of_street' => 'required',
+            'barangay_id' => 'required',
+            // 'assessmentType' => 'required',
+            // 'assessmentEffectivity' => 'required',
+            // 'assessmentEffectivityValue' => 'required',
         ];
     }
 

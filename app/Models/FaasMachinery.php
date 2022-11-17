@@ -105,10 +105,6 @@ class FaasMachinery extends Model
         }
     }
 
-    public function getReferenceId(){
-        return '<a href="'.url('/admin/faas-machinery/').'">'.$this->id.'</a>';
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

@@ -14,10 +14,10 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_building_profiles', function (Blueprint $table) {
-            $table->id();
-            $table->string('arpNo')->unique();
+            $table->uuid('id');
             $table->string('refID')->unique();
-            $table->string('code')->nullable();
+            $table->string('ARPNo')->nullable();
+            $table->string('transactionCode')->nullable();
             $table->string('primary_owner')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('tel_no')->nullable();
