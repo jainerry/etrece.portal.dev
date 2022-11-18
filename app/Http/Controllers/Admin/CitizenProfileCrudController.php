@@ -102,6 +102,8 @@ class CitizenProfileCrudController extends CrudController
             'name'  => 'brgyID',
             'label' => 'Barangay'
           ],
+
+
           function() {
             return \App\Models\Barangay::all()->pluck('name', 'id')->toArray();
             },
@@ -332,8 +334,8 @@ class CitizenProfileCrudController extends CrudController
          * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
         CitizenProfile::creating(function($entry) {
-            $count = CitizenProfile::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
-            $refId = 'CID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+            $count = CitizenProfile::select(DB::raw('count(*) as count'))->first();
+            $refId = 'CITIZEN'.'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
 
             $entry->refID = $refId;
             TransactionLogs::create([
@@ -367,11 +369,11 @@ class CitizenProfileCrudController extends CrudController
     public function getCluster(Request $req){
         if($req->selected == true){
             return response()->json([
-                "data"=>Street::select('name','id')->where('barangayId',$req->barangay_id)->get(),
+                "data"=>Street::select('name','id')->where('barangay_id',$req->barangay_id)->get(),
                 'selected'=>CitizenProfile::select('purokID')->where('id',$req->id)->first()
             ]);
         }else{
-            return response()->json(Street::select('name','id')->where('barangayId',$req->barangay_id)->get());
+            return response()->json(Street::select('name','id')->where('barangay_id',$req->barangay_id)->get());
         }
         
     }

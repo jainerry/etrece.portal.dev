@@ -124,8 +124,6 @@ class ProvinceCrudController extends CrudController
         'type'      => 'select',
         'name'      => 'region_id', 
         'entity'    => 'region',
-     
-        // optional - manually specify the related model and attribute
         'model'     => "App\Models\Regions", // related model
         'attribute' => 'name', // foreign key attribute that is shown to user
      
