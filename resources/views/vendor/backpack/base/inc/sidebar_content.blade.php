@@ -70,7 +70,7 @@
         @endcan
         
         @can('view-municipalities')
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('municipality') }}"><i class="nav-icon la la-list"></i> Municipalities</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('cities') }}"><i class="nav-icon la la-list"></i> Cities</a></li>
         @endcan
         @can('view-barangays')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('barangay') }}"><i class="nav-icon la la-list"></i> Barangays</a></li>

@@ -50,7 +50,7 @@ Route::group([
     Route::crud('faas-machinery', 'FaasMachineryCrudController');
     Route::crud('building-profile', 'BuildingProfileCrudController');
     Route::crud('barangay', 'BarangayCrudController');
-    Route::crud('municipality', 'MunicipalityCrudController');
+    Route::crud('cities', 'MunicipalityCrudController');
     Route::crud('province', 'ProvinceCrudController');
     Route::crud('structural-type', 'StructuralTypeCrudController');
     Route::crud('kind-of-building', 'KindOfBuildingCrudController');

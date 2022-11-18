@@ -27,9 +27,9 @@ class TransactionLogsCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\TransactionLogs::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/transaction-logs');
-        CRUD::setEntityNameStrings('transaction logs', 'transaction logs');
+        $this->crud->setModel(\App\Models\TransactionLogs::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/transaction-logs');
+        $this->crud->setEntityNameStrings('transaction logs', 'transaction logs');
         $this->crud->removeButton('delete');
     }
 
@@ -92,17 +92,28 @@ class TransactionLogsCrudController extends CrudController
             }
          );
 
-        CRUD::column('refId');
-        CRUD::column('transId');
-        CRUD::column('category');
-        CRUD::column('type');
-        CRUD::column('created_at');
+        // $this->crud->column('refID');
+        $this->crud->addColumn([
+          'label'     => 'Reference ID',
+          'type'      => 'text',
+          'name'      => 'refID',
+          'wrapper'   => [
+              'href' => function ($crud, $column, $entry, ) {
+                  return route('transaction-logs.edit',$entry->id);
+              },
+          ]
+      ]);
+
+        $this->crud->column('transId');
+        $this->crud->column('category');
+        $this->crud->column('type');
+        $this->crud->column('created_at');
 
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - $this->crud->column('price')->type('number');
+         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -114,15 +125,15 @@ class TransactionLogsCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(TransactionLogsRequest::class);
-        CRUD::field('transId');
-        CRUD::field('category');
-        CRUD::field('type');
+        $this->crud->setValidation(TransactionLogsRequest::class);
+        $this->crud->field('transId');
+        $this->crud->field('category');
+        $this->crud->field('type');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - $this->crud->field('price')->type('number');
+         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 

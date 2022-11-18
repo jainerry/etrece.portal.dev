@@ -38,8 +38,8 @@ class MunicipalityCrudController extends CrudController
     public function setup()
     {
         $this->crud->setModel(\App\Models\Municipality::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/municipality');
-        $this->crud->setEntityNameStrings('municipality', 'municipalities');
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/cities');
+        $this->crud->setEntityNameStrings('Cities', 'cities');
         $this->crud->removeButton('delete');
     }
 
@@ -61,7 +61,7 @@ class MunicipalityCrudController extends CrudController
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('municipality.edit',$entry->id);
+                    return route('cities.edit',$entry->id);
                 },
             ]
         ]);
@@ -94,7 +94,7 @@ class MunicipalityCrudController extends CrudController
         $this->crud->addField([
             'label' => 'ZIP Code',
             'type' => 'text',
-            'name' => 'code',
+            'name' => 'zipcode',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ],
@@ -138,7 +138,7 @@ class MunicipalityCrudController extends CrudController
             $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
 
             TransactionLogs::create([
-                'refID' => $transRefID,
+                // 'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'municipality',
                 'type' =>'create',
@@ -162,7 +162,7 @@ class MunicipalityCrudController extends CrudController
             $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
-                'refID' => $transRefID,
+                // 'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'municipality',
                 'type' =>'update',
