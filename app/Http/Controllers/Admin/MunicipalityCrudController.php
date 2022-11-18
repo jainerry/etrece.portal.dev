@@ -55,6 +55,28 @@ class MunicipalityCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update'); 
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+          
+          $this->crud->addFilter([
+            'type'  => 'select2',
+            'name'  => 'province_id',
+            'label' => 'Province'
+          ],
+          function() {
+            return \App\Models\Province::all()->pluck('name', 'id')->toArray();
+            },
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('where', 'province_id', $value);
+          });
+
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -72,7 +94,9 @@ class MunicipalityCrudController extends CrudController
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
+        $this->crud->column('created_at');
     }
+   
 
     /**
      * Define what happens when the Create operation is loaded.

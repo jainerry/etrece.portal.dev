@@ -45,7 +45,16 @@ class RegionsCrudController extends CrudController
         $this->crud->removeButton('update');  
         $this->crud->orderBy('refID','desc');
         $this->crud->addClause('where', 'isActive', '=', 'y');
-
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+          
         $this->crud->addColumn([
             // Select
             'label'     => 'Reference ID',

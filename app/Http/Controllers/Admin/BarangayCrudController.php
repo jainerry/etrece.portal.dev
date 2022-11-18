@@ -36,9 +36,9 @@ class BarangayCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Barangay::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/barangay');
-        CRUD::setEntityNameStrings('barangay', 'barangays');
+        $this->crud->setModel(\App\Models\Barangay::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/barangay');
+        $this->crud->setEntityNameStrings('barangay', 'barangays');
         $this->crud->removeButton('delete');
     }
 
@@ -54,6 +54,28 @@ class BarangayCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update'); 
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+          $this->crud->addFilter([
+            'type'  => 'select2',
+            'name'  => 'municipality_id',
+            'label' => 'City'
+          ],
+          function() {
+            return \App\Models\Municipality::all()->pluck('name', 'id')->toArray();
+            },
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('where', 'municipality_id', $value);
+          });
+
+          
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -65,12 +87,18 @@ class BarangayCrudController extends CrudController
             ]
         ]);
         $this->crud->column('name');
-        $this->crud->column('municipality');
+        $this->crud->addColumn([
+            "name"=>'municipality',
+            "type"=>"relationship",
+            'attribute' => 'name',
+            "label"=>"City"
+        ]);
         $this->crud->addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
             'function_name' => 'getStatus',
         ]);
+        $this->crud->column('created_at');
     }
 
     /**
@@ -81,7 +109,7 @@ class BarangayCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BarangayRequest::class);
+        $this->crud->setValidation(BarangayRequest::class);
 
         $this->crud->addField([
             'name' => 'name',

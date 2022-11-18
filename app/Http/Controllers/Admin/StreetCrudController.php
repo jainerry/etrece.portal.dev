@@ -37,9 +37,9 @@ class StreetCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Street::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/street');
-        CRUD::setEntityNameStrings('street', 'streets');
+        $this->crud->setModel(\App\Models\Street::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/street');
+        $this->crud->setEntityNameStrings('street', 'streets');
         $this->crud->removeButton('delete');
     }
 
@@ -61,7 +61,7 @@ class StreetCrudController extends CrudController
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('barangay.edit',$entry->id);
+                    return route('street.edit',$entry->id);
                 },
             ]
         ]);
@@ -86,7 +86,7 @@ class StreetCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(StreetRequest::class);
+        $this->crud->setValidation(StreetRequest::class);
 
         $this->crud->addField([
             'name'=>'barangayId',

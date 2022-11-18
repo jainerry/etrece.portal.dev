@@ -56,7 +56,27 @@ class ProvinceCrudController extends CrudController
         $this->crud->removeButton('update');  
         $this->crud->orderBy('refID','desc');
         $this->crud->addClause('where', 'isActive', '=', 'y');
-
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+          $this->crud->addFilter([
+            'type'  => 'select2',
+            'name'  => 'region_id',
+            'label' => 'Region'
+          ],
+          function() {
+            return \App\Models\Regions::all()->pluck('name', 'id')->toArray();
+            },
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('where', 'region_id', $value);
+          });
+          
 
         $this->crud->addColumn([
             // Select
@@ -76,6 +96,7 @@ class ProvinceCrudController extends CrudController
         $this->crud->removeButton('show');
        $this->crud->Column('region_id');
        $this->crud->Column('name');
+       $this->crud->Column('created_at');
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * -$this->crud->column('price')->type('number');
