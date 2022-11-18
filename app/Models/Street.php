@@ -48,7 +48,7 @@ class Street extends Model
     }
 
     public function getBarangay(){
-        return Barangay::find($this->barangayId)->name;
+        return Barangay::find($this->barangay_id)->name;
     }
 
     /*

@@ -55,6 +55,26 @@ class StreetCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update'); 
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+          ],
+            false,
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('whereDate', 'created_at', $value);
+          });
+        $this->crud->addFilter([
+            'type'  => 'select2',
+            'name'  => 'barangay_id',
+            'label' => 'Barangay'
+          ],
+          function() {
+            return \App\Models\Barangay::all()->pluck('name', 'id')->toArray();
+            },
+          function ($value) { // if the filter is active, apply these constraints
+            $this->crud->addClause('where', 'barangay_id', $value);
+          });
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -67,9 +87,11 @@ class StreetCrudController extends CrudController
         ]);
         $this->crud->column('name');
         $this->crud->addColumn([
-            'label'=>'Barangay',
-            'type'  => 'model_function',
-            'function_name' => 'getBarangay',
+            'name'=>'barangay_id',
+            'label' => "Barangay",
+            'type'=>'select',
+            'entity' => 'barangay',
+            'attribute' => 'name',
         ]);
         $this->crud->addColumn([
             'label'=>'Status',
@@ -89,7 +111,7 @@ class StreetCrudController extends CrudController
         $this->crud->setValidation(StreetRequest::class);
 
         $this->crud->addField([
-            'name'=>'barangayId',
+            'name'=>'barangay_id',
             'label' => "Barangay",
             'type'=>'select',
             'entity' => 'barangay',

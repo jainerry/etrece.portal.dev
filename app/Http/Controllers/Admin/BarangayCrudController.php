@@ -7,7 +7,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use App\Models\Barangay;
 use App\Models\TransactionLogs;
-
+use Illuminate\Support\Facades\DB;
 /**
  * Class BarangayCrudController
  * @package App\Http\Controllers\Admin
@@ -87,11 +87,12 @@ class BarangayCrudController extends CrudController
             ]
         ]);
         $this->crud->column('name');
-        $this->crud->addColumn([
-            "name"=>'municipality',
-            "type"=>"relationship",
+       $this->crud->addColumn([
+            'name'=>'municipality_id',
+            'label' => "City",
+            'type'=>'select',
+            'entity' => 'municipality',
             'attribute' => 'name',
-            "label"=>"City"
         ]);
         $this->crud->addColumn([
             'label'=>'Status',

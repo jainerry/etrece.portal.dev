@@ -68,7 +68,8 @@ class MunicipalityCrudController extends CrudController
           $this->crud->addFilter([
             'type'  => 'select2',
             'name'  => 'province_id',
-            'label' => 'Province'
+            'label' => 'Province',
+            
           ],
           function() {
             return \App\Models\Province::all()->pluck('name', 'id')->toArray();
@@ -88,7 +89,13 @@ class MunicipalityCrudController extends CrudController
             ]
         ]);
         $this->crud->column('name');
-        $this->crud->column('province');
+        $this->crud->addColumn([
+            'name'=>'province_id',
+            'label' => "Province",
+            'type'=>'select',
+            'entity' => 'province',
+            'attribute' => 'name',
+        ]);
         $this->crud->addColumn([
             'label'=>'Status',
             'type'  => 'model_function',

@@ -94,7 +94,13 @@ class ProvinceCrudController extends CrudController
 
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
-       $this->crud->Column('region_id');
+        $this->crud->addColumn([
+            'name'=>'region_id',
+            'label' => "Region",
+            'type'=>'select',
+            'entity' => 'region',
+            'attribute' => 'name',
+        ]);
        $this->crud->Column('name');
        $this->crud->Column('created_at');
         /**

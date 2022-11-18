@@ -55,7 +55,7 @@ class StreetSeeder extends Seeder
                 'id' => STR::uuid(),
                 'refID' => 'STREET-'.str_pad(($index), 4, "0", STR_PAD_LEFT),
                 'name'=>$street,
-                'barangayId'=>$barangayIds[$randomNum],
+                'barangay_id'=>$barangayIds[$randomNum],
                 'created_at'=>Carbon::now()
             ]);
         }
