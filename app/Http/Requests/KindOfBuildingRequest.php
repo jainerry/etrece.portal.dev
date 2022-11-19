@@ -26,6 +26,7 @@ class KindOfBuildingRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:kind_of_buildings,name,'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

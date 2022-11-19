@@ -26,7 +26,8 @@ class SectionRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:sections,name'.$this->id,
-            'officeId' => 'required'
+            'officeId' => 'required',
+            'isActive' => 'required'
         ];
     }
 

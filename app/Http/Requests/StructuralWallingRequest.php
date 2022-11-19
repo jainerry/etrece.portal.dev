@@ -26,6 +26,7 @@ class StructuralWallingRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:faas_structural_walling,name'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

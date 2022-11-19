@@ -28,6 +28,7 @@ class UserRequest extends FormRequest
             'name' => 'required',
             'username' => 'required|unique:users,username'.$this->id,
             'email' => 'required|unique:users,email'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

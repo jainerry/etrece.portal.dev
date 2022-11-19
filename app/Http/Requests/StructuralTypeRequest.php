@@ -26,6 +26,7 @@ class StructuralTypeRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:structural_types,name'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

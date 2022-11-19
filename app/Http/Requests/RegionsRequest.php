@@ -25,7 +25,8 @@ class RegionsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:regions,name'.$this->id
+            'name' => 'required|unique:regions,name'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

@@ -28,15 +28,6 @@ class EmployeeRequest extends FormRequest
             'lastName' => 'required',
             'firstName' => 'required',
             'birthDate' => 'required',
-            // 'birthPlace' => 'required',
-            // 'citizenShipAcquisition' => 'required',
-            // 'officeId' => 'required',
-            // 'sectionId' => 'required',
-            // 'positionId' => 'required',
-            // 'appointmentId' => 'required',
-            // 'civilStatus' => 'required',
-            // 'citizenShip' => 'required',
-            // 'sex' => 'required',
             'isActive' => 'required'
         ];
     }

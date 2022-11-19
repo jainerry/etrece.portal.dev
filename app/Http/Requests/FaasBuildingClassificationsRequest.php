@@ -27,6 +27,7 @@ class FaasBuildingClassificationsRequest extends FormRequest
         return [
             'name' => 'required|unique:faas_building_classifications,name,'.$this->id,
             'assessmentLevel' => 'required',
+            'isActive' => 'required'
         ];
     }
 

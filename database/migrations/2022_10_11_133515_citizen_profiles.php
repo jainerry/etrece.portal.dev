@@ -23,9 +23,9 @@ return new class extends Migration
             $table->string('suffix')->nullable();
             $table->integer('sex')->nullable();
             $table->date('bdate')->nullable();
-            $table->string('civilStatus')->nullable();
-            $table->string('brgyID')->nullable();
-            $table->string('purokID')->nullable();
+            $table->foreignUuid('civilStatus')->nullable();
+            $table->foreignUuid('brgyID')->nullable();
+            $table->foreignUuid('purokID')->nullable();
             $table->string('address')->nullable();
             $table->string('placeOfOrigin')->nullable();
             $table->char('isActive', 1)->default('Y');

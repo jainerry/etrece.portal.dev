@@ -26,6 +26,7 @@ class FaasLandClassificationRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:faas_land_classifications,name,'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

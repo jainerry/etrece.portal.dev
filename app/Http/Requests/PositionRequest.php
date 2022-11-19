@@ -26,6 +26,7 @@ class PositionRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:positions,name,'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

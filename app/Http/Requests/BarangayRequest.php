@@ -26,6 +26,7 @@ class BarangayRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:barangays,name,'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

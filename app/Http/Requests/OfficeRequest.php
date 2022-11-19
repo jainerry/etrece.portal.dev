@@ -26,7 +26,8 @@ class OfficeRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:offices,name,'.$this->id,
-            'officeLocationId' => 'required'
+            'officeLocationId' => 'required',
+            'isActive' => 'required'
         ];
     }
 

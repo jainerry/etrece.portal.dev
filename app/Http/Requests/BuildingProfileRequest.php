@@ -33,6 +33,7 @@ class BuildingProfileRequest extends FormRequest
             'assessmentType' => 'required',
             'assessmentEffectivity' => 'required',
             'assessmentEffectivityValue' => 'required',
+            'isActive' => 'required'
         ];
     }
 

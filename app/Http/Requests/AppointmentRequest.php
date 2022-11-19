@@ -26,6 +26,7 @@ class AppointmentRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:appointments,name,'.$this->id,
+            'isActive' => 'required'
         ];
     }
 

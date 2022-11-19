@@ -26,7 +26,8 @@ class ProvinceRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:provinces,name,'.$this->id,
-            'region_id' => 'required'
+            'region_id' => 'required',
+            'isActive' => 'required'
         ];
     }
 

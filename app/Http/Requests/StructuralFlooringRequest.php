@@ -26,6 +26,7 @@ class StructuralFlooringRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:faas_structural_flooring,name'.$this->id,
+            'isActive' => 'required'
         ];
     }
 
