@@ -44,7 +44,6 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->setModel(\App\Models\BuildingProfile::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/building-profile');
         $this->crud->setEntityNameStrings('building profile', 'building profiles');
-        $this->crud->setCreateView('buildingProfile.create');
         $this->crud->removeButton('delete');
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
@@ -138,7 +137,7 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
             'attribute' => 'full_name',
-            'data_source' => url('/admin/api/cp/search'),
+            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -150,8 +149,9 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Secondary Owner',
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
-            'data_source' => url('/admin/api/cp/search'),
+            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
             'attribute' => 'full_name',
+            'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
@@ -424,7 +424,14 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'building_permit_date_issued',
             'label' => 'Building Permit Date No',
-            'type' => 'date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -454,7 +461,14 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'certificate_of_completion_issued_on',
             'label' => 'Certificate of Completion Issued On',
-            'type' => 'date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -463,7 +477,14 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'certificate_of_occupancy_issued_on',
             'label' => 'Certificate of Occupancy Issued On',
-            'type' => 'date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -472,7 +493,14 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'date_constructed',
             'label' => 'Date Constructed',
-            'type' => 'date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -481,7 +509,14 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'date_occupied',
             'label' => 'Date Occupied',
-            'type' => 'date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -860,11 +895,7 @@ class BuildingProfileCrudController extends CrudController
             $refID = 'BUILDING-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'faas_building',
                 'type' =>'create',
@@ -884,12 +915,8 @@ class BuildingProfileCrudController extends CrudController
         $this->setupCreateOperation();
 
         BuildingProfile::updating(function($entry) {
-
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'faas_building',
                 'type' =>'update',

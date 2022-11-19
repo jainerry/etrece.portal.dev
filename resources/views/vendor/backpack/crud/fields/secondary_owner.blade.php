@@ -91,7 +91,6 @@
                 var $dataSource = element.attr('data-data-source');
                 var $isFieldInline = element.data('field-is-inline');
                 var $dependencies = JSON.parse(element.attr('data-dependencies'));
-                console.log(element.val());
                 $(element).select2({
                     theme: 'bootstrap',
                     multiple: true,
@@ -112,18 +111,6 @@
                         },
                         processResults: function(data) {
                             let paginate = false;
-                            console.log({
-                                results: $.map(data, function() {
-                                    return {
-                                        text: this.entry_data,
-                                        id: this.id
-                                    }
-                                }),
-                                pagination: {
-                                    more: paginate,
-                                }
-
-                            })
                             return {
                                 results: $.map(data, function(item) {
                                     return {
@@ -132,10 +119,7 @@
                                                 Fullname: <b class="fullname"> ${item.fullname}</b>
                                             </div>
                                             <div>
-                                                Suffix: <b> ${item.suffix}</b>
-                                            </div>
-                                            <div>
-                                                Reference ID: <b> ${item.refId}</b>
+                                                Reference ID: <b> ${item.refID}</b>
                                             </div>
                                             <div>
                                                 Birth Date: <b> ${item.bdate}</b>

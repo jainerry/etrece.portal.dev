@@ -26,8 +26,6 @@ class CitizenProfileCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    // use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
     
 
     public function __construct()
@@ -52,9 +50,6 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         $this->crud->setEntityNameStrings('citizen profile', 'citizen profiles');
         $this->crud->setCreateContentClass('col-md-12 asdasd');
-    
-        // dd($this->crud);
-      
     }
     
     /**
@@ -68,20 +63,16 @@ class CitizenProfileCrudController extends CrudController
 
     protected function setupListOperation()
     {
-        
         $this->crud->enableExportButtons();
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
         $this->crud->orderBy('refID','desc');
-        $this->crud->addClause('where', 'isActive', '=', 'y');
         $this->crud->addColumn([
-            // Select
             'label'     => 'Reference ID',
             'type'      => 'text',
-            'name'      => 'refID', // the db column for the foreign key
+            'name'      => 'refID',
             'wrapper'   => [
-                // 'element' => 'a', // the element will default to "a" so you can skip it here
                 'href' => function ($crud, $column, $entry, ) {
                     return route('citizen-profile.edit',$entry->id);
                 },
@@ -91,25 +82,24 @@ class CitizenProfileCrudController extends CrudController
             'type'  => 'date',
             'name'  => 'created_at',
             'label' => 'Created At'
-          ],
+            ],
             false,
-          function ($value) { // if the filter is active, apply these constraints
+            function ($value) {
             $this->crud->addClause('whereDate', 'created_at', $value);
-          });
-          
-          $this->crud->addFilter([
+        });
+        
+        $this->crud->addFilter([
             'type'  => 'select2',
             'name'  => 'brgyID',
             'label' => 'Barangay'
-          ],
+        ],
 
-
-          function() {
+        function() {
             return \App\Models\Barangay::all()->pluck('name', 'id')->toArray();
-            },
-          function ($value) { // if the filter is active, apply these constraints
+        },
+        function ($value) {
             $this->crud->addClause('where', 'brgyID', $value);
-          });
+        });
 
         $this->crud->addColumn([
             'name'        => 'fullname',
@@ -124,35 +114,21 @@ class CitizenProfileCrudController extends CrudController
         ]);
       
         $this->crud->column('bdate');
-        // $this->crud->addColumn([
-        //     'name'=>'brgyID',
-        //     'label' => "Barangay",
-        //     'type'=>'select',
-        //     'entity' => 'barangay',
-        //     'attribute' => 'name',
-        // ]);
         $this->crud->addColumn([
-            // run a function on the CRUD model and show its return value
             'name'  => 'address',
-            'label' => 'Address', // Table column heading
+            'label' => 'Address',
             'type'  => 'model_function',
-            'function_name' => 'getAddressWithBaranggay', // the method in your Model
-            // 'function_parameters' => [$one, $two], // pass one/more parameters to that method
-            // 'limit' => 100, // Limit the number of characters shown
-            // 'escaped' => false, // echo using {!! !!} instead of {{ }}, in order to render HTML
+            'function_name' => 'getAddressWithBaranggay',
          ]);
-        $this->crud->column('created_at');
-        $this->crud->column('isActive');
-        // $this->crud->column('placeOfOrigin');
-        // $this->crud->column('purokID');
+         $this->crud->addColumn([
+            'name'  => 'barangay',
+            'label' => 'Barangay',
+            'type'  => 'select',
+            'entity'    => 'barangay',
+            'attribute' => 'name'
+        ]);
         $this->crud->column('sex');
-        // $this->crud->column('updated_at');
-
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - $this->crud->column('price')->type('number');
-         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
-         */
+        $this->crud->column('isActive')->label('Status');
     }
 
     /**
@@ -163,7 +139,6 @@ class CitizenProfileCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-   
         $this->crud->setValidation(CitizenProfileRequest::class);
         Widget::add([
             'type'     => 'script',
@@ -185,7 +160,7 @@ class CitizenProfileCrudController extends CrudController
             'label'=>'First Name',
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-3'
+                'class' => 'form-group col-12 col-md-3'
            ]
         ]);
         $this->crud->addField([
@@ -194,7 +169,7 @@ class CitizenProfileCrudController extends CrudController
             'allows_null' => true,
             'hint'=>'optional',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-3'
+                'class' => 'form-group col-12 col-md-3'
            ]
         ]);
         $this->crud->addField([
@@ -202,7 +177,7 @@ class CitizenProfileCrudController extends CrudController
             'label'=>'Last Name',
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-3'
+                'class' => 'form-group col-12 col-md-3'
            ]
            
         ]);
@@ -227,7 +202,7 @@ class CitizenProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3'
             ],
         ]);
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name'        => 'civilStatus',
             'label'       => "Civil Status",
             'type'        => 'select_from_array',
@@ -237,26 +212,22 @@ class CitizenProfileCrudController extends CrudController
             'allows_null' => false,
             'default'     => '1',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-4'
             ]
-            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
-    //   dd(Carbon::now()->subYears(130)->format('Y-m-d'));
-        $this->crud->addField([   // date_picker
+        $this->crud->addField([
             'name'  => 'bdate',
             'type'  => 'date_picker',
             'label' => 'Birthdate',
-            
-            // optional:
             'date_picker_options' => [
-               'todayBtn' => 'linked',
-               'format'   => 'yyyy-mm-dd',
-               'language' => 'fr',
-               'endDate' => '0d',
-               'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                'startDate' => Carbon::now()->subYears(130)->format('Y-m-d'),
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-4'
             ]
          ]);
         
@@ -268,22 +239,21 @@ class CitizenProfileCrudController extends CrudController
             'allows_null' => false,
            
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-4'
             ]
         ]);
 
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name'        => 'brgyID',
             'label'       => "Baranggay",
             'type'        => 'select_from_array',
             'options'     => $brgy,
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-4'
             ]
-            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
-        $this->crud->addField([   // select_from_array
+        $this->crud->addField([
             'name'        => 'purokID',
             'label'       => "Purok",
             'type'        => 'select_from_array',
@@ -291,48 +261,51 @@ class CitizenProfileCrudController extends CrudController
             'allows_null' => false,
             'default'     => '1',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-4'
             ]
-            // 'allows_multiple' => true, // OPTIONAL; needs you to cast this to array in your model;
         ]);
        
-         $this->crud->addField([   // Textarea
+         $this->crud->addField([
             'name'  => 'placeOfOrigin',
             'label' => 'Place of Origin',
-            'type'  => 'text',
+            'type'  => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
+                'class' => 'form-group col-12 col-md-12'
             ]
         ]);
+
         $this->crud->addField([
             'name'=>'address',
             'label'=>'Address',
             'type'  => 'textarea',
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-8'
+                'class' => 'form-group col-12 col-md-12'
            ]
            
         ]);
       
-       
-        $this->crud->addField([   
-            'name'        => 'isActive',
-            'label'       => "isActive",
-            'type'        => 'select_from_array',
-            'options'     => ['y'=>'TRUE','n'=>'FALSE'],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-lg-4'
-            ]
+        $this->crud->addField([
+            'name'  => 'separator2a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
         ]);
-       
         
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - $this->crud->field('price')->type('number');
-         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
-         */
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+        ]);
+
         CitizenProfile::creating(function($entry) {
             $count = CitizenProfile::select(DB::raw('count(*) as count'))->first();
             $refId = 'CITIZEN'.'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
@@ -355,7 +328,6 @@ class CitizenProfileCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-        // Widget::name('custom_script')->remove();
      
         CitizenProfile::updating(function($entry) {
             TransactionLogs::create([
@@ -409,9 +381,9 @@ class CitizenProfileCrudController extends CrudController
 
         if ($search_term)
         {
-            $results = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refId, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex'))
-                ->orWhereHas('barangay', function ($q) use ($search_term) {
-                    $q->where('name', 'like', '%'.$search_term.'%');
+            $results = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex'))
+                ->with('barangay', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
                 })
                 ->orWhere('refID', 'like', '%'.$search_term.'%')
                 ->orWhere('fName', 'like', '%'.$search_term.'%')

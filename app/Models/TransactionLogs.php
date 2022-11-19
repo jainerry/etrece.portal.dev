@@ -47,10 +47,11 @@ class TransactionLogs extends Model
     */
     protected static function boot(){
         parent::boot();
-        $count =  TransactionLogs::select(DB::raw('count(*) as count'))->where('refID','like',"%".Date('mdY')."%")->first();
-        $refId = 'TRANSID'.Date('mdY').'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
-        TransactionLogs::creating(function($model) use($refId){
-            $model->refId = $refId;
+        $transCount = TransactionLogs::count();
+        $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+
+        TransactionLogs::creating(function($model) use($transRefID){
+            $model->refID = $transRefID;
         });
       
     }

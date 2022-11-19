@@ -32,55 +32,6 @@ class Employee extends Model
 
     protected $appends = ['entry_data','full_name'];
 
-    protected $fillable = [
-        'employeeId',
-        'IDNo',
-        'lastName',
-        'firstName',
-        'middleName',
-        // 'nickName',
-        'birthDate',
-        // 'bloodType',
-        // 'tinNo',
-        // 'gsisNo',
-        // 'emergencyContactPerson',
-        // 'emergencyContactRelationship',
-        // 'emergencyContactNo',
-        // 'emergencyContactAddress1',
-        // 'emergencyContactAddress2',
-        // 'oldIDNo',
-        // 'isActive',
-        // 'sectionId',
-        // 'positionId',
-        // 'idPicture',
-        // 'halfPicture',
-        // 'signature',
-        // 'appointmentId',
-        // 'remarks',
-        // 'cellphoneNo',
-        'suffix',
-        // 'birthPlace',
-        // 'civilStatus',
-        // 'citizenShip',
-        // 'citizenShipAcquisition',
-        // 'dualCitizenCountry',
-        // 'sex',
-        // 'height',
-        // 'weight',
-        // 'pagibigNo',
-        // 'philhealthNo',
-        // 'sssNo',
-        // 'telephoneNo',
-        // 'email',
-        // 'residentialAddress',
-        // 'permanentAddress',
-        // 'residentialBarangayId',
-        // 'permanentBarangayId',
-        // 'residentialStreetId',
-        // 'permanentStreetId',
-        // 'officeId'
-    ];
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

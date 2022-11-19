@@ -51,7 +51,7 @@
             @endif
 
             <option value="{{ $item->getKey() }}" selected>
-                {{ $item->{$field['attribute']} }}
+                {{ $item->full_name}}
             </option>
             @endif
         @endif
@@ -167,49 +167,35 @@
                     }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    
-                    //if we have data.data here it means we returned a paginated instance from controller.
-                    //otherwise we returned one or more entries unpaginated.
                     let paginate = false;
-
-                    if (data.data) {
-                        paginate = data.next_page_url !== null;
-                        data = data.data;
-                    }
-
                     return {
-                        results: $.map(data, function (item) {
-                            var $itemText = processItemText(item, $fieldAttribute);
-                         
+                        results: $.map(data, function(item) {
                             return {
                                 text: `<div>
-                                            <div>
-                                                Fullname: <b class="fullname"> ${item.fullname}</b>
-                                            </div>
-                                            <div>
-                                                Suffix: <b> ${item.suffix}</b>
-                                            </div>
-                                            <div>
-                                                Reference ID: <b> ${item.refId}</b>
-                                            </div>
-                                            <div>
-                                                Birth Date: <b> ${item.bdate}</b>
-                                            </div>
-                                            <div>
-                                                Barangay: <b> ${item.barangay.name}</b>
-                                            </div>
-                                            <div>
-                                                Address: <b> ${item.address}</b>
-                                            </div>
-                                            </div>`,
-                                id: item[$connectedEntityKeyName],
+                                    <div>
+                                        Fullname: <b class="fullname"> ${item.fullname}</b>
+                                    </div>
+                                    <div>
+                                        Reference ID: <b> ${item.refID}</b>
+                                    </div>
+                                    <div>
+                                        Birth Date: <b> ${item.bdate}</b>
+                                    </div>
+                                    <div>
+                                        Barangay: <b> ${item.barangay.name}</b>
+                                    </div>
+                                    <div>
+                                        Address: <b> ${item.address}</b>
+                                    </div>
+                                    </div>`,
+                                id: item.id
                             }
                         }),
                         pagination: {
                             more: paginate,
                         }
-                    };
+
+                    }
                 },
                 cache: true
             },

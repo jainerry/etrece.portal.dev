@@ -396,6 +396,7 @@ class FaasMachineryCrudController extends CrudController
                     'name'  => 'dateAcquired',
                     'type'  => 'text',
                     'label' => 'Date Acquired',
+                    'hint' => '(Year)',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [

@@ -56,7 +56,7 @@ class CitizenProfile extends Model
     */
     
     public function barangay(){
-    return $this->belongsTo(Barangay::class, 'brgyID', 'id');
+        return $this->belongsTo(Barangay::class, 'brgyID', 'id');
     }
     
     public function building_profile(){
@@ -96,7 +96,7 @@ class CitizenProfile extends Model
     protected function isActive(): Attribute
     {
         return Attribute::make(
-            get: fn ($value) =>( $value == 'y'? 'Yes':'No'),
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
         );
     }
 }

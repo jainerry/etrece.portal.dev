@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('faas_structural_additional_items');
+        Schema::dropIfExists('transaction_logs');
     }
 };

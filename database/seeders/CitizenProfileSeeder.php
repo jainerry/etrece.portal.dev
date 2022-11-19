@@ -9,6 +9,8 @@ use Illuminate\Support\Facades\DB;
 use Faker\Generator as Faker;
 use App\Models\CitizenProfile as cp;
 use Illuminate\Support\Str;
+use App\Models\Barangay;
+
 class CitizenProfileSeeder extends Seeder
 {
     /**

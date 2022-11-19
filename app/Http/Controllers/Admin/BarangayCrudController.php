@@ -155,11 +155,7 @@ class BarangayCrudController extends CrudController
             $refID = 'BRGY-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'barangay',
                 'type' =>'create',
@@ -178,12 +174,8 @@ class BarangayCrudController extends CrudController
         $this->setupCreateOperation();
 
         Barangay::updating(function($entry) {
-
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'barangay',
                 'type' =>'update',
