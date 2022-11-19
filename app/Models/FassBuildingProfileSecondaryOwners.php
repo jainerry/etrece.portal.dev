@@ -5,8 +5,9 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Support\Str;
 
-class FaasLandSecondaryOwners extends Model
+class FassBuildingProfileSecondaryOwners extends Model
 {
     use CrudTrait;
     use HasUuids;
@@ -17,7 +18,7 @@ class FaasLandSecondaryOwners extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'faas_land_secondary_owners';
+    protected $table = 'fass_building_profile_secondary_owners';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -27,7 +28,7 @@ class FaasLandSecondaryOwners extends Model
 
     protected $fillable = [
         'citizen_profile_id',
-        'land_profile_id',
+        'building_profile_id',
     ];
 
     /*
@@ -35,6 +36,23 @@ class FaasLandSecondaryOwners extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    // protected static function boot(){
+    //     parent::boot();
+    //     $uniqueID = STR::uuid();
+    //     FassBuildingProfileSecondaryOwners::creating(function($model) use($uniqueID){
+    //         $model->id = $uniqueID;
+    //     });
+    // }
+
+    protected static function boot()
+    {
+        parent::boot();
+
+        static::creating(function ($model) {
+            $model->{$model->getKeyName()} = Str::uuid()->toString();
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------

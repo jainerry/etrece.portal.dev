@@ -26,7 +26,7 @@
                     $item = $connected_entity->find($item);
                 @endphp
             @endif
-            <option value="{{ $item->getKey() }}" selected>
+            <option value="{{ $item->id }}" selected>
                 {{ $item->full_name }}
             </option>
         @endforeach

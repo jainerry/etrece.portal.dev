@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class BuildingOwnerRequest extends FormRequest
+class FassBuildingProfileSecondaryOwnersRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,7 +24,9 @@ class BuildingOwnerRequest extends FormRequest
      */
     public function rules()
     {
-        return [];
+        return [
+            // 'name' => 'required|min:5|max:255'
+        ];
     }
 
     /**

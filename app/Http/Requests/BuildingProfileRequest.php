@@ -33,7 +33,19 @@ class BuildingProfileRequest extends FormRequest
             'assessmentType' => 'required',
             'assessmentEffectivity' => 'required',
             'assessmentEffectivityValue' => 'required',
-            'isActive' => 'required'
+            'isActive' => 'required',
+            'ARPNo' => 'max:25',
+            'transactionCode' => 'max:25',
+            'tel_no' => 'max:25',
+            'owner_tin_no' => 'max:25',
+            'admin_tel_no' => 'max:25',
+            'admin_tin_no' => 'max:25',
+            'oct_tct_no' => 'max:25',
+            'lot_no' => 'max:25',
+            'survey_no' => 'max:25',
+            'block_no' => 'max:25',
+            'building_permit_no' => 'max:25',
+            'TDNo' => 'max:25'
         ];
     }
 

@@ -26,68 +26,76 @@ $(function () {
     })
 
     //Flooring
-    $('.flooringOptionItem .flooringCheckbox_1 input[name="floor1_flooring"]').on('click', function(){
+    $('.flooringOptionItem .flooringCheckbox_1 input[name="floor1_flooring_radio"]').on('click', function(){
+        $('input[name="floor1_flooring"]').val($(this).val())
         $('.flooringOtherWrapper .flooringOther_1 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_1').addClass('hidden')
+        $('.flooringOtherWrapper .flooringOther_1_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_1').removeClass('hidden')
+            $('.flooringOtherWrapper .flooringOther_1_wrapper').removeClass('hidden')
         }
     })
 
-    $('.flooringOptionItem .flooringCheckbox_2 input[name="floor2_flooring"]').on('click', function(){
+    $('.flooringOptionItem .flooringCheckbox_2 input[name="floor2_flooring_radio"]').on('click', function(){
+        $('input[name="floor2_flooring"]').val($(this).val())
         $('.flooringOtherWrapper .flooringOther_2 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_2').addClass('hidden')
+        $('.flooringOtherWrapper .flooringOther_2_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_2').removeClass('hidden')
+            $('.flooringOtherWrapper .flooringOther_2_wrapper').removeClass('hidden')
         }
     })
 
-    $('.flooringOptionItem .flooringCheckbox_3 input[name="floor3_flooring"]').on('click', function(){
+    $('.flooringOptionItem .flooringCheckbox_3 input[name="floor3_flooring_radio"]').on('click', function(){
+        $('input[name="floor3_flooring"]').val($(this).val())
         $('.flooringOtherWrapper .flooringOther_3 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_3').addClass('hidden')
+        $('.flooringOtherWrapper .flooringOther_3_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_3').removeClass('hidden')
+            $('.flooringOtherWrapper .flooringOther_3_wrapper').removeClass('hidden')
         }
     })
 
-    $('.flooringOptionItem .flooringCheckbox_4 input[name="floor4_flooring"]').on('click', function(){
+    $('.flooringOptionItem .flooringCheckbox_4 input[name="floor4_flooring_radio"]').on('click', function(){
+        $('input[name="floor4_flooring"]').val($(this).val())
         $('.flooringOtherWrapper .flooringOther_4 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_4').addClass('hidden')
+        $('.flooringOtherWrapper .flooringOther_4_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_4').removeClass('hidden')
+            $('.flooringOtherWrapper .flooringOther_4_wrapper').removeClass('hidden')
         }
     })
 
     //Walling
-    $('.wallingOptionItem .wallingCheckbox_1 input[name="floor1_walling"]').on('click', function(){
+    $('.wallingOptionItem .wallingCheckbox_1 input[name="floor1_walling_radio"]').on('click', function(){
+        $('input[name="floor1_walling"]').val($(this).val())
         $('.wallingOtherWrapper .wallingOther_1 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_1').addClass('hidden')
+        $('.wallingOtherWrapper .wallingOther_1_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_1').removeClass('hidden')
+            $('.wallingOtherWrapper .wallingOther_1_wrapper').removeClass('hidden')
         }
     })
 
-    $('.wallingOptionItem .wallingCheckbox_2 input[name="floor2_walling"]').on('click', function(){
+    $('.wallingOptionItem .wallingCheckbox_2 input[name="floor2_walling_radio"]').on('click', function(){
+        $('input[name="floor2_walling"]').val($(this).val())
         $('.wallingOtherWrapper .wallingOther_2 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_2').addClass('hidden')
+        $('.wallingOtherWrapper .wallingOther_2_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_2').removeClass('hidden')
+            $('.wallingOtherWrapper .wallingOther_2_wrapper').removeClass('hidden')
         }
     })
 
-    $('.wallingOptionItem .wallingCheckbox_3 input[name="floor3_walling"]').on('click', function(){
+    $('.wallingOptionItem .wallingCheckbox_3 input[name="floor3_walling_radio"]').on('click', function(){
+        $('input[name="floor3_walling"]').val($(this).val())
         $('.wallingOtherWrapper .wallingOther_3 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_3').addClass('hidden')
+        $('.wallingOtherWrapper .wallingOther_3_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_3').removeClass('hidden')
+            $('.wallingOtherWrapper .wallingOther_3_wrapper').removeClass('hidden')
         }
     })
 
-    $('.wallingOptionItem .wallingCheckbox_4 input[name="floor4_walling"]').on('click', function(){
+    $('.wallingOptionItem .wallingCheckbox_4 input[name="floor4_walling_radio"]').on('click', function(){
+        $('input[name="floor4_walling"]').val($(this).val())
         $('.wallingOtherWrapper .wallingOther_4 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_4').addClass('hidden')
+        $('.wallingOtherWrapper .wallingOther_4_wrapper').addClass('hidden')
         if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_4').removeClass('hidden')
+            $('.wallingOtherWrapper .wallingOther_4_wrapper').removeClass('hidden')
         }
     })
 

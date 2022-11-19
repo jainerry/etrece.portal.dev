@@ -54,13 +54,13 @@ return new class extends Migration
             $table->string('roof')->nullable();
             $table->string('other_roof')->nullable();
             $table->string('floor1_flooring')->nullable();
+            $table->string('floor2_flooring')->nullable();
+            $table->string('floor3_flooring')->nullable();
+            $table->string('floor4_flooring')->nullable();
             $table->string('floor1_otherFlooring')->nullable();
             $table->string('floor2_otherFlooring')->nullable();
             $table->string('floor3_otherFlooring')->nullable();
             $table->string('floor4_otherFlooring')->nullable();
-            $table->string('floor2_flooring')->nullable();
-            $table->string('floor3_flooring')->nullable();
-            $table->string('floor4_flooring')->nullable();
             $table->string('floor1_walling')->nullable();
             $table->string('floor2_walling')->nullable();
             $table->string('floor3_walling')->nullable();

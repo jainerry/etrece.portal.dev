@@ -2,30 +2,22 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BuildingOwnerRequest;
+use App\Http\Requests\FassBuildingProfileSecondaryOwnersRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class BuildingOwnerCrudController
+ * Class FassBuildingProfileSecondaryOwnersCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BuildingOwnerCrudController extends CrudController
+class FassBuildingProfileSecondaryOwnersCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
+    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware('can:view-building-profiles', ['only' => ['index','show']]);
-        $this->middleware('can:create-building-profiles', ['only' => ['create','store']]);
-        $this->middleware('can:edit-building-profiles', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-building-profiles', ['only' => ['destroy']]);
-    }
 
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
@@ -34,10 +26,9 @@ class BuildingOwnerCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\BuildingOwner::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/building-owner');
-        CRUD::setEntityNameStrings('building owner', 'building owners');
-        $this->crud->removeButton('delete');
+        CRUD::setModel(\App\Models\FassBuildingProfileSecondaryOwners::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/fass-building-profile-secondary-owners');
+        CRUD::setEntityNameStrings('fass building profile secondary owners', 'fass building profile secondary owners');
     }
 
     /**
@@ -48,15 +39,13 @@ class BuildingOwnerCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->enableExportButtons();
-        $this->crud->removeButton('delete');  
-        $this->crud->removeButton('show');
+        
 
-        CRUD::column('citizen_profile_id');
-        CRUD::column('building_profile_id');
-        CRUD::column('isPrimary');
-        CRUD::column('created_at');
-        CRUD::column('updated_at');
+        /**
+         * Columns can be defined using the fluent syntax or array syntax:
+         * - CRUD::column('price')->type('number');
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         */
     }
 
     /**
@@ -67,11 +56,15 @@ class BuildingOwnerCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(BuildingOwnerRequest::class);
+        CRUD::setValidation(FassBuildingProfileSecondaryOwnersRequest::class);
 
-        CRUD::field('citizen_profile_id');
-        CRUD::field('building_profile_id');
-        CRUD::field('isPrimary');
+        
+
+        /**
+         * Fields can be defined using the fluent syntax or array syntax:
+         * - CRUD::field('price')->type('number');
+         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         */
     }
 
     /**

@@ -50,7 +50,7 @@
             </option>
             @endif
 
-            <option value="{{ $item->getKey() }}" selected>
+            <option value="{{ $item->id }}" selected>
                 {{ $item->full_name}}
             </option>
             @endif

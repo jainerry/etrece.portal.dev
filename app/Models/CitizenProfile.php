@@ -7,7 +7,6 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 use App\Models\Barangay;
 use App\Models\BuildingProfile;
-use App\Models\BuildingOwner;
 use App\Models\FaasMachinery;
 use Searchab;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;

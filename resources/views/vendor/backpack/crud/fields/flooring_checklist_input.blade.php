@@ -66,22 +66,22 @@
 			</div>
 			<div class="col-sm-2 flooringCheckbox_1">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor1_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor1_flooring_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 flooringCheckbox_2">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor2_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor2_flooring_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 flooringCheckbox_3">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor3_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor3_flooring_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 flooringCheckbox_4">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor4_flooring" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor4_flooring_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 		</div>
@@ -91,26 +91,26 @@
 	<div class="row flooringOtherWrapper">
 		<div class="col-sm-4">
 		</div>
-		<div class="col-sm-2 flooringOther flooringOther_1 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 flooringOther flooringOther_1 ">
+			<div class="checkbox flooringOther_1_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor1_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 flooringOther flooringOther_2 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 flooringOther flooringOther_2 ">
+			<div class="checkbox flooringOther_2_wrapper hidden">
 			<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor2_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 flooringOther flooringOther_3 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 flooringOther flooringOther_3 ">
+			<div class="checkbox flooringOther_3_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor3_otherFlooring" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 flooringOther flooringOther_4 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 flooringOther flooringOther_4 ">
+			<div class="checkbox flooringOther_4_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor4_otherFlooring" value="" />
 			</div>

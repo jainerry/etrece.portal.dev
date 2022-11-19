@@ -110,7 +110,7 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'label' => 'ARP No.',
             'type' => 'text',
-            'name' => 'arpNo',
+            'name' => 'ARPNo',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -119,7 +119,7 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'label' => 'Transaction Code',
             'type' => 'text',
-            'name' => 'code',
+            'name' => 'transactionCode',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -359,7 +359,7 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'Land Reference',
         ]);
         $this->crud->addField([
-            'name' => 'tdn_arpNo',
+            'name' => 'TDNo',
             'label' => 'TDN/ARP No.',
             'type' => 'text',
             'wrapperAttributes' => [
@@ -642,6 +642,26 @@ class BuildingProfileCrudController extends CrudController
             'tab'   => 'Structural Characteristic',
         ]);
         $this->crud->addField([
+            'name'  => 'floor1_flooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor2_flooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor3_flooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor4_flooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
             'label' => 'Flooring',
             'type' => 'flooring_checklist_input',
             'name' => 'flooring',
@@ -651,10 +671,50 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'Structural Characteristic',
         ]);
         $this->crud->addField([
+            'name'  => 'floor1_otherFlooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor2_otherFlooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor3_otherFlooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor4_otherFlooring',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
             'name'  => 'separator4',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab'   => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor1_walling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor2_walling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor3_walling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor4_walling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
         ]);
         $this->crud->addField([
             'label' => 'Walling',
@@ -665,9 +725,29 @@ class BuildingProfileCrudController extends CrudController
             'model'     => "App\Models\StructuralWalling",
             'tab' => 'Structural Characteristic',
         ]);
+        $this->crud->addField([
+            'name'  => 'floor1_otherWalling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor2_otherWalling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor3_otherWalling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
+        $this->crud->addField([
+            'name'  => 'floor4_otherWalling',
+            'type'  => 'hidden',
+            'tab' => 'Structural Characteristic',
+        ]);
         /*Additional Items (Repeatable)*/
         $this->crud->addField([   
-            'name'  => 'additional_items',
+            'name'  => 'additionalItems',
             'label' => 'Additional Items',
             'type'  => 'repeatable',
             'subfields' => [
@@ -678,19 +758,19 @@ class BuildingProfileCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'    => 'additionalItem1',
+                    'name'    => 'additionalItem2',
                     'type'    => 'text',
                     'label'   => '',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'    => 'additionalItem1',
+                    'name'    => 'additionalItem3',
                     'type'    => 'text',
                     'label'   => '',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'    => 'additionalItem1',
+                    'name'    => 'additionalItem4',
                     'type'    => 'text',
                     'label'   => '',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -894,6 +974,10 @@ class BuildingProfileCrudController extends CrudController
             $count = BuildingProfile::count();
             $refID = 'BUILDING-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
+
+            $request = app(BuildingProfileRequest::class);
+
+            //dd($request);
 
             TransactionLogs::create([
                 'transId' =>$refID,

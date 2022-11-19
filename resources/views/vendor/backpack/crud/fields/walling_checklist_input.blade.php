@@ -66,22 +66,22 @@
 			</div>
 			<div class="col-sm-2 wallingCheckbox_1">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor1_walling" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor1_walling_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 wallingCheckbox_2">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor2_walling" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor2_walling_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 wallingCheckbox_3">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor3_walling" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor3_walling_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 			<div class="col-sm-2 wallingCheckbox_4">
 				<div class="checkbox">
-					<label class="font-weight-normal"><input type="radio" name="floor4_walling" value="{{ $key }}" data-name="{{ $option }}"></label>
+					<label class="font-weight-normal"><input type="radio" name="floor4_walling_radio" value="{{ $key }}" data-name="{{ $option }}"></label>
 				</div>
 			</div>
 		</div>
@@ -91,26 +91,26 @@
 	<div class="row wallingOtherWrapper">
 		<div class="col-sm-4">
 		</div>
-		<div class="col-sm-2 wallingOther wallingOther_1 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 wallingOther wallingOther_1 ">
+			<div class="checkbox wallingOther_1_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor1_otherWalling" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 wallingOther wallingOther_2 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 wallingOther wallingOther_2 ">
+			<div class="checkbox wallingOther_2_wrapper hidden">
 			<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor2_otherWalling" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 wallingOther wallingOther_3 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 wallingOther wallingOther_3 ">
+			<div class="checkbox wallingOther_3_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor3_otherWalling" value="" />
 			</div>
 		</div>
-		<div class="col-sm-2 wallingOther wallingOther_4 hidden">
-			<div class="checkbox">
+		<div class="col-sm-2 wallingOther wallingOther_4 ">
+			<div class="checkbox wallingOther_4_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
 				<input type="text" class="form-control" name="floor4_otherWalling" value="" />
 			</div>

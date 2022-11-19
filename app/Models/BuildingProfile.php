@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use App\Models\CitizenProfile;
-use App\Models\BuildingOwner;
+use App\Models\FassBuildingProfileSecondaryOwners;
 use Backpack\CRUD\app\Models\Traits\HasIdentifiableAttribute;
 use GuzzleHttp\Psr7\Request;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
@@ -28,6 +28,11 @@ class BuildingProfile extends Model
     // protected $fillable = ['roof'];
     // protected $hidden = [];
     // protected $dates = [];
+
+    protected $casts = [
+        'additionalItems' => 'array',
+        'propertyAssessment' => 'array'
+    ];
 
     /*
     |--------------------------------------------------------------------------
@@ -58,7 +63,7 @@ class BuildingProfile extends Model
     }
 
     public function building_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'building_owners','citizen_profile_id','building_profile_id');
+        return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
     }
     public function municipality(){
         return $this->belongsTo(Municipality::class, 'municipality_id', 'id');
@@ -72,17 +77,14 @@ class BuildingProfile extends Model
     public function kind_of_building(){
         return $this->belongsTo(KindOfBuilding::class, 'kind_of_building_id', 'id');
     }
-    public function roof(){
-        return $this->belongsToMany(StructuralRoofs::class,HasRoofs::class,'faas_building_profiles_id','structural_roofs_id');
-    }
+    // public function roof(){
+    //     return $this->belongsToMany(StructuralRoofs::class,HasRoofs::class,'faas_building_profiles_id','structural_roofs_id');
+    // }
     public function flooring(){
-        return $this->belongsToMany(StructuralFlooring::class,HasFlooring::class,'faas_building_profiles_id','structural_flooring_id');
+        return $this->belongsTo(StructuralFlooring::class);
     }
     public function walling(){
-        return $this->belongsToMany(StructuralWalling::class,HasWalling::class,'faas_building_profiles_id','structural_walling_id');
-    }
-    public function additional_items(){
-        return $this->hasMany(StructuralAdditionalItems::class);
+        return $this->belongsTo(StructuralWalling::class);
     }
     
     /*

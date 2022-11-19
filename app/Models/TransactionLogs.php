@@ -26,7 +26,7 @@ class TransactionLogs extends Model
     // protected $hidden = [];
     // protected $dates = [];
     protected $attributes = [
-        'refId' => ''
+        'refID' => ''
     ];
     /*
     |--------------------------------------------------------------------------
@@ -47,14 +47,14 @@ class TransactionLogs extends Model
     */
     protected static function boot(){
         parent::boot();
-        $transCount = TransactionLogs::count();
-        $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
+        $count = TransactionLogs::count();
+        $refID = 'TRANS-LOG'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
 
-        TransactionLogs::creating(function($model) use($transRefID){
-            $model->refID = $transRefID;
+        TransactionLogs::creating(function($model) use($refID){
+            $model->refID = $refID;
         });
-      
     }
+    
     // protected function refId(): Attribute
     // {
     //     return Attribute::make(
