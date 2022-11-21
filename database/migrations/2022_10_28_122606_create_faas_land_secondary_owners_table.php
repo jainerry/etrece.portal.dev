@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -14,7 +15,8 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_land_secondary_owners', function (Blueprint $table) {
-            $table->uuid('id')->primary();
+            $uuid = Str::uuid();
+            $table->uuid('id')->default($uuid);
             $table->foreignUuid('citizen_profile_id')->nullable();
             $table->foreignUuid('land_profile_id')->nullable();
             $table->timestamps();

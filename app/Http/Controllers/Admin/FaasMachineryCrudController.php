@@ -103,7 +103,7 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'label' => 'ARP No.',
             'type' => 'text',
-            'name' => 'arpNo',
+            'name' => 'ARPNo',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -112,7 +112,7 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'label' => 'Transaction Code',
             'type' => 'text',
-            'name' => 'code',
+            'name' => 'transactionCode',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -436,10 +436,15 @@ class FaasMachineryCrudController extends CrudController
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
+                    'name'  => 'separator2a',
+                    'type'  => 'custom_html',
+                    'value' => '<hr>',
+                ],
+                [
                     'name'  => 'originalCost',
                     'type'  => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency originalCost',
                     ],
                     'label' => 'Original Cost',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -460,13 +465,16 @@ class FaasMachineryCrudController extends CrudController
                     'name'  => 'noOfYearsUsed',
                     'type'  => 'number',
                     'label' => 'No. of Years Used',
+                    'attributes' => [
+                        'class' => 'form-control noOfYearsUsed',
+                    ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'rateOfDepreciation',
                     'type'  => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_percent',
+                        'class' => 'form-control text_input_mask_percent rateOfDepreciation',
                     ],
                     'label' => 'Rate of Depreciation',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -475,7 +483,8 @@ class FaasMachineryCrudController extends CrudController
                     'name'  => 'totalDepreciationPercentage',
                     'type'  => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_percent',
+                        'class' => 'form-control text_input_mask_percent totalDepreciationPercentage',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Total Depreciation - %',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -484,7 +493,7 @@ class FaasMachineryCrudController extends CrudController
                     'name'  => 'totalDepreciationValue',
                     'type'  => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency totalDepreciationValue',
                     ],
                     'label' => 'Total Depreciation - Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -493,7 +502,8 @@ class FaasMachineryCrudController extends CrudController
                     'name'  => 'depreciatedValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency depreciatedValue',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Depreciated Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -506,6 +516,49 @@ class FaasMachineryCrudController extends CrudController
             'reorder' => true,
             'tab' => 'Property Appraisal',
         ]);
+        $this->crud->addField([
+            'name'  => 'separator2b',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalOriginalCost',
+            'label'=>'TOTAL (Original Cost)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalTotalDepreciationValue',
+            'label'=>'TOTAL (Total Depreciation Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalDepreciatedValue',
+            'label'=>'TOTAL (Depreciated Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Appraisal',
+        ]);
+        
         /*Property Assessment*/
         $this->crud->addField([   
             'name'  => 'propertyAssessment',
@@ -525,6 +578,7 @@ class FaasMachineryCrudController extends CrudController
                     'type'    => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
@@ -536,6 +590,7 @@ class FaasMachineryCrudController extends CrudController
                     'attribute' => 'assessmentLevel',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
@@ -545,6 +600,7 @@ class FaasMachineryCrudController extends CrudController
                     'type'  => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Assessed Value',
                     'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
@@ -559,7 +615,7 @@ class FaasMachineryCrudController extends CrudController
             'new_item_label'  => 'New Item',
             'init_rows' => 1,
             'min_rows' => 1,
-            'max_rows' => 10,
+            'max_rows' => 1,
             'reorder' => true,
             'tab' => 'Property Assessment',
         ]);
@@ -624,11 +680,7 @@ class FaasMachineryCrudController extends CrudController
             $refID = 'MACHINERY-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'faas_machinery',
                 'type' =>'create',
@@ -647,12 +699,8 @@ class FaasMachineryCrudController extends CrudController
         $this->setupCreateOperation();
 
         FaasMachinery::updating(function($entry) {
-
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'faas_machinery',
                 'type' =>'update',

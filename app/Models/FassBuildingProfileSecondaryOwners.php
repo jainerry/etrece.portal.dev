@@ -37,14 +37,6 @@ class FassBuildingProfileSecondaryOwners extends Model
     |--------------------------------------------------------------------------
     */
 
-    // protected static function boot(){
-    //     parent::boot();
-    //     $uniqueID = STR::uuid();
-    //     FassBuildingProfileSecondaryOwners::creating(function($model) use($uniqueID){
-    //         $model->id = $uniqueID;
-    //     });
-    // }
-
     protected static function boot()
     {
         parent::boot();

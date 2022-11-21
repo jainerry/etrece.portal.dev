@@ -56,6 +56,8 @@ return new class extends Migration
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
+            $table->char('isIdleLand', 1)->default('N');
+            $table->char('isOwnerNonTreceResident', 1)->default('N');
             $table->timestamps();
         });
     }

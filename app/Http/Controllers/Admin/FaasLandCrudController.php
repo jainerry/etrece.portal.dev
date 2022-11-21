@@ -99,8 +99,16 @@ class FaasLandCrudController extends CrudController
         /*Main Information*/
         $this->crud->addField([
             'name'  => 'isIdleLand',
+            'type'  => 'hidden',
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'isIdleLand_temp',
             'label' => 'Is Idle Land',
             'type'  => 'checkbox',
+            'attributes' => [
+                'class' => 'isIdleLand_checkbox'
+            ],
             'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
@@ -112,7 +120,7 @@ class FaasLandCrudController extends CrudController
         $this->crud->addField([
             'label' => 'ARP No.',
             'type' => 'text',
-            'name' => 'arpNo',
+            'name' => 'ARPNo',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -121,7 +129,7 @@ class FaasLandCrudController extends CrudController
         $this->crud->addField([
             'label' => 'Transaction Code',
             'type' => 'text',
-            'name' => 'code',
+            'name' => 'transactionCode',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -170,20 +178,17 @@ class FaasLandCrudController extends CrudController
             'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'isIdleLand',
-            'label' => 'Is Idle Land',
-            'type'  => 'checkbox',
-            'tab'  => 'Main Information',
+            'name'  => 'isOwnerNonTreceResident',
+            'type'  => 'hidden',
+            'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'isCitizenFromTrece',
-            'label' => 'Is Citizen From Trece',
+            'name'  => 'isOwnerNonTreceResident_temp',
+            'label' => 'Non Trece Resident',
             'type'  => 'checkbox',
             'attributes' => [
-                'checked' => 'checked',
-                'class' => 'isCitizenFromTrece_checkbox'
+                'class' => 'isOwnerNonTreceResident_checkbox'
             ],
-            'value' => '1',
             'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
@@ -453,7 +458,10 @@ class FaasLandCrudController extends CrudController
                     'label'   => 'Classification',
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'name',
-                    'wrapper' => ['class' => 'form-group col-md-3 landAppraisal_classification'],
+                    'attributes' => [
+                        'class' => 'form-control classification',
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'subClass',
@@ -467,13 +475,16 @@ class FaasLandCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'code',
-                    'wrapper' => ['class' => 'form-group col-md-3 landAppraisal_actualUse'],
+                    'attributes' => [
+                        'class' => 'form-control actualUse',
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'area',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency area',
                     ],
                     'label' => 'Area',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -482,7 +493,7 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'unitValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency unitValue',
                     ],
                     'label'   => 'Unit Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -491,7 +502,7 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'baseMarketValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency baseMarketValue',
                     ],
                     'label'   => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -525,7 +536,7 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'unitValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency unitValue',
                     ],
                     'label'   => 'Unit Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -534,7 +545,7 @@ class FaasLandCrudController extends CrudController
                     'name'  => 'baseMarketValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency baseMarketValue',
                     ],
                     'label' => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -556,7 +567,7 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'baseMarketValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency baseMarketValue',
                     ],
                     'label'   => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -571,7 +582,7 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'adjustmentFactorPercentage',
                     'type'    => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_percent',
+                        'class' => 'form-control text_input_mask_percent adjustmentFactorPercentage',
                     ],
                     'label'   => '% Adj',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -580,7 +591,7 @@ class FaasLandCrudController extends CrudController
                     'name'  => 'valueAdjustment',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency valueAdjustment',
                     ],
                     'label' => 'Value Adjustment',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -589,7 +600,7 @@ class FaasLandCrudController extends CrudController
                     'name'  => 'marketValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency marketValue',
                     ],
                     'label' => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -613,13 +624,16 @@ class FaasLandCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'code',
-                    'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_actualUse'],
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency actualUse',
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'marketValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency marketValue',
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
@@ -630,19 +644,19 @@ class FaasLandCrudController extends CrudController
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'assessmentLevel',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_percent',
+                        'class' => 'form-control text_input_mask_percent assessmentLevel',
                     ],
                     'label'   => 'Assessment Level',
-                    'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_assessmentLevel'],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'assessmentValue',
                     'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency assessmentValue',
                     ],
                     'label' => 'Assessment Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_assessmentValue'],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ]
             ],
             'new_item_label'  => 'New Item',
@@ -713,11 +727,7 @@ class FaasLandCrudController extends CrudController
             $refID = 'LAND-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'faas_land',
                 'type' =>'create',
@@ -736,12 +746,8 @@ class FaasLandCrudController extends CrudController
         $this->setupCreateOperation();
 
         FaasLand::updating(function($entry) {
-
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
           
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'faas_land',
                 'type' =>'update',

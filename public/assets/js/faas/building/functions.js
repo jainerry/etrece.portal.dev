@@ -309,6 +309,5 @@ function propertyAssessmentComputation(){
     }
     
     assessedValue = (marketValue / 100) * assessmentLevel
-    console.log(assessedValue)
     $('input[name="propertyAssessment[0][assessedValue]"]').val(assessedValue)
 }

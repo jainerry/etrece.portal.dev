@@ -32,7 +32,7 @@ class FaasMachineryClassificationSeeder extends Seeder
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
-                'assessmentLevel' => '50%',
+                'assessmentLevel' => '80%',
                 'created_at' => Carbon::now(),
             ],
             [
