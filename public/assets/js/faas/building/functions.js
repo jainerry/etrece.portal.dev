@@ -149,10 +149,14 @@ $(function () {
     //kind_of_building_id
     $('select[name="kind_of_building_id"]').on('change', function(){
         let kind_of_building_id = $(this).val()
-        console.log(kind_of_building_id)
         $('select[name="propertyAssessment[0][actualUse]"]').val(kind_of_building_id).change()
         $('select[name="propertyAssessment[0][assessmentLevel]"]').val(kind_of_building_id).change()
         propertyAssessmentComputation()
+    })
+
+    //totalFloorArea
+    $('input[name="totalFloorArea"]').on('keyup', function(){
+        propertyAppraisalComputation()
     })
 
 })
@@ -285,6 +289,9 @@ function propertyAppraisalComputation(){
 
     let marketValue = totalConstructionCost_temp
     $('input[name="marketValue"]').val(marketValue)
+    $('input[name="propertyAssessment[0][marketValue]"]').val(marketValue)
+
+    propertyAssessmentComputation()
 }
 
 function propertyAssessmentComputation(){
@@ -302,5 +309,6 @@ function propertyAssessmentComputation(){
     }
     
     assessedValue = (marketValue / 100) * assessmentLevel
+    console.log(assessedValue)
     $('input[name="propertyAssessment[0][assessedValue]"]').val(assessedValue)
 }

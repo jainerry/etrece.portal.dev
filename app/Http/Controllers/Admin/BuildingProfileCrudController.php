@@ -908,7 +908,7 @@ class BuildingProfileCrudController extends CrudController
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
                 ],
@@ -929,7 +929,7 @@ class BuildingProfileCrudController extends CrudController
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'assessmentLevel',
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
                 ],

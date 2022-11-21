@@ -24,7 +24,7 @@ class FaasMachineryClassificationSeeder extends Seeder
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
-                'assessmentLevel' => '20%',
+                'assessmentLevel' => '10%',
                 'created_at' => Carbon::now(),
             ],
             [
