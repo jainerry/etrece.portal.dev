@@ -25,7 +25,7 @@ class StructuralRoofsRequest extends FormRequest
     public function rules()
     {
         return [
-            'name' => 'required|unique:structural_roofs,name'.$this->id,
+            'name' => 'required|unique:structural_roofs,name,'.$this->id,
             'isActive' => 'required'
         ];
     }

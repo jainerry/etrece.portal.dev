@@ -6,6 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use App\Models\StructuralType;
 use Illuminate\Support\Str;
+use Illuminate\Support\Carbon;
 
 class StructuralTypes extends Seeder
 {
@@ -17,7 +18,12 @@ class StructuralTypes extends Seeder
     public function run()
     {
         StructuralType::insert([
-            ['id' => STR::uuid(),'refID' => 'STRUC-TYPE-'.str_pad((0), 4, "0", STR_PAD_LEFT),'name'=>'Residential Bldg'],
+            [
+            'id' => STR::uuid(),
+            'refID' => 
+            'STRUC-TYPE-'.str_pad((0), 4, "0", STR_PAD_LEFT),
+            'name'=>'Residential Bldg',
+            'created_at' => Carbon::now()]
         ]);
     }
 }

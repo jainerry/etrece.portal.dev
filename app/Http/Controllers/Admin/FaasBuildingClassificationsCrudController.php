@@ -37,9 +37,9 @@ class FaasBuildingClassificationsCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\FaasBuildingClassifications::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-building-classifications');
-        CRUD::setEntityNameStrings('faas building classifications', 'faas building classifications');
+       $this->crud->setModel(\App\Models\FaasBuildingClassifications::class);
+       $this->crud->setRoute(config('backpack.base.route_prefix') . '/faas-building-classifications');
+       $this->crud->setEntityNameStrings('faas building classifications', 'faas building classifications');
         $this->crud->removeButton('delete');
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
@@ -59,6 +59,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
         $this->crud->enableExportButtons();
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
+
         $this->crud->removeButton('update'); 
         $this->crud->addColumn([
             'label'     => 'Reference ID',
@@ -70,14 +71,10 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 },
             ]
         ]);
-        CRUD::column('name');
-        CRUD::column('code');
-        CRUD::column('assessmentLevel');
-        CRUD::addColumn([
-            'label'=>'Status',
-            'type'  => 'model_function',
-            'function_name' => 'getStatus',
-        ]);
+       $this->crud->column('name');
+       $this->crud->column('code');
+       $this->crud->column('assessmentLevel');
+        $this->crud->column('isActive')->label('Active');
     }
 
     /**
@@ -88,7 +85,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(FaasBuildingClassificationsRequest::class);
+       $this->crud->setValidation(FaasBuildingClassificationsRequest::class);
 
         $this->crud->addField(
             [

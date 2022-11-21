@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class StructuralType extends Model
 {
     use CrudTrait;
@@ -25,6 +25,17 @@ class StructuralType extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected static function boot(){
+        parent::boot();
+
+        StructuralType::creating(function($model){
+            $count = StructuralType::count();
+            $refID = 'STYPE'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+    }
+
+    
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -54,4 +65,10 @@ class StructuralType extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+        );
+    }
 }

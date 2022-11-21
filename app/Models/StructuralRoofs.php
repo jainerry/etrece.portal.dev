@@ -5,7 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
-
+use Illuminate\Database\Eloquent\Casts\Attribute;
 class StructuralRoofs extends Model
 {
     use CrudTrait;
@@ -24,6 +24,16 @@ class StructuralRoofs extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+
+    protected static function boot(){
+        parent::boot();
+        $count = StructuralRoofs::count();
+        $refID = 'STRUC-ROOF'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+
+        StructuralRoofs::creating(function($model) use($refID){
+            $model->refID = $refID;
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
@@ -56,4 +66,10 @@ class StructuralRoofs extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+        );
+    }
 }

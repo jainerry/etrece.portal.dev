@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class KindOfBuilding extends Model
 {
@@ -30,7 +31,16 @@ class KindOfBuilding extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot(){
+        parent::boot();
+       
 
+        KindOfBuilding::creating(function($model){
+            $count = KindOfBuilding::count();
+            $refID = 'KINDOF-BLDG'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+    }
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -54,4 +64,10 @@ class KindOfBuilding extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+        );
+    }
 }

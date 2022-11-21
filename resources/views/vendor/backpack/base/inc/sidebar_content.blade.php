@@ -111,7 +111,7 @@
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('structural-walling') }}"><i class="nav-icon la la-ellipsis-v"></i> Structural Wallings</a></li>
         @endcan
         @can('view-structural-additional-items')
-        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('structural-additional-items') }}"><i class="nav-icon la la-ellipsis-v"></i> Structural additional items</a></li>
+        
         @endcan
     </ul>
 </li>

@@ -26,9 +26,9 @@ class StructuralWallingCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\StructuralWalling::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/structural-walling');
-        CRUD::setEntityNameStrings('structural walling', 'structural wallings');
+        $this->crud->setModel(\App\Models\StructuralWalling::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/structural-walling');
+        $this->crud->setEntityNameStrings('structural walling', 'structural wallings');
         $this->crud->removeButton('delete');
     }
 
@@ -44,13 +44,37 @@ class StructuralWallingCrudController extends CrudController
 
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
+        $this->crud->removeButton('update'); 
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+            ],
+            false,
+            function ($value) {
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
         
-        $this->crud->addColumn('name');
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('structural-walling.edit',$entry->id);
+                },
+            ],
+          ]);
+          $this->crud->addColumn('name');
+          $this->crud->column('isActive')->label('Status');
+          $this->crud->column('created_at');
+
+       
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - $this->crud->column('price')->type('number');
+         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -62,14 +86,28 @@ class StructuralWallingCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(StructuralWallingRequest::class);
-        $this->crud->addField('name');
-        
+        $this->crud->setValidation(StructuralWallingRequest::class);
+       
+        $this->crud->field('name');
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+        ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - $this->crud->field('price')->type('number');
+         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 

@@ -5,6 +5,7 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
 class FaasBuildingClassifications extends Model
 {
@@ -24,20 +25,21 @@ class FaasBuildingClassifications extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected static function boot(){
+        parent::boot();
+
+        FaasBuildingClassifications::creating(function($model){
+            $count = FaasBuildingClassifications::count();
+            $refID = 'BLDG-CLASS'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+    }
 
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    public function getStatus(){
-        if($this->isActive === 'Y'){
-            return "Active";
-        }
-        else {
-            return "InActive";
-        }
-    }
 
     /*
     |--------------------------------------------------------------------------
@@ -62,4 +64,10 @@ class FaasBuildingClassifications extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
+    protected function isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+        );
+    }
 }

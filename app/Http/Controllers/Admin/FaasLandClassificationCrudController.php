@@ -36,9 +36,9 @@ class FaasLandClassificationCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\FaasLandClassification::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-land-classification');
-        CRUD::setEntityNameStrings('faas land classification', 'faas land classifications');
+        $this->crud->setModel(\App\Models\FaasLandClassification::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/faas-land-classification');
+        $this->crud->setEntityNameStrings('faas land classification', 'faas land classifications');
         $this->crud->removeButton('delete');
     }
 
@@ -54,22 +54,41 @@ class FaasLandClassificationCrudController extends CrudController
 
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
+        $this->crud->removeButton('update'); 
 
-        CRUD::column('name');
-        CRUD::column('code');
-        CRUD::column('rangeFrom');
-        CRUD::column('rangeTo');
-        CRUD::column('assessmentLevel');
-        CRUD::addColumn([
-            'label'=>'Status',
-            'type'  => 'model_function',
-            'function_name' => 'getStatus',
-        ]);
+
+        $this->crud->addFilter([
+            'type'  => 'date',
+            'name'  => 'created_at',
+            'label' => 'Created At'
+            ],
+            false,
+            function ($value) {
+            $this->crud->addClause('whereDate', 'created_at', $value);
+        });
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-land-classification.edit',$entry->id);
+                },
+            ],
+          ]);
+
+        $this->crud->column('name');
+        $this->crud->column('code');
+        $this->crud->column('rangeFrom');
+        $this->crud->column('rangeTo');
+        $this->crud->column('assessmentLevel');
+        $this->crud->column('isActive')->label('Status');
+        $this->crud->column('created_at');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * - $this->crud->column('price')->type('number');
+         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -86,7 +105,9 @@ class FaasLandClassificationCrudController extends CrudController
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
 
-        CRUD::setValidation(FaasLandClassificationRequest::class);
+        $this->crud->setValidation(FaasLandClassificationRequest::class);
+
+       
 
         $this->crud->addField(
             [
@@ -166,8 +187,8 @@ class FaasLandClassificationCrudController extends CrudController
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * - $this->crud->field('price')->type('number');
+         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 
