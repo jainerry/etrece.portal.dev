@@ -7,6 +7,7 @@ use Illuminate\Database\Seeder;
 use App\Models\KindOfBuilding;
 use Illuminate\Support\Str;
 use Illuminate\Support\Carbon;
+
 class KindOfBuildingSeeder extends Seeder
 {
     /**

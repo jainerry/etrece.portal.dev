@@ -80,4 +80,5 @@ Route::group([
     Route::crud('faas-machinery-classifications', 'FaasMachineryClassificationsCrudController');
    
     Route::crud('regions', 'RegionsCrudController');
+    Route::crud('business-profiles', 'BusinessProfilesCrudController');
 }); // this should be the absolute last line of this file
