@@ -384,7 +384,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => "Kind of Building",
             'type'=>'select',
             'name'=>'kind_of_building_id',
-            'entity' => 'kind_of_building',
+            'model'     => "App\Models\FaasBuildingClassifications",
             'attribute' => 'name',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
@@ -603,7 +603,6 @@ class BuildingProfileCrudController extends CrudController
             'type' => 'text',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
-                'readonly' => 'readonly',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -745,6 +744,12 @@ class BuildingProfileCrudController extends CrudController
             'type'  => 'hidden',
             'tab' => 'Structural Characteristic',
         ]);
+        $this->crud->addField([
+            'name'  => 'separator4a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'   => 'Structural Characteristic',
+        ]);
         /*Additional Items (Repeatable)*/
         $this->crud->addField([   
             'name'  => 'additionalItems',
@@ -781,15 +786,15 @@ class BuildingProfileCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => true,
-            'tab' => 'Additional Items',
+            'tab' => 'Structural Characteristic',
         ]);
         /*Property Appraisal*/
         $this->crud->addField([
             'name'  => 'separator5',
             'type'  => 'custom_html',
-            'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost" id="unitConstructionCost" value="" /> /sq.m.</p>
+            'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost_temp" id="unitConstructionCost_temp" value="" /> /sq.m.</p>
                 <p>Building Core: <i>(Use additional sheets if necessary)</i></p>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal" id="unitConstructionSubTotal" value="" /> </p>',
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal_temp" id="unitConstructionSubTotal_temp" value="" readonly="readonly" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -799,12 +804,41 @@ class BuildingProfileCrudController extends CrudController
             'name'  => 'separator6',
             'type'  => 'custom_html',
             'value' => '<p>Cost of Additional Items:</p>
-                <p><b>Sub-Total</b></p>
-                <p><b>TOTAL CONSTRUCTION COST: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="totalConstructionCost" id="totalConstructionCost" value="" /> </p>',
+                <br><br>
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal_temp" id="costOfAdditionalItemsSubTotal_temp" value="" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator6a',
+            'type'  => 'custom_html',
+            'value' => '<p><b>TOTAL CONSTRUCTION COST: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="totalConstructionCost_temp" id="totalConstructionCost_temp" value="" readonly="readonly" /> </p>',
+            'tab' => 'Property Appraisal',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'unitConstructionCost',
+            'type'  => 'hidden',
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'  => 'unitConstructionSubTotal',
+            'type'  => 'hidden',
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'  => 'costOfAdditionalItemsSubTotal',
+            'type'  => 'hidden',
+            'tab' => 'Property Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'  => 'totalConstructionCost',
+            'type'  => 'hidden',
+            'tab' => 'Property Appraisal',
         ]);
         $this->crud->addField([
             'name'  => 'separator8',
@@ -854,6 +888,7 @@ class BuildingProfileCrudController extends CrudController
             'type' => 'text',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly',
             ],
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
@@ -872,6 +907,9 @@ class BuildingProfileCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
                 ],
                 [
@@ -879,6 +917,7 @@ class BuildingProfileCrudController extends CrudController
                     'type'    => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency',
+                        'readonly' => 'readonly',
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
@@ -889,6 +928,9 @@ class BuildingProfileCrudController extends CrudController
                     'label'   => 'Assessment Level',
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'assessmentLevel',
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
                 ],
                 [
@@ -896,6 +938,7 @@ class BuildingProfileCrudController extends CrudController
                     'type'  => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency',
+                        'readonly' => 'readonly',
                     ],
                     'label' => 'Assessed Value',
                     'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
@@ -910,7 +953,7 @@ class BuildingProfileCrudController extends CrudController
             'new_item_label'  => 'New Item', 
             'init_rows' => 1,
             'min_rows' => 1,
-            'max_rows' => 10,
+            'max_rows' => 1,
             'reorder' => true,
             'tab' => 'Property Assessment',
         ]);
@@ -976,8 +1019,6 @@ class BuildingProfileCrudController extends CrudController
             $entry->refID = $refID;
 
             $request = app(BuildingProfileRequest::class);
-
-            //dd($request);
 
             TransactionLogs::create([
                 'transId' =>$refID,

@@ -35,3 +35,7 @@ input.simple-form-input:focus {
     color: #495057;
     outline: 0;
 }
+input.simple-form-input[readonly] {
+    background-color: #f8f9fa;
+    opacity: 1;
+}

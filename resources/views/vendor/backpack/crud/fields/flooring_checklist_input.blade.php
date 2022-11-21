@@ -94,25 +94,25 @@
 		<div class="col-sm-2 flooringOther flooringOther_1 ">
 			<div class="checkbox flooringOther_1_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor1_otherFlooring" value="" />
+				<input type="text" class="form-control" name="floor1_otherFlooring_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 flooringOther flooringOther_2 ">
 			<div class="checkbox flooringOther_2_wrapper hidden">
 			<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor2_otherFlooring" value="" />
+				<input type="text" class="form-control" name="floor2_otherFlooring_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 flooringOther flooringOther_3 ">
 			<div class="checkbox flooringOther_3_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor3_otherFlooring" value="" />
+				<input type="text" class="form-control" name="floor3_otherFlooring_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 flooringOther flooringOther_4 ">
 			<div class="checkbox flooringOther_4_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor4_otherFlooring" value="" />
+				<input type="text" class="form-control" name="floor4_otherFlooring_temp" value="" />
 			</div>
 		</div>
 	</div>

@@ -94,25 +94,25 @@
 		<div class="col-sm-2 wallingOther wallingOther_1 ">
 			<div class="checkbox wallingOther_1_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor1_otherWalling" value="" />
+				<input type="text" class="form-control" name="floor1_otherWalling_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 wallingOther wallingOther_2 ">
 			<div class="checkbox wallingOther_2_wrapper hidden">
 			<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor2_otherWalling" value="" />
+				<input type="text" class="form-control" name="floor2_otherWalling_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 wallingOther wallingOther_3 ">
 			<div class="checkbox wallingOther_3_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor3_otherWalling" value="" />
+				<input type="text" class="form-control" name="floor3_otherWalling_temp" value="" />
 			</div>
 		</div>
 		<div class="col-sm-2 wallingOther wallingOther_4 ">
 			<div class="checkbox wallingOther_4_wrapper hidden">
 				<p class="help-block"><i>Please specify</i></p>
-				<input type="text" class="form-control" name="floor4_otherWalling" value="" />
+				<input type="text" class="form-control" name="floor4_otherWalling_temp" value="" />
 			</div>
 		</div>
 	</div>

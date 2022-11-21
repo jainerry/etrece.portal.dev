@@ -72,6 +72,7 @@ return new class extends Migration
             $table->text('additionalItems')->nullable();
             $table->string('unitConstructionCost')->nullable();
             $table->string('unitConstructionSubTotal')->nullable();
+            $table->string('costOfAdditionalItemsSubTotal')->nullable();
             $table->string('totalConstructionCost')->nullable();
             $table->string('depreciationRate')->nullable();
             $table->string('depreciationCost')->nullable();

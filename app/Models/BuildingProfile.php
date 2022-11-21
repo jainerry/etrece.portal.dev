@@ -74,12 +74,6 @@ class BuildingProfile extends Model
     public function structural_type(){
         return $this->belongsTo(StructuralType::class, 'structural_type_id', 'id');
     }
-    public function kind_of_building(){
-        return $this->belongsTo(KindOfBuilding::class, 'kind_of_building_id', 'id');
-    }
-    // public function roof(){
-    //     return $this->belongsToMany(StructuralRoofs::class,HasRoofs::class,'faas_building_profiles_id','structural_roofs_id');
-    // }
     public function flooring(){
         return $this->belongsTo(StructuralFlooring::class);
     }

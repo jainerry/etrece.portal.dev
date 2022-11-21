@@ -89,9 +89,9 @@
         @can('view-structural-types')
         <li class="nav-item "><a class="nav-link d-flex" href="{{ backpack_url('structural-type') }}"><i class="nav-icon la la-ellipsis-v"></i> Structural Types</a></li>
         @endcan
-        @can('view-kind-of-buildings')
+        {{-- @can('view-kind-of-buildings')
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('kind-of-building') }}"><i class="nav-icon la la-ellipsis-v"></i> Kind of Buildings</a></li>   
-        @endcan
+        @endcan --}}
         @can('view-structural-roofs')
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('structural-roofs') }}"><i class="nav-icon la la-ellipsis-v"></i> Structural Roofs</a></li>
         @endcan
@@ -99,10 +99,10 @@
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('faas-land-classification') }}"><i class="nav-icon la la-ellipsis-v"></i> Land Classifications</a></li>
         @endcan
         @can('view-building-classifications')
-        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('faas-building-classifications') }}"><i class="nav-icon la la-ellipsis-v"></i> Building classifications</a></li>
+        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('faas-building-classifications') }}"><i class="nav-icon la la-ellipsis-v"></i> Building Classifications</a></li>
         @endcan
         @can('view-machinery-classifications')
-        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('faas-machinery-classifications') }}"><i class="nav-icon la la-ellipsis-v"></i> Machinery classifications</a></li>
+        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('faas-machinery-classifications') }}"><i class="nav-icon la la-ellipsis-v"></i> Machinery Classifications</a></li>
         @endcan
         @can('view-structural-floorings')
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('structural-flooring') }}"><i class="nav-icon la la-ellipsis-v"></i> Structural Floorings</a></li>
