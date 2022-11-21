@@ -306,17 +306,6 @@ class CitizenProfileCrudController extends CrudController
             ],
         ]);
 
-        CitizenProfile::creating(function($entry) {
-            $count = CitizenProfile::select(DB::raw('count(*) as count'))->first();
-            $refId = 'CITIZEN'.'-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
-
-            $entry->refID = $refId;
-            TransactionLogs::create([
-                'transId' =>$refId,
-                'category' =>'citizen_profile',
-                'type' =>'create',
-            ]);
-        });
     }
 
     /**

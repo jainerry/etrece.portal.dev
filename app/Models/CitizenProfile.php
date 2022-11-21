@@ -36,6 +36,17 @@ class CitizenProfile extends Model
     |--------------------------------------------------------------------------
     */
 
+    protected static function boot(){
+        parent::boot();
+
+        CitizenProfile::creating(function($model){
+            $count = CitizenProfile::count();
+            $refID = 'CITIZEN'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+    }
+
+
     public function getFullNameAttribute(){
         $fName = ucfirst($this->fName)." ";
         $mName = ($this->mName == null? "":" ").ucfirst($this->mName)." ";
