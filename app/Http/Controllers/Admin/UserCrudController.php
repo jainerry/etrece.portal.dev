@@ -35,9 +35,9 @@ class UserCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\User::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/user');
-        CRUD::setEntityNameStrings('user', 'users');
+       $this->crud->setModel(\App\Models\User::class);
+       $this->crud->setRoute(config('backpack.base.route_prefix') . '/user');
+       $this->crud->setEntityNameStrings('user', 'users');
         $this->crud->removeButton('delete');
     }
 
@@ -52,15 +52,16 @@ class UserCrudController extends CrudController
         $this->crud->enableExportButtons();
         
         $this->crud->removeButton('delete');  
-        $this->crud->removeButton('show');
+        $this->crud->removeButton('show');  
+        $this->crud->removeButton('update');  
         
-        CRUD::column('name');
-        CRUD::column('email');
+       $this->crud->column('name');
+       $this->crud->column('email');
 
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - CRUD::column('price')->type('number');
-         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         * -$this->crud->column('price')->type('number');
+         * -$this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -72,15 +73,15 @@ class UserCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(UserRequest::class);
+       $this->crud->setValidation(UserRequest::class);
 
-        CRUD::field('name');
-        CRUD::field('email');
-        CRUD::field('password');
+       $this->crud->field('name');
+       $this->crud->field('email');
+       $this->crud->field('password');
 
-        // CRUD::field('name')->validationRules('required|min:5');
-        // CRUD::field('email')->validationRules('required|email|unique:users,email');
-        // CRUD::field('password')->validationRules('required');
+        //$this->crud->field('name')->validationRules('required|min:5');
+        //$this->crud->field('email')->validationRules('required|email|unique:users,email');
+        //$this->crud->field('password')->validationRules('required');
 
         // \App\Models\User::creating(function ($entry) {
         //     $entry->password = \Hash::make($entry->password);
@@ -88,8 +89,8 @@ class UserCrudController extends CrudController
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - CRUD::field('price')->type('number');
-         * - CRUD::addField(['name' => 'price', 'type' => 'number'])); 
+         * -$this->crud->field('price')->type('number');
+         * -$this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 
@@ -103,9 +104,9 @@ class UserCrudController extends CrudController
     {
         $this->setupCreateOperation();
 
-        // CRUD::field('name')->validationRules('required|min:5');
-        // CRUD::field('email')->validationRules('required|email|unique:users,email,'.CRUD::getCurrentEntryId());
-        // CRUD::field('password')->hint('Type a password to change it.');
+        //$this->crud->field('name')->validationRules('required|min:5');
+        //$this->crud->field('email')->validationRules('required|email|unique:users,email,'.CRUD::getCurrentEntryId());
+        //$this->crud->field('password')->hint('Type a password to change it.');
 
         // \App\Models\User::updating(function ($entry) {
         //     if (request('password') == null) {
