@@ -30,61 +30,43 @@ function propertyAppraisalActions(){
         let rowNumber = $(this).attr('data-row-number')
         propertyAppraisalComputation(rowNumber)
     })
-
-    $('.totalDepreciationValue').on('keyup', function(){
-        let rowNumber = $(this).attr('data-row-number')
-        propertyAppraisalComputation(rowNumber)
-    })
 }
 
 function propertyAppraisalComputation(rowNumber) {
     let originalCost = $('#tab_property-appraisal .originalCost[data-row-number="'+rowNumber+'"]').val()
     let noOfYearsUsed = $('#tab_property-appraisal .noOfYearsUsed[data-row-number="'+rowNumber+'"]').val()
     let rateOfDepreciation = $('#tab_property-appraisal .rateOfDepreciation[data-row-number="'+rowNumber+'"]').val()
-    let totalDepreciationValue = $('#tab_property-appraisal .totalDepreciationValue[data-row-number="'+rowNumber+'"]').val()
-
+    let totalDepreciationValue = 0
     let totalDepreciationPercentage = 0
-    let depreciatedValue = 0
 
-    if(originalCost === '') {
-        originalCost = 0
-    }
-    else {
-        originalCost = parseFloat(originalCost.replaceAll(',',''))
-    }
-
-    if(noOfYearsUsed === '') {
-        noOfYearsUsed = 0
-    }
-    else {
-        noOfYearsUsed = parseInt(noOfYearsUsed)
-    }
-
-    if(rateOfDepreciation === '') {
-        rateOfDepreciation = 0
-    }
-    else {
-        rateOfDepreciation = parseInt(rateOfDepreciation.replaceAll('%',''))
-    }
-
-    if(totalDepreciationValue === '') {
-        totalDepreciationValue = 0
-    }
-    else {
-        totalDepreciationValue = parseFloat(totalDepreciationValue.replaceAll(',',''))
-    }
+    originalCost = formatStringToFloat(originalCost)
+    noOfYearsUsed = formatStringToInteger(noOfYearsUsed)
+    rateOfDepreciation = formatStringToInteger(rateOfDepreciation)
 
     totalDepreciationPercentage = noOfYearsUsed * rateOfDepreciation
     $('#tab_property-appraisal .totalDepreciationPercentage[data-row-number="'+rowNumber+'"]').val(totalDepreciationPercentage)
 
-    depreciatedValue = originalCost - totalDepreciationValue
+    totalDepreciationValue = (originalCost / 100) * totalDepreciationPercentage
+    $('#tab_property-appraisal .totalDepreciationValue[data-row-number="'+rowNumber+'"]').val(totalDepreciationValue)
+
+    setDepreciatedValue(rowNumber)
+}
+
+function setDepreciatedValue(rowNumber){
+    let originalCost = $('#tab_property-appraisal .originalCost[data-row-number="'+rowNumber+'"]').val()
+    let totalDepreciationPercentage = $('#tab_property-appraisal .totalDepreciationValue[data-row-number="'+rowNumber+'"]').val()
+    let depreciatedValue = 0
+
+    originalCost = formatStringToFloat(originalCost)
+    totalDepreciationPercentage = formatStringToFloat(totalDepreciationPercentage)
+
+    depreciatedValue = originalCost - totalDepreciationPercentage
     $('#tab_property-appraisal .depreciatedValue[data-row-number="'+rowNumber+'"]').val(depreciatedValue)
 
     totalOriginalCost()
     totalTotalDepreciationValue()
     totalDepreciatedValue()
     propertyAssessmentComputation()
-
 }
 
 function totalOriginalCost() {
@@ -92,12 +74,7 @@ function totalOriginalCost() {
     $('.originalCost').each(function(){
         let originalCost = $(this).val()
 
-        if(originalCost === '') {
-            originalCost = 0
-        }
-        else {
-            originalCost = parseFloat(originalCost.replaceAll(',',''))
-        }
+        originalCost = formatStringToFloat(originalCost)
 
         totalOriginalCost = totalOriginalCost + originalCost
     })
@@ -110,12 +87,7 @@ function totalTotalDepreciationValue() {
     $('.totalDepreciationValue').each(function(){
         let totalDepreciationValue = $(this).val()
 
-        if(totalDepreciationValue === '') {
-            totalDepreciationValue = 0
-        }
-        else {
-            totalDepreciationValue = parseFloat(totalDepreciationValue.replaceAll(',',''))
-        }
+        totalDepreciationValue = formatStringToFloat(totalDepreciationValue)
 
         totalTotalDepreciationValue = totalTotalDepreciationValue + totalDepreciationValue
     })
@@ -128,12 +100,7 @@ function totalDepreciatedValue() {
     $('.depreciatedValue').each(function(){
         let depreciatedValue = $(this).val()
 
-        if(depreciatedValue === '') {
-            depreciatedValue = 0
-        }
-        else {
-            depreciatedValue = parseFloat(depreciatedValue.replaceAll(',',''))
-        }
+        depreciatedValue = formatStringToFloat(depreciatedValue)
 
         totalDepreciatedValue = totalDepreciatedValue + depreciatedValue
     })
@@ -147,20 +114,27 @@ function propertyAssessmentComputation() {
     let marketValue = $('input[name="propertyAssessment[0][marketValue]"]').val()
     let assessedValue = 0
 
-    if(assessmentLevel === '') {
-        assessmentLevel = 0
-    }
-    else {
-        assessmentLevel = parseInt(assessmentLevel.replaceAll('%',''))
-    }
-    
-    if(marketValue === '') {
-        marketValue = 0
-    }
-    else {
-        marketValue = parseFloat(marketValue.replaceAll(',',''))
-    }
+    assessmentLevel = formatStringToInteger(assessmentLevel)
+    marketValue = formatStringToFloat(marketValue)
     
     assessedValue = (marketValue / 100) * assessmentLevel
     $('input[name="propertyAssessment[0][assessedValue]"]').val(assessedValue)
+}
+
+function formatStringToFloat(num){
+    if(num === '') {
+        return 0
+    }
+    else {
+        return parseFloat(num.replaceAll(',',''))
+    }
+}
+
+function formatStringToInteger(num){
+    if(num === '') {
+        return 0
+    }
+    else {
+        return parseInt(num.replaceAll('%',''))
+    }
 }

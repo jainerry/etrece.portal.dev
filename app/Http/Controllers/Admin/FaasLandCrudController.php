@@ -99,11 +99,6 @@ class FaasLandCrudController extends CrudController
         /*Main Information*/
         $this->crud->addField([
             'name'  => 'isIdleLand',
-            'type'  => 'hidden',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'isIdleLand_temp',
             'label' => 'Is Idle Land',
             'type'  => 'checkbox',
             'attributes' => [
@@ -179,11 +174,6 @@ class FaasLandCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name'  => 'isOwnerNonTreceResident',
-            'type'  => 'hidden',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'isOwnerNonTreceResident_temp',
             'label' => 'Non Trece Resident',
             'type'  => 'checkbox',
             'attributes' => [
@@ -477,6 +467,7 @@ class FaasLandCrudController extends CrudController
                     'attribute' => 'code',
                     'attributes' => [
                         'class' => 'form-control actualUse',
+                        'readonly' => 'readonly'
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -503,6 +494,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency baseMarketValue',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -513,6 +505,24 @@ class FaasLandCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => true,
+            'tab' => 'Land Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator1ab',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Land Appraisal',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalLandAppraisalBaseMarketValue',
+            'label'=>'TOTAL (Base Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalLandAppraisalBaseMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
             'tab' => 'Land Appraisal',
         ]);
         $this->crud->addField([   
@@ -530,6 +540,9 @@ class FaasLandCrudController extends CrudController
                     'name'    => 'totalNumber',
                     'type'    => 'number',
                     'label'   => 'Total Number',
+                    'attributes' => [
+                        'class' => 'form-control totalNumber',
+                    ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -546,6 +559,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency baseMarketValue',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -556,6 +570,24 @@ class FaasLandCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => true,
+            'tab' => 'Other Improvements',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator1abc',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Other Improvements',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalOtherImprovementsBaseMarketValue',
+            'label'=>'TOTAL (Base Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalOtherImprovementsBaseMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
             'tab' => 'Other Improvements',
         ]);
         $this->crud->addField([   
@@ -592,6 +624,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency valueAdjustment',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Value Adjustment',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -601,6 +634,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency marketValue',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -611,6 +645,24 @@ class FaasLandCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => true,
+            'tab' => 'Market Value',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator1abcd',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Market Value',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalMarketValueMarketValue',
+            'label'=>'TOTAL (Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalMarketValueMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
             'tab' => 'Market Value',
         ]);
         $this->crud->addField([   
@@ -626,6 +678,7 @@ class FaasLandCrudController extends CrudController
                     'attribute' => 'code',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency actualUse',
+                        'readonly' => 'readonly'
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -634,6 +687,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency marketValue',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
@@ -645,6 +699,7 @@ class FaasLandCrudController extends CrudController
                     'attribute' => 'assessmentLevel',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent assessmentLevel',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -654,6 +709,7 @@ class FaasLandCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency assessmentValue',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Assessment Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -664,6 +720,36 @@ class FaasLandCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => true,
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator1abcde',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalPropertyAssessmentMarketValue',
+            'label'=>'TOTAL (Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalPropertyAssessmentAssessmentValue',
+            'label'=>'TOTAL (Assessment Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentAssessmentValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([

@@ -56,8 +56,13 @@ return new class extends Migration
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->char('isIdleLand', 1)->default('N')->nullable();
-            $table->char('isOwnerNonTreceResident', 1)->default('N')->nullable();
+            $table->char('isIdleLand', 1)->default('0');
+            $table->char('isOwnerNonTreceResident', 1)->default('0');
+            $table->string('totalLandAppraisalBaseMarketValue')->nullable();
+            $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
+            $table->string('totalMarketValueMarketValue')->nullable();
+            $table->string('totalPropertyAssessmentMarketValueValue')->nullable();
+            $table->string('totalPropertyAssessmentAssessmentValue')->nullable();
             $table->timestamps();
         });
     }

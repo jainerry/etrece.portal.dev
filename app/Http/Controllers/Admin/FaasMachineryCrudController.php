@@ -494,6 +494,7 @@ class FaasMachineryCrudController extends CrudController
                     'type'  => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency totalDepreciationValue',
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Total Depreciation - Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],

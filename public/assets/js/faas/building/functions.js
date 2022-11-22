@@ -256,32 +256,17 @@ function getDetails(id) {
 function propertyAppraisalComputation(){
     let unitConstructionCost_temp = $('input[name="unitConstructionCost_temp"]').val()
     $('input[name="unitConstructionCost"]').val(unitConstructionCost_temp)
-    if(unitConstructionCost_temp === '') {
-        unitConstructionCost_temp = 0
-    }
-    else {
-        unitConstructionCost_temp = parseFloat(unitConstructionCost_temp.replaceAll(',',''))
-    }
+    unitConstructionCost_temp = formatStringToFloat(unitConstructionCost_temp)
 
     let totalFloorArea = $('input[name="totalFloorArea"]').val()
-    if(totalFloorArea === '') {
-        totalFloorArea = 0
-    }
-    else {
-        totalFloorArea = parseFloat(totalFloorArea.replaceAll(',',''))
-    }
+    totalFloorArea = formatStringToFloat(totalFloorArea)
     
     let unitConstructionSubTotal_temp = unitConstructionCost_temp * totalFloorArea
     $('input[name="unitConstructionSubTotal_temp"]').val(unitConstructionSubTotal_temp)
     $('input[name="unitConstructionSubTotal"]').val(unitConstructionSubTotal_temp)
     
     let costOfAdditionalItemsSubTotal_temp = $('input[name="costOfAdditionalItemsSubTotal_temp"]').val()
-    if(costOfAdditionalItemsSubTotal_temp === '') {
-        costOfAdditionalItemsSubTotal_temp = 0
-    }
-    else {
-        costOfAdditionalItemsSubTotal_temp = parseFloat(costOfAdditionalItemsSubTotal_temp.replaceAll(',',''))
-    }
+    costOfAdditionalItemsSubTotal_temp = formatStringToFloat(costOfAdditionalItemsSubTotal_temp)
 
     let totalConstructionCost_temp = unitConstructionSubTotal_temp + costOfAdditionalItemsSubTotal_temp
     $('input[name="totalConstructionCost_temp"]').val(totalConstructionCost_temp)
@@ -300,14 +285,26 @@ function propertyAssessmentComputation(){
     let assessedValue = 0
 
     assessmentLevel = parseFloat(assessmentLevel.replaceAll('%',''))
-
-    if(marketValue === '') {
-        marketValue = 0
-    }
-    else {
-        marketValue = parseFloat(marketValue.replaceAll(',',''))
-    }
+    marketValue = formatStringToFloat(marketValue)
     
     assessedValue = (marketValue / 100) * assessmentLevel
     $('input[name="propertyAssessment[0][assessedValue]"]').val(assessedValue)
+}
+
+function formatStringToFloat(num){
+    if(num === '') {
+        return 0
+    }
+    else {
+        return parseFloat(num.replaceAll(',',''))
+    }
+}
+
+function formatStringToInteger(num){
+    if(num === '') {
+        return 0
+    }
+    else {
+        return parseInt(num.replaceAll('%',''))
+    }
 }
