@@ -5,7 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Requests\BusinessProfilesRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-
+use \Backpack\CRUD\app\Library\Widget;
 /**
  * Class BusinessProfilesCrudController
  * @package App\Http\Controllers\Admin
@@ -61,12 +61,28 @@ class BusinessProfilesCrudController extends CrudController
     protected function setupCreateOperation()
     {
        $this->crud->setValidation(BusinessProfilesRequest::class);
+       Widget::add([
+        'type'     => 'script',
+        'name'      => 'custom_script',
+        'content'  => '/assets/js/business.js',
+         ]);
+
 
        $this->crud->addField([
         'name' => 'business_name',
         'type' => 'text',
         'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-6'
+            'class' => 'form-group col-12 col-md-6 mt-3'
+        ],
+        'tab' => 'Details',
+       ]);
+       $this->crud->addField([
+        'name' => 'non_trece_resident',
+        'type' => 'checkbox',
+        'wrapper' => [
+            'element'=>'span',
+            'class' => 'form-group position-absolute end-0' ,
+            'style' =>'right:35px;z-index:9;margin-top:0px;'
         ],
         'tab' => 'Details',
        ]);
@@ -79,11 +95,102 @@ class BusinessProfilesCrudController extends CrudController
         'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
         'minimum_input_length' => 1,
         'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-6',
+            'class' => 'form-group col-12 col-md-6 mt-3',
         ],
         'tab' => 'Details',
         ]);
-       $this->crud->addField([
+     
+        $this->crud->addField([
+            'name'=> 'first_name',
+            'type' => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 notintrece',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'=> 'middle_name',
+            'type' => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 notintrece',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'=> 'last_name',
+            'type' => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 notintrece',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'=>'suffix',
+            'label'=>'Suffix',
+            'type' => 'select_from_array',
+            'options' => [
+                'JRA' => 'JRA',
+                'SR' => 'SR',
+                'JR' => 'JR',
+                'I' => 'I',
+                'II' => 'II',
+                'III' => 'III',
+                'IV' => 'IV',
+                'V' => 'V',
+                'VI' => 'VI',
+                'VII' => 'VII'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 notintrece'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=> 'contact_no',
+            'type' => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 notintrece',
+            ],
+        ]);
+        $this->crud->addField([ 
+            'name'        => 'sex',
+            'label'       => "Sex",
+            'type'        => 'select_from_array',
+            'options'     => ['1' => 'Male', '0' => 'Female'],
+            'allows_null' => false,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 notintrece'
+            ]
+        ]);
+        $this->crud->addField([
+            'name'=>'city',
+            'label' => "City",
+            'type'=>'select',
+            'entity' => 'municipality',
+            'attribute' => 'name',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 notintrece',
+            ]
+        ]);
+
+        $this->crud->addField([
+            'name'=>'address',
+            'label' => "Address",
+            'type'=>'textarea',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 notintrece',
+            ]
+        ]);
+
+
+
+     
+     
+        $this->crud->addField([
         'label' => 'Main Office Business Address (Land Profile)',
         'type' => 'business_main_office',
         'name' => 'main_land_id',
@@ -92,11 +199,24 @@ class BusinessProfilesCrudController extends CrudController
         'data_source' => url('/admin/api/faas-land/ajaxsearch'),
         'minimum_input_length' => 1,
         'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-6',
+            'class' => 'form-group col-12 col-md-12',
         ],
         'tab' => 'Details',
         ]);
-    //    $this->crud->field('property_owner');
+     
+        $this->crud->addField([
+            'name'=>'property_owner',
+            'label'=>'Property Owner',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Yes',
+                'N' => 'No',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Details',
+        ]);
     //    $this->crud->field('lessor_name_cid');
     //    $this->crud->field('tel_no');
     //    $this->crud->field('mobile');

@@ -50,6 +50,9 @@ class BusinessProfiles extends Model
     public function main_land(){
         return $this->belongsTo(FaasLand::class,'main_land_id','id');
     }
+    public function municipality(){
+        return $this->belongsTo(Municipality::class,"city","id");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
