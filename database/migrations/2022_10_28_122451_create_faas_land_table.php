@@ -61,7 +61,7 @@ return new class extends Migration
             $table->string('totalLandAppraisalBaseMarketValue')->nullable();
             $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
             $table->string('totalMarketValueMarketValue')->nullable();
-            $table->string('totalPropertyAssessmentMarketValueValue')->nullable();
+            $table->string('totalPropertyAssessmentMarketValue')->nullable();
             $table->string('totalPropertyAssessmentAssessmentValue')->nullable();
             $table->timestamps();
         });

@@ -165,22 +165,18 @@ function totalMarketValueMarketValue(){
 }
 
 function updatePropertyAssessment(rowNumber){
-    console.log('updatePropertyAssessment')
     let element = $('#tab_property-assessment .repeatable-element[data-row-number="'+rowNumber+'"]')
     if(element.length > 0) {
         let actualUse = $('#tab_land-appraisal .classification[data-row-number="'+rowNumber+'"]').val()
         let baseMarketValue = $('#tab_land-appraisal .baseMarketValue[data-row-number="'+rowNumber+'"]').val()
         baseMarketValue = formatStringToFloat(baseMarketValue)
         let element2 = $('#tab_market-value .repeatable-element[data-row-number="'+rowNumber+'"]')
-        console.log(element2)
+
         let marketValue = 0
         if(element2.length > 0) {
             marketValue = $('#tab_market-value .marketValue[data-row-number="'+rowNumber+'"]').val()
             marketValue = formatStringToFloat(marketValue)
         }
-        
-        console.log(baseMarketValue)
-        console.log(marketValue)
 
         let propertyAssessmentMarketValue = baseMarketValue + marketValue
         $('#tab_property-assessment .actualUse[data-row-number="'+rowNumber+'"]').val(actualUse)
