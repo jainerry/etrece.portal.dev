@@ -8,6 +8,7 @@ use App\Models\CitizenProfile;
 use App\Models\Employee;
 use App\Models\FaasAssessmentStatus;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\BusinessProfiles;
 
 class FaasMachinery extends Model
 {
@@ -46,6 +47,18 @@ class FaasMachinery extends Model
         }
         else {
             return "InActive";
+        }
+    }
+
+    
+    public function getPrimaryOwner(){
+        $citizen = CitizenProfile::find($this->primaryOwnerId);
+        $business = BusinessProfiles::where("id",$this->primaryOwnerId)->first();
+        if(!empty($citizen)){
+            return "{$citizen->fName} {$citizen->mName} {$citizen->lName}";
+        }
+        else {
+            return "{$business->business_name}";
         }
     }
 
@@ -113,6 +126,8 @@ class FaasMachinery extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
+        //return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
+        //return $this->hasManyThrough(CitizenProfile::class, BusinessProfiles::class, 'id', 'primaryOwnerId', 'primaryOwnerId', 'id');
     }
 
     public function land_owner_citizen_profile(){

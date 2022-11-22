@@ -23,11 +23,17 @@ class BusinessProfiles extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $appends = ['full_name'];
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getFullNameAttribute(){
+        return "{$this->business_name}";
+    }
 
     /*
     |--------------------------------------------------------------------------

@@ -2,8 +2,9 @@
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
+    
     $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
-   
+
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
@@ -172,26 +173,53 @@
                     let paginate = false;
                     return {
                         results: $.map(data, function(item) {
-                            return {
-                                text: `<div>
+
+                            let customText = ''
+                            if(item.ownerType === 'CitizenProfile') {
+                                customText = `
                                     <div>
-                                        Fullname: <b class="fullname"> ${item.fullname}</b>
+                                        <div>
+                                            Fullname: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Owner Type: <b class="fullname"> Citizen Profile</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Birth Date: <b> ${item.bdate}</b>
+                                        </div>
+                                        <div>
+                                            Barangay: <b> ${item.barangay.name}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
+                                        </div>
                                     </div>
-                                    <div>
-                                        Reference ID: <b> ${item.refID}</b>
-                                    </div>
-                                    <div>
-                                        Birth Date: <b> ${item.bdate}</b>
-                                    </div>
-                                    <div>
-                                        Barangay: <b> ${item.barangay.name}</b>
-                                    </div>
-                                    <div>
-                                        Address: <b> ${item.address}</b>
-                                    </div>
-                                    </div>`,
-                                id: item.id
+                                `
                             }
+                            else if(item.ownerType === 'BusinessProfiles') {
+                                customText = `
+                                    <div>
+                                        <div>
+                                            Business Name: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Owner Type: <b class="fullname"> Business Profile</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
+                                        </div>
+                                    </div>
+                                `
+                            }
+                            let searchResults = { text: customText, id: item.id }
+                            return searchResults
+
                         }),
                         pagination: {
                             more: paginate,

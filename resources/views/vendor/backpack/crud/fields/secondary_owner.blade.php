@@ -113,26 +113,53 @@
                             let paginate = false;
                             return {
                                 results: $.map(data, function(item) {
-                                    return {
-                                        text: `<div>
+                                    
+                                    let customText = ''
+                                    if(item.ownerType === 'CitizenProfile') {
+                                        customText = `
                                             <div>
-                                                Fullname: <b class="fullname"> ${item.fullname}</b>
+                                                <div>
+                                                    Fullname: <b class="fullname"> ${item.fullname}</b>
+                                                </div>
+                                                <div>
+                                                    Owner Type: <b class="fullname"> Citizen Profile</b>
+                                                </div>
+                                                <div>
+                                                    Reference ID: <b> ${item.refID}</b>
+                                                </div>
+                                                <div>
+                                                    Birth Date: <b> ${item.bdate}</b>
+                                                </div>
+                                                <div>
+                                                    Barangay: <b> ${item.barangay.name}</b>
+                                                </div>
+                                                <div>
+                                                    Address: <b> ${item.address}</b>
+                                                </div>
                                             </div>
-                                            <div>
-                                                Reference ID: <b> ${item.refID}</b>
-                                            </div>
-                                            <div>
-                                                Birth Date: <b> ${item.bdate}</b>
-                                            </div>
-                                            <div>
-                                                Barangay: <b> ${item.barangay.name}</b>
-                                            </div>
-                                            <div>
-                                                Address: <b> ${item.address}</b>
-                                            </div>
-                                            </div>`,
-                                        id: item.id
+                                        `
                                     }
+                                    else if(item.ownerType === 'BusinessProfiles') {
+                                        customText = `
+                                            <div>
+                                                <div>
+                                                    Business Name: <b class="fullname"> ${item.business_name}</b>
+                                                </div>
+                                                <div>
+                                                    Owner Type: <b class="fullname"> Business Profile</b>
+                                                </div>
+                                                <div>
+                                                    Reference ID: <b> ${item.refID}</b>
+                                                </div>
+                                                <div>
+                                                    Address: <b> ${item.address}</b>
+                                                </div>
+                                            </div>
+                                        `
+                                    }
+                                    let searchResults = { text: customText, id: item.id }
+                                    return searchResults
+
                                 }),
                                 pagination: {
                                     more: paginate,

@@ -74,13 +74,20 @@ class FaasMachineryCrudController extends CrudController
                 },
             ],
         ]);
+        // $this->crud->addColumn([
+        //     'name'  => 'primaryOwner',
+        //     'label' => 'Primary Owner',
+        //     'type'  => 'select',
+        //     'entity'    => 'citizen_profile',
+        //     'attribute' => 'full_name'
+        // ],);
+
         $this->crud->addColumn([
-            'name'  => 'primaryOwner',
-            'label' => 'Primary Owner',
-            'type'  => 'select',
-            'entity'    => 'citizen_profile',
-            'attribute' => 'full_name'
-        ],);
+            'label'=>'Primary Owner',
+            'type'  => 'model_function',
+            'function_name' => 'getPrimaryOwner',
+        ]);
+
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
             'label'=>'Status',
