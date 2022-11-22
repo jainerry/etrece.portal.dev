@@ -17,9 +17,22 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('buss_id')->unique();
             $table->string('business_name')->unique();
-            $table->string('owner_cid');
-            $table->string('property_owner');
-            $table->string('lessor_name_cid');
+            $table->string('owner_cid')->nullable();
+            $table->string('main_land_id')->nullable();
+            $table->string('property_owner')->nullable();
+            $table->string('lessor_name_cid')->nullable();
+            
+            $table->string('non_trece_resident')->nullable();
+            $table->string('first_name')->nullable();
+            $table->string('middle_name')->nullable();
+            $table->string('last_name')->nullable();
+            $table->string('suffix')->nullable();
+            $table->string('contact_no')->nullable();
+            $table->string('sex')->nullable();
+            $table->string('city')->nullable();
+            $table->string('address')->nullable();
+
+
             $table->string('tel_no')->nullable();
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
@@ -28,11 +41,11 @@ return new class extends Migration
             $table->string('trade_name_franchise')->nullable();
             $table->string('business_activity_id')->nullable();
             $table->string('other_buss_type')->nullable();
-            $table->string('faas_land_id')->nullable();
+            $table->string('buss_activity_land_id')->nullable();
             $table->string('sec_no')->nullable();
-            $table->date('sec_reg_date');
+            $table->date('sec_reg_date')->nullable();
             $table->string('dti_no')->nullable();
-            $table->date('dti_reg_date');
+            $table->date('dti_reg_date')->nullable();
             $table->string('tax_incentives')->nullable();
             $table->string('certificate')->nullable();
             $table->char('isActive', 1)->default('Y');

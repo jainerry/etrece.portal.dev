@@ -4,11 +4,11 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 class BusinessProfiles extends Model
 {
     use CrudTrait;
-
+    use HasUuids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -34,7 +34,22 @@ class BusinessProfiles extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot(){
+        parent::boot();
 
+        BusinessProfiles::creating(function($model){
+            $count = BusinessProfiles::count();
+            $refID = 'BUSID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->buss_id = $refID;
+        });
+    }
+
+    public function owner(){
+        return $this->belongsTo(CitizenProfile::class,'owner_cid','id');
+    }
+    public function main_land(){
+        return $this->belongsTo(FaasLand::class,'main_land_id','id');
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

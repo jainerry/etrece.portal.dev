@@ -62,26 +62,58 @@ class BusinessProfilesCrudController extends CrudController
     {
        $this->crud->setValidation(BusinessProfilesRequest::class);
 
-       $this->crud->field('business_name');
-       $this->crud->field('owner_cid');
-       $this->crud->field('property_owner');
-       $this->crud->field('lessor_name_cid');
-       $this->crud->field('tel_no');
-       $this->crud->field('mobile');
-       $this->crud->field('email');
-       $this->crud->field('buss_type');
-       $this->crud->field('corp_type');
-       $this->crud->field('trade_name_franchise');
-       $this->crud->field('business_activity_id');
-       $this->crud->field('other_buss_type');
-       $this->crud->field('faas_land_id');
-       $this->crud->field('sec_no');
-       $this->crud->field('sec_reg_date');
-       $this->crud->field('dti_no');
-       $this->crud->field('dti_reg_date');
-       $this->crud->field('tax_incentives');
-       $this->crud->field('certificate');
-       $this->crud->field('isActive');
+       $this->crud->addField([
+        'name' => 'business_name',
+        'type' => 'text',
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+        'tab' => 'Details',
+       ]);
+       $this->crud->addField([
+        'label' => 'Owner',
+        'type' => 'primary_owner_input',
+        'name' => 'owner_cid',
+        'entity' => 'owner',
+        'attribute' => 'full_name',
+        'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        'minimum_input_length' => 1,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6',
+        ],
+        'tab' => 'Details',
+        ]);
+       $this->crud->addField([
+        'label' => 'Main Office Business Address (Land Profile)',
+        'type' => 'business_main_office',
+        'name' => 'main_land_id',
+        'entity' => 'main_land',
+        'attribute' => 'full_name',
+        'data_source' => url('/admin/api/faas-land/ajaxsearch'),
+        'minimum_input_length' => 1,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6',
+        ],
+        'tab' => 'Details',
+        ]);
+    //    $this->crud->field('property_owner');
+    //    $this->crud->field('lessor_name_cid');
+    //    $this->crud->field('tel_no');
+    //    $this->crud->field('mobile');
+    //    $this->crud->field('email');
+    //    $this->crud->field('buss_type');
+    //    $this->crud->field('corp_type');
+    //    $this->crud->field('trade_name_franchise');
+    //    $this->crud->field('business_activity_id');
+    //    $this->crud->field('other_buss_type');
+    //    $this->crud->field('faas_land_id');
+    //    $this->crud->field('sec_no');
+    //    $this->crud->field('sec_reg_date');
+    //    $this->crud->field('dti_no');
+    //    $this->crud->field('dti_reg_date');
+    //    $this->crud->field('tax_incentives');
+    //    $this->crud->field('certificate');
+    //    $this->crud->field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:

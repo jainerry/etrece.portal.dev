@@ -1,4 +1,4 @@
-{{-- Primary Owner Input --}}
+{{-- Main Office Input --}}
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();

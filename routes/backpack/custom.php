@@ -36,6 +36,7 @@ Route::group([
     Route::post('/citizen-profile/check-duplicate','CitizenProfileCrudController@checkDuplicate');
     Route::post('/employee/check-duplicate','EmployeeCrudController@checkDuplicate');
     Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
+    Route::get('/api/faas-land/ajaxsearch', 'FaasLandCrudController@ajaxsearch');
     Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
 
     Route::crud('user', 'UserCrudController');

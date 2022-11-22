@@ -38,9 +38,9 @@ class FaasLandCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\FaasLand::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/faas-land');
-        CRUD::setEntityNameStrings('land', 'lands');
+       $this->crud->setModel(\App\Models\FaasLand::class);
+       $this->crud->setRoute(config('backpack.base.route_prefix') . '/faas-land');
+       $this->crud->setEntityNameStrings('land', 'lands');
         $this->crud->removeButton('delete');
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
@@ -724,7 +724,7 @@ class FaasLandCrudController extends CrudController
 
         FaasLand::creating(function($entry) {
             $count = FaasLand::count();
-            $refID = 'LAND-'.str_pad(($count->count), 4, "0", STR_PAD_LEFT);
+            $refID = 'LAND-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
             TransactionLogs::create([
@@ -753,6 +753,16 @@ class FaasLandCrudController extends CrudController
                 'type' =>'update',
             ]);
         });
+    }
+
+    public function ajaxsearch(){
+
+      $res =   FaasLand::all();
+
+
+      return response()->json($res);
+
+
     }
     
 }

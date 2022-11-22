@@ -136,4 +136,4 @@
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-clipboard"></i> Transaction logs</a></li>
 @endcan
 
-<li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-profiles') }}"><i class="nav-icon la la-briefcase"></i> Business profiles</a></li>
+<li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-profiles') }}"><i class="nav-icon la la-briefcase"></i> Business</a></li>
