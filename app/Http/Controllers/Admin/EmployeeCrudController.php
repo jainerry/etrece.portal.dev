@@ -43,9 +43,9 @@ class EmployeeCrudController extends CrudController
      */
     public function setup()
     {
-        CRUD::setModel(\App\Models\Employee::class);
-        CRUD::setRoute(config('backpack.base.route_prefix') . '/employee');
-        CRUD::setEntityNameStrings('employee', 'employees');
+        $this->crud->setModel(\App\Models\Employee::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/employee');
+        $this->crud->setEntityNameStrings('employee', 'employees');
         $this->crud->removeButton('delete');
     }
 
@@ -108,7 +108,7 @@ class EmployeeCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        CRUD::setValidation(EmployeeRequest::class);
+        $this->crud->setValidation(EmployeeRequest::class);
         Widget::add([
             'type'     => 'script',
             'name'      => 'custom_script',

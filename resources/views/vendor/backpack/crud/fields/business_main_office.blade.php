@@ -173,23 +173,7 @@
                     return {
                         results: $.map(data, function(item) {
                             return {
-                                text: `<div>
-                                    <div>
-                                        Fullname: <b class="fullname"> ${item.fullname}</b>
-                                    </div>
-                                    <div>
-                                        Reference ID: <b> ${item.refID}</b>
-                                    </div>
-                                    <div>
-                                        Birth Date: <b> ${item.bdate}</b>
-                                    </div>
-                                    <div>
-                                        Barangay: <b> ${item.barangay.name}</b>
-                                    </div>
-                                    <div>
-                                        Address: <b> ${item.address}</b>
-                                    </div>
-                                    </div>`,
+                                text: item.refUI,
                                 id: item.id
                             }
                         }),

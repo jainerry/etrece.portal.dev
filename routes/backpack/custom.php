@@ -35,6 +35,8 @@ Route::group([
     Route::get('/citizen-profile/cluster','CitizenProfileCrudController@getCluster');
     Route::post('/citizen-profile/check-duplicate','CitizenProfileCrudController@checkDuplicate');
     Route::post('/employee/check-duplicate','EmployeeCrudController@checkDuplicate');
+    Route::post('/name-profiles/check-duplicate','NameProfilesCrudController@checkDuplicate');
+
     Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
     Route::get('/api/faas-land/ajaxsearch', 'FaasLandCrudController@ajaxsearch');
     Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
@@ -82,4 +84,5 @@ Route::group([
    
     Route::crud('regions', 'RegionsCrudController');
     Route::crud('business-profiles', 'BusinessProfilesCrudController');
+    Route::crud('name-profiles', 'NameProfilesCrudController');
 }); // this should be the absolute last line of this file
