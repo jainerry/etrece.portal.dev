@@ -5,6 +5,7 @@ $(function () {
     $('.tab-container #tab_main-information select[name="primaryOwnerId"]').on('change', function(){
         let owner = $(this).val()
         console.log(owner)
+        alert('(show popup result whether the selected owner has already an existing rpt assessment record or not - In Progress)')
     })
 })
 
