@@ -40,15 +40,6 @@ class BuildingProfile extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getStatus(){
-        if($this->isActive === 'Y'){
-            return "Active";
-        }
-        else {
-            return "InActive";
-        }
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS

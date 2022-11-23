@@ -92,7 +92,8 @@ return new class extends Migration
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo',25)->nullable();
-            $table->char('isActive', 1)->default('Y');
+            $table->boolean('isActive')->default(1);
+            $table->boolean('isApproved')->default(0);
             $table->timestamps();
         });
     }

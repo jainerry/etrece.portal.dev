@@ -85,9 +85,10 @@ class BuildingProfileCrudController extends CrudController
         ]);
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
-            'label'=>'Status',
-            'type'  => 'model_function',
-            'function_name' => 'getStatus',
+            'name'  => 'isActive',
+            'label' => 'Status',
+            'type'  => 'boolean',
+            'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
     }
     protected function setupShowOperation()
@@ -243,8 +244,8 @@ class BuildingProfileCrudController extends CrudController
             'label'=>'Status',
             'type' => 'select_from_array',
             'options' => [
-                'Y' => 'Active', 
-                'N' => 'Inactive'
+                1 => 'Active', 
+                0 => 'Inactive'
             ],
             'allows_null' => false,
             'default'     => 'Y',

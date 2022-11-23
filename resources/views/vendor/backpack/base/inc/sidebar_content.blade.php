@@ -122,12 +122,9 @@
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> Real Property Tax</a>
     <ul class="nav-dropdown-items">
-        @can('rpt-create-new-assessment-request')
-        <li class="nav-item d-flex"><a class="nav-link d-flex" href="{{ route('rpt-new-assessment-request') }}"><i class="nav-icon la la-ellipsis-v"></i> <span>New Assessment Request</span></a></li>
-        @endcan
-        @can('rpt-view-assessment-requests')
-        <li class="nav-item"><a class="nav-link d-flex" href="{{ route('rpt-assessment-requests') }}"><i class="nav-icon la la-ellipsis-v"></i> <span>Assessment Requests</span></a></li>
-        @endcan
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-building') }}"><i class="nav-icon la la-ellipsis-v"></i> Buildings</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-machinery') }}"><i class="nav-icon la la-ellipsis-v"></i> Machineries</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-land') }}"><i class="nav-icon la la-ellipsis-v"></i> Lands</a></li>
     </ul>
 </li>
 @endcan

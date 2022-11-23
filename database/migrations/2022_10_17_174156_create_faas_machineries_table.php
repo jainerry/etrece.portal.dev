@@ -54,6 +54,7 @@ return new class extends Migration
             $table->string('totalOriginalCost')->nullable();
             $table->string('totalTotalDepreciationValue')->nullable();
             $table->string('totalDepreciatedValue')->nullable();
+            $table->char('isApproved', 1)->default('N');
             $table->timestamps();
         });
     }

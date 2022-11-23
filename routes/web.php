@@ -28,8 +28,6 @@ Route::group([
     'namespace'  => 'App\Http\Controllers',
 ], function () { // custom web routes
 
-    Route::get('/my-account', 'MyAccountController@getAccountInfo')->name('my-account');
-
 });
 
 require __DIR__.'/auth.php';

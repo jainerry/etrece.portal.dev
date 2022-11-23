@@ -383,17 +383,14 @@ class CitizenProfileCrudController extends CrudController
                 ->orWhere('suffix', 'like', '%'.$search_term.'%')
                 ->orWhere('address', 'like', '%'.$search_term.'%')
                 ->orWhereDate('bdate', '=', date($search_term))
+                ->where('isActive', '=', 'Y') 
                 ->orderBy('fullname','ASC')
                 ->get();
 
-            $businessProfiles = BusinessProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname2, id, buss_id as refID, business_name as fullname, suffix, address, "BusinessProfiles" as ownerType'))
+            $businessProfiles = BusinessProfiles::select(DB::raw('id, buss_id as refID, business_name as fullname, "BusinessProfiles" as ownerType'))
                 ->orWhere('buss_id', 'like', '%'.$search_term.'%')
                 ->orWhere('business_name', 'like', '%'.$search_term.'%')
-                ->orWhere('first_name', 'like', '%'.$search_term.'%')
-                ->orWhere('middle_name', 'like', '%'.$search_term.'%')
-                ->orWhere('last_name', 'like', '%'.$search_term.'%')
-                ->orWhere('suffix', 'like', '%'.$search_term.'%')
-                ->orWhere('address', 'like', '%'.$search_term.'%')
+                ->where('isActive', '=', 'Y') 
                 ->orderBy('business_name','ASC')
                 ->get();
 
@@ -404,7 +401,7 @@ class CitizenProfileCrudController extends CrudController
             $citizenProfiles = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex, "CitizenProfile" as ownerType'))
                 ->where('isActive', '=', 'Y')
                 ->orderBy('fullname','ASC')->paginate(10);
-            $businessProfiles = BusinessProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname2, id, buss_id as refID, business_name as fullname, suffix, address, "BusinessProfiles" as ownerType'))
+            $businessProfiles = BusinessProfiles::select(DB::raw('id, buss_id as refID, business_name as fullname, "BusinessProfiles" as ownerType'))
                 ->where('isActive', '=', 'Y')    
                 ->orderBy('business_name','ASC')->paginate(10);
             

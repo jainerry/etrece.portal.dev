@@ -63,17 +63,9 @@ Route::group([
     Route::crud('faas-land-secondary-owners', 'FaasLandSecondaryOwnersCrudController');
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
 
-    Route::get('/rpt-new-assessment-request', 'RPTController@newAssessmentRequest')->name('rpt-new-assessment-request');
-    Route::get('/rpt-assessment-requests', 'RPTController@assessmentRequests')->name('rpt-assessment-requests');
-
-    Route::post('/api/rpt/machineries/search', 'RPTAPIsController@machineriesSearch')->name('rpt-machineries-search');
-    Route::get('/rpt-view-machinery/{id}', 'RPTController@viewMachinery')->name('rpt-view-machinery');
-
-    Route::post('/api/rpt/buildings/search', 'RPTAPIsController@buildingsSearch')->name('rpt-buildings-search');
-    Route::get('/rpt-view-building/{id}', 'RPTController@viewBuilding')->name('rpt-view-building');
-
-    Route::post('/api/rpt/lands/search', 'RPTAPIsController@landsSearch')->name('rpt-lands-search');
-    Route::get('/rpt-view-land/{id}', 'RPTController@viewLand')->name('rpt-view-land');
+    Route::crud('rpt-building', 'RPTBuildingCrudController');
+    Route::crud('rpt-machinery', 'RPTMachineryCrudController');
+    Route::crud('rpt-land', 'RPTLandCrudController');
 
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');
