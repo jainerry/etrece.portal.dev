@@ -37,9 +37,8 @@ Route::group([
     Route::post('/employee/check-duplicate','EmployeeCrudController@checkDuplicate');
     Route::post('/name-profiles/check-duplicate','NameProfilesCrudController@checkDuplicate');
 
-    Route::get('/api/citizen-profile/ajaxsearch', 'CitizenProfileCrudController@ajaxsearch');
-    Route::get('/api/faas-land/ajaxsearch', 'FaasLandCrudController@ajaxsearch');
-    Route::get('/api/employee/ajaxsearch', 'EmployeeCrudController@ajaxsearch');
+    Route::get('/api/citizen-profile/search-primary-owner', 'CitizenProfileCrudController@searchPrimaryOwner');
+    Route::get('/api/citizen-profile/search-secondary-owners', 'CitizenProfileCrudController@searchSecondaryOwners');
 
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');

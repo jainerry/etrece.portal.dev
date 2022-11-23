@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('ARPNo')->nullable();
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
-            $table->foreignUuid('primaryOwnerId')->nullable();
+            $table->string('primaryOwnerId')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTin')->nullable();
@@ -28,12 +28,12 @@ return new class extends Migration
             $table->string('administratorTelephoneNo')->nullable();
             $table->string('administratorTin')->nullable();
             $table->string('noOfStreet')->nullable();
-            $table->foreignUuid('barangayId')->nullable();
-            $table->foreignUuid('cityId')->nullable();
-            $table->foreignUuid('provinceId')->nullable();
-            $table->foreignUuid('landOwnerId')->nullable();
-            $table->foreignUuid('buildingOwnerId')->nullable();
-            $table->foreignUuid('landOwnerPin')->nullable();
+            $table->string('barangayId')->nullable();
+            $table->string('cityId')->nullable();
+            $table->string('provinceId')->nullable();
+            $table->string('landOwnerId')->nullable();
+            $table->string('buildingOwnerId')->nullable();
+            $table->string('landOwnerPin')->nullable();
             $table->string('buildingOwnerPin')->nullable();
             $table->text('propertyAppraisal')->nullable();
             $table->text('propertyAssessment')->nullable();
@@ -50,11 +50,11 @@ return new class extends Migration
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
             $table->string('TDNo')->nullable();
-            $table->char('isActive', 1)->default('Y');
             $table->string('totalOriginalCost')->nullable();
             $table->string('totalTotalDepreciationValue')->nullable();
             $table->string('totalDepreciatedValue')->nullable();
-            $table->char('isApproved', 1)->default('N');
+            $table->boolean('isActive')->default(1);
+            $table->boolean('isApproved')->default(0);
             $table->timestamps();
         });
     }

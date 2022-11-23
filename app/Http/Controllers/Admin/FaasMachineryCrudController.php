@@ -90,9 +90,25 @@ class FaasMachineryCrudController extends CrudController
 
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
-            'label'=>'Status',
-            'type'  => 'model_function',
-            'function_name' => 'getStatus',
+            'name'  => 'isApproved',
+            'label' => 'Approved',
+            'type'  => 'boolean',
+            'options' => [0 => 'No', 1 => 'Yes'],
+            'wrapper' => [
+                'element' => 'span',
+                'class'   => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Yes') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
+        $this->crud->addColumn([
+            'name'  => 'isActive',
+            'label' => 'Status',
+            'type'  => 'boolean',
+            'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
     }
 
@@ -142,11 +158,11 @@ class FaasMachineryCrudController extends CrudController
         ]);
         $this->crud->addField([
             'label' => 'Primary Owner',
-            'type' => 'primary_owner_input',
+            'type' => 'primary_owner_union',
             'name' => 'primaryOwnerId',
             'entity' => 'citizen_profile',
             'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6'
@@ -158,7 +174,7 @@ class FaasMachineryCrudController extends CrudController
             'label' => 'Secondary Owner/s',
             'type' => 'secondary_owner',
             'entity' => 'machinery_owner',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
             'attribute' => 'full_name',
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
@@ -338,7 +354,7 @@ class FaasMachineryCrudController extends CrudController
             'name' => 'landOwnerId',
             'entity' => 'land_owner_citizen_profile',
             'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6'
@@ -359,7 +375,7 @@ class FaasMachineryCrudController extends CrudController
             'name' => 'buildingOwnerId',
             'entity' => 'building_owner_citizen_profile',
             'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6'

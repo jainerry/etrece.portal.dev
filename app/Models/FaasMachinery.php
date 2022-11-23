@@ -41,16 +41,6 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getStatus(){
-        if($this->isActive === 'Y'){
-            return "Active";
-        }
-        else {
-            return "InActive";
-        }
-    }
-
-    
     public function getPrimaryOwner(){
         $citizen = CitizenProfile::find($this->primaryOwnerId);
         $business = BusinessProfiles::where("id",$this->primaryOwnerId)->first();
@@ -62,62 +52,6 @@ class FaasMachinery extends Model
         }
     }
 
-    public function getPropertyAppraisal(){
-        if(!empty($this->propertyAppraisal && is_array($this->propertyAppraisal))){
-            $html = '<div class="row">';
-            // "kindOfMachinery" => "Mixed machineries"
-            // "brandModel" => "test only"
-            // "capacity" => "test only"
-            // "dateAcquired" => "2019"
-            // "conditionWhenAcquired" => "New"
-            // "economicLifeEstimated" => "12"
-            // "economicLifeRemain" => "11"
-            // "yearInstalled" => "2019"
-            // "yearOfInitialOperation" => "2019"
-            // "originalCost" => "454,567.00"
-            // "conversionFactor" => "test only"
-            // "rcn" => "test only"
-            // "noOfYearsUsed" => "2"
-            // "rateOfDepreciation" => "10%"
-            // "totalDepreciationPercentage" => "10%"
-            // "totalDepreciationValue" => "10,000.00"
-            // "depreciatedValue" => "14,566.00"
-            foreach($this->propertyAppraisal as $propertyAppraisal) {
-                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$propertyAppraisal['kindOfMachinery'].'</div>';
-                
-            }
-            $html .= '</div>';
-            $html = '';
-            return $html;
-        }
-        else {
-            return "-";
-        }
-    }
-
-    public function getPropertyAssessment(){
-        if(!empty($this->propertyAssessment) && is_array($this->propertyAssessment)){
-            $html = '<div class="row">';
-            // "actualUse" => "1"
-            // "marketValue" => "35,345.00"
-            // "assessmentLevel" => "34%"
-            // "assessedValue" => "12,345.00"
-            // "yearOfEffectivity" => "2023"
-            foreach($this->propertyAssessment as $propertyAssessment) {
-                $html .= '<div class="col-md-6">Kind Of Machinery</div>';
-                $html .= '<div class="col-md-6">'.$propertyAssessment['actualUse'].'</div>';
-                
-            }
-            $html .= '</div>';
-            $html = '';
-            return $html;
-        }
-        else {
-            return "-";
-        }
-    }
-
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -126,8 +60,6 @@ class FaasMachinery extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
-        //return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
-        //return $this->hasManyThrough(CitizenProfile::class, BusinessProfiles::class, 'id', 'primaryOwnerId', 'primaryOwnerId', 'id');
     }
 
     public function land_owner_citizen_profile(){

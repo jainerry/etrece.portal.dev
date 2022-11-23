@@ -114,9 +114,7 @@
                             return {
                                 results: $.map(data, function(item) {
                                     
-                                    let customText = ''
-                                    if(item.ownerType === 'CitizenProfile') {
-                                        customText = `
+                                    let customText = `
                                             <div>
                                                 <div>
                                                     Fullname: <b class="fullname"> ${item.fullname}</b>
@@ -138,25 +136,6 @@
                                                 </div>
                                             </div>
                                         `
-                                    }
-                                    else if(item.ownerType === 'BusinessProfiles') {
-                                        customText = `
-                                            <div>
-                                                <div>
-                                                    Business Name: <b class="fullname"> ${item.business_name}</b>
-                                                </div>
-                                                <div>
-                                                    Owner Type: <b class="fullname"> Business Profile</b>
-                                                </div>
-                                                <div>
-                                                    Reference ID: <b> ${item.refID}</b>
-                                                </div>
-                                                <div>
-                                                    Address: <b> ${item.address}</b>
-                                                </div>
-                                            </div>
-                                        `
-                                    }
                                     let searchResults = { text: customText, id: item.id }
                                     return searchResults
 

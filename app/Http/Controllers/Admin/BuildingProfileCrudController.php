@@ -85,6 +85,21 @@ class BuildingProfileCrudController extends CrudController
         ]);
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
+            'name'  => 'isApproved',
+            'label' => 'Approved',
+            'type'  => 'boolean',
+            'options' => [0 => 'No', 1 => 'Yes'],
+            'wrapper' => [
+                'element' => 'span',
+                'class'   => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Yes') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
+        ]);
+        $this->crud->addColumn([
             'name'  => 'isActive',
             'label' => 'Status',
             'type'  => 'boolean',
@@ -134,11 +149,11 @@ class BuildingProfileCrudController extends CrudController
         ]);
         $this->crud->addField([
             'label' => 'Primary Owner',
-            'type' => 'primary_owner_input',
+            'type' => 'primary_owner_union',
             'name' => 'primary_owner',
             'entity' => 'citizen_profile',
             'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -150,7 +165,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Secondary Owner',
             'type' => 'secondary_owner',
             'entity' => 'building_owner',
-            'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
             'attribute' => 'full_name',
             'minimum_input_length' => 1,
             'wrapperAttributes' => [

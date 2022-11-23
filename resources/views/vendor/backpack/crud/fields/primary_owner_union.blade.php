@@ -1,13 +1,15 @@
-{{-- Employee Single Select Ajax --}}
+{{-- Primary Owner Union --}}
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
+    
     $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
+
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-    $field['placeholder'] = $field['placeholder'] ?? trans('backpack::crud.select_entry');
+    $field['placeholder'] = $field['placeholder'] ?? 'Select Primary Owner';
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
@@ -17,7 +19,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-init-function="bpFieldInitEmployeeSingleSelectAjaxElement"
+        data-init-function="bpFieldInitPrimaryOwnerInputElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
@@ -32,8 +34,9 @@
         data-language="{{ str_replace('_', '-', app()->getLocale()) }}"
         @include('crud::fields.inc.attributes', ['default_class' =>  'form-control'])
         >
-
+        
         @if ($old_value)
+      
             @php
                 if(!is_object($old_value)) {
                     $item = $connected_entity->find($old_value);
@@ -50,8 +53,8 @@
             </option>
             @endif
 
-            <option value="{{ $item->getKey() }}" selected>
-                {{ $item->{$field['attribute']} }}
+            <option value="{{ $item->id }}" selected>
+                {{ $item->full_name}}
             </option>
             @endif
         @endif
@@ -77,7 +80,7 @@
         @loadOnce('select2_from_ajax_custom_css')
         <style type="text/css">
             .select2-selection__clear::after {
-                content: ' {{ trans('backpack::crud.clear') }}';
+                content: ' Clear';
             }
             .select2-results__option {
                 padding: 10px !important;
@@ -104,9 +107,9 @@
 
 {{-- include field specific select2 js --}}
 @push('crud_fields_scripts')
-@loadOnce('bpFieldInitEmployeeSingleSelectAjaxElement')
+@loadOnce('bpFieldInitPrimaryOwnerInputElement')
 <script>
-    function bpFieldInitEmployeeSingleSelectAjaxElement(element) {
+    function bpFieldInitPrimaryOwnerInputElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -137,7 +140,7 @@
         $(element).select2({
             theme: 'bootstrap',
             multiple: false,
-            placeholder: 'Select an Administrator',
+            placeholder: 'Select Primary Owner',
             minimumInputLength: 2,
             allowClear: true,
             templateSelection: formatState,
@@ -167,61 +170,59 @@
                     }
                 },
                 processResults: function (data, params) {
-                    params.page = params.page || 1;
-                    
-                    //if we have data.data here it means we returned a paginated instance from controller.
-                    //otherwise we returned one or more entries unpaginated.
                     let paginate = false;
-
-                    if (data.data) {
-                        paginate = data.next_page_url !== null;
-                        data = data.data;
-                    }
-
                     return {
-                        results: $.map(data, function (item) {
-                            var $itemText = processItemText(item, $fieldAttribute);
-                         
-                            return {
-                                text: `<div>
-                                            <div>
-                                                Fullname: <b class="fullname"> ${item.fullname}</b>
-                                            </div>
-                                            <div>
-                                                Nickname: <b> ${item.nickName}</b>
-                                            </div>
-                                            <div>
-                                                Employee ID: <b> ${item.employeeId}</b>
-                                            </div>
-                                            <div>
-                                                Birth Date: <b> ${item.birthDate}</b>
-                                            </div>
-                                            <div>
-                                                Residential Address: <b>${item.residentialAddress} ${item.residentialStreet.name} ${item.residentialBarangay.name}</b>
-                                            </div>
-                                            <div>
-                                                Permanent Address: <b>${item.residentialAddress} ${item.residentialStreet.name} ${item.residentialBarangay.name}</b>
-                                            </div>
-                                            <div>
-                                                Office: <b> ${item.office.name}</b>
-                                            </div>
-                                            <div>
-                                                Section: <b> ${item.section.name}</b>
-                                            </div>
-                                            <div>
-                                                Position: <b> ${item.position.name}</b>
-                                            </div>
-                                            <div>
-                                                Appointment: <b> ${item.appointment.name}</b>
-                                            </div>
-                                            </div>`,
-                                id: item[$connectedEntityKeyName],
+                        results: $.map(data, function(item) {
+
+                            let customText = ''
+                            if(item.ownerType === 'CitizenProfile') {
+                                customText = `
+                                    <div>
+                                        <div>
+                                            Fullname: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Owner Type: <b class="fullname"> Citizen Profile</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Birth Date: <b> ${item.bdate}</b>
+                                        </div>
+                                        <div>
+                                            Barangay: <b> ${item.barangay.name}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
+                                        </div>
+                                    </div>
+                                `
                             }
+                            else if(item.ownerType === 'BusinessProfiles') {
+                                customText = `
+                                    <div>
+                                        <div>
+                                            Business Name: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Owner Type: <b class="fullname"> Business Profile</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                    </div>
+                                `
+                            }
+                            let searchResults = { text: customText, id: item.id }
+                            return searchResults
+
                         }),
                         pagination: {
                             more: paginate,
                         }
-                    };
+
+                    }
                 },
                 cache: true
             },

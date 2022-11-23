@@ -359,13 +359,14 @@ class CitizenProfileCrudController extends CrudController
         }
         return response()->json($count->first());
     }
+    
     /**
-     * Define what happens when the api - /api/citizen-profile/ajaxsearch - has been called
+     * Define what happens when the api - /api/citizen-profile/search-primary-owner - has been called
      * 
      * 
      * @return void
      */
-    public function ajaxsearch(Request $request){ // This is the function which I want to call from ajax
+    public function searchPrimaryOwner(Request $request){ // This is the function which I want to call from ajax
         //do something awesome with that post data 
 
         $search_term = $request->input('q');
@@ -409,6 +410,44 @@ class CitizenProfileCrudController extends CrudController
         }
 
         return $results;
+    }
+
+    /**
+     * Define what happens when the api - /api/citizen-profile/search-secondary-owners - has been called
+     * 
+     * 
+     * @return void
+     */
+    public function searchSecondaryOwners(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $citizenProfiles = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex, "CitizenProfile" as ownerType'))
+                ->with('barangay', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('fName', 'like', '%'.$search_term.'%')
+                ->orWhere('mName', 'like', '%'.$search_term.'%')
+                ->orWhere('lName', 'like', '%'.$search_term.'%')
+                ->orWhere('suffix', 'like', '%'.$search_term.'%')
+                ->orWhere('address', 'like', '%'.$search_term.'%')
+                ->orWhereDate('bdate', '=', date($search_term))
+                ->where('isActive', '=', 'Y') 
+                ->orderBy('fullname','ASC')
+                ->get();
+        }
+        else
+        {
+            $citizenProfiles = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex, "CitizenProfile" as ownerType'))
+                ->where('isActive', '=', 'Y')
+                ->orderBy('fullname','ASC')->paginate(10);
+        }
+
+        return $citizenProfiles;
     }
 
 }

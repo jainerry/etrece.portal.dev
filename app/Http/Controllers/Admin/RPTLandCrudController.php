@@ -47,9 +47,19 @@ class RPTLandCrudController extends FaasLandCrudController
         ],);
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
-            'label'=>'Status',
-            'type'  => 'model_function',
-            'function_name' => 'getStatus',
+            'name'  => 'isApproved',
+            'label' => 'Approved',
+            'type'  => 'boolean',
+            'options' => [0 => 'No', 1 => 'Yes'],
+            'wrapper' => [
+                'element' => 'span',
+                'class'   => function ($crud, $column, $entry, $related_key) {
+                    if ($column['text'] == 'Yes') {
+                        return 'badge badge-success';
+                    }
+                    return 'badge badge-default';
+                },
+            ],
         ]);
     }
 
