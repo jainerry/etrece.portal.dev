@@ -212,6 +212,15 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
+            'name'=>'primaryOwnerText',
+            'label'=>'Primary Owner <span style="color:red;">*</span>',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
             'name' => 'land_owner',
             'label' => 'Secondary Owner/s',
             'type' => 'secondary_owner',
@@ -221,15 +230,6 @@ class FaasLandCrudController extends CrudController
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6 land_owner_select'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'primaryOwnerText',
-            'label'=>'Primary Owner <span style="color:red;">*</span>',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
             ],
             'tab' => 'Main Information',
         ]);

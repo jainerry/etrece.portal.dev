@@ -75,6 +75,7 @@ class RPTMachineryCrudController extends FaasMachineryCrudController
 
     protected function setupCreateOperation()
     {
+        Widget::add()->type('script')->content('assets/js/faas/machinery/rpt-create-functions.js');
         parent::setupCreateOperation();
     }
 }

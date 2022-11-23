@@ -67,6 +67,7 @@ class RPTLandCrudController extends FaasLandCrudController
 
     protected function setupCreateOperation()
     {
+        Widget::add()->type('script')->content('assets/js/faas/land/rpt-create-functions.js');
         parent::setupCreateOperation();
     }
 }

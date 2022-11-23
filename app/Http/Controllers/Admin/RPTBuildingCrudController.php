@@ -68,6 +68,7 @@ class RPTBuildingCrudController extends BuildingProfileCrudController
 
     protected function setupCreateOperation()
     {
+        Widget::add()->type('script')->content('assets/js/faas/building/rpt-create-functions.js');
         parent::setupCreateOperation();
     }
 }

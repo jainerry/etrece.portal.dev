@@ -26,6 +26,20 @@ $(function () {
         $('input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
         $('input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
     })
+
+    
+    $('.tab-container #tab_main-information input[name="isOwnerNonTreceResident"]').on('change', function(){
+        if($(this).val() === '1') {
+            $('.tab-container #tab_main-information textarea[name="primaryOwnerText"]').removeAttr('disabled')
+            $('.tab-container #tab_main-information textarea[name="primaryOwnerText"]').val('')
+            $('.tab-container #tab_main-information .primaryOwnerText').removeClass('hidden')
+            $('.tab-container #tab_main-information .primaryOwnerId_select').addClass('hidden')
+        }
+        else {
+            $('.tab-container #tab_main-information .primaryOwnerText').addClass('hidden')
+            $('.tab-container #tab_main-information .primaryOwnerId_select').removeClass('hidden')
+        }
+    })
 })
 
 function landAppraisalActions(){
