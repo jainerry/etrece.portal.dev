@@ -69,6 +69,8 @@ class RPTMachineryCrudController extends FaasMachineryCrudController
                 },
             ],
         ]);
+        $this->crud->addClause('where', 'isActive', '=', '1');
+        $this->crud->orderBy('refID','ASC');
     }
 
     protected function setupCreateOperation()

@@ -110,6 +110,7 @@ class FaasMachineryCrudController extends CrudController
             'type'  => 'boolean',
             'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
+        $this->crud->orderBy('refID','ASC');
     }
 
     /**
