@@ -159,6 +159,23 @@ $(function () {
         propertyAppraisalComputation()
     })
 
+    $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
+        if($(this).val() === '1') {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+        }
+        else {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+        }
+    })
+
 })
 
 function getDetails(id) {
@@ -250,6 +267,14 @@ function getDetails(id) {
     //totalConstructionCost
     let totalConstructionCost = $('input[name="totalConstructionCost"]').val()
     $('input[name="totalConstructionCost_temp"]').val(totalConstructionCost)
+
+    let isApproved = $('.tab-container #tab_property-assessment input[name="isApproved"]').val()
+    if(isApproved === '1') {
+        $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+    }
+    else {
+        $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+    }
     
 }
 

@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Illuminate\Http\Request;
+use App\Models\BuildingProfile;
 
 class RPTBuildingCrudController extends BuildingProfileCrudController
 {
@@ -68,7 +70,29 @@ class RPTBuildingCrudController extends BuildingProfileCrudController
 
     protected function setupCreateOperation()
     {
-        Widget::add()->type('script')->content('assets/js/faas/building/rpt-create-functions.js');
         parent::setupCreateOperation();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/faas/building/rpt-create-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('rpt.building.create', $this->data);
+    }
+
+    public function checkIfPrimaryOwnerExist(Request $request){
+        $primaryOwnerId = $request->input('primaryOwnerId');
+        $primaryOwners = [];
+        if ($primaryOwnerId)
+        {
+            $primaryOwners = BuildingProfile::select('id', 'refID', 'ARPNo', 'transactionCode', 'TDNo', 'primary_owner', 'ownerAddress', 'isActive', 'isApproved')
+                ->where('primary_owner', '=', $primaryOwnerId) 
+                ->orderBy('refID','ASC')
+                ->get();
+        }
+        return $primaryOwners;
     }
 }

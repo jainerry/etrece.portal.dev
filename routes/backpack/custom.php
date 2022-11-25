@@ -63,8 +63,13 @@ Route::group([
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
 
     Route::crud('rpt-building', 'RPTBuildingCrudController');
+    Route::get('/api/rpt-building/check-if-primary-owner-exist', 'RPTBuildingCrudController@checkIfPrimaryOwnerExist');
+
     Route::crud('rpt-machinery', 'RPTMachineryCrudController');
+    Route::get('/api/rpt-machinery/check-if-primary-owner-exist', 'RPTMachineryCrudController@checkIfPrimaryOwnerExist');
+
     Route::crud('rpt-land', 'RPTLandCrudController');
+    Route::get('/api/rpt-land/check-if-primary-owner-exist', 'RPTLandCrudController@checkIfPrimaryOwnerExist');
 
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');

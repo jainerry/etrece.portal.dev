@@ -4,6 +4,8 @@ namespace App\Http\Controllers\Admin;
 
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use App\Models\FaasMachinery;
+use Illuminate\Http\Request;
 
 class RPTMachineryCrudController extends FaasMachineryCrudController
 {
@@ -17,6 +19,7 @@ class RPTMachineryCrudController extends FaasMachineryCrudController
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('style')->content('assets/css/faas/machinery/styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
         Widget::add()->type('script')->content('assets/js/faas/machinery/functions.js');
@@ -75,7 +78,29 @@ class RPTMachineryCrudController extends FaasMachineryCrudController
 
     protected function setupCreateOperation()
     {
-        Widget::add()->type('script')->content('assets/js/faas/machinery/rpt-create-functions.js');
         parent::setupCreateOperation();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/faas/machinery/rpt-create-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('rpt.machinery.create', $this->data);
+    }
+
+    public function checkIfPrimaryOwnerExist(Request $request){
+        $primaryOwnerId = $request->input('primaryOwnerId');
+        $primaryOwners = [];
+        if ($primaryOwnerId)
+        {
+            $primaryOwners = FaasMachinery::select('id', 'refID', 'ARPNo', 'transactionCode', 'TDNo', 'primaryOwnerId', 'ownerAddress', 'isActive', 'isApproved')
+                ->where('primaryOwnerId', '=', $primaryOwnerId) 
+                ->orderBy('refID','ASC')
+                ->get();
+        }
+        return $primaryOwners;
     }
 }
