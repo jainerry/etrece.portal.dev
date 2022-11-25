@@ -76,8 +76,26 @@ class BusinessProfilesCrudController extends CrudController
         ],
         'tab' => 'Details',
        ]);
+       $this->crud->addField([  // Select2
+        'label'     => "Category",
+        'type'      => 'select2',
+        'name'      => 'category_id', // the db column for the foreign key
+     
+        // optional
+        'entity'    => 'category', // the method that defines the relationship in your Model
+        'model'     => "App\Models\BusinessCategory", // foreign key model
+        'attribute' => 'name', // foreign key attribute that is shown to user
+        'tab' => 'Details',
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6 mt-3'
+        ],
+         // also optional
+        'options'   => (function ($query) {
+             return $query->orderBy('name', 'ASC')->get();
+         }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+     ]);
        $this->crud->addField([
-        'label' => 'Owner',
+        'label' => 'Owner/Pres/OIC',
         'type' => 'primary_owner_input',
         'name' => 'owner_cid',
         'entity' => 'owner',
@@ -85,13 +103,27 @@ class BusinessProfilesCrudController extends CrudController
         'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
         'minimum_input_length' => 1,
         'wrapperAttributes' => [
-            'class' => 'form-group col-12 col-md-6 mt-3',
+            'class' => 'form-group col-12 col-md-12 ',
         ],
         'tab' => 'Details',
         ]);
      
        
-    //    $this->crud->field('lessor_name_cid');
+       $this->crud->addField([
+        
+        'label' => 'Owner/Pres/OIC',
+        'type' => 'primary_owner_input',
+        'name' => 'main_office_address',
+        'entity' => 'owner',
+        'attribute' => 'full_name',
+        'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        'minimum_input_length' => 1,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-12 ',
+        ],
+        'tab' => 'Details',
+        
+       ]);
     //    $this->crud->field('tel_no');
     //    $this->crud->field('mobile');
     //    $this->crud->field('email');

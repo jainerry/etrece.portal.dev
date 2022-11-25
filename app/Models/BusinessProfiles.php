@@ -5,6 +5,8 @@ namespace App\Models;
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use Illuminate\Database\Eloquent\Relations\BelongsTo;
+
 class BusinessProfiles extends Model
 {
     use CrudTrait;
@@ -58,6 +60,9 @@ class BusinessProfiles extends Model
     }
     public function municipality(){
         return $this->belongsTo(Municipality::class,"city","id");
+    }
+    public function category(){
+        return $this->belongsTo(BusinessCategory::class,'category_id',"id");
     }
     /*
     |--------------------------------------------------------------------------

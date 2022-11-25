@@ -19,7 +19,7 @@ return new class extends Migration
             $table->string('business_name')->unique();
             $table->string('category_id')->nullable();
             $table->string('owner_id')->nullable();
-            $table->string('property_owner')->nullable();
+            $table->string('main_office_address')->nullable();
             $table->string('lessor_name_id')->nullable();
 
 
