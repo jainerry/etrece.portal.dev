@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use App\Models\FaasLand;
+use Illuminate\Http\Request;
 
 class RPTLandCrudController extends FaasLandCrudController
 {
@@ -18,6 +19,7 @@ class RPTLandCrudController extends FaasLandCrudController
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('style')->content('assets/css/faas/land/styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
         Widget::add()->type('script')->content('assets/js/faas/land/functions.js');

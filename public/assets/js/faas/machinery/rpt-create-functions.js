@@ -13,7 +13,7 @@ $(function () {
         let primaryOwner = $('.tab-container #tab_main-information div.form-group[bp-field-name="primaryOwnerId"] .select2-selection__rendered').text()
         primaryOwner = primaryOwner.replaceAll('× ','')
         $.ajax({
-            url: '/admin/api/rpt-mchinery/check-if-primary-owner-exist',
+            url: '/admin/api/rpt-machinery/check-if-primary-owner-exist',
             type: 'GET',
             dataType: 'json',
             data: {
