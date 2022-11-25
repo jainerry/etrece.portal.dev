@@ -1,4 +1,12 @@
+let url = window.location.href
+let pathname = new URL(url).pathname
+let paths = pathname.split('/')
+
 $(function () {
+
+    if(paths[3] !== 'create' && paths[3] !== undefined) {
+        getDetails(paths[3])
+    }
     
     propertyAppraisalActions()
 
@@ -12,6 +20,23 @@ $(function () {
         propertyAppraisalActions()
         $('input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
         $('input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+    })
+
+    $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
+        if($(this).val() === '1') {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+        }
+        else {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+        }
     })
 })
 
@@ -136,5 +161,15 @@ function formatStringToInteger(num){
     }
     else {
         return parseInt(num.replaceAll('%',''))
+    }
+}
+
+function getDetails(id) {
+    let isApproved = $('.tab-container #tab_property-assessment input[name="isApproved"]').val()
+    if(isApproved === '1') {
+        $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+    }
+    else {
+        $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
     }
 }

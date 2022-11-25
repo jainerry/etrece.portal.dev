@@ -399,8 +399,8 @@ class FaasLandCrudController extends CrudController
             'label'=>'Status',
             'type' => 'select_from_array',
             'options' => [
-                'Y' => 'Active', 
-                'N' => 'Inactive'
+                1 => 'Active', 
+                0 => 'Inactive'
             ],
             'allows_null' => false,
             'default'     => 'Y',
@@ -821,6 +821,55 @@ class FaasLandCrudController extends CrudController
             'type'=>'textarea',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator10a',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'isApproved',
+            'label' => 'Approve',
+            'type'  => 'checkbox',
+            'attributes' => [
+                'class' => 'isApproved_checkbox'
+            ],
+            'tab'  => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'approvedBy',
+            'label'=>'Approved By',
+            'type'=>'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 approve_items hidden'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'approvedDate',
+            'label'=>'Approved Date',
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 approve_items hidden'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'TDNo',
+            'label'=>'TD No.',
+            'type'=>'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
         ]);

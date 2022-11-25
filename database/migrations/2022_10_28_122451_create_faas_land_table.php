@@ -16,7 +16,7 @@ return new class extends Migration
         Schema::create('faas_lands', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
-            $table->string('ARPNo')->unique();
+            $table->string('ARPNo')->unique()->nullable();
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
             $table->string('octTctNo')->nullable();
