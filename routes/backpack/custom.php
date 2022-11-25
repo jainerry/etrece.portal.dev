@@ -77,4 +77,5 @@ Route::group([
     Route::crud('business-profiles', 'BusinessProfilesCrudController');
     Route::crud('name-profiles', 'NameProfilesCrudController');
     Route::crud('business-type', 'BusinessTypeCrudController');
+    Route::crud('business-category', 'BusinessCategoryCrudController');
 }); // this should be the absolute last line of this file
