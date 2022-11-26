@@ -38,6 +38,49 @@ $(function () {
             $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
         }
     })
+
+    //assessmentType
+    $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
+        if($(this).val() === 'Exempt') {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
+        if($(this).val() === 'Quarter') {
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    //barangay_id
+    $('#tab_property-location select[name="barangayId"]').on('change', function(){
+        $('#tab_property-location select[name="barangay_code"]').val($(this).val())
+        $('#tab_property-location input[name="barangay_code_text"]').val($('#tab_property-location select[name="barangay_code"] option:selected').text())
+    })
+
+    //actualUse
+    $('#tab_property-assessment select[name="propertyAssessment[0][actualUse]"]').on('change', function(){
+        $('#tab_property-assessment select[name="propertyAssessment[0][actualUse_code]"]').val($(this).val())
+        $('#tab_property-assessment input[name="propertyAssessment[0][actualUse_code_text]"]').val($('#tab_property-assessment select[name="propertyAssessment[0][actualUse_code]"] option:selected').text())
+    })
 })
 
 function propertyAppraisalActions(){
@@ -171,5 +214,27 @@ function getDetails(id) {
     }
     else {
         $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+    }
+
+    //assessmentType
+    let assessmentType = $('#tab_property-assessment select[name="assessmentType"]').val()
+    if(assessmentType === 'Exempt') {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+    }
+
+    let assessmentEffectivity = $('#tab_property-assessment select[name="assessmentEffectivity"]').val()
+    let assessmentEffectivityValue = $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val()
+    if(assessmentEffectivity === 'Quarter') {
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
     }
 }

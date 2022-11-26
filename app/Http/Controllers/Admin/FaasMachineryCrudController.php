@@ -74,14 +74,7 @@ class FaasMachineryCrudController extends CrudController
                 },
             ],
         ]);
-        // $this->crud->addColumn([
-        //     'name'  => 'primaryOwner',
-        //     'label' => 'Primary Owner',
-        //     'type'  => 'select',
-        //     'entity'    => 'citizen_profile',
-        //     'attribute' => 'full_name'
-        // ],);
-
+        $this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'label'=>'Primary Owner',
             'type'  => 'model_function',
@@ -124,15 +117,6 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->setValidation(FaasMachineryRequest::class);
 
         /*Main Information*/
-        $this->crud->addField([
-            'label' => 'ARP No.',
-            'type' => 'text',
-            'name' => 'ARPNo',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
         $this->crud->addField([
             'label' => 'Transaction Code',
             'type' => 'text',
@@ -294,7 +278,7 @@ class FaasMachineryCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name'=>'barangayId',
-            'label'=>'Barangay',
+            'label'=>'Barangay/District',
             'type'=>'select',
             'entity' => 'barangay',
             'attribute' => 'name',
@@ -344,6 +328,26 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Property Location',
         ]);
         $this->crud->addField([
+            'label' => "Barangay/District",
+            'type'=>'select',
+            'name'=>'barangay_code',
+            'entity' => 'barangay',
+            'attribute' => 'code',
+            'attributes' => [
+                'class' => 'form-control',
+                'readonly' => 'readonly',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden',
+            ],
+            'tab' => 'Property Location',
+        ]);
+        $this->crud->addField([
+            'name'  => 'barangay_code_text',
+            'type'  => 'hidden',
+            'tab' => 'Property Location',
+        ]);
+        $this->crud->addField([
             'name'  => 'separator2',
             'type'  => 'custom_html',
             'value' => '<hr>',
@@ -370,7 +374,7 @@ class FaasMachineryCrudController extends CrudController
             ],
             'tab' => 'Property Location',
         ]);
-        $this->crud->addField([   // n-n relationship
+        $this->crud->addField([
             'label' => 'Building Owner',
             'type' => 'primary_owner_input',
             'name' => 'buildingOwnerId',
@@ -396,7 +400,7 @@ class FaasMachineryCrudController extends CrudController
             'name'  => 'propertyAppraisal',
             'label' => 'Property Appraisal',
             'type'  => 'repeatable',
-            'subfields' => [ // also works as: "fields"
+            'subfields' => [
                 [
                     'name'    => 'kindOfMachinery',
                     'type'    => 'text',
@@ -636,6 +640,18 @@ class FaasMachineryCrudController extends CrudController
                     'label' => 'Year of Effectivity',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
+                [
+                    'name'    => 'actualUse_code',
+                    'type'    => 'select',
+                    'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasMachineryClassifications",
+                    'attribute' => 'code',
+                    'wrapper' => ['class' => 'form-group col-md-3 actualUse_code hidden'],
+                ],
+                [
+                    'name'  => 'actualUse_code_text',
+                    'type'  => 'hidden',
+                ]
             ],
             'new_item_label'  => 'New Item',
             'init_rows' => 1,
@@ -653,36 +669,71 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
-            'type' => 'radio',
-            'options'     => [
-                "Taxable" => "Taxable",
-                "Exempt" => "Exempt"
+            'type' => 'select_from_array',
+            'options' => [
+                'Taxable' => 'Taxable', 
+                'Exempt' => 'Exempt'
             ],
+            'allows_null' => false,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Property Assessment',
         ]);
+        
         $this->crud->addField([
             'name'=>'assessmentEffectivity',
             'label'=>'Effectivity of Assessment/Reassessment',
-            'type' => 'radio',
+            'type' => 'select_from_array',
             'options'     => [
                 "Quarter" => "Quarter",
                 "Year" => "Year"
             ],
+            'allows_null' => false,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue_select_fake',
+            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
+            'type' => 'select_from_array',
+            'options'     => [
+                "1st Quarter" => "1st Quarter",
+                "2nd Quarter" => "2nd Quarter",
+                "3rd Quarter" => "3rd Quarter",
+                "4th Quarter" => "4th Quarter"
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 assessmentEffectivityValue_select_fake'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue_input_fake',
+            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 hidden assessmentEffectivityValue_input_fake'
             ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name'=>'assessmentEffectivityValue',
-            'label'=>'Effectivity of Assessment/Reassessment Value',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
+            'type' => 'hidden',
             'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'ifAssessmentTypeIsExempt',
+            'type'  => 'custom_html',
+            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
+            'tab' => 'Property Assessment',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
+            ],
         ]);
         $this->crud->addField([ 
             'name'  => 'separator4',
@@ -739,20 +790,17 @@ class FaasMachineryCrudController extends CrudController
             ],
             'tab' => 'Property Assessment',
         ]);
-        $this->crud->addField([
-            'name'=>'TDNo',
-            'label'=>'TD No.',
-            'type'=>'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
 
         FaasMachinery::creating(function($entry) {
             $count = FaasMachinery::count();
             $refID = 'MACHINERY-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
+
+            $request = app(FaasMachineryRequest::class);
+            $ARPNo = 'ARP-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
+            $TDNo = 'TD-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
+            $entry->ARPNo = $ARPNo;
+            $entry->TDNo = $TDNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -770,6 +818,34 @@ class FaasMachineryCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        $this->crud->addField([
+            'name'=>'ARPNo',
+            'label' => "ARP No.",
+            'type'=>'text',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'TDNo',
+            'label' => "TD No.",
+            'type'=>'text',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
         $this->setupCreateOperation();
 
         FaasMachinery::updating(function($entry) {

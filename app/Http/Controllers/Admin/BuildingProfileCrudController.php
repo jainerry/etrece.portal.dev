@@ -1101,7 +1101,6 @@ class BuildingProfileCrudController extends CrudController
             $request = app(BuildingProfileRequest::class);
             $ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
-
             $entry->ARPNo = $ARPNo;
             $entry->TDNo = $TDNo;
 

@@ -24,6 +24,7 @@ return new class extends Migration
             $table->string('blkNo')->nullable();
             $table->string('previousOwnerId')->nullable();
             $table->string('primaryOwnerId')->nullable();
+            $table->text('primaryOwnerText')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('administrator')->nullable();

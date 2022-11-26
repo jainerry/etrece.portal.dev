@@ -65,6 +65,44 @@ $(function () {
             $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
         }
     })
+
+    //assessmentType
+    $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
+        if($(this).val() === 'Exempt') {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
+        if($(this).val() === 'Quarter') {
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    //barangay_id
+    $('#tab_main-information select[name="barangayId"]').on('change', function(){
+        $('#tab_main-information select[name="barangay_code"]').val($(this).val())
+        $('#tab_main-information input[name="barangay_code_text"]').val($('#tab_main-information select[name="barangay_code"] option:selected').text())
+    })
+
 })
 
 function landAppraisalActions(){
@@ -220,6 +258,11 @@ function updatePropertyAssessment(rowNumber){
         let propertyAssessmentMarketValue = baseMarketValue + marketValue
         $('#tab_property-assessment .actualUse[data-row-number="'+rowNumber+'"]').val(actualUse)
         $('#tab_property-assessment .assessmentLevel[data-row-number="'+rowNumber+'"]').val(actualUse)
+
+        //actualUse
+        $('#tab_property-assessment .actualUse_code select[data-row-number="'+rowNumber+'"]').val(actualUse)
+        $('#tab_property-assessment .actualUse_code_text input[data-row-number="'+rowNumber+'"]').val($('#tab_property-assessment .actualUse_code select[data-row-number="'+rowNumber+'"] option:selected').text())
+
         $('#tab_property-assessment .marketValue[data-row-number="'+rowNumber+'"]').val(propertyAssessmentMarketValue)
         propertyAssessmentComputation(rowNumber)
     }
@@ -298,5 +341,27 @@ function getDetails(id) {
     }
     else {
         $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+    }
+
+    //assessmentType
+    let assessmentType = $('#tab_property-assessment select[name="assessmentType"]').val()
+    if(assessmentType === 'Exempt') {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+    }
+
+    let assessmentEffectivity = $('#tab_property-assessment select[name="assessmentEffectivity"]').val()
+    let assessmentEffectivityValue = $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val()
+    if(assessmentEffectivity === 'Quarter') {
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
     }
 }

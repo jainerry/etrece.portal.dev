@@ -36,6 +36,7 @@ $(function () {
         propertyAppraisalComputation()
     })
 
+    //isApproved
     $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
         if($(this).val() === '1') {
             $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
@@ -53,20 +54,24 @@ $(function () {
         }
     })
 
+    //floorsArea
     $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').on('click', function(){
         setFloorsArea()
     })
 
+    //flooring
     $('.repeatable-group[bp-field-name="flooring"] button.add-repeatable-element-button').on('click', function(){
         setFloorsFlooring()
         floorFlooringActions()
     })
 
+    //walling
     $('.repeatable-group[bp-field-name="walling"] button.add-repeatable-element-button').on('click', function(){
         setFloorsWalling()
         floorWallingActions()
     })
 
+    //roof
     $('#tab_structural-characteristic select[name="roof"]').on('change', function(){
         if($(this).val() === '7d066266-3b91-4174-b20b-857e986451fa') {
             $('#tab_structural-characteristic .other_roof input[name="other_roof"]').val('')
@@ -81,6 +86,7 @@ $(function () {
     floorFlooringActions()
     floorWallingActions()
 
+    //assessmentType
     $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
         if($(this).val() === 'Exempt') {
             $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
@@ -91,7 +97,6 @@ $(function () {
     })
 
     $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
-
         if($(this).val() === 'Quarter') {
             $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
             $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
@@ -112,11 +117,13 @@ $(function () {
         $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
     })
 
+    //barangay_id
     $('#tab_building-location select[name="barangay_id"]').on('change', function(){
         $('#tab_building-location select[name="barangay_code"]').val($(this).val())
         $('#tab_building-location input[name="barangay_code_text"]').val($('#tab_building-location select[name="barangay_code"] option:selected').text())
     })
 
+    //kind_of_building_id
     $('#tab_general-description select[name="kind_of_building_id"]').on('change', function(){
         $('#tab_general-description select[name="kind_of_building_code"]').val($(this).val())
         $('#tab_general-description input[name="kind_of_building_code_text"]').val($('#tab_general-description select[name="kind_of_building_code"] option:selected').text())
@@ -174,6 +181,7 @@ function getDetails(id) {
     let totalConstructionCost = $('input[name="totalConstructionCost"]').val()
     $('input[name="totalConstructionCost_temp"]').val(totalConstructionCost)
 
+    //isApproved
     let isApproved = $('.tab-container #tab_property-assessment input[name="isApproved"]').val()
     if(isApproved === '1') {
         $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
@@ -181,7 +189,8 @@ function getDetails(id) {
     else {
         $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
     }
-    
+
+    //assessmentType
     let assessmentType = $('#tab_property-assessment select[name="assessmentType"]').val()
     if(assessmentType === 'Exempt') {
         $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
@@ -192,8 +201,6 @@ function getDetails(id) {
 
     let assessmentEffectivity = $('#tab_property-assessment select[name="assessmentEffectivity"]').val()
     let assessmentEffectivityValue = $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val()
-    console.log(assessmentEffectivityValue)
-    console.log(assessmentEffectivity)
     if(assessmentEffectivity === 'Quarter') {
         $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').val(assessmentEffectivityValue)
         $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
