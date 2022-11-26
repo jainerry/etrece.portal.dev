@@ -20,7 +20,7 @@ class FaasMachineryClassificationSeeder extends Seeder
 
         $classifications = [
             [
-                'id' => Str::uuid(),
+                'id' => '54ce5aa0-0da3-41cd-8e0e-cb881803cfc3',
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
@@ -28,7 +28,7 @@ class FaasMachineryClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => 'd35ba252-74a8-4570-b2f9-51f4955a0951',
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
@@ -36,7 +36,7 @@ class FaasMachineryClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '30e28cfc-77a0-4939-8415-6bf83796d1ec',
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Agricultural',
                 'code' => 'AGR',
@@ -44,7 +44,7 @@ class FaasMachineryClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => 'caa8de93-17ee-4423-b3c9-89cebab513a7',
                 'refID' => 'MACHINE-CLASS'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
                 'name' => 'Industrial',
                 'code' => 'IND',

@@ -130,12 +130,15 @@
             return;
         }
         function formatState(state) {
-                    if($(state.text).find('.fullname').length > 0 ){
-                        return $(state.text).find('.fullname').html();
-                    }else{
-                        return state.text;
-                    }
-                };
+            let stateText = state.text
+            stateText = stateText.trim()
+            stateText = stateText.replaceAll("'", "\\'")
+            if($(stateText).find('.fullname').length > 0 ){
+                return $(stateText).find('.fullname').html();
+            }else{
+                return stateText;
+            }
+        };
         //init the element
         $(element).select2({
             theme: 'bootstrap',

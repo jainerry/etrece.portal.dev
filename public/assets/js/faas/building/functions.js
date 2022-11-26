@@ -8,132 +8,9 @@ $(function () {
         getDetails(paths[3])
     }
 
-    //Roof
-    $('.structural-roof-checklist .form-check input[type="radio"]').on('click', function(){
-        let selectedText = $(this).parent().find('label').text()
-        if(selectedText === 'Others'){
-            $('input[name="other_roof"]').val('')
-            $('.other_roof').removeClass('hidden')
-        }
-        else {
-            $('input[name="other_roof"]').val('')
-            $('.other_roof').addClass('hidden')
-        }
-    })
-
-    //Flooring
-    $('.flooringOptionItem .flooringCheckbox_1 input[name="floor1_flooring_radio"]').on('click', function(){
-        $('input[name="floor1_flooring"]').val($(this).val())
-        $('.flooringOtherWrapper .flooringOther_1 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_1_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_1_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.flooringOptionItem .flooringCheckbox_2 input[name="floor2_flooring_radio"]').on('click', function(){
-        $('input[name="floor2_flooring"]').val($(this).val())
-        $('.flooringOtherWrapper .flooringOther_2 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_2_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_2_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.flooringOptionItem .flooringCheckbox_3 input[name="floor3_flooring_radio"]').on('click', function(){
-        $('input[name="floor3_flooring"]').val($(this).val())
-        $('.flooringOtherWrapper .flooringOther_3 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_3_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_3_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.flooringOptionItem .flooringCheckbox_4 input[name="floor4_flooring_radio"]').on('click', function(){
-        $('input[name="floor4_flooring"]').val($(this).val())
-        $('.flooringOtherWrapper .flooringOther_4 input[type="text"]').val('')
-        $('.flooringOtherWrapper .flooringOther_4_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.flooringOtherWrapper .flooringOther_4_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.flooringOther_1 .flooringOther_1_wrapper input[name="floor1_otherFlooring_temp"]').on('change', function(){
-        let floor1_otherFlooring_temp = $(this).val()
-        $('input[name="floor1_otherFlooring"]').val(floor1_otherFlooring_temp)
-    })
-
-    $('.flooringOther_2 .flooringOther_2_wrapper input[name="floor2_otherFlooring_temp"]').on('change', function(){
-        let floor2_otherFlooring_temp = $(this).val()
-        $('input[name="floor2_otherFlooring"]').val(floor2_otherFlooring_temp)
-    })
-
-    $('.flooringOther_3 .flooringOther_3_wrapper input[name="floor3_otherFlooring_temp"]').on('change', function(){
-        let floor3_otherFlooring_temp = $(this).val()
-        $('input[name="floor3_otherFlooring"]').val(floor3_otherFlooring_temp)
-    })
-
-    $('.flooringOther_4 .flooringOther_4_wrapper input[name="floor4_otherFlooring_temp"]').on('change', function(){
-        let floor4_otherFlooring_temp = $(this).val()
-        $('input[name="floor4_otherFlooring"]').val(floor4_otherFlooring_temp)
-    })
-
-    //Walling
-    $('.wallingOptionItem .wallingCheckbox_1 input[name="floor1_walling_radio"]').on('click', function(){
-        $('input[name="floor1_walling"]').val($(this).val())
-        $('.wallingOtherWrapper .wallingOther_1 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_1_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_1_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.wallingOptionItem .wallingCheckbox_2 input[name="floor2_walling_radio"]').on('click', function(){
-        $('input[name="floor2_walling"]').val($(this).val())
-        $('.wallingOtherWrapper .wallingOther_2 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_2_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_2_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.wallingOptionItem .wallingCheckbox_3 input[name="floor3_walling_radio"]').on('click', function(){
-        $('input[name="floor3_walling"]').val($(this).val())
-        $('.wallingOtherWrapper .wallingOther_3 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_3_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_3_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.wallingOptionItem .wallingCheckbox_4 input[name="floor4_walling_radio"]').on('click', function(){
-        $('input[name="floor4_walling"]').val($(this).val())
-        $('.wallingOtherWrapper .wallingOther_4 input[type="text"]').val('')
-        $('.wallingOtherWrapper .wallingOther_4_wrapper').addClass('hidden')
-        if($(this).attr('data-name') === 'Others'){
-            $('.wallingOtherWrapper .wallingOther_4_wrapper').removeClass('hidden')
-        }
-    })
-
-    $('.wallingOther_1 .wallingOther_1_wrapper input[name="floor1_otherWalling_temp"]').on('change', function(){
-        let floor1_otherWalling_temp = $(this).val()
-        $('input[name="floor1_otherWalling"]').val(floor1_otherWalling_temp)
-    })
-
-    $('.wallingOther_2 .wallingOther_2_wrapper input[name="floor2_otherWalling_temp"]').on('change', function(){
-        let floor2_otherWalling_temp = $(this).val()
-        $('input[name="floor2_otherWalling"]').val(floor2_otherWalling_temp)
-    })
-
-    $('.wallingOther_3 .wallingOther_3_wrapper input[name="floor3_otherWalling_temp"]').on('change', function(){
-        let floor3_otherWalling_temp = $(this).val()
-        $('input[name="floor3_otherWalling"]').val(floor3_otherWalling_temp)
-    })
-
-    $('.wallingOther_4 .wallingOther_4_wrapper input[name="floor4_otherWalling_temp"]').on('change', function(){
-        let floor4_otherWalling_temp = $(this).val()
-        $('input[name="floor4_otherWalling"]').val(floor4_otherWalling_temp)
-    })
+    setFloorsArea()
+    setFloorsFlooring()
+    setFloorsWalling()
 
     /*Property Appraisal*/
     //unitConstructionCost
@@ -176,81 +53,110 @@ $(function () {
         }
     })
 
+    $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').on('click', function(){
+        setFloorsArea()
+    })
+
+    $('.repeatable-group[bp-field-name="flooring"] button.add-repeatable-element-button').on('click', function(){
+        setFloorsFlooring()
+        floorFlooringActions()
+    })
+
+    $('.repeatable-group[bp-field-name="walling"] button.add-repeatable-element-button').on('click', function(){
+        setFloorsWalling()
+        floorWallingActions()
+    })
+
+    $('#tab_structural-characteristic select[name="roof"]').on('change', function(){
+        if($(this).val() === '7d066266-3b91-4174-b20b-857e986451fa') {
+            $('#tab_structural-characteristic .other_roof input[name="other_roof"]').val('')
+            $('#tab_structural-characteristic .other_roof').removeClass('hidden')
+        }
+        else {
+            $('#tab_structural-characteristic .other_roof input[name="other_roof"]').val('')
+            $('#tab_structural-characteristic .other_roof').addClass('hidden')
+        }
+    })
+
+    floorFlooringActions()
+    floorWallingActions()
+
+    $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
+        if($(this).val() === 'Exempt') {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
+
+        if($(this).val() === 'Quarter') {
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    $('#tab_building-location select[name="barangay_id"]').on('change', function(){
+        $('#tab_building-location select[name="barangay_code"]').val($(this).val())
+        $('#tab_building-location input[name="barangay_code_text"]').val($('#tab_building-location select[name="barangay_code"] option:selected').text())
+    })
+
+    $('#tab_general-description select[name="kind_of_building_id"]').on('change', function(){
+        $('#tab_general-description select[name="kind_of_building_code"]').val($(this).val())
+        $('#tab_general-description input[name="kind_of_building_code_text"]').val($('#tab_general-description select[name="kind_of_building_code"] option:selected').text())
+    })
+
 })
 
 function getDetails(id) {
     //roof
-    let roof = $('input[name="roof"]').val()
-    $('.structural-roof-checklist .form-check input[value="'+roof+'"]').prop('checked',true)
-    if(roof === 'e9c99a01-e0bb-41ef-bf2a-d1cd01ef64a7') {
+    let roof = $('#tab_structural-characteristic select[name="roof"]').val()
+    if(roof === '7d066266-3b91-4174-b20b-857e986451fa') {
         $('.other_roof').removeClass('hidden')
     }
 
     //flooring
-    let floor1_flooring = $('input[name="floor1_flooring"]').val()
-    let floor1_otherFlooring = $('input[name="floor1_otherFlooring"]').val()
-    $('.flooringOptionItem .flooringCheckbox_1 input[value="'+floor1_flooring+'"]').prop('checked',true)
-    if(floor1_flooring === '972f792f-a70e-4b1c-93ba-9c5f9afb5f0b') {
-        $('.flooringOther_1 .flooringOther_1_wrapper input[name="floor1_otherFlooring_temp"]').val(floor1_otherFlooring)
-        $('.flooringOther_1 .flooringOther_1_wrapper').removeClass('hidden')
-    }
-
-    let floor2_flooring = $('input[name="floor2_flooring"]').val()
-    let floor2_otherFlooring = $('input[name="floor2_otherFlooring"]').val()
-    $('.flooringOptionItem .flooringCheckbox_2 input[value="'+floor2_flooring+'"]').prop('checked',true)
-    if(floor2_flooring === '972f792f-a70e-4b1c-93ba-9c5f9afb5f0b') {
-        $('.flooringOther_2 .flooringOther_2_wrapper input[name="floor2_otherFlooring_temp"]').val(floor2_otherFlooring)
-        $('.flooringOther_2 .flooringOther_2_wrapper').removeClass('hidden')
-    }
-
-    let floor3_flooring = $('input[name="floor3_flooring"]').val()
-    let floor3_otherFlooring = $('input[name="floor3_otherFlooring"]').val()
-    $('.flooringOptionItem .flooringCheckbox_3 input[value="'+floor3_flooring+'"]').prop('checked',true)
-    if(floor3_flooring === '972f792f-a70e-4b1c-93ba-9c5f9afb5f0b') {
-        $('.flooringOther_3 .flooringOther_3_wrapper input[name="floor3_otherFlooring_temp"]').val(floor3_otherFlooring)
-        $('.flooringOther_3 .flooringOther_3_wrapper').removeClass('hidden')
-    }
-
-    let floor4_flooring = $('input[name="floor4_flooring"]').val()
-    let floor4_otherFlooring = $('input[name="floor4_otherFlooring"]').val()
-    $('.flooringOptionItem .flooringCheckbox_4 input[value="'+floor4_flooring+'"]').prop('checked',true)
-    if(floor4_flooring === '972f792f-a70e-4b1c-93ba-9c5f9afb5f0b') {
-        $('.flooringOther_4 .flooringOther_4_wrapper input[name="floor4_otherFlooring_temp"]').val(floor4_otherFlooring)
-        $('.flooringOther_4 .flooringOther_4_wrapper').removeClass('hidden')
-    }
+    $('.repeatable-group[bp-field-name="flooring"] .repeatable-element .type select').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        let value = $(this).val()
+        if(value === '9f7bcd81-5fbc-4fd9-8cda-ee24cd0b6edb') {
+            $('.repeatable-group[bp-field-name="flooring"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').removeClass('hidden')
+        }
+        else {
+            $('.repeatable-group[bp-field-name="flooring"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').addClass('hidden')
+        }
+    })
 
     //walling
-    let floor1_walling = $('input[name="floor1_walling"]').val()
-    let floor1_otherWalling = $('input[name="floor1_otherWalling"]').val()
-    $('.wallingOptionItem .wallingCheckbox_1 input[value="'+floor1_walling+'"]').prop('checked',true)
-    if(floor1_walling === '5e2d4ec8-09a7-4693-a0cb-a3c27c95a1b3') {
-        $('.wallingOther_1 .wallingOther_1_wrapper input[name="floor1_otherWalling_temp"]').val(floor1_otherWalling)
-        $('.wallingOther_1 .wallingOther_1_wrapper').removeClass('hidden')
-    }
-
-    let floor2_walling = $('input[name="floor2_walling"]').val()
-    let floor2_otherWalling = $('input[name="floor2_otherWalling"]').val()
-    $('.wallingOptionItem .wallingCheckbox_2 input[value="'+floor2_walling+'"]').prop('checked',true)
-    if(floor2_walling === '5e2d4ec8-09a7-4693-a0cb-a3c27c95a1b3') {
-        $('.wallingOther_2 .wallingOther_2_wrapper input[name="floor2_otherWalling_temp"]').val(floor2_otherWalling)
-        $('.wallingOther_2 .wallingOther_2_wrapper').removeClass('hidden')
-    }
-
-    let floor3_walling = $('input[name="floor3_walling"]').val()
-    let floor3_otherWalling = $('input[name="floor3_otherWalling"]').val()
-    $('.wallingOptionItem .wallingCheckbox_3 input[value="'+floor3_walling+'"]').prop('checked',true)
-    if(floor3_walling === '5e2d4ec8-09a7-4693-a0cb-a3c27c95a1b3') {
-        $('.wallingOther_3 .wallingOther_3_wrapper input[name="floor3_otherWalling_temp"]').val(floor3_otherWalling)
-        $('.wallingOther_3 .wallingOther_3_wrapper').removeClass('hidden')
-    }
-
-    let floor4_walling = $('input[name="floor4_walling"]').val()
-    let floor4_otherWalling = $('input[name="floor4_otherWalling"]').val()
-    $('.wallingOptionItem .wallingCheckbox_4 input[value="'+floor4_walling+'"]').prop('checked',true)
-    if(floor4_walling === '5e2d4ec8-09a7-4693-a0cb-a3c27c95a1b3') {
-        $('.wallingOther_4 .wallingOther_4_wrapper input[name="floor4_otherWalling_temp"]').val(floor4_otherWalling)
-        $('.wallingOther_4 .wallingOther_4_wrapper').removeClass('hidden')
-    }
+    $('.repeatable-group[bp-field-name="walling"] .repeatable-element .type select').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        let value = $(this).val()
+        if(value === '629237bb-c562-43ac-a94a-414dea6e2bcc') {
+            $('.repeatable-group[bp-field-name="walling"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').removeClass('hidden')
+        }
+        else {
+            $('.repeatable-group[bp-field-name="walling"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').addClass('hidden')
+        }
+    })
+    
 
     //unitConstructionCost
     let unitConstructionCost = $('input[name="unitConstructionCost"]').val()
@@ -276,6 +182,28 @@ function getDetails(id) {
         $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
     }
     
+    let assessmentType = $('#tab_property-assessment select[name="assessmentType"]').val()
+    if(assessmentType === 'Exempt') {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+    }
+
+    let assessmentEffectivity = $('#tab_property-assessment select[name="assessmentEffectivity"]').val()
+    let assessmentEffectivityValue = $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val()
+    console.log(assessmentEffectivityValue)
+    console.log(assessmentEffectivity)
+    if(assessmentEffectivity === 'Quarter') {
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+    }
+    else {
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val(assessmentEffectivityValue)
+        $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+        $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
+    }
 }
 
 function propertyAppraisalComputation(){
@@ -291,6 +219,7 @@ function propertyAppraisalComputation(){
     $('input[name="unitConstructionSubTotal"]').val(unitConstructionSubTotal_temp)
     
     let costOfAdditionalItemsSubTotal_temp = $('input[name="costOfAdditionalItemsSubTotal_temp"]').val()
+    $('input[name="costOfAdditionalItemsSubTotal"]').val(costOfAdditionalItemsSubTotal_temp)
     costOfAdditionalItemsSubTotal_temp = formatStringToFloat(costOfAdditionalItemsSubTotal_temp)
 
     let totalConstructionCost_temp = unitConstructionSubTotal_temp + costOfAdditionalItemsSubTotal_temp
@@ -332,4 +261,65 @@ function formatStringToInteger(num){
     else {
         return parseInt(num.replaceAll('%',''))
     }
+}
+
+function setFloorsArea(){
+    $('input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+    $('input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+    $('.repeatable-group[bp-field-name="floorsArea"] .repeatable-element').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        $('input[name="floorsArea['+ctr+'][floorNo_fake]"]').val('Floor '+dataRowNumber)
+        $('input[name="floorsArea['+ctr+'][floorNo]"]').val(dataRowNumber)
+    })
+}
+
+function setFloorsFlooring(){
+    $('.repeatable-group[bp-field-name="flooring"] .repeatable-element').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        $('input[name="flooring['+ctr+'][floorNo_fake]"]').val('Floor '+dataRowNumber)
+        $('input[name="flooring['+ctr+'][floorNo]"]').val(dataRowNumber)
+    })
+}
+
+function setFloorsWalling(){
+    $('.repeatable-group[bp-field-name="walling"] .repeatable-element').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        $('input[name="walling['+ctr+'][floorNo_fake]"]').val('Floor '+dataRowNumber)
+        $('input[name="walling['+ctr+'][floorNo]"]').val(dataRowNumber)
+    })
+}
+
+function floorFlooringActions(){
+    $('.repeatable-group[bp-field-name="flooring"] .repeatable-element .type select').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        let value = $(this).val()
+        if(value === '9f7bcd81-5fbc-4fd9-8cda-ee24cd0b6edb') {
+            $('.repeatable-group[bp-field-name="flooring"] input[name="flooring['+ctr+'][others]"]').val('')
+            $('.repeatable-group[bp-field-name="flooring"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').removeClass('hidden')
+        }
+        else {
+            $('.repeatable-group[bp-field-name="flooring"] input[name="flooring['+ctr+'][others]"]').val('')
+            $('.repeatable-group[bp-field-name="flooring"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').addClass('hidden')
+        }
+    })
+}
+
+function floorWallingActions(){
+    $('.repeatable-group[bp-field-name="walling"] .repeatable-element .type select').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let ctr = parseInt(dataRowNumber) - 1
+        let value = $(this).val()
+        if(value === '629237bb-c562-43ac-a94a-414dea6e2bcc') {
+            $('.repeatable-group[bp-field-name="walling"] input[name="walling['+ctr+'][others]"]').val('')
+            $('.repeatable-group[bp-field-name="walling"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').removeClass('hidden')
+        }
+        else {
+            $('.repeatable-group[bp-field-name="walling"] input[name="walling['+ctr+'][others]"]').val('')
+            $('.repeatable-group[bp-field-name="walling"] .repeatable-element[data-row-number="'+dataRowNumber+'"] .others').addClass('hidden')
+        }
+    })
 }

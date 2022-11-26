@@ -20,7 +20,7 @@ class FaasLandClassificationSeeder extends Seeder
 
         $classifications = [
             [
-                'id' => Str::uuid(),
+                'id' => '58e0a3b9-b771-49df-9e39-63e2cb9cb106',
                 'refID' => 'LAND-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
@@ -28,7 +28,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '5109e5db-24ea-49d8-aeda-7ab13b3bd0a0',
                 'refID' => 'LAND-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
@@ -36,7 +36,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '488a0549-5222-4f10-b30b-3796d8916566',
                 'refID' => 'LAND-CLASS'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Agricultural',
                 'code' => 'AGR',
@@ -44,7 +44,7 @@ class FaasLandClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => 'ce234931-ec3b-4b7e-bd95-058641fd8487',
                 'refID' => 'LAND-CLASS'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
                 'name' => 'Industrial',
                 'code' => 'IND',

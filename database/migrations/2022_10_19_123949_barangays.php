@@ -17,6 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('name')->unique();
+            $table->string('code')->unique();
             $table->foreignUuid('municipality_id')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();

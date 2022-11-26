@@ -11,6 +11,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\TransactionLogs;
 use Backpack\CRUD\app\Library\Widget;
 use App\Models\StructuralRoofs;
+use Illuminate\Http\Request;
 
 /**
  * Class BuildingProfileCrudController
@@ -76,6 +77,7 @@ class BuildingProfileCrudController extends CrudController
                 },
             ]
         ]);
+        $this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'name'  => 'primary_owner',
             'label' => 'Primary Owner',
@@ -124,15 +126,6 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->setValidation(BuildingProfileRequest::class);
         
         /*Main Information*/
-        $this->crud->addField([
-            'label' => 'ARP No.',
-            'type' => 'text',
-            'name' => 'ARPNo',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
         $this->crud->addField([
             'label' => 'Transaction Code',
             'type' => 'text',
@@ -332,6 +325,26 @@ class BuildingProfileCrudController extends CrudController
             'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
             'tab' => 'Building Location',
         ]);
+        $this->crud->addField([
+            'label' => "Barangay/District",
+            'type'=>'select',
+            'name'=>'barangay_code',
+            'entity' => 'barangay',
+            'attribute' => 'code',
+            'attributes' => [
+                'class' => 'form-control',
+                'readonly' => 'readonly',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden',
+            ],
+            'tab' => 'Building Location',
+        ]);
+        $this->crud->addField([
+            'name'  => 'barangay_code_text',
+            'type'  => 'hidden',
+            'tab' => 'Building Location',
+        ]);
         /*Land Reference Tab*/
         $this->crud->addField([
             'name' => 'oct_tct_no',
@@ -375,15 +388,6 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Land Reference',
         ]);
-        // $this->crud->addField([
-        //     'name' => 'TDNo',
-        //     'label' => 'TDN/ARP No.',
-        //     'type' => 'text',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        //     'tab' => 'Land Reference',
-        // ]);
         $this->crud->addField([
             'name' => 'area',
             'label' => 'Area',
@@ -423,10 +427,29 @@ class BuildingProfileCrudController extends CrudController
             'name'=>'structural_type_id',
             'entity' => 'structural_type',
             'attribute' => 'name',
-
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ],
+            'tab' => 'General Description',
+        ]);
+        $this->crud->addField([
+            'label' => "Kind of Building",
+            'type'=>'select',
+            'name'=>'kind_of_building_code',
+            'model'     => "App\Models\FaasBuildingClassifications",
+            'attribute' => 'code',
+            'attributes' => [
+                'class' => 'form-control',
+                'readonly' => 'readonly',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 hidden',
+            ],
+            'tab' => 'General Description',
+        ]);
+        $this->crud->addField([
+            'name'  => 'kind_of_building_code_text',
+            'type'  => 'hidden',
             'tab' => 'General Description',
         ]);
         $this->crud->addField([
@@ -549,9 +572,48 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'no_of_storeys',
             'label' => 'No. of Storeys',
             'type' => 'number',
+            'value' => 1,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
+            'tab' => 'General Description',
+        ]);
+        $this->crud->addField([   
+            'name'  => 'floorsArea',
+            'label' => 'Area',
+            'type'  => 'repeatable',
+            'subfields' => [
+                [
+                    'name'=>'floorNo_fake',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
+                ],
+                [
+                    'name'    => 'floorNo',
+                    'type'    => 'hidden',
+                ],
+                [
+                    'name'    => 'area',
+                    'type'    => 'text',
+                    'label'   => 'Area',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency',
+                    ],
+                ],
+            ],
+            'new_item_label'  => 'New Item',
+            'init_rows' => 1,
+            'min_rows' => 1,
+            'max_rows' => 10,
+            'reorder' => true,
             'tab' => 'General Description',
         ]);
         $this->crud->addField([
@@ -560,54 +622,7 @@ class BuildingProfileCrudController extends CrudController
             'value' => '',
             'tab'   => 'General Description',
         ]);
-        $this->crud->addField([
-            'name' => 'area_first_floor',
-            'label' => 'Area of 1st Floor',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency nth-floor-area',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'General Description',
-        ]);
-        $this->crud->addField([
-            'name' => 'area_second_floor',
-            'label' => 'Area of 2nd Floor',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency nth-floor-area',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab'=> 'General Description',
-        ]);
-        $this->crud->addField([
-            'name' => 'area_third_floor',
-            'label' => 'Area of 3rd Floor',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency nth-floor-area',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'General Description',
-        ]);
-        $this->crud->addField([
-            'name' => 'area_fourth_floor',
-            'label' => 'Area of 4th Floor',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency nth-floor-area',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'General Description',
-        ]);
+        
         $this->crud->addField([
             'name'  => 'separator2e',
             'type'  => 'custom_html',
@@ -626,28 +641,24 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'General Description',
         ]);
-        $structuralRoofs = StructuralRoofs::where('isActive','=','Y')->get();
-        $structuralRoofsArray = [];
-        foreach($structuralRoofs as $structuralRoof){
-            $structuralRoofsArray += [$structuralRoof->id => $structuralRoof->name];
-        }
+        
         $this->crud->addField([
-            'name'        => 'roof',
-            'label'       => 'Roof',
-            'type'        => 'radio',
-            'options'     => $structuralRoofsArray,
+            'label' => "Roof",
+            'type'=>'select',
+            'name'=>'roof',
+            'model'     => "App\Models\StructuralRoofs",
+            'attribute' => 'name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 structural-roof-checklist',
+                'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'Structural Characteristic',
         ]);
         $this->crud->addField([
             'name' => 'other_roof',
-            'label' => 'Others',
+            'label' => 'Please Specify',
             'type' => 'text',
-            'hint'=>'(Please specify)',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3 hidden other_roof',
+                'class' => 'form-group col-12 col-md-3 hidden other_roof ',
             ],
             'tab' => 'Structural Characteristic',
         ]);
@@ -657,115 +668,92 @@ class BuildingProfileCrudController extends CrudController
             'value' => '<hr>',
             'tab'   => 'Structural Characteristic',
         ]);
-        $this->crud->addField([
-            'name'  => 'floor1_flooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor2_flooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor3_flooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor4_flooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
+        
+        $this->crud->addField([   
+            'name'  => 'flooring',
             'label' => 'Flooring',
-            'type' => 'flooring_checklist_input',
-            'name' => 'flooring',
-            'entity' => 'flooring',
-            'attribute' => 'name',
-            'model'     => "App\Models\StructuralFlooring",
+            'type'  => 'repeatable',
+            'subfields' => [
+                [
+                    'name'=>'floorNo_fake',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
+                ],
+                [
+                    'name'    => 'floorNo',
+                    'type'    => 'hidden',
+                ],
+                [
+                    'name'    => 'type',
+                    'type' => 'select',
+                    'model'     => "App\Models\StructuralFlooring",
+                    'attribute' => 'name',
+                    'label'   => 'Type',
+                    'wrapper' => ['class' => 'form-group col-md-3 type'],
+                ],
+                [
+                    'name'    => 'others',
+                    'type'    => 'text',
+                    'label'   => 'Please Specify',
+                    'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                ],
+            ],
+            'new_item_label'  => 'New Item',
+            'init_rows' => 1,
+            'min_rows' => 1,
+            'max_rows' => 10,
+            'reorder' => true,
             'tab' => 'Structural Characteristic',
         ]);
-        $this->crud->addField([
-            'name'  => 'floor1_otherFlooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor2_otherFlooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor3_otherFlooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor4_otherFlooring',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator4',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'   => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor1_walling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor2_walling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor3_walling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor4_walling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
+        $this->crud->addField([   
+            'name'  => 'walling',
             'label' => 'Walling',
-            'type' => 'walling_checklist_input',
-            'name' => 'walling',
-            'entity' => 'walling',
-            'attribute' => 'name',
-            'model'     => "App\Models\StructuralWalling",
+            'type'  => 'repeatable',
+            'subfields' => [
+                [
+                    'name'=>'floorNo_fake',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
+                ],
+                [
+                    'name'    => 'floorNo',
+                    'type'    => 'hidden',
+                ],
+                [
+                    'name'    => 'type',
+                    'type' => 'select',
+                    'model'     => "App\Models\StructuralWalling",
+                    'attribute' => 'name',
+                    'label'   => 'Type',
+                    'wrapper' => ['class' => 'form-group col-md-3 type'],
+                ],
+                [
+                    'name'    => 'others',
+                    'type'    => 'text',
+                    'label'   => 'Please Specify',
+                    'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                ],
+            ],
+            'new_item_label'  => 'New Item',
+            'init_rows' => 1,
+            'min_rows' => 1,
+            'max_rows' => 10,
+            'reorder' => true,
             'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor1_otherWalling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor2_otherWalling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor3_otherWalling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'floor4_otherWalling',
-            'type'  => 'hidden',
-            'tab' => 'Structural Characteristic',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator4a',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'   => 'Structural Characteristic',
         ]);
         /*Additional Items (Repeatable)*/
         $this->crud->addField([   
@@ -983,36 +971,71 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
-            'type' => 'radio',
-            'options'     => [
-                "Taxable" => "Taxable",
-                "Exempt" => "Exempt"
+            'type' => 'select_from_array',
+            'options' => [
+                'Taxable' => 'Taxable', 
+                'Exempt' => 'Exempt'
             ],
+            'allows_null' => false,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ],
             'tab' => 'Property Assessment',
         ]);
+
         $this->crud->addField([
             'name'=>'assessmentEffectivity',
             'label'=>'Effectivity of Assessment/Reassessment',
-            'type' => 'radio',
+            'type' => 'select_from_array',
             'options'     => [
                 "Quarter" => "Quarter",
                 "Year" => "Year"
             ],
+            'allows_null' => false,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue_select_fake',
+            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
+            'type' => 'select_from_array',
+            'options'     => [
+                "1st Quarter" => "1st Quarter",
+                "2nd Quarter" => "2nd Quarter",
+                "3rd Quarter" => "3rd Quarter",
+                "4th Quarter" => "4th Quarter"
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 assessmentEffectivityValue_select_fake'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue_input_fake',
+            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 hidden assessmentEffectivityValue_input_fake'
             ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name'=>'assessmentEffectivityValue',
-            'label'=>'Effectivity of Assessment/Reassessment Value',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
+            'type' => 'hidden',
             'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'ifAssessmentTypeIsExempt',
+            'type'  => 'custom_html',
+            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
+            'tab' => 'Property Assessment',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
+            ],
         ]);
         $this->crud->addField([
             'name'  => 'separator10',
@@ -1069,15 +1092,6 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Property Assessment',
         ]);
-        $this->crud->addField([
-            'name'=>'TDNo',
-            'label'=>'TD No.',
-            'type'=>'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
 
         BuildingProfile::creating(function($entry) {
             $count = BuildingProfile::count();
@@ -1085,6 +1099,11 @@ class BuildingProfileCrudController extends CrudController
             $entry->refID = $refID;
 
             $request = app(BuildingProfileRequest::class);
+            $ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
+            $TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
+
+            $entry->ARPNo = $ARPNo;
+            $entry->TDNo = $TDNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -1103,6 +1122,34 @@ class BuildingProfileCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
+        $this->crud->addField([
+            'name'=>'ARPNo',
+            'label' => "ARP No.",
+            'type'=>'text',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'=>'TDNo',
+            'label' => "TD No.",
+            'type'=>'text',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
         $this->setupCreateOperation();
 
         BuildingProfile::updating(function($entry) {

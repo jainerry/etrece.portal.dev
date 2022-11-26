@@ -38,7 +38,6 @@ class DatabaseSeeder extends Seeder
             FaasBuildingClassificationSeeder::class,
             FaasMachineryClassificationSeeder::class,
             regionSeeder::class,
-            KindOfBuildingSeeder::class,
         ]);
     }
 }

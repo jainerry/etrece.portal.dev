@@ -81,10 +81,13 @@
                 // element parameter here will be the jQuery wrapped
                 // element where init function was defined
                 function formatState(state) {
-                    if($(state.text).find('.fullname').length > 0 ){
-                        return $(state.text).find('.fullname').html();
+                    let stateText = state.text
+                    stateText = stateText.trim()
+                    stateText = stateText.replaceAll("'", "\\'")
+                    if($(stateText).find('.fullname').length > 0 ){
+                        return $(stateText).find('.fullname').html();
                     }else{
-                        return state.text;
+                        return stateText;
                     }
                 };
 

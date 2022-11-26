@@ -87,13 +87,14 @@ class BarangayCrudController extends CrudController
             ]
         ]);
         $this->crud->column('name');
-       $this->crud->addColumn([
+        $this->crud->addColumn([
             'name'=>'municipality_id',
             'label' => "City",
             'type'=>'select',
             'entity' => 'municipality',
             'attribute' => 'name',
         ]);
+        $this->crud->column('code');
         $this->crud->addColumn([
             'label'=>'Status',
             'type'  => 'model_function',
@@ -126,6 +127,14 @@ class BarangayCrudController extends CrudController
             'type'=>'select',
             'entity' => 'municipality',
             'attribute' => 'name',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4',
+            ]
+        ]);
+        $this->crud->addField([
+            'name' => 'code',
+            'label' => 'Code',
+            'type' => 'text',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ]

@@ -20,7 +20,7 @@ class FaasBuildingClassificationSeeder extends Seeder
 
         $classifications = [
             [
-                'id' => Str::uuid(),
+                'id' => '68b4f189-7cd1-4215-ae3b-b87af9e674c0',
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
@@ -28,7 +28,7 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '93fc3f2f-b970-48a8-892e-8af78d8705c8',
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
@@ -36,7 +36,7 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '5ebe0808-2e04-4463-a5fa-aefb6a1e52fd',
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Agricultural',
                 'code' => 'AGR',
@@ -44,7 +44,7 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'created_at' => Carbon::now(),
             ],
             [
-                'id' => Str::uuid(),
+                'id' => '13af2cd2-7387-4f25-87dc-f5bc07ac0363',
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
                 'name' => 'Industrial',
                 'code' => 'IND',

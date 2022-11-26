@@ -30,6 +30,9 @@ class BuildingProfile extends Model
     // protected $dates = [];
 
     protected $casts = [
+        'floorsArea' => 'array',
+        'flooring' => 'array',
+        'walling' => 'array',
         'additionalItems' => 'array',
         'propertyAssessment' => 'array'
     ];
@@ -65,12 +68,20 @@ class BuildingProfile extends Model
     public function structural_type(){
         return $this->belongsTo(StructuralType::class, 'structural_type_id', 'id');
     }
-    public function flooring(){
-        return $this->belongsTo(StructuralFlooring::class);
-    }
-    public function walling(){
-        return $this->belongsTo(StructuralWalling::class);
-    }
+
+    // public function flooring(){
+    //     return $this->belongsTo(StructuralFlooring::class);
+    // }
+    // public function walling(){
+    //     return $this->belongsTo(StructuralWalling::class);
+    // }
+
+    // public function flooring(){
+    //     return $this->belongsToMany(StructuralFlooring::class,'faas_has_flooring','structural_flooring_id','faas_building_profiles_id');
+    // }
+    // public function walling(){
+    //     return $this->belongsToMany(StructuralWalling::class,'faas_has_walling','structural_walling_id','faas_building_profiles_id');
+    // }
     
     /*
     |--------------------------------------------------------------------------

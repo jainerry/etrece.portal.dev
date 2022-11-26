@@ -120,7 +120,7 @@
 <!-- RPT -->
 @can('rpt-view-assessment-requests')
 <li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> Real Property Tax</a>
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> RPT Assessment</a>
     <ul class="nav-dropdown-items">
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-building') }}"><i class="nav-icon la la-ellipsis-v"></i> Buildings</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-machinery') }}"><i class="nav-icon la la-ellipsis-v"></i> Machineries</a></li>

@@ -45,7 +45,10 @@ class BuildingProfileRequest extends FormRequest
             'survey_no' => 'max:25',
             'block_no' => 'max:25',
             'building_permit_no' => 'max:25',
-            'TDNo' => 'max:25'
+            'TDNo' => 'max:25',
+            'kind_of_building_id' => 'required',
+            'no_of_storeys' => 'required',
+            'totalFloorArea' => 'required'
         ];
     }
 
