@@ -35,7 +35,7 @@ class NameProfiles extends Model
 
         NameProfiles::creating(function($model){
             $count = NameProfiles::count();
-            $refID = 'BUSSNAME'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $refID = 'BUS-NAME'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->refID = $refID;
         });
     }

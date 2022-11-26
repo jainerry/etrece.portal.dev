@@ -111,7 +111,7 @@ class BusinessProfilesCrudController extends CrudController
        
        $this->crud->addField([
         
-        'label' => 'Owner/Pres/OIC',
+        'label' => 'Main Office Business Address',
         'type' => 'primary_owner_input',
         'name' => 'main_office_address',
         'entity' => 'owner',
@@ -124,6 +124,31 @@ class BusinessProfilesCrudController extends CrudController
         'tab' => 'Details',
         
        ]);
+
+       $this->crud->addField([ 
+        'name'        => 'property_owner',
+        'label'       => "Property Owner (Y/N)",
+        'type'        => 'select_from_array',
+        'options'     => ['Y' => 'Yes', 'N' => 'No'],
+        'allows_null' => false,
+        'tab' => 'Details',
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-4'
+        ]
+    ]);
+    $this->crud->addField([
+        'label' => 'Lessor Name',
+        'type' => 'primary_owner_input',
+        'name' => 'lessor_name',
+        'entity' => 'owner',
+        'attribute' => 'full_name',
+        'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        'minimum_input_length' => 1,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-12 ',
+        ],
+        'tab' => 'Details',
+        ]);
     //    $this->crud->field('tel_no');
     //    $this->crud->field('mobile');
     //    $this->crud->field('email');

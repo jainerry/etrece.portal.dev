@@ -55,6 +55,10 @@ class BusinessCategoryCrudController extends CrudController
                     return route('business-category.edit',$entry->id);
                 },
             ],
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
+ 
+             }
           ]);
 
 

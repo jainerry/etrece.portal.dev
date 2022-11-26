@@ -3,11 +3,11 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Casts\Attribute;
 
-class BusinessType extends Model
+class BusinessTaxCode extends Model
 {
     use CrudTrait;
     USE HasUuids;
@@ -17,24 +17,24 @@ class BusinessType extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'business_types';
+    protected $table = 'business_tax_codes';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
-
-    
     protected static function boot(){
         parent::boot();
 
-        BusinessType::creating(function($model){
-            $count = BusinessType::count();
-            $refID = 'BUS-TYPE'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+        BusinessTaxCode::creating(function($model){
+            $count = BusinessTaxCode::count();
+            $refID = 'BUS-TAX-CODE'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->refID = $refID;
         });
     }
+
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -70,5 +70,4 @@ class BusinessType extends Model
             get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
         );
     }
-    
 }

@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BusinessTypeRequest;
+use App\Http\Requests\BusinessActivityRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class BusinessTypeCrudController
+ * Class BusinessActivityCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BusinessTypeCrudController extends CrudController
+class BusinessActivityCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class BusinessTypeCrudController extends CrudController
      */
     public function setup()
     {
-        $this->crud->setModel(\App\Models\BusinessType::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-type');
-        $this->crud->setEntityNameStrings('business type', 'business types');
+        $this->crud->setModel(\App\Models\BusinessActivity::class);
+        $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-activity');
+        $this->crud->setEntityNameStrings('business activity', 'business activities');
     }
 
     /**
@@ -42,14 +42,13 @@ class BusinessTypeCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
-
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('business-type.edit',$entry->id);
+                    return route('business-activity.edit',$entry->id);
                 },
             ],
             'searchLogic' => function ($query, $column, $searchTerm) {
@@ -78,8 +77,8 @@ class BusinessTypeCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(BusinessTypeRequest::class);
-
+        $this->crud->setValidation(BusinessActivityRequest::class);
+        
         $this->crud->addField([
             'name'=> 'name',
             'type'=>'text',
@@ -95,8 +94,8 @@ class BusinessTypeCrudController extends CrudController
             ]
         ]);
         $this->crud->addField([
-            'name'=> 'corporation',
-            'label'=>'Corporation Category',
+            'name'=> 'open',
+            'label'=>'Tag as Open Text Field*',
             'type'=>'Checkbox',
             "default" => 0,
             'wrapperAttributes'=>[

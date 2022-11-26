@@ -29,7 +29,7 @@ class BusinessCategory extends Model
 
         BusinessCategory::creating(function($model){
             $count = BusinessCategory::count();
-            $refID = 'BUSSCAT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $refID = 'BUS-CAT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->refID = $refID;
         });
     }

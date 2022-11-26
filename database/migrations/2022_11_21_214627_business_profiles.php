@@ -20,10 +20,10 @@ return new class extends Migration
             $table->string('category_id')->nullable();
             $table->string('owner_id')->nullable();
             $table->string('main_office_address')->nullable();
-            $table->string('lessor_name_id')->nullable();
+            $table->char('property_owner',1)->nullable();
+            $table->string('lessor_name')->nullable();
 
-
-            $table->string('tel_no')->nullable();
+            
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
             $table->string('buss_type')->nullable();

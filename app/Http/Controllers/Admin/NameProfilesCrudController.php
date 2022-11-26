@@ -68,6 +68,10 @@ class NameProfilesCrudController extends CrudController
                     return route('name-profiles.edit',$entry->id);
                 },
             ],
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
+ 
+             }
           ]);
         $this->crud->column('fullname');
         $this->crud->column('suffix');

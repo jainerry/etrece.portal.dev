@@ -2,16 +2,16 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BusinessTypeRequest;
+use App\Http\Requests\BusinessTaxCodeRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 
 /**
- * Class BusinessTypeCrudController
+ * Class BusinessTaxCodeCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BusinessTypeCrudController extends CrudController
+class BusinessTaxCodeCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
@@ -26,9 +26,9 @@ class BusinessTypeCrudController extends CrudController
      */
     public function setup()
     {
-        $this->crud->setModel(\App\Models\BusinessType::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-type');
-        $this->crud->setEntityNameStrings('business type', 'business types');
+       $this->crud->setModel(\App\Models\BusinessTaxCode::class);
+       $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-tax-code');
+       $this->crud->setEntityNameStrings('business tax code', 'business tax codes');
     }
 
     /**
@@ -39,34 +39,32 @@ class BusinessTypeCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+     
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
-
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('business-type.edit',$entry->id);
+                    return route('business-tax-code.edit',$entry->id);
                 },
             ],
             'searchLogic' => function ($query, $column, $searchTerm) {
-                return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
- 
-             }
+               return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
+
+            }
           ]);
         $this->crud->column('name');
         $this->crud->addColumn([
             'name'=>'isActive'
         ]);
-        
-
         /**
          * Columns can be defined using the fluent syntax or array syntax:
-         * - $this->crud->column('price')->type('number');
-         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
+         * -$this->crud->column('price')->type('number');
+         * -$this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
          */
     }
 
@@ -78,51 +76,48 @@ class BusinessTypeCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(BusinessTypeRequest::class);
+       $this->crud->setValidation(BusinessTaxCodeRequest::class);
 
-        $this->crud->addField([
-            'name'=> 'name',
-            'type'=>'text',
-            'wrapperAttributes'=>[
-                'class'=>" form-group col-12 pt-3"
-            ]
-        ]);
-        $this->crud->addField([
-            'name'=> 'description',
-            'type'=>'textarea',
-            'wrapperAttributes'=>[
-                'class'=>"form-group col-12"
-            ]
-        ]);
-        $this->crud->addField([
-            'name'=> 'corporation',
-            'label'=>'Corporation Category',
-            'type'=>'Checkbox',
-            "default" => 0,
-            'wrapperAttributes'=>[
-                'class'=>"form-group position-absolute",
-                "style"=>"right:24px"
-            ]
-        ]);
-        $this->crud->addField([
-            'name'=>'isActive',
-            'label'=>'Status',
-            'type' => 'select_from_array',
-            'options' => [
-                'Y' => 'Active', 
-                'N' => 'Inactive'
-            ],
-            'allows_null' => false,
-            'default'     => 'Y',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 '
-            ],
-        ]);
+       $this->crud->addField([
+        'name'=> 'code',
+        'type'=>'text',
+        'wrapperAttributes'=>[
+            'class'=>" form-group col-12 col-md-6 pt-3"
+        ]
+    ]);
+       $this->crud->addField([
+        'name'=> 'name',
+        'type'=>'text',
+        'wrapperAttributes'=>[
+            'class'=>" form-group col-12 col-md-6 pt-3"
+        ]
+    ]);
+    $this->crud->addField([
+        'name'=> 'description',
+        'type'=>'textarea',
+        'wrapperAttributes'=>[
+            'class'=>"form-group col-12"
+        ]
+    ]);
+    $this->crud->addField([
+        'name'=>'isActive',
+        'label'=>'Status',
+        'type' => 'select_from_array',
+        'options' => [
+            'Y' => 'Active', 
+            'N' => 'Inactive'
+        ],
+        'allows_null' => false,
+        'default'     => 'Y',
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 '
+        ],
+    ]);
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
-         * - $this->crud->field('price')->type('number');
-         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
+         * -$this->crud->field('price')->type('number');
+         * -$this->crud->addField(['name' => 'price', 'type' => 'number'])); 
          */
     }
 

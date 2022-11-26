@@ -47,7 +47,7 @@ class BusinessProfiles extends Model
 
         BusinessProfiles::creating(function($model){
             $count = BusinessProfiles::count();
-            $refID = 'BUSID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $refID = 'BUS-ID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->buss_id = $refID;
         });
     }

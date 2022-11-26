@@ -3,21 +3,20 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-
-class BusinessType extends Model
+use Illuminate\Database\Eloquent\Casts\Attribute;
+class BusinessActivity extends Model
 {
     use CrudTrait;
-    USE HasUuids;
+    use HasUuids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'business_types';
+    protected $table = 'business_activities';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -25,16 +24,17 @@ class BusinessType extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    
     protected static function boot(){
         parent::boot();
 
-        BusinessType::creating(function($model){
-            $count = BusinessType::count();
-            $refID = 'BUS-TYPE'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+        BusinessActivity::creating(function($model){
+            $count = BusinessActivity::count();
+            $refID = 'BUS-ACTIVITY'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->refID = $refID;
         });
     }
+
+
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
