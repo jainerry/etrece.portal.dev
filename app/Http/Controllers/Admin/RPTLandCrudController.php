@@ -95,4 +95,16 @@ class RPTLandCrudController extends FaasLandCrudController
         }
         return $primaryOwners;
     }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $details = [];
+        if ($id)
+        {
+            $details = FaasLand::with('citizen_profile','citizen_profile.barangay','citizen_profile.street')
+                ->find($id);
+            ;
+        }
+        return $details;
+    }
 }

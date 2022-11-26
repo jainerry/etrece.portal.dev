@@ -8,6 +8,8 @@ $(function () {
 
     disableInputs()
 
+    hideAddress()
+
     $('.tab-container #tab_main-information select[name="primary_owner"]').on('change', function(){
         let primaryOwnerId = $(this).val()
         let primaryOwner = $('.tab-container #tab_main-information div.form-group[bp-field-name="primary_owner"] .select2-selection__rendered').text()
@@ -20,7 +22,6 @@ $(function () {
                 primaryOwnerId: primaryOwnerId
             },
             success: function (data) {
-                console.log(data)
                 if (data.length > 0) {
                     disableInputs()
                     let html = '<p>A property whom the primary owner is "'+primaryOwner+'" already exist. <br/>Please see information below:</p>'
@@ -36,8 +37,7 @@ $(function () {
                         </div>\n\
                     '
                     $.each(data, function(i, value) {
-                        let editUrl = '/admin/rpt-building/'+value.id+'/edit'
-                        let refID = '<a href="'+editUrl+'">'+value.refID+'</a>'
+                        let refID = '<a href="javascript:void(0)" onclick="fetchData(\''+value.id+'\')">'+value.refID+'</a>'
                         let TDNo = '-'
                         let ARPNo = '-'
                         let isActive = 'Active'
@@ -126,4 +126,58 @@ function enableInputs() {
     $('.tab-container .tab-content .tab-pane:first-child').addClass('active')
 
     $('.tab-container #tab_main-information select[name="primary_owner"]').removeAttr('disabled')
+}
+
+function fetchData(id){
+    $.ajax({
+        url: '/admin/api/rpt-building/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: id
+        },
+        success: function (data) {
+            enableInputs()
+
+            $('.rptModal').modal('hide');
+            $('#tab_main-information .ownerAddress_fake select option').remove()
+            $('#tab_main-information .ownerAddress_fake select').append('<option value="'+data.ownerAddress+'" data-type="propertyAddress">Property Address: '+data.ownerAddress+'</option>')
+            $('#tab_main-information .ownerAddress_fake select').append('<option value="'+data.citizen_profile.address+'" data-type="ownerAddress">Owner Address: '+data.citizen_profile.address+'</option>')
+            $('#tab_main-information .ownerAddress_fake').removeClass('hidden')
+            
+            $('#tab_building-location input[name="no_of_street"]').val(data.no_of_street)
+            $('#tab_building-location select[name="barangay_id"]').val(data.barangay_id)
+            $('#tab_building-location select[name="barangay_code"]').val(data.barangay_id)
+            $('#tab_building-location input[name="barangay_code_text"]').val($('#tab_building-location select[name="barangay_code"] option:selected').text())
+            $('#tab_building-location input[name="no_of_street"]').attr('readonly','readonly')
+            $('#tab_building-location select[name="barangay_id"]').attr('readonly','readonly')
+
+            $('#tab_land-reference input[name="oct_tct_no"]').val(data.oct_tct_no)
+            $('#tab_land-reference input[name="survey_no"]').val(data.survey_no)
+            $('#tab_land-reference input[name="lot_no"]').val(data.lot_no)
+            $('#tab_land-reference input[name="block_no"]').val(data.block_no)
+            $('#tab_land-reference input[name="area"]').val(data.area)
+            $('#tab_land-reference input[name="oct_tct_no"]').attr('readonly','readonly')
+            $('#tab_land-reference input[name="survey_no"]').attr('readonly','readonly')
+            $('#tab_land-reference input[name="lot_no"]').attr('readonly','readonly')
+            $('#tab_land-reference input[name="block_no"]').attr('readonly','readonly')
+            $('#tab_land-reference input[name="area"]').attr('readonly','readonly')
+
+            selectAddressTypeAction()
+
+            $('form .tab-container #form_tabs ul.nav-tabs li.nav-item:nth-child(2)').addClass('hidden')
+            $('form .tab-container #form_tabs ul.nav-tabs li.nav-item:nth-child(3)').addClass('hidden')
+        }
+    })
+}
+
+function hideAddress(){
+    $('#tab_main-information .ownerAddress').addClass('hidden')
+}
+
+function selectAddressTypeAction(){
+    $('#tab_main-information textarea[name="ownerAddress"]').val($('#tab_main-information .ownerAddress_fake select').val())
+    $('#tab_main-information .ownerAddress_fake select').on('change', function(){
+        $('#tab_main-information textarea[name="ownerAddress"]').val($(this).val())
+    })
 }

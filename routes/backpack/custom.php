@@ -63,12 +63,15 @@ Route::group([
 
     Route::crud('rpt-building', 'RPTBuildingCrudController');
     Route::get('/api/rpt-building/check-if-primary-owner-exist', 'RPTBuildingCrudController@checkIfPrimaryOwnerExist');
+    Route::get('/api/rpt-building/get-details', 'RPTBuildingCrudController@getDetails');
 
     Route::crud('rpt-machinery', 'RPTMachineryCrudController');
     Route::get('/api/rpt-machinery/check-if-primary-owner-exist', 'RPTMachineryCrudController@checkIfPrimaryOwnerExist');
+    Route::get('/api/rpt-machinery/get-details', 'RPTMachineryCrudController@getDetails');
 
     Route::crud('rpt-land', 'RPTLandCrudController');
     Route::get('/api/rpt-land/check-if-primary-owner-exist', 'RPTLandCrudController@checkIfPrimaryOwnerExist');
+    Route::get('/api/rpt-land/get-details', 'RPTLandCrudController@getDetails');
 
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');

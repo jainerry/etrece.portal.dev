@@ -172,7 +172,20 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Address', 
             'type' => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12',
+                'class' => 'form-group col-12 col-md-12 ownerAddress',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'ownerAddress_fake',
+            'label'=>'Address <span style="color:red;">*</span>',
+            'type' => 'select_from_array',
+            'options'     => [
+                '' => '-',
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
             ],
             'tab' => 'Main Information',
         ]);
@@ -1100,9 +1113,11 @@ class BuildingProfileCrudController extends CrudController
 
             $request = app(BuildingProfileRequest::class);
             $ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
-            $TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $entry->ARPNo = $ARPNo;
+            
+            /*$TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $entry->TDNo = $TDNo;
+            */
 
             TransactionLogs::create([
                 'transId' =>$refID,

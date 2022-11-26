@@ -41,6 +41,7 @@ class RPTBuildingCrudController extends BuildingProfileCrudController
                 },
             ]
         ]);
+        $this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'name'  => 'primary_owner',
             'label' => 'Primary Owner',
@@ -94,5 +95,17 @@ class RPTBuildingCrudController extends BuildingProfileCrudController
                 ->get();
         }
         return $primaryOwners;
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $details = [];
+        if ($id)
+        {
+            $details = BuildingProfile::with('citizen_profile','citizen_profile.barangay','citizen_profile.street')
+                ->find($id);
+            ;
+        }
+        return $details;
     }
 }

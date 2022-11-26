@@ -103,4 +103,16 @@ class RPTMachineryCrudController extends FaasMachineryCrudController
         }
         return $primaryOwners;
     }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $details = [];
+        if ($id)
+        {
+            $details = FaasMachinery::with('citizen_profile','citizen_profile.barangay','citizen_profile.street')
+                ->find($id);
+            ;
+        }
+        return $details;
+    }
 }

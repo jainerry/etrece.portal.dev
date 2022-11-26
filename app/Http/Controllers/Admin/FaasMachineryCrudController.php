@@ -177,6 +177,19 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
+            'name'=>'ownerAddress_fake',
+            'label'=>'Address <span style="color:red;">*</span>',
+            'type' => 'select_from_array',
+            'options'     => [
+                '' => '-',
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
             'name'=>'ownerTelephoneNo',
             'label'=>'Telephone No.',
             'type'=>'text',
@@ -798,9 +811,10 @@ class FaasMachineryCrudController extends CrudController
 
             $request = app(FaasMachineryRequest::class);
             $ARPNo = 'ARP-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
-            $TDNo = 'TD-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
             $entry->ARPNo = $ARPNo;
-            $entry->TDNo = $TDNo;
+
+            /*$TDNo = 'TD-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
+            $entry->TDNo = $TDNo;*/
 
             TransactionLogs::create([
                 'transId' =>$refID,

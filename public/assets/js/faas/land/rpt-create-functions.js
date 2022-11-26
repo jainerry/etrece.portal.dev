@@ -8,6 +8,8 @@ $(function () {
 
     disableInputs()
 
+    hideAddress()
+
     $('.tab-container #tab_main-information select[name="primaryOwnerId"]').on('change', function(){
         let primaryOwnerId = $(this).val()
         let primaryOwner = $('.tab-container #tab_main-information div.form-group[bp-field-name="primaryOwnerId"] .select2-selection__rendered').text()
@@ -20,7 +22,6 @@ $(function () {
                 primaryOwnerId: primaryOwnerId
             },
             success: function (data) {
-                console.log(data)
                 if (data.length > 0) {
                     disableInputs()
                     let html = '<p>A property whom the primary owner is "'+primaryOwner+'" already exist. <br/>Please see information below:</p>'
@@ -36,8 +37,7 @@ $(function () {
                         </div>\n\
                     '
                     $.each(data, function(i, value) {
-                        let editUrl = '/admin/rpt-building/'+value.id+'/edit'
-                        let refID = '<a href="'+editUrl+'">'+value.refID+'</a>'
+                        let refID = '<a href="javascript:void(0)" onclick="fetchData(\''+value.id+'\')">'+value.refID+'</a>'
                         let TDNo = '-'
                         let ARPNo = '-'
                         let isActive = 'Active'
@@ -129,4 +129,81 @@ function enableInputs() {
     $('.tab-container .tab-content .tab-pane:first-child').addClass('active')
 
     $('.tab-container #tab_main-information select[name="primaryOwnerId"]').removeAttr('disabled')
+}
+
+function fetchData(id){
+    $.ajax({
+        url: '/admin/api/rpt-land/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: id
+        },
+        success: function (data) {
+            enableInputs()
+
+            $('.rptModal').modal('hide');
+            $('#tab_main-information .ownerAddress_fake select option').remove()
+            $('#tab_main-information .ownerAddress_fake select').append('<option value="'+data.ownerAddress+'" data-type="propertyAddress">Property Address: '+data.ownerAddress+'</option>')
+            $('#tab_main-information .ownerAddress_fake select').append('<option value="'+data.citizen_profile.address+'" data-type="ownerAddress">Owner Address: '+data.citizen_profile.address+'</option>')
+            $('#tab_main-information .ownerAddress_fake').removeClass('hidden')
+            
+            $('#tab_main-information input[name="noOfStreet"]').val(data.noOfStreet)
+            $('#tab_main-information select[name="barangayId"]').val(data.barangayId)
+            $('#tab_main-information select[name="barangay_code"]').val(data.barangayId)
+            $('#tab_main-information input[name="barangay_code_text"]').val($('#tab_main-information select[name="barangay_code"] option:selected').text())
+            $('#tab_main-information input[name="noOfStreet"]').attr('readonly','readonly')
+            $('#tab_main-information select[name="barangayId"]').attr('readonly','readonly')
+
+            $('#tab_main-information input[name="octTctNo"]').val(data.octTctNo)
+            $('#tab_main-information input[name="lotNo"]').val(data.lotNo)
+            $('#tab_main-information input[name="blkNo"]').val(data.blkNo)
+            $('#tab_main-information input[name="octTctNo"]').attr('readonly','readonly')
+            $('#tab_main-information input[name="lotNo"]').attr('readonly','readonly')
+            $('#tab_main-information input[name="blkNo"]').attr('readonly','readonly')
+
+            $('#tab_main-information input[name="isIdleLand"]').val(data.isIdleLand)
+            if(data.isIdleLand === '1') {
+                $('#tab_main-information input.isIdleLand_checkbox').prop('checked', true)
+            }
+            else {
+                $('#tab_main-information input.isIdleLand_checkbox').prop('checked', false)
+            }
+            $('#tab_main-information input.isIdleLand_checkbox').attr('readonly','readonly')
+
+            $('#tab_main-information input[name="isOwnerNonTreceResident"]').val(data.isOwnerNonTreceResident)
+            if(data.isOwnerNonTreceResident === '1') {
+                $('#tab_main-information input.isOwnerNonTreceResident_checkbox').prop('checked', true)
+            }
+            else {
+                $('#tab_main-information input.isOwnerNonTreceResident_checkbox').prop('checked', false)
+            }
+            $('#tab_main-information input.isOwnerNonTreceResident_checkbox').attr('readonly','readonly')
+
+            $('#tab_property-boundaries input[name="propertyBoundaryEast"]').val(data.propertyBoundaryEast)
+            $('#tab_property-boundaries input[name="propertyBoundaryNorth"]').val(data.propertyBoundaryNorth)
+            $('#tab_property-boundaries input[name="propertyBoundarySouth"]').val(data.propertyBoundarySouth)
+            $('#tab_property-boundaries input[name="propertyBoundaryWest"]').val(data.propertyBoundaryWest)
+
+            $('#tab_property-boundaries input[name="propertyBoundaryEast"]').attr('readonly','readonly')
+            $('#tab_property-boundaries input[name="propertyBoundaryNorth"]').attr('readonly','readonly')
+            $('#tab_property-boundaries input[name="propertyBoundarySouth"]').attr('readonly','readonly')
+            $('#tab_property-boundaries input[name="propertyBoundaryWest"]').attr('readonly','readonly')
+
+            selectAddressTypeAction()
+
+            $('form .tab-container #form_tabs ul.nav-tabs li.nav-item:nth-child(2)').addClass('hidden')
+        }
+    })
+}
+
+function hideAddress(){
+    $('#tab_main-information .ownerAddress').addClass('hidden')
+}
+
+function selectAddressTypeAction(){
+    $('#tab_main-information textarea[name="ownerAddress"]').val($('#tab_main-information .ownerAddress_fake select').val())
+    $('#tab_main-information .ownerAddress_fake select').on('change', function(){
+        $('#tab_main-information textarea[name="ownerAddress"]').val($(this).val())
+    })
 }
