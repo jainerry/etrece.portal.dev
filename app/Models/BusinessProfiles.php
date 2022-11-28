@@ -6,7 +6,7 @@ use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
-
+use Illuminate\Support\Facades\DB;
 class BusinessProfiles extends Model
 {
     use CrudTrait;
@@ -53,7 +53,13 @@ class BusinessProfiles extends Model
     }
 
     public function owner(){
-        return $this->belongsTo(CitizenProfile::class,'owner_cid','id');
+        $citizenProfile = $this->belongsTo(CitizenProfile::class,'owner_id','id');
+       
+        return $citizenProfile;
+       
+    }
+    public function  names(){
+            return $this->belongsTo(NameProfiles::class,'owner_id','id');
     }
     public function main_land(){
         return $this->belongsTo(FaasLand::class,'main_land_id','id');

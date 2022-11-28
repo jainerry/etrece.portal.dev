@@ -39,7 +39,8 @@ Route::group([
 
     Route::get('/api/citizen-profile/search-primary-owner', 'CitizenProfileCrudController@searchPrimaryOwner');
     Route::get('/api/citizen-profile/search-secondary-owners', 'CitizenProfileCrudController@searchSecondaryOwners');
-
+    Route::get('/api/citizen-profile/search-business-owner', 'CitizenProfileCrudController@searchBusinessOwner');
+    
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');
     Route::crud('office', 'OfficeCrudController');

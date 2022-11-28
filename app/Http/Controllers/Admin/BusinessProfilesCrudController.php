@@ -3,9 +3,13 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BusinessProfilesRequest;
+use App\Models\BusinessProfiles;
+use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use \Backpack\CRUD\app\Library\Widget;
+use GuzzleHttp\Psr7\Request;
+
 /**
  * Class BusinessProfilesCrudController
  * @package App\Http\Controllers\Admin
@@ -94,19 +98,57 @@ class BusinessProfilesCrudController extends CrudController
              return $query->orderBy('name', 'ASC')->get();
          }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
      ]);
-       $this->crud->addField([
+     $id = $this->crud->getCurrentEntryId();
+     if($id != false){
+    $data = BusinessProfiles::where('id',$id)->first();
+    $owner_id = $data->owner_id;
+    $ownerExist  = CitizenProfile::where("id",$owner_id)->count();
+    if($ownerExist == 0 ){
+        $this->crud->addField([
+            'label' => 'Owner/Pres/OIC',
+            'type' => 'business_owner',
+            'name' => 'owner_id',
+            'entity' => 'names',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/citizen-profile/search-business-owner'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ',
+            ],
+            'tab' => 'Details',
+            ]);
+    }else{
+        $this->crud->addField([
+            'label' => 'Owner/Pres/OIC',
+            'type' => 'business_owner',
+            'name' => 'owner_id',
+            'entity' => 'owner',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/citizen-profile/search-business-owner'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ',
+            ],
+            'tab' => 'Details',
+            ]);
+    }
+
+   }else{
+    $this->crud->addField([
         'label' => 'Owner/Pres/OIC',
-        'type' => 'primary_owner_input',
-        'name' => 'owner_cid',
+        'type' => 'business_owner',
+        'name' => 'owner_id',
         'entity' => 'owner',
         'attribute' => 'full_name',
-        'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
+        'data_source' => url('/admin/api/citizen-profile/search-business-owner'),
         'minimum_input_length' => 1,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-12 ',
         ],
         'tab' => 'Details',
         ]);
+   }
+      
      
        
        $this->crud->addField([
@@ -115,6 +157,7 @@ class BusinessProfilesCrudController extends CrudController
         'type' => 'primary_owner_input',
         'name' => 'main_office_address',
         'entity' => 'owner',
+       
         'attribute' => 'full_name',
         'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
         'minimum_input_length' => 1,
@@ -179,8 +222,11 @@ class BusinessProfilesCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
+   
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        
+         
     }
 }
