@@ -58,8 +58,12 @@ class FaasLand extends Model
         return $this->belongsTo(CitizenProfile::class,'oldOwnerId','id');
     }
 
+    // public function land_owner(){
+    //     return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','citizen_profile_id','land_profile_id');
+    // }
+
     public function land_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','citizen_profile_id','land_profile_id');
+        return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','land_profile_id','citizen_profile_id');
     }
 
     public function barangay(){

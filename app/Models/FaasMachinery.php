@@ -70,8 +70,12 @@ class FaasMachinery extends Model
         return $this->belongsTo(CitizenProfile::class,'buildingOwnerId','id');
     }
 
+    // public function machinery_owner(){
+    //     return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
+    // }
+
     public function machinery_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','citizen_profile_id','machinery_profile_id');
+        return $this->belongsToMany(CitizenProfile::class,'faas_machinery_secondary_owners','machinery_profile_id','citizen_profile_id');
     }
 
     public function barangay(){

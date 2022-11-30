@@ -48,10 +48,10 @@ class CitizenProfile extends Model
 
 
     public function getFullNameAttribute(){
-        $fName = ucfirst($this->fName)." ";
-        $mName = ($this->mName == null || $this->mName == ""? "":" ").ucfirst($this->mName).($this->mName == null || $this->mName == ""? "":" ");
+        $fName = ucfirst($this->fName);
+        $mName = ($this->mName == "" || $this->mName == ""? "":" ").ucfirst($this->mName).($this->mName == null || $this->mName == ""? "":" ");
         $lName = ucfirst($this->lName);
-        $suffix = ($this->suffix == null || $this->suffix == ""? "":" ").ucfirst($this->suffix);
+        $suffix = ($this->suffix == "" || $this->suffix == ""? "":" ").ucfirst($this->suffix);
         return "{$fName}{$mName}{$lName}{$suffix}";
     }
 

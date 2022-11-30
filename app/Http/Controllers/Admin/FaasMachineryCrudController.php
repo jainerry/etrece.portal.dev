@@ -74,7 +74,7 @@ class FaasMachineryCrudController extends CrudController
                 },
             ],
         ]);
-        $this->crud->column('ARPNo')->label('ARP No.');
+        //$this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'label'=>'Primary Owner',
             'type'  => 'model_function',
@@ -602,7 +602,7 @@ class FaasMachineryCrudController extends CrudController
         ]);
         
         /*Property Assessment*/
-        $this->crud->addField([   
+        /*$this->crud->addField([   
             'name'  => 'propertyAssessment',
             'label' => 'Property Assessment',
             'type'  => 'repeatable',
@@ -802,7 +802,7 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
-        ]);
+        ]);*/
 
         FaasMachinery::creating(function($entry) {
             $count = FaasMachinery::count();
@@ -810,8 +810,9 @@ class FaasMachineryCrudController extends CrudController
             $entry->refID = $refID;
 
             $request = app(FaasMachineryRequest::class);
-            $ARPNo = 'ARP-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
-            $entry->ARPNo = $ARPNo;
+            
+            /*$ARPNo = 'ARP-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
+            $entry->ARPNo = $ARPNo;*/
 
             /*$TDNo = 'TD-MCHN-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
             $entry->TDNo = $TDNo;*/
@@ -832,7 +833,7 @@ class FaasMachineryCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'ARPNo',
             'label' => "ARP No.",
             'type'=>'text',
@@ -858,7 +859,7 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'Main Information',
-        ]);
+        ]);*/
 
         $this->setupCreateOperation();
 

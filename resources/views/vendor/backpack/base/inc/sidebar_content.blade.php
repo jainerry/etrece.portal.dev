@@ -122,9 +122,14 @@
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> RPT Assessment</a>
     <ul class="nav-dropdown-items">
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-building') }}"><i class="nav-icon la la-ellipsis-v"></i> Buildings</a></li>
+        <!-- <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-building') }}"><i class="nav-icon la la-ellipsis-v"></i> Buildings</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-machinery') }}"><i class="nav-icon la la-ellipsis-v"></i> Machineries</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-land') }}"><i class="nav-icon la la-ellipsis-v"></i> Lands</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-land') }}"><i class="nav-icon la la-ellipsis-v"></i> Lands</a></li> -->
+
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-buildings') }}"><i class="nav-icon la la-ellipsis-v"></i> Buildings</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-machineries') }}"><i class="nav-icon la la-ellipsis-v"></i> Machineries</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('rpt-lands') }}"><i class="nav-icon la la-ellipsis-v"></i> Lands</a></li>
+
     </ul>
 </li>
 @endcan
@@ -144,3 +149,4 @@
 @can('view-transaction-logs')
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-clipboard"></i> Transaction logs</a></li>
 @endcan
+

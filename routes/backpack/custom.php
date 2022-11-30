@@ -64,7 +64,7 @@ Route::group([
     Route::crud('faas-land-secondary-owners', 'FaasLandSecondaryOwnersCrudController');
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
 
-    Route::crud('rpt-building', 'RPTBuildingCrudController');
+    /*Route::crud('rpt-building', 'RPTBuildingCrudController');
     Route::get('/api/rpt-building/check-if-primary-owner-exist', 'RPTBuildingCrudController@checkIfPrimaryOwnerExist');
     Route::get('/api/rpt-building/get-details', 'RPTBuildingCrudController@getDetails');
 
@@ -74,7 +74,7 @@ Route::group([
 
     Route::crud('rpt-land', 'RPTLandCrudController');
     Route::get('/api/rpt-land/check-if-primary-owner-exist', 'RPTLandCrudController@checkIfPrimaryOwnerExist');
-    Route::get('/api/rpt-land/get-details', 'RPTLandCrudController@getDetails');
+    Route::get('/api/rpt-land/get-details', 'RPTLandCrudController@getDetails');*/ 
 
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');
@@ -90,4 +90,13 @@ Route::group([
     Route::crud('business-category', 'BusinessCategoryCrudController');
     Route::crud('business-activity', 'BusinessActivityCrudController');
     Route::crud('business-tax-code', 'BusinessTaxCodeCrudController');
+
+    Route::crud('rpt-buildings', 'RptBuildingsCrudController');
+    Route::crud('rpt-machineries', 'RptMachineriesCrudController');
+    Route::crud('rpt-lands', 'RptLandsCrudController');
+
+    Route::get('/api/rpt-building/apply-search-filters', 'RptBuildingsCrudController@applySearchFilters');
+    Route::get('/api/faas-building/get-details', 'BuildingProfileCrudController@getDetails');
+    Route::get('/api/faas-building/get-secondary-owners', 'BuildingProfileCrudController@getSecondaryOwners');
+
 }); // this should be the absolute last line of this file

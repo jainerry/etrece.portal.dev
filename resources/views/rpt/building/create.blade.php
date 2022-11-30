@@ -59,15 +59,53 @@
     <div class="modal-dialog modal-xl" role="document">
         <div class="modal-content">
             <div class="modal-header">
-                <h5 class="modal-title" id="rptModalLabel">Property Information</h5>
+                <h5 class="modal-title" id="rptModalLabel">Search Results</h5>
                 <button type="button" class="close" data-dismiss="modal" aria-label="Close">
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body"></div>
+            <div class="modal-body">
+              <div class="table-responsive-sm">
+                <table class="table table-striped table-hover border">
+                  <thead>
+                    <tr>
+                      <th scope="col">Reference ID</th>
+                      <th scope="col">Primary Owner</th>
+                      <th scope="col">OCT/TCT No.</th>
+                      <th scope="col">Owner Address</th>
+                      <th scope="col">No. of Street</th>
+                      <th scope="col">Barangay/District</th>
+                      <th scope="col">Classification</th>
+                      <th scope="col">Structural Type</th>
+                      <th scope="col">Status</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <!-- <tr>
+                      <th scope="row">1</th>
+                      <td>Mark</td>
+                      <td>Otto</td>
+                      <td>@mdo</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">2</th>
+                      <td>Jacob</td>
+                      <td>Thornton</td>
+                      <td>@fat</td>
+                    </tr>
+                    <tr>
+                      <th scope="row">3</th>
+                      <td>Larry</td>
+                      <td>the Bird</td>
+                      <td>@twitter</td>
+                    </tr> -->
+                  </tbody>
+                </table>
+              </div>
+            </div>
             <div class="modal-footer">
 		        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
-            <button type="button" class="btn btn-primary" id="btnCreateNew">Create a New One</button>
+            <!-- <button type="button" class="btn btn-primary" id="btnCreateNew">Create a New One</button> -->
 		    </div>
         </div>
     </div>

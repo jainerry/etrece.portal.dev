@@ -30,9 +30,9 @@ class FaasMachineryRequest extends FormRequest
             'noOfStreet' => 'required',
             'barangayId' => 'required',
             'isActive' => 'required',
-            'assessmentType' => 'required',
-            'assessmentEffectivity' => 'required',
-            'assessmentEffectivityValue' => 'required',
+            // 'assessmentType' => 'required',
+            // 'assessmentEffectivity' => 'required',
+            // 'assessmentEffectivityValue' => 'required',
         ];
     }
 

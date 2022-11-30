@@ -3,7 +3,7 @@
     width: 23%;
 }
 
-.propertyListHeader div,
+/* .propertyListHeader div,
 .propertyListItem div {
     border: 1px solid #eee;
     text-align: center;
@@ -12,4 +12,16 @@
 .propertyListHeader div h6 {
     margin: 5px 0px;
     font-weight: 600;
+} */
+
+/* .propertyListItem {
+    border: 1px solid #eee;
+    border-radius: 5px;
+    margin: 5px 0px;
+    padding: 10px 0px;
 }
+
+.propertyListWrapper {
+    overflow-y: scroll;
+    height: 500px;
+} */

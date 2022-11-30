@@ -76,7 +76,7 @@ class FaasLandCrudController extends CrudController
                 },
             ]
         ]);
-        $this->crud->column('ARPNo')->label('ARP No.');
+        //$this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'name'  => 'primaryOwner',
             'label' => 'Primary Owner',
@@ -720,7 +720,8 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Market Value',
         ]);
-        $this->crud->addField([   
+        /*Property Assessment*/
+        /*$this->crud->addField([   
             'name'  => 'propertyAssessment',
             'label' => 'Property Assessment',
             'type'  => 'repeatable',
@@ -826,40 +827,6 @@ class FaasLandCrudController extends CrudController
             'value' => '<hr>',
             'tab' => 'Property Assessment',
         ]);
-        // $this->crud->addField([
-        //     'name'=>'assessmentType',
-        //     'label'=>'Assessment Type',
-        //     'type' => 'radio',
-        //     'options'     => [
-        //         "Taxable" => "Taxable",
-        //         "Exempt" => "Exempt"
-        //     ],
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-4'
-        //     ],
-        //     'tab' => 'Property Assessment',
-        // ]);
-        // $this->crud->addField([
-        //     'name'=>'assessmentEffectivity',
-        //     'label'=>'Effectivity of Assessment/Reassessment',
-        //     'type' => 'radio',
-        //     'options'     => [
-        //         "Quarter" => "Quarter",
-        //         "Year" => "Year"
-        //     ],
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-4'
-        //     ],
-        //     'tab' => 'Property Assessment',
-        // ]);
-        // $this->crud->addField([
-        //     'name'=>'assessmentEffectivityValue',
-        //     'label'=>'Effectivity of Assessment/Reassessment Value',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-4'
-        //     ],
-        //     'tab' => 'Property Assessment',
-        // ]);
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
@@ -983,16 +950,7 @@ class FaasLandCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
-        ]);
-        // $this->crud->addField([
-        //     'name'=>'TDNo',
-        //     'label'=>'TD No.',
-        //     'type'=>'text',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-4 approve_items hidden'
-        //     ],
-        //     'tab' => 'Property Assessment',
-        // ]);
+        ]);*/
 
         FaasLand::creating(function($entry) {
             $count = FaasLand::count();
@@ -1001,8 +959,8 @@ class FaasLandCrudController extends CrudController
 
             $request = app(FaasLandRequest::class);
 
-            $ARPNo = 'ARP-LAND-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
-            $entry->ARPNo = $ARPNo;
+            /*$ARPNo = 'ARP-LAND-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
+            $entry->ARPNo = $ARPNo;*/
             
             /*$TDNo = 'TD-LAND-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
             $entry->TDNo = $TDNo;*/
@@ -1023,7 +981,7 @@ class FaasLandCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'ARPNo',
             'label' => "ARP No.",
             'type'=>'text',
@@ -1056,7 +1014,7 @@ class FaasLandCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Main Information',
-        ]);
+        ]);*/
 
         $this->setupCreateOperation();
 

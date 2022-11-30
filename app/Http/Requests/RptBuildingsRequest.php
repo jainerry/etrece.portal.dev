@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class FaasLandRequest extends FormRequest
+class RptBuildingsRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -25,14 +25,11 @@ class FaasLandRequest extends FormRequest
     public function rules()
     {
         return [
-            //'primaryOwnerId' => 'required',
-            'ownerAddress' => 'required',
-            'noOfStreet' => 'required',
-            'barangayId' => 'required',
+            // 'name' => 'required|min:5|max:255'
             'isActive' => 'required',
-            // 'assessmentType' => 'required',
-            // 'assessmentEffectivity' => 'required',
-            // 'assessmentEffectivityValue' => 'required',
+            'assessmentType' => 'required',
+            'assessmentEffectivity' => 'required',
+            'assessmentEffectivityValue' => 'required',
         ];
     }
 

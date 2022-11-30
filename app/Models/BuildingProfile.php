@@ -34,7 +34,6 @@ class BuildingProfile extends Model
         'flooring' => 'array',
         'walling' => 'array',
         'additionalItems' => 'array',
-        'propertyAssessment' => 'array'
     ];
 
     /*
@@ -56,9 +55,14 @@ class BuildingProfile extends Model
         return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
     }
 
+    // public function building_owner(){
+    //     return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
+    // }
+
     public function building_owner(){
-        return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
+        return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','building_profile_id','citizen_profile_id');
     }
+
     public function municipality(){
         return $this->belongsTo(Municipality::class, 'municipality_id', 'id');
     }

@@ -2,49 +2,39 @@
 
 namespace App\Http\Controllers\Admin;
 
-use App\Http\Requests\BuildingProfileRequest;
-use App\Models\BuildingProfile;
-use App\Models\CitizenProfile;
+use App\Http\Requests\RptBuildingsRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
-use Illuminate\Support\Facades\DB;
-use App\Models\TransactionLogs;
 use Backpack\CRUD\app\Library\Widget;
-use App\Models\StructuralRoofs;
 use Illuminate\Http\Request;
+use App\Models\BuildingProfile;
+use App\Models\RptBuildings;
+use App\Models\CitizenProfile;
+use Illuminate\Support\Facades\DB;
+use App\Models\NameProfiles;
 
 /**
- * Class BuildingProfileCrudController
+ * Class RptBuildingsCrudController
  * @package App\Http\Controllers\Admin
  * @property-read \Backpack\CRUD\app\Library\CrudPanel\CrudPanel $crud
  */
-class BuildingProfileCrudController extends CrudController
+class RptBuildingsCrudController extends CrudController
 {
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\FetchOperation;
 
-    public function __construct()
-    {
-        parent::__construct();
-        $this->middleware('can:view-building-profiles', ['only' => ['index','show']]);
-        $this->middleware('can:create-building-profiles', ['only' => ['create','store']]);
-        $this->middleware('can:edit-building-profiles', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-building-profiles', ['only' => ['destroy']]);
-    }
-    
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
-     *
+     * 
      * @return void
      */
     public function setup()
     {
-        $this->crud->setModel(\App\Models\BuildingProfile::class);
-        $this->crud->setRoute(config('backpack.base.route_prefix') . '/building-profile');
-        $this->crud->setEntityNameStrings('building profile', 'building profiles');
+        CRUD::setModel(\App\Models\RptBuildings::class);
+        CRUD::setRoute(config('backpack.base.route_prefix') . '/rpt-buildings');
+        CRUD::setEntityNameStrings('rpt buildings', 'rpt buildings');
         $this->crud->removeButton('delete');
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
@@ -57,7 +47,7 @@ class BuildingProfileCrudController extends CrudController
 
     /**
      * Define what happens when the List operation is loaded.
-     *
+     * 
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
@@ -73,19 +63,10 @@ class BuildingProfileCrudController extends CrudController
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('building-profile.edit',$entry->id);
+                    return route('rpt-buildings.edit',$entry->id);
                 },
             ]
         ]);
-        //$this->crud->column('ARPNo')->label('ARP No.');
-        $this->crud->addColumn([
-            'name'  => 'primary_owner',
-            'label' => 'Primary Owner',
-            'type'  => 'select',
-            'entity'    => 'citizen_profile',
-            'attribute' => 'full_name'
-        ]);
-        $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
             'name'  => 'isApproved',
             'label' => 'Approved',
@@ -101,46 +82,111 @@ class BuildingProfileCrudController extends CrudController
                 },
             ],
         ]);
-        $this->crud->addColumn([
-            'name'  => 'isActive',
-            'label' => 'Status',
-            'type'  => 'boolean',
-            'options' => [0 => 'Inactive', 1 => 'Active'],
-        ]);
+        $this->crud->addClause('where', 'isActive', '=', '1');
         $this->crud->orderBy('refID','ASC');
-    }
-    protected function setupShowOperation()
-    {
-        $this->setupListOperation();
-    }
 
+        /**
+         * Columns can be defined using the fluent syntax or array syntax:
+         * - CRUD::column('price')->type('number');
+         * - CRUD::addColumn(['name' => 'price', 'type' => 'number']); 
+         */
+    }
 
     /**
      * Define what happens when the Create operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-create
      * @return void
      */
     protected function setupCreateOperation()
     {
-        $this->crud->setValidation(BuildingProfileRequest::class);
-        
-        /*Main Information*/
-        /*$this->crud->addField([
-            'label' => 'Transaction Code',
+        CRUD::setValidation(RptBuildingsRequest::class);
+
+        /*Search Fields*/
+        $this->crud->addField([
+            'name' => 'searchByReferenceId', 
+            'label' => 'Search by Reference ID', 
             'type' => 'text',
-            'name' => 'transactionCode',
+            'fake' => true,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
-            'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'separator0',
+            'name' => 'searchByPrimaryOwner', 
+            'label' => 'Search by Primary Owner', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByOCTTCTNo', 
+            'label' => 'Search by OCT/TCT No.', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBuildingClassification', 
+            'label' => 'Search by Classification', 
+            'type'=>'select',
+            'model' => "App\Models\FaasBuildingClassifications",
+            'attribute' => 'name',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByStructuralType', 
+            'label' => 'Search by Structural Type', 
+            'type'=>'select',
+            'model' => "App\Models\StructuralType",
+            'attribute' => 'name',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBarangayDistrict', 
+            'label' => 'Search by Barangay/District', 
+            'type' => 'select',
+            'model'     => "App\Models\Barangay",
+            'attribute' => 'name',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator01',
             'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'  => 'Main Information',
-        ]);*/
+            'value' => '<br>',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator02',
+            'type'  => 'custom_html',
+            'value' => '',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-10',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator04',
+            'type'  => 'custom_html',
+            'value' => '<a href="javascript:void(0)" id="btnSearch" class="btn btn-primary" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-search"></i> Search</span></a>
+                <a href="javascript:void(0)" id="btnClear" class="btn btn-default" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-eraser"></i> Clear</span></a>',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-2',
+            ],
+        ]);
+
+        /*Main Information*/
         $this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_union',
@@ -149,6 +195,10 @@ class BuildingProfileCrudController extends CrudController
             'attribute' => 'full_name',
             'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
             'minimum_input_length' => 1,
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
@@ -162,6 +212,10 @@ class BuildingProfileCrudController extends CrudController
             'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
             'attribute' => 'full_name',
             'minimum_input_length' => 1,
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
@@ -171,21 +225,12 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'ownerAddress', 
             'label' => 'Address', 
             'type' => 'textarea',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12 ownerAddress',
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerAddress_fake',
-            'label'=>'Address <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                '' => '-',
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
             ],
             'tab' => 'Main Information',
         ]);
@@ -193,6 +238,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'tel_no', 
             'label' => 'Telephone No.', 
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -202,8 +251,12 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'owner_tin_no', 
             'label' => 'TIN No.', 
             'type' => 'text',
+            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_tin',
+            ],
+            'attributes' => [
+                'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -220,6 +273,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'administrator',
             'label' => 'Administrator/Occupant',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12',
             ],
@@ -229,6 +286,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'admin_address',
             'label' => 'Address',
             'type' => 'textarea',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-12',
             ],
@@ -238,6 +299,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'admin_tel_no',
             'label' => 'Telephone No.',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -247,8 +312,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'admin_tin_no',
             'label' => 'TIN No.',
             'type' => 'text',
+            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_tin',
+                'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -271,6 +338,10 @@ class BuildingProfileCrudController extends CrudController
             ],
             'allows_null' => false,
             'default'     => 'Y',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
@@ -282,6 +353,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'no_of_street',
             'label' => 'No. of Street',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -293,6 +368,10 @@ class BuildingProfileCrudController extends CrudController
             'name'=>'barangay_id',
             'entity' => 'barangay',
             'attribute' => 'name',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -305,17 +384,11 @@ class BuildingProfileCrudController extends CrudController
             'value' => 'Trece Martires City',
             'fake' => true,
             'attributes' => [
-                'readonly' => 'readonly',
+                'disabled' => 'disabled',
             ], 
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
-            'tab' => 'Building Location',
-        ]);
-        $this->crud->addField([
-            'name'  => 'municipality_id',
-            'type'  => 'hidden',
-            'value' => 'db3510e6-3add-4d81-8809-effafbbaa6fd',
             'tab' => 'Building Location',
         ]);
         $this->crud->addField([
@@ -325,44 +398,23 @@ class BuildingProfileCrudController extends CrudController
             'value' => 'Cavite',
             'fake' => true,
             'attributes' => [
-                'readonly' => 'readonly',
+                'disabled' => 'disabled',
             ], 
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'Building Location',
         ]);
-        $this->crud->addField([
-            'name'  => 'province_id',
-            'type'  => 'hidden',
-            'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
-            'tab' => 'Building Location',
-        ]);
-        $this->crud->addField([
-            'label' => "Barangay/District",
-            'type'=>'select',
-            'name'=>'barangay_code',
-            'entity' => 'barangay',
-            'attribute' => 'code',
-            'attributes' => [
-                'class' => 'form-control',
-                'readonly' => 'readonly',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3 hidden',
-            ],
-            'tab' => 'Building Location',
-        ]);
-        $this->crud->addField([
-            'name'  => 'barangay_code_text',
-            'type'  => 'hidden',
-            'tab' => 'Building Location',
-        ]);
+
         /*Land Reference Tab*/
         $this->crud->addField([
             'name' => 'oct_tct_no',
             'label' => 'OCT/TCT No.',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -372,6 +424,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'survey_no',
             'label' => 'Survey No.',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -387,6 +443,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'lot_no',
             'label' => 'Lot No.',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -396,6 +456,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'block_no',
             'label' => 'Block No.',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -405,14 +469,17 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'area',
             'label' => 'Area',
             'type' => 'text',
+            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
+                'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'Land Reference',
         ]);
+
         /*General Description*/
         $this->crud->addField([
             'label' => "Kind of Building",
@@ -420,6 +487,10 @@ class BuildingProfileCrudController extends CrudController
             'name'=>'kind_of_building_id',
             'model'     => "App\Models\FaasBuildingClassifications",
             'attribute' => 'name',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ],
@@ -429,6 +500,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'buildingAge',
             'label' => 'Building Age',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ],
@@ -440,35 +515,23 @@ class BuildingProfileCrudController extends CrudController
             'name'=>'structural_type_id',
             'entity' => 'structural_type',
             'attribute' => 'name',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4',
             ],
             'tab' => 'General Description',
         ]);
         $this->crud->addField([
-            'label' => "Kind of Building",
-            'type'=>'select',
-            'name'=>'kind_of_building_code',
-            'model'     => "App\Models\FaasBuildingClassifications",
-            'attribute' => 'code',
-            'attributes' => [
-                'class' => 'form-control',
-                'readonly' => 'readonly',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden',
-            ],
-            'tab' => 'General Description',
-        ]);
-        $this->crud->addField([
-            'name'  => 'kind_of_building_code_text',
-            'type'  => 'hidden',
-            'tab' => 'General Description',
-        ]);
-        $this->crud->addField([
             'name' => 'building_permit_no',
             'label' => 'Building Permit No',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -478,6 +541,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'building_permit_date_issued',
             'label' => 'Building Permit Date No',
             'type' => 'date_picker',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'date_picker_options' => [
                 'todayBtn' => 'linked',
                 'format'   => 'yyyy-mm-dd',
@@ -500,6 +567,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'condominium_certificate_of_title',
             'label' => 'Condominium Certificate of Title (CCT)',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
@@ -515,6 +586,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'certificate_of_completion_issued_on',
             'label' => 'Certificate of Completion Issued On',
             'type' => 'date_picker',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'date_picker_options' => [
                 'todayBtn' => 'linked',
                 'format'   => 'yyyy-mm-dd',
@@ -531,6 +606,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'certificate_of_occupancy_issued_on',
             'label' => 'Certificate of Occupancy Issued On',
             'type' => 'date_picker',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'date_picker_options' => [
                 'todayBtn' => 'linked',
                 'format'   => 'yyyy-mm-dd',
@@ -547,6 +626,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'date_constructed',
             'label' => 'Date Constructed',
             'type' => 'date_picker',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'date_picker_options' => [
                 'todayBtn' => 'linked',
                 'format'   => 'yyyy-mm-dd',
@@ -563,6 +646,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'date_occupied',
             'label' => 'Date Occupied',
             'type' => 'date_picker',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'date_picker_options' => [
                 'todayBtn' => 'linked',
                 'format'   => 'yyyy-mm-dd',
@@ -585,6 +672,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'no_of_storeys',
             'label' => 'No. of Storeys',
             'type' => 'number',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -601,7 +692,7 @@ class BuildingProfileCrudController extends CrudController
                     'type'=>'text',
                     'fake' => true,
                     'attributes' => [
-                        'readonly' => 'readonly',
+                        'disabled' => 'disabled',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -609,15 +700,25 @@ class BuildingProfileCrudController extends CrudController
                 ],
                 [
                     'name'    => 'floorNo',
-                    'type'    => 'hidden',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
                 ],
                 [
                     'name'    => 'area',
                     'type'    => 'text',
                     'label'   => 'Area',
+                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency',
+                        'disabled' => 'disabled',
                     ],
                 ],
             ],
@@ -645,8 +746,10 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'totalFloorArea',
             'label' => 'Total Floor Area',
             'type' => 'text',
+            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
+                'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -658,8 +761,12 @@ class BuildingProfileCrudController extends CrudController
             'label' => "Roof",
             'type'=>'select',
             'name'=>'roof',
-            'model'     => "App\Models\StructuralRoofs",
+            'model' => "App\Models\StructuralRoofs",
             'attribute' => 'name',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
@@ -669,8 +776,12 @@ class BuildingProfileCrudController extends CrudController
             'name' => 'other_roof',
             'label' => 'Please Specify',
             'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3 hidden other_roof ',
+                'class' => 'form-group col-12 col-md-3 other_roof ',
             ],
             'tab' => 'Structural Characteristic',
         ]);
@@ -692,7 +803,7 @@ class BuildingProfileCrudController extends CrudController
                     'type'=>'text',
                     'fake' => true,
                     'attributes' => [
-                        'readonly' => 'readonly',
+                        'disabled' => 'disabled',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -700,21 +811,37 @@ class BuildingProfileCrudController extends CrudController
                 ],
                 [
                     'name'    => 'floorNo',
-                    'type'    => 'hidden',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
                 ],
                 [
                     'name'    => 'type',
                     'type' => 'select',
                     'model'     => "App\Models\StructuralFlooring",
                     'attribute' => 'name',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'label'   => 'Type',
                     'wrapper' => ['class' => 'form-group col-md-3 type'],
                 ],
                 [
                     'name'    => 'others',
                     'type'    => 'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'label'   => 'Please Specify',
-                    'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                    'wrapper' => ['class' => 'form-group col-md-3 others'],
                 ],
             ],
             'new_item_label'  => 'New Item',
@@ -735,7 +862,7 @@ class BuildingProfileCrudController extends CrudController
                     'type'=>'text',
                     'fake' => true,
                     'attributes' => [
-                        'readonly' => 'readonly',
+                        'disabled' => 'disabled',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -743,21 +870,37 @@ class BuildingProfileCrudController extends CrudController
                 ],
                 [
                     'name'    => 'floorNo',
-                    'type'    => 'hidden',
+                    'label' => "Floor",
+                    'type'=>'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ], 
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-3',
+                    ],
                 ],
                 [
                     'name'    => 'type',
                     'type' => 'select',
                     'model'     => "App\Models\StructuralWalling",
                     'attribute' => 'name',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'label'   => 'Type',
                     'wrapper' => ['class' => 'form-group col-md-3 type'],
                 ],
                 [
                     'name'    => 'others',
                     'type'    => 'text',
+                    'fake' => true,
+                    'attributes' => [
+                        'disabled' => 'disabled',
+                    ],
                     'label'   => 'Please Specify',
-                    'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                    'wrapper' => ['class' => 'form-group col-md-3 others'],
                 ],
             ],
             'new_item_label'  => 'New Item',
@@ -767,153 +910,9 @@ class BuildingProfileCrudController extends CrudController
             'reorder' => true,
             'tab' => 'Structural Characteristic',
         ]);
-        /*Additional Items (Repeatable)*/
-        $this->crud->addField([   
-            'name'  => 'additionalItems',
-            'label' => 'Additional Items',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'additionalItem1',
-                    'type'    => 'text',
-                    'label'   => '',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'additionalItem2',
-                    'type'    => 'text',
-                    'label'   => '',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'additionalItem3',
-                    'type'    => 'text',
-                    'label'   => '',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'additionalItem4',
-                    'type'    => 'text',
-                    'label'   => '',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ]
-            ],
-            'new_item_label'  => 'New Item',
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 10,
-            'reorder' => true,
-            'tab' => 'Structural Characteristic',
-        ]);
-        /*Property Appraisal*/
-        $this->crud->addField([
-            'name'  => 'separator5',
-            'type'  => 'custom_html',
-            'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost_temp" id="unitConstructionCost_temp" value="" /> /sq.m.</p>
-                <p>Building Core: <i>(Use additional sheets if necessary)</i></p>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal_temp" id="unitConstructionSubTotal_temp" value="" readonly="readonly" /> </p>',
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6',
-            ],
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator6',
-            'type'  => 'custom_html',
-            'value' => '<p>Cost of Additional Items:</p>
-                <br><br>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal_temp" id="costOfAdditionalItemsSubTotal_temp" value="" /> </p>',
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6',
-            ],
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator6a',
-            'type'  => 'custom_html',
-            'value' => '<p><b>TOTAL CONSTRUCTION COST: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="totalConstructionCost_temp" id="totalConstructionCost_temp" value="" readonly="readonly" /> </p>',
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6',
-            ],
-        ]);
-        $this->crud->addField([
-            'name'  => 'unitConstructionCost',
-            'type'  => 'hidden',
-            'tab' => 'Property Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'  => 'unitConstructionSubTotal',
-            'type'  => 'hidden',
-            'tab' => 'Property Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'  => 'costOfAdditionalItemsSubTotal',
-            'type'  => 'hidden',
-            'tab' => 'Property Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'  => 'totalConstructionCost',
-            'type'  => 'hidden',
-            'tab' => 'Property Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator8',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Appraisal',
-        ]);
-        $this->crud->addField([   
-            'name'  => 'depreciationRate',
-            'label' => 'Depreciation Rate',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_percent',
-            ],
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-        ]);
-        $this->crud->addField([   
-            'name'  => 'depreciationCost',
-            'label' => 'Depreciation Cost',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency',
-            ],
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-        ]);
-        $this->crud->addField([   
-            'name'  => 'totalPercentDepreciation',
-            'label' => 'Total % Depreciation',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_percent',
-            ],
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-        ]);
-        $this->crud->addField([   
-            'name'  => 'marketValue',
-            'label' => 'Market Value',
-            'type' => 'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency',
-                'readonly' => 'readonly',
-            ],
-            'tab' => 'Property Appraisal',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-        ]);
+
         /*Property Assessment*/
-        /*$this->crud->addField([   
+        $this->crud->addField([   
             'name'  => 'propertyAssessment',
             'label' => 'Property Assessment',
             'type'  => 'repeatable',
@@ -924,9 +923,6 @@ class BuildingProfileCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
                     'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
                 ],
                 [
@@ -1103,14 +1099,19 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
-        ]);*/
+        ]);
+        $this->crud->addField([
+            'name' => 'faasId', 
+            'type' => 'hidden',
+            'tab' => 'Property Assessment',
+        ]);
 
-        BuildingProfile::creating(function($entry) {
-            $count = BuildingProfile::count();
-            $refID = 'BUILDING-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+        RptBuildings::creating(function($entry) {
+            $count = RptBuildings::count();
+            $refID = 'RPT-BLDG-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $request = app(BuildingProfileRequest::class);
+            $request = app(RptBuildingsRequest::class);
 
             /*$ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $entry->ARPNo = $ARPNo;*/
@@ -1120,7 +1121,7 @@ class BuildingProfileCrudController extends CrudController
 
             TransactionLogs::create([
                 'transId' =>$refID,
-                'category' =>'faas_building',
+                'category' =>'rpt_building',
                 'type' =>'create',
             ]);
         });
@@ -1128,93 +1129,110 @@ class BuildingProfileCrudController extends CrudController
 
     /**
      * Define what happens when the Update operation is loaded.
-     *
+     * 
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-
     protected function setupUpdateOperation()
     {
-        /*$this->crud->addField([
-            'name'=>'ARPNo',
-            'label' => "ARP No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-
-        $this->crud->addField([
-            'name'=>'TDNo',
-            'label' => "TD No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);*/
-
         $this->setupCreateOperation();
+    }
 
-        BuildingProfile::updating(function($entry) {
-          
-            TransactionLogs::create([
-                'transId' =>$entry->refID,
-                'category' =>'faas_building',
-                'type' =>'update',
-            ]);
-        });
-       
+    public function create()
+    {
+        //Widget::add()->type('script')->content('assets/js/faas/building/rpt-create-functions.js');
+        Widget::add()->type('script')->content('assets/js/rpt/building-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('rpt.building.create', $this->data);
+    }
+
+    /*public function checkIfPrimaryOwnerExist(Request $request){
+        $primaryOwnerId = $request->input('primaryOwnerId');
+        $primaryOwners = [];
+        if ($primaryOwnerId)
+        {
+            $primaryOwners = BuildingProfile::select('id', 'refID', 'ARPNo', 'transactionCode', 'TDNo', 'primary_owner', 'ownerAddress', 'isActive', 'isApproved')
+                ->where('primary_owner', '=', $primaryOwnerId) 
+                ->orderBy('refID','ASC')
+                ->get();
+        }
+        return $primaryOwners;
     }
 
     public function getDetails(Request $request){
         $id = $request->input('id');
-        $results = [];
-        if (!empty($id))
+        $details = [];
+        if ($id)
         {
-            $citizenProfiles = DB::table('faas_building_profiles')
-            ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
-            ->select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-            ->where('faas_building_profiles.isActive', '=', '1')
-            ->where('faas_building_profiles.id', '=', $id)
-            ->get();
-            
-            $nameProfiles = DB::table('faas_building_profiles')
-            ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
-            ->select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-            ->where('faas_building_profiles.isActive', '=', '1')
-            ->where('faas_building_profiles.id', '=', $id)
-            ->get();
-
-            $results = $citizenProfiles->merge($nameProfiles);
+            $details = BuildingProfile::with('citizen_profile','citizen_profile.barangay','citizen_profile.street')
+                ->find($id);
+            ;
         }
+        return $details;
+    }*/
+
+    public function applySearchFilters(Request $request){
+        $searchByPrimaryOwner = $request->input('searchByPrimaryOwner');
+        $searchByReferenceId = $request->input('searchByReferenceId');
+        $searchByOCTTCTNo = $request->input('searchByOCTTCTNo');
+        $searchByBuildingClassification = $request->input('searchByBuildingClassification');
+        $searchByStructuralType = $request->input('searchByStructuralType');
+        $searchByBarangayDistrict = $request->input('searchByBarangayDistrict');
+
+        $results = [];
+
+        $citizenProfile = DB::table('faas_building_profiles')
+        ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+        ->select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress', 'faas_building_profiles.no_of_street', 
+            'faas_building_profiles.barangay_id', 'faas_building_profiles.oct_tct_no', 'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 
+            'faas_building_profiles.isActive',
+            'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'));
+        
+        $nameProfile = DB::table('faas_building_profiles')
+        ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+        ->select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress', 'faas_building_profiles.no_of_street', 
+            'faas_building_profiles.barangay_id', 'faas_building_profiles.oct_tct_no', 'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 
+            'faas_building_profiles.isActive',
+            'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'));
+
+        if (!empty($searchByReferenceId)) { 
+            $citizenProfile->where('faas_building_profiles.refID', 'like', '%'.$searchByReferenceId.'%');
+            $nameProfile->where('faas_building_profiles.refID', 'like', '%'.$searchByReferenceId.'%');
+        }
+
+        if (!empty($searchByOCTTCTNo)) { 
+            $citizenProfile->where('faas_building_profiles.oct_tct_no', 'like', '%'.$searchByOCTTCTNo.'%');
+            $nameProfile->where('faas_building_profiles.oct_tct_no', 'like', '%'.$searchByOCTTCTNo.'%');
+        }
+
+        if (!empty($searchByBuildingClassification)) { 
+            $citizenProfile->where('faas_building_profiles.kind_of_building_id', '=', $searchByBuildingClassification);
+            $nameProfile->where('faas_building_profiles.kind_of_building_id', '=', $searchByBuildingClassification);
+        }
+
+        if (!empty($searchByStructuralType)) { 
+            $citizenProfile->where('faas_building_profiles.structural_type_id', '=', $searchByStructuralType);
+            $nameProfile->where('faas_building_profiles.structural_type_id', '=', $searchByStructuralType);
+        }
+
+        if (!empty($searchByBarangayDistrict)) { 
+            $citizenProfile->where('faas_building_profiles.barangay_id', '=', $searchByBarangayDistrict);
+            $nameProfile->where('faas_building_profiles.barangay_id', '=', $searchByBarangayDistrict);
+        }
+
+        if (!empty($searchByPrimaryOwner)) {
+            $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByPrimaryOwner.'%');
+            $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByPrimaryOwner.'%');
+        }
+
+        $citizenProfiles = $citizenProfile->where('faas_building_profiles.isActive', '=', '1')->orderBy('faas_building_profiles.refID','ASC')->get();
+        $nameProfiles = $nameProfile->where('faas_building_profiles.isActive', '=', '1')->orderBy('faas_building_profiles.refID','ASC')->get();
+
+        $results = $citizenProfiles->merge($nameProfiles);
 
         return $results;
     }
-
-    public function getSecondaryOwners(Request $request){
-        $building_profile_id = $request->input('building_profile_id');
-        $results = [];
-        if (!empty($building_profile_id))
-        {
-            $results = DB::table('faas_building_profile_secondary_owners')
-            //->join('citizen_profiles', 'faas_building_profile_secondary_owners.citizen_profile_id', '=', 'citizen_profiles.id')
-            //->select('faas_building_profile_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
-            ->select('faas_building_profile_secondary_owners.*')
-            ->where('faas_building_profile_secondary_owners.building_profile_id', '=', $building_profile_id)
-            ->get();
-        }
-
-        return $results;
-    }
-
 }
