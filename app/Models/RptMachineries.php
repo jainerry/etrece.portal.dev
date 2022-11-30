@@ -4,10 +4,13 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
+use App\Models\CitizenProfile;
 
 class RptMachineries extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------

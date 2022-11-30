@@ -476,7 +476,7 @@ class BuildingProfileCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name' => 'building_permit_date_issued',
-            'label' => 'Building Permit Date No',
+            'label' => 'Building Permit Date Issued',
             'type' => 'date_picker',
             'date_picker_options' => [
                 'todayBtn' => 'linked',
@@ -1207,9 +1207,8 @@ class BuildingProfileCrudController extends CrudController
         if (!empty($building_profile_id))
         {
             $results = DB::table('faas_building_profile_secondary_owners')
-            //->join('citizen_profiles', 'faas_building_profile_secondary_owners.citizen_profile_id', '=', 'citizen_profiles.id')
-            //->select('faas_building_profile_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
-            ->select('faas_building_profile_secondary_owners.*')
+            ->join('citizen_profiles', 'faas_building_profile_secondary_owners.citizen_profile_id', '=', 'citizen_profiles.id')
+            ->select('faas_building_profile_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
             ->where('faas_building_profile_secondary_owners.building_profile_id', '=', $building_profile_id)
             ->get();
         }
