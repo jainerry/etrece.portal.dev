@@ -251,6 +251,7 @@ function fetchData(id){
                     })
                 }
 
+                $('.repeatable-group[bp-field-name="flooring"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.flooring) {
                     const flooring = JSON.parse(data.flooring);
                     let flooringLen = flooring.length
@@ -271,6 +272,7 @@ function fetchData(id){
                     })
                 }
 
+                $('.repeatable-group[bp-field-name="walling"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.walling) {
                     const walling = JSON.parse(data.walling);
                     let wallingLen = walling.length
@@ -291,6 +293,7 @@ function fetchData(id){
                     })
                 }
 
+                $('.repeatable-group[bp-field-name="additionalItems"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.additionalItems) {
                     const additionalItems = JSON.parse(data.additionalItems);
                     let additionalItemsLen = additionalItems.length

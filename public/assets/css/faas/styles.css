@@ -16,7 +16,7 @@
 
 input.simple-form-input {
     background-clip: padding-box;
-    background-color: #fff;
+    /* background-color: #fff; */
     border: 1px solid rgba(0,40,100,.12);
     border-radius: 3px;
     color: #506690;
@@ -29,19 +29,19 @@ input.simple-form-input {
     width: 45%;
 }
 input.simple-form-input:focus {
-    background-color: #fff;
+    /* background-color: #fff; */
     border-color: #9080f1;
     box-shadow: 0 0 0 2px #e1dcfb;
     color: #495057;
     outline: 0;
 }
 input.simple-form-input[readonly] {
-    background-color: #f8f9fa;
+    /* background-color: #f8f9fa; */
     opacity: 1;
 }
 
 .alert-warning {
-   color: #856404;
+    color: #856404;
     background-color: #fff3cd;
     border-color: #ffeeba;
 }
