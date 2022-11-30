@@ -18,7 +18,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-init-function="bpFieldInitPrimaryOwnerInputElement"
+        data-init-function="bpFieldInitMainOfficeInputElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
@@ -106,9 +106,9 @@
 
 {{-- include field specific select2 js --}}
 @push('crud_fields_scripts')
-@loadOnce('bpFieldInitPrimaryOwnerInputElement')
+@loadOnce('bpFieldInitMainOfficeInputElement')
 <script>
-    function bpFieldInitPrimaryOwnerInputElement(element) {
+    function bpFieldInitMainOfficeInputElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -172,8 +172,37 @@
                     let paginate = false;
                     return {
                         results: $.map(data, function(item) {
+                            
+                            let secondary_owner = $.map(item.land_owner,function(ds){
+                                return `<div>${ds.full_name}</div>`;
+                            })
+                            console.log(secondary_owner.length)
+                            customText = `
+                                 <div>
+                                    <div>
+                                        Primary Owner: <b class="fullname"> ${item.citizen_profile == null ? null :item.citizen_profile.full_name}</b>
+                                        </div>
+                                        <div class="d-flex">
+                                            <span>Secondary Owner:</span><b class=""> ${(secondary_owner.length >0 ? secondary_owner.join('') :'')}</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Barangay: <b> ${item.barangay.name}</b>
+                                        </div>
+                                        <div>
+                                            Street: <b> ${item.noOfStreet}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.ownerAddress}</b>
+                                        </div>
+                                 </div>
+                              `;
+
+                                 console.log(customText)
                             return {
-                                text: item.refUI,
+                                text: customText,
                                 id: item.id
                             }
                         }),

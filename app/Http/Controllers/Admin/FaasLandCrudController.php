@@ -7,8 +7,12 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Facades\DB;
 use App\Models\FaasLand;
+use App\Models\FaasLandSecondaryOwners;
 use Backpack\CRUD\app\Library\Widget;
 use App\Models\TransactionLogs;
+use Illuminate\Contracts\Database\Eloquent\Builder;
+use Symfony\Component\HttpFoundation\Request;
+use Illuminate\Http\Request as HttpRequest;
 
 /**
  * Class FaasLandCrudController
@@ -1064,6 +1068,38 @@ class FaasLandCrudController extends CrudController
                 'type' =>'update',
             ]);
         });
+    }
+
+    public function ajaxsearch(Request $request){
+        $searchTxt = $request->q;
+        $searchQuery = FaasLand::select('faas_lands.*')
+        ->where('faas_lands.refID','like','%'.$searchTxt.'%')
+        ->leftJoin('barangays','barangays.id','=','faas_lands.barangayId')
+        ->leftJoin('municipalities','municipalities.id','=','faas_lands.cityId')
+        ->leftJoin('citizen_profiles','citizen_profiles.id','=','faas_lands.primaryOwnerId')
+        ->orWhere('barangays.name','like','%'.$searchTxt.'%')
+        ->orWhere('municipalities.name','like','%'.$searchTxt.'%')
+        ->orWhere('faas_lands.ownerAddress','like','%'.$searchTxt.'%')
+        ->orWhere(DB::raw('CONCAT(TRIM(citizen_profiles.fName)," ",
+        (IF(citizen_profiles.mName IS NULL OR citizen_profiles.mName = ""  , "",CONCAT(citizen_profiles.mName," "))),
+        TRIM(citizen_profiles.lName),
+        (IF(citizen_profiles.suffix IS NULL OR citizen_profiles.suffix = ""  , "",CONCAT(" ",TRIM(citizen_profiles.suffix)))))'),'LIKE',"%".strtolower($searchTxt)."%")
+        ->orWhereHas('land_owner', function( $query) use($searchTxt){
+            return  $query->where(DB::raw('CONCAT(TRIM(citizen_profiles.fName)," ",
+            (IF(citizen_profiles.mName IS NULL OR citizen_profiles.mName = ""  , "",CONCAT(citizen_profiles.mName," "))),
+            TRIM(citizen_profiles.lName),
+            (IF(citizen_profiles.suffix IS NULL OR citizen_profiles.suffix = ""  , "",CONCAT(" ",TRIM(citizen_profiles.suffix)))))'),'like',"%".strtolower($searchTxt)."%");
+            
+        })
+        ->with('citizen_profile')
+        ->with('barangay')
+        ->with('land_owner')->get();
+
+    
+
+
+        return $searchQuery;
+
     }
     
 }

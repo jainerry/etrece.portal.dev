@@ -73,7 +73,17 @@ class NameProfilesCrudController extends CrudController
  
              }
           ]);
-        $this->crud->column('fullname');
+          $this->crud->addColumn([
+            'name'        => 'fullname',
+            'label'       => 'Full Name',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhere(DB::raw('CONCAT(TRIM(name_profiles.first_name)," ",
+                (IF(name_profiles.middle_name IS NULL OR name_profiles.middle_name = ""  , "",CONCAT(name_profiles.middle_name," "))),
+                TRIM(name_profiles.last_name),
+                (IF(name_profiles.suffix IS NULL OR name_profiles.suffix = ""  , "",CONCAT(" ",TRIM(name_profiles.suffix)))))'),'LIKE',"%".strtolower($searchTerm)."%");
+            }
+
+        ]);
         $this->crud->column('suffix');
         $this->crud->column('municipality_id');
         $this->crud->column('address');

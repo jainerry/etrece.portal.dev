@@ -154,13 +154,13 @@ class BusinessProfilesCrudController extends CrudController
        $this->crud->addField([
         
         'label' => 'Main Office Business Address',
-        'type' => 'primary_owner_input',
+        'type' => 'business_main_office',
         'name' => 'main_office_address',
         'entity' => 'owner',
        
         'attribute' => 'full_name',
-        'data_source' => url('/admin/api/citizen-profile/ajaxsearch'),
-        'minimum_input_length' => 1,
+        'data_source' => url('/admin/api/faas-land/search'),
+        'minimum_input_length' => 2,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-12 ',
         ],
