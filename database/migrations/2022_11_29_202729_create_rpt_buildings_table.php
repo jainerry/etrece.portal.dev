@@ -17,7 +17,7 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('faasId')->nullable();
-            $table->string('transactionCode',25)->nullable();
+            $table->string('transactionCode')->nullable();
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();
             $table->string('assessmentEffectivity')->nullable();
@@ -31,7 +31,7 @@ return new class extends Migration
             $table->text('memoranda')->nullable();
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
-            $table->string('TDNo',25)->nullable();
+            $table->string('TDNo')->nullable();
             $table->boolean('isActive')->default(1);
             $table->boolean('isApproved')->default(0);
             $table->timestamps();

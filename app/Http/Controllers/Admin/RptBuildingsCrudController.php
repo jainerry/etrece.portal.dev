@@ -1260,15 +1260,14 @@ class RptBuildingsCrudController extends CrudController
         $this->crud->addField([
             'name'=>'approvedDate',
             'label'=>'Approved Date',
-            // 'type' => 'date_picker',
-            'type' => 'text',
-            // 'date_picker_options' => [
-            //     'todayBtn' => 'linked',
-            //     'format'   => 'yyyy-mm-dd',
-            //     'language' => 'fr',
-            //     'endDate' => '0d',
-            //     //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
-            // ],
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
@@ -1289,9 +1288,11 @@ class RptBuildingsCrudController extends CrudController
 
             /*$ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $entry->ARPNo = $ARPNo;*/
-            
-            /*$TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
-            $entry->TDNo = $TDNo;*/
+
+            if($request->isApproved === '1') {
+                $TDNo = 'TDNO-BLDG-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->approvedDate;
+                $entry->TDNo = $TDNo;
+            }
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -2384,15 +2385,14 @@ class RptBuildingsCrudController extends CrudController
         $this->crud->addField([
             'name'=>'approvedDate',
             'label'=>'Approved Date',
-            // 'type' => 'date_picker',
-            'type' => 'text',
-            // 'date_picker_options' => [
-            //     'todayBtn' => 'linked',
-            //     'format'   => 'yyyy-mm-dd',
-            //     'language' => 'fr',
-            //     'endDate' => '0d',
-            //     //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
-            // ],
+            'type' => 'date_picker',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4 approve_items hidden'
             ],
@@ -2403,6 +2403,22 @@ class RptBuildingsCrudController extends CrudController
             'type' => 'hidden',
             'tab' => 'Property Assessment',
         ]);
+
+        RptBuildings::updating(function($entry) {
+            $count = RptBuildings::count();
+            $request = app(RptBuildingsRequest::class);
+
+            if($request->isApproved === '1') {
+                $TDNo = 'TDNO-BLDG-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->approvedDate;
+                $entry->TDNo = $TDNo;
+            }
+          
+            TransactionLogs::create([
+                'transId' =>$entry->refID,
+                'category' =>'faas_building',
+                'type' =>'update',
+            ]);
+        });
     }
 
     public function create()
