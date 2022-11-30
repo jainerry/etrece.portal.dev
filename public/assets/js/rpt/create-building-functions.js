@@ -116,6 +116,57 @@ $(function () {
         $('select[name="propertyAssessment[0][assessmentLevel]"]').val(actualUse)
         propertyAssessmentComputation()
     })
+
+    /*
+    //assessmentType
+    $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
+        if($(this).val() === 'Exempt') {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
+        if($(this).val() === 'Quarter') {
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
+        }
+        else {
+            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
+            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
+            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
+        }
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
+        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })
+
+    //isApproved
+    $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
+        if($(this).val() === '1') {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+        }
+        else {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+        }
+    })
+    */
     
 })
 
