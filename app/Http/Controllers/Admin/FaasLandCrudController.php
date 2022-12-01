@@ -1032,10 +1032,8 @@ class FaasLandCrudController extends CrudController
         $searchTxt = $request->q;
         $searchQuery = FaasLand::select('faas_lands.*')
         ->where('faas_lands.refID','like','%'.$searchTxt.'%')
-        ->leftJoin('barangays','barangays.id','=','faas_lands.barangayId')
         ->leftJoin('municipalities','municipalities.id','=','faas_lands.cityId')
         ->leftJoin('citizen_profiles','citizen_profiles.id','=','faas_lands.primaryOwnerId')
-        ->orWhere('barangays.name','like','%'.$searchTxt.'%')
         ->orWhere('municipalities.name','like','%'.$searchTxt.'%')
         ->orWhere('faas_lands.ownerAddress','like','%'.$searchTxt.'%')
         ->orWhere(DB::raw('CONCAT(TRIM(citizen_profiles.fName)," ",
@@ -1049,6 +1047,11 @@ class FaasLandCrudController extends CrudController
             (IF(citizen_profiles.suffix IS NULL OR citizen_profiles.suffix = ""  , "",CONCAT(" ",TRIM(citizen_profiles.suffix)))))'),'like',"%".strtolower($searchTxt)."%");
             
         })
+        ->orWhereHas('barangay', function( $query) use($searchTxt){
+            return  $query->where('name','like',"%".strtolower($searchTxt)."%")
+            ->orWhere('refID','like',"%".strtolower($searchTxt)."%");
+        })
+        
         ->with('citizen_profile')
         ->with('barangay')
         ->with('land_owner')->get();

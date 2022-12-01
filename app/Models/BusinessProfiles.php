@@ -54,7 +54,11 @@ class BusinessProfiles extends Model
 
     public function owner(){
         $citizenProfile = $this->belongsTo(CitizenProfile::class,'owner_id','id');
+        return $citizenProfile;
        
+    }
+    public function lessor_owner(){
+        $citizenProfile = $this->belongsTo(CitizenProfile::class,'lessor_name','id');
         return $citizenProfile;
        
     }
@@ -69,6 +73,12 @@ class BusinessProfiles extends Model
     }
     public function category(){
         return $this->belongsTo(BusinessCategory::class,'category_id',"id");
+    }
+    public function bus_type(){
+        return $this->belongsTo(BusinessType::class,"buss_type","id");
+    }
+    public function bus_activity(){
+        return $this->belongsTo(BusinessActivity::class,"business_activity_id","id");
     }
     /*
     |--------------------------------------------------------------------------

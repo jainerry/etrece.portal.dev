@@ -23,11 +23,15 @@ return new class extends Migration
             $table->char('property_owner',1)->nullable();
             $table->string('lessor_name')->nullable();
 
-            
+            $table->string('tel')->nullable();
             $table->string('mobile')->nullable();
             $table->string('email')->nullable();
+            $table->string('tin')->nullable();
+
+
             $table->string('buss_type')->nullable();
             $table->string('corp_type')->nullable();
+            
             $table->string('trade_name_franchise')->nullable();
             $table->string('business_activity_id')->nullable();
             $table->string('other_buss_type')->nullable();

@@ -25,7 +25,9 @@ class BusinessProfilesRequest extends FormRequest
     public function rules()
     {
         return [
-            'business_name' => 'required'
+            'business_name' => 'required',
+            'property_owner'=>'required',
+            'lessor_name'  => 'exclude_if:property_owner,N|required'
         ];
     }
 
