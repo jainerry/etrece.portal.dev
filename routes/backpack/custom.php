@@ -64,18 +64,6 @@ Route::group([
     Route::crud('faas-land-secondary-owners', 'FaasLandSecondaryOwnersCrudController');
     Route::crud('faas-land-classification', 'FaasLandClassificationCrudController');
 
-    /*Route::crud('rpt-building', 'RPTBuildingCrudController');
-    Route::get('/api/rpt-building/check-if-primary-owner-exist', 'RPTBuildingCrudController@checkIfPrimaryOwnerExist');
-    Route::get('/api/rpt-building/get-details', 'RPTBuildingCrudController@getDetails');
-
-    Route::crud('rpt-machinery', 'RPTMachineryCrudController');
-    Route::get('/api/rpt-machinery/check-if-primary-owner-exist', 'RPTMachineryCrudController@checkIfPrimaryOwnerExist');
-    Route::get('/api/rpt-machinery/get-details', 'RPTMachineryCrudController@getDetails');
-
-    Route::crud('rpt-land', 'RPTLandCrudController');
-    Route::get('/api/rpt-land/check-if-primary-owner-exist', 'RPTLandCrudController@checkIfPrimaryOwnerExist');
-    Route::get('/api/rpt-land/get-details', 'RPTLandCrudController@getDetails');*/ 
-
     Route::crud('structural-flooring', 'StructuralFlooringCrudController');
     Route::crud('structural-walling', 'StructuralWallingCrudController');
     Route::crud('structural-additional-items', 'StructuralAdditionalItemsCrudController');
@@ -98,5 +86,13 @@ Route::group([
     Route::get('/api/rpt-building/apply-search-filters', 'RptBuildingsCrudController@applySearchFilters');
     Route::get('/api/faas-building/get-details', 'BuildingProfileCrudController@getDetails');
     Route::get('/api/faas-building/get-secondary-owners', 'BuildingProfileCrudController@getSecondaryOwners');
+
+    Route::get('/api/rpt-land/apply-search-filters', 'RptLandsCrudController@applySearchFilters');
+    Route::get('/api/faas-land/get-details', 'FaasLandCrudController@getDetails');
+    Route::get('/api/faas-land/get-secondary-owners', 'FaasLandCrudController@getSecondaryOwners');
+
+    Route::get('/api/rpt-machinery/apply-search-filters', 'RptMachineriesCrudController@applySearchFilters');
+    Route::get('/api/faas-machinery/get-details', 'FaasMachineryCrudController@getDetails');
+    Route::get('/api/faas-machinery/get-secondary-owners', 'FaasMachineryCrudController@getSecondaryOwners');
 
 }); // this should be the absolute last line of this file

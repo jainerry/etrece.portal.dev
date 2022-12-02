@@ -1,10 +1,20 @@
-.propertyListHeader div,
-.propertyListItem div {
-    border: 1px solid #eee;
-    text-align: center;
+.select2-container--bootstrap.select2-container--disabled .select2-selection, 
+.select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {
+    background-color: #f8f9fa;
 }
 
-.propertyListHeader div h6 {
-    margin: 5px 0px;
-    font-weight: 600;
+form .select2.select2-container.select2-container--focus, form .select2.select2-container.select2-container--open {
+    color: #506690;
+}
+
+.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+    color: #506690;
+}
+
+.select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {
+    color: #506690;
+}
+
+.rptModal .modal-dialog.modal-xl {
+    max-width: 1500px;
 }

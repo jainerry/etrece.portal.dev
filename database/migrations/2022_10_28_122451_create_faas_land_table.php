@@ -27,9 +27,11 @@ return new class extends Migration
             $table->text('primaryOwnerText')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
+            $table->string('ownerTinNo')->nullable();
             $table->string('administrator')->nullable();
             $table->string('administratorAddress')->nullable();
             $table->string('administratorTelephoneNo')->nullable();
+            $table->string('administratorTinNo')->nullable();
             $table->string('noOfStreet')->nullable();
             $table->string('barangayId')->nullable();
             $table->string('cityId')->nullable();

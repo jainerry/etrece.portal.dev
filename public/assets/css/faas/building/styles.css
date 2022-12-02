@@ -3,29 +3,6 @@
     width: 23%;
 }
 
-/* .propertyListHeader div,
-.propertyListItem div {
-    border: 1px solid #eee;
-    text-align: center;
-}
-
-.propertyListHeader div h6 {
-    margin: 5px 0px;
-    font-weight: 600;
-} */
-
-/* .propertyListItem {
-    border: 1px solid #eee;
-    border-radius: 5px;
-    margin: 5px 0px;
-    padding: 10px 0px;
-}
-
-.propertyListWrapper {
-    overflow-y: scroll;
-    height: 500px;
-} */
-
 .select2-container--bootstrap.select2-container--disabled .select2-selection, 
 .select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {
     background-color: #f8f9fa;
@@ -41,4 +18,8 @@ form .select2.select2-container.select2-container--focus, form .select2.select2-
 
 .select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {
     color: #506690;
+}
+
+.rptModal .modal-dialog.modal-xl {
+    max-width: 1500px;
 }

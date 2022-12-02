@@ -76,7 +76,6 @@ class FaasLandCrudController extends CrudController
                 },
             ]
         ]);
-        //$this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'name'  => 'primaryOwner',
             'label' => 'Primary Owner',
@@ -135,23 +134,14 @@ class FaasLandCrudController extends CrudController
             'tab'  => 'Main Information',
         ]);
         // $this->crud->addField([
-        //     'label' => 'ARP No.',
+        //     'label' => 'Transaction Code',
         //     'type' => 'text',
-        //     'name' => 'ARPNo',
+        //     'name' => 'transactionCode',
         //     'wrapperAttributes' => [
         //         'class' => 'form-group col-12 col-md-3',
         //     ],
         //     'tab' => 'Main Information',
         // ]);
-        $this->crud->addField([
-            'label' => 'Transaction Code',
-            'type' => 'text',
-            'name' => 'transactionCode',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -282,7 +272,7 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'=>'ownerTin',
+            'name'=>'ownerTinNo',
             'label'=>'TIN No.',
             'type'=>'text',
             'attributes' => [
@@ -329,7 +319,7 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'=>'administratorTin',
+            'name'=>'administratorTinNo',
             'label'=>'TIN No.',
             'type'=>'text',
             'attributes' => [
@@ -720,237 +710,6 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Market Value',
         ]);
-        /*Property Assessment*/
-        /*$this->crud->addField([   
-            'name'  => 'propertyAssessment',
-            'label' => 'Property Assessment',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'actualUse',
-                    'type'    => 'select',
-                    'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'code',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency actualUse',
-                        'readonly' => 'readonly'
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'marketValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency marketValue',
-                        'readonly' => 'readonly'
-                    ],
-                    'label'   => 'Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
-                ],
-                [
-                    'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'assessmentLevel',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_percent assessmentLevel',
-                        'readonly' => 'readonly'
-                    ],
-                    'label'   => 'Assessment Level',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'  => 'assessmentValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency assessmentValue',
-                        'readonly' => 'readonly'
-                    ],
-                    'label' => 'Assessment Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'actualUse_code',
-                    'type'    => 'select',
-                    'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'code',
-                    'wrapper' => ['class' => 'form-group col-md-3 actualUse_code hidden'],
-                ],
-                [
-                    'name'  => 'actualUse_code_text',
-                    'type'  => 'hidden',
-                    'wrapper' => ['class' => 'form-group col-md-3 actualUse_code_text hidden'],
-                ]
-            ],
-            'new_item_label'  => 'New Item',
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 10,
-            'reorder' => true,
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator1abcde',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'totalPropertyAssessmentMarketValue',
-            'label'=>'TOTAL (Market Value)',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentMarketValue',
-                'readonly' => 'readonly'
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'totalPropertyAssessmentAssessmentValue',
-            'label'=>'TOTAL (Assessment Value)',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentAssessmentValue',
-                'readonly' => 'readonly'
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator3',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentType',
-            'label'=>'Assessment Type',
-            'type' => 'select_from_array',
-            'options' => [
-                'Taxable' => 'Taxable', 
-                'Exempt' => 'Exempt'
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        
-        $this->crud->addField([
-            'name'=>'assessmentEffectivity',
-            'label'=>'Effectivity of Assessment/Reassessment',
-            'type' => 'select_from_array',
-            'options'     => [
-                "Quarter" => "Quarter",
-                "Year" => "Year"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_select_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                "1st Quarter" => "1st Quarter",
-                "2nd Quarter" => "2nd Quarter",
-                "3rd Quarter" => "3rd Quarter",
-                "4th Quarter" => "4th Quarter"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 assessmentEffectivityValue_select_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_input_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden assessmentEffectivityValue_input_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue',
-            'type' => 'hidden',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'ifAssessmentTypeIsExempt',
-            'type'  => 'custom_html',
-            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
-            'tab' => 'Property Assessment',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
-            ],
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator4',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'memoranda',
-            'label'=>'Memoranda',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator10a',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'isApproved',
-            'label' => 'Approve',
-            'type'  => 'checkbox',
-            'attributes' => [
-                'class' => 'isApproved_checkbox'
-            ],
-            'tab'  => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'approvedBy',
-            'label'=>'Approved By',
-            'type'=>'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'approvedDate',
-            'label'=>'Approved Date',
-            'type' => 'date_picker',
-            'date_picker_options' => [
-                'todayBtn' => 'linked',
-                'format'   => 'yyyy-mm-dd',
-                'language' => 'fr',
-                'endDate' => '0d',
-                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);*/
 
         FaasLand::creating(function($entry) {
             $count = FaasLand::count();
@@ -958,12 +717,6 @@ class FaasLandCrudController extends CrudController
             $entry->refID = $refID;
 
             $request = app(FaasLandRequest::class);
-
-            /*$ARPNo = 'ARP-LAND-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
-            $entry->ARPNo = $ARPNo;*/
-            
-            /*$TDNo = 'TD-LAND-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->propertyAssessment[0]['actualUse_code_text'];
-            $entry->TDNo = $TDNo;*/
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -981,41 +734,6 @@ class FaasLandCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        /*$this->crud->addField([
-            'name'=>'ARPNo',
-            'label' => "ARP No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-
-        $this->crud->addField([
-            'name'=>'TDNo',
-            'label' => "TD No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-
-        $this->crud->addField([
-            'name'  => 'separator10ab',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Main Information',
-        ]);*/
-
         $this->setupCreateOperation();
 
         FaasLand::updating(function($entry) {
@@ -1061,6 +779,64 @@ class FaasLandCrudController extends CrudController
 
         return $searchQuery;
 
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            /*$citizenProfiles = DB::table('faas_lands')
+            ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
+            ->select('faas_lands.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+            ->where('faas_lands.isActive', '=', '1')
+            ->where('faas_lands.id', '=', $id)
+            ->get();*/
+
+            $citizenProfiles = FaasLand::select('faas_lands.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+            ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
+            ->with('citizen_profile')
+            ->with('barangay')
+            ->with('land_owner')
+            ->where('faas_lands.isActive', '=', '1')
+            ->where('faas_lands.id', '=', $id)
+            ->get();
+            
+            /*$nameProfiles = DB::table('faas_lands')
+            ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
+            ->select('faas_lands.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+            ->where('faas_lands.isActive', '=', '1')
+            ->where('faas_lands.id', '=', $id)
+            ->get();*/
+
+            $nameProfiles = FaasLand::select('faas_lands.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+            ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
+            ->with('name_profile')
+            ->with('barangay')
+            ->with('land_owner')
+            ->where('faas_lands.isActive', '=', '1')
+            ->where('faas_lands.id', '=', $id)
+            ->get();
+
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        return $results;
+    }
+
+    public function getSecondaryOwners(Request $request){
+        $land_profile_id = $request->input('land_profile_id');
+        $results = [];
+        if (!empty($land_profile_id))
+        {
+            $results = DB::table('faas_land_secondary_owners')
+            ->join('citizen_profiles', 'faas_land_secondary_owners.citizen_profile_id', '=', 'citizen_profiles.id')
+            ->select('faas_land_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
+            ->where('faas_land_secondary_owners.land_profile_id', '=', $land_profile_id)
+            ->get();
+        }
+
+        return $results;
     }
     
 }

@@ -55,9 +55,9 @@ class BuildingProfile extends Model
         return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
     }
 
-    // public function building_owner(){
-    //     return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
-    // }
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primary_owner','id');
+    }
 
     public function building_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','building_profile_id','citizen_profile_id');
@@ -69,23 +69,14 @@ class BuildingProfile extends Model
     public function province(){
         return $this->belongsTo(Province::class, 'province_id', 'id');
     }
+    
     public function structural_type(){
         return $this->belongsTo(StructuralType::class, 'structural_type_id', 'id');
     }
 
-    // public function flooring(){
-    //     return $this->belongsTo(StructuralFlooring::class);
-    // }
-    // public function walling(){
-    //     return $this->belongsTo(StructuralWalling::class);
-    // }
-
-    // public function flooring(){
-    //     return $this->belongsToMany(StructuralFlooring::class,'faas_has_flooring','structural_flooring_id','faas_building_profiles_id');
-    // }
-    // public function walling(){
-    //     return $this->belongsToMany(StructuralWalling::class,'faas_has_walling','structural_walling_id','faas_building_profiles_id');
-    // }
+    public function building_classification(){
+        return $this->belongsTo(FaasBuildingClassifications::class, 'kind_of_building_id', 'id');
+    }
     
     /*
     |--------------------------------------------------------------------------

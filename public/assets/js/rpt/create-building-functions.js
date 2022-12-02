@@ -65,10 +65,10 @@ $(function () {
                             primaryOwner = value.first_name+' '+value.middle_name+' '+value.last_name+' '+suffix
                         }
                         let oct_tct_no = value.oct_tct_no
-                        let classification = value.kind_of_building_id
-                        let barangay = value.barangay_id
+                        let classification = value.building_classification.name
+                        let barangay = value.barangay.name
                         let no_of_street = value.no_of_street
-                        let structural_type_id = value.structural_type_id
+                        let structural_type_id = value.structural_type.name
                         let isActive = 'Active'
                         if(value.TDNo !== null) { TDNo = value.TDNo }
                         if(value.ARPNo !== null) { ARPNo = value.ARPNo }
@@ -117,7 +117,24 @@ $(function () {
         propertyAssessmentComputation()
     })
 
-    /*
+    //isApproved
+    $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
+        if($(this).val() === '1') {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
+        }
+        else {
+            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
+            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
+            $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
+        }
+    })
+
     //assessmentType
     $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
         if($(this).val() === 'Exempt') {
@@ -148,25 +165,6 @@ $(function () {
     $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
         $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
     })
-
-    //isApproved
-    $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
-        if($(this).val() === '1') {
-            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
-            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items').removeClass('hidden')
-        }
-        else {
-            $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items input[data-init-function="bpFieldInitDatePickerElement"]').datepicker('update');
-            $('.tab-container #tab_property-assessment .approve_items input[name="TDNo"]').val('')
-            $('.tab-container #tab_property-assessment .approve_items').addClass('hidden')
-        }
-    })
-    */
     
 })
 
@@ -182,6 +180,8 @@ function fetchData(id){
             if(data.length > 0) {
                 data = data[0]
                 $('#tab_property-assessment input[name="faasId"]').val(data.id)
+                $('#tab_property-assessment input[name="barangayCode"]').val(data.barangay.code)
+                $('#tab_property-assessment input[name="buildingClassificationCode"]').val(data.building_classification.code)
 
                 let primaryOwner = ''
                 let suffix = ''
@@ -232,8 +232,8 @@ function fetchData(id){
                 $('#tab_structural-characteristic input[name="other_roof"]').val(data.other_roof)
 
                 $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.floorsArea) {
-                    const floorsArea = JSON.parse(data.floorsArea);
+                if(data.floorsArea.length > 0) {
+                    const floorsArea = data.floorsArea
                     let floorsAreaLen = floorsArea.length
                     let floorsAreaCtr = 0
                     $.each(floorsArea, function(j, value1) {
@@ -252,8 +252,8 @@ function fetchData(id){
                 }
 
                 $('.repeatable-group[bp-field-name="flooring"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.flooring) {
-                    const flooring = JSON.parse(data.flooring);
+                if(data.flooring.length > 0) {
+                    const flooring = data.flooring
                     let flooringLen = flooring.length
                     let flooringCtr = 0
                     $.each(flooring, function(k, value2) {
@@ -273,8 +273,8 @@ function fetchData(id){
                 }
 
                 $('.repeatable-group[bp-field-name="walling"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.walling) {
-                    const walling = JSON.parse(data.walling);
+                if(data.walling.length > 0) {
+                    const walling = data.walling
                     let wallingLen = walling.length
                     let wallingCtr = 0
                     $.each(walling, function(l, value3) {
@@ -294,8 +294,8 @@ function fetchData(id){
                 }
 
                 $('.repeatable-group[bp-field-name="additionalItems"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.additionalItems) {
-                    const additionalItems = JSON.parse(data.additionalItems);
+                if(data.additionalItems.length > 0) {
+                    const additionalItems = data.additionalItems
                     let additionalItemsLen = additionalItems.length
                     let additionalItemsCtr = 0
                     $.each(additionalItems, function(m, value4) {

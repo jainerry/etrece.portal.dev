@@ -58,10 +58,6 @@ class FaasLand extends Model
         return $this->belongsTo(CitizenProfile::class,'oldOwnerId','id');
     }
 
-    // public function land_owner(){
-    //     return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','citizen_profile_id','land_profile_id');
-    // }
-
     public function land_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_land_secondary_owners','land_profile_id','citizen_profile_id');
     }
@@ -76,10 +72,6 @@ class FaasLand extends Model
 
     public function province(){
         return $this->belongsTo(Province::class, 'provinceId', 'id');
-    }
-
-    public function assessment_status(){
-        return $this->belongsTo(FaasAssessmentStatus::class, 'assessmentStatusId', 'id');
     }
 
     /*

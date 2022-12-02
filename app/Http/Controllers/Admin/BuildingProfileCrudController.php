@@ -77,7 +77,6 @@ class BuildingProfileCrudController extends CrudController
                 },
             ]
         ]);
-        //$this->crud->column('ARPNo')->label('ARP No.');
         $this->crud->addColumn([
             'name'  => 'primary_owner',
             'label' => 'Primary Owner',
@@ -126,21 +125,6 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->setValidation(BuildingProfileRequest::class);
         
         /*Main Information*/
-        /*$this->crud->addField([
-            'label' => 'Transaction Code',
-            'type' => 'text',
-            'name' => 'transactionCode',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator0',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'  => 'Main Information',
-        ]);*/
         $this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_union',
@@ -912,198 +896,6 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3',
             ],
         ]);
-        /*Property Assessment*/
-        /*$this->crud->addField([   
-            'name'  => 'propertyAssessment',
-            'label' => 'Property Assessment',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'actualUse',
-                    'type'    => 'select',
-                    'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasBuildingClassifications",
-                    'attribute' => 'name',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
-                ],
-                [
-                    'name'    => 'marketValue',
-                    'type'    => 'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
-                        'readonly' => 'readonly',
-                    ],
-                    'label'   => 'Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
-                ],
-                [
-                    'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'label'   => 'Assessment Level',
-                    'model'     => "App\Models\FaasBuildingClassifications",
-                    'attribute' => 'assessmentLevel',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
-                ],
-                [
-                    'name'  => 'assessedValue',
-                    'type'  => 'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
-                        'readonly' => 'readonly',
-                    ],
-                    'label' => 'Assessed Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
-                ],
-                [
-                    'name'  => 'yearOfEffectivity',
-                    'type'  => 'text',
-                    'label' => 'Year of Effectivity',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-            ],
-            'new_item_label'  => 'New Item', 
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 1,
-            'reorder' => true,
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator9',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentType',
-            'label'=>'Assessment Type',
-            'type' => 'select_from_array',
-            'options' => [
-                'Taxable' => 'Taxable', 
-                'Exempt' => 'Exempt'
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-
-        $this->crud->addField([
-            'name'=>'assessmentEffectivity',
-            'label'=>'Effectivity of Assessment/Reassessment',
-            'type' => 'select_from_array',
-            'options'     => [
-                "Quarter" => "Quarter",
-                "Year" => "Year"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_select_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                "1st Quarter" => "1st Quarter",
-                "2nd Quarter" => "2nd Quarter",
-                "3rd Quarter" => "3rd Quarter",
-                "4th Quarter" => "4th Quarter"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 assessmentEffectivityValue_select_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_input_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden assessmentEffectivityValue_input_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue',
-            'type' => 'hidden',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'ifAssessmentTypeIsExempt',
-            'type'  => 'custom_html',
-            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
-            'tab' => 'Property Assessment',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
-            ],
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator10',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'memoranda',
-            'label'=>'Memoranda',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator10a',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'isApproved',
-            'label' => 'Approve',
-            'type'  => 'checkbox',
-            'attributes' => [
-                'class' => 'isApproved_checkbox'
-            ],
-            'tab'  => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'approvedBy',
-            'label'=>'Approved By',
-            'type'=>'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'approvedDate',
-            'label'=>'Approved Date',
-            'type' => 'date_picker',
-            'date_picker_options' => [
-                'todayBtn' => 'linked',
-                'format'   => 'yyyy-mm-dd',
-                'language' => 'fr',
-                'endDate' => '0d',
-                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
-            ],
-            'tab' => 'Property Assessment',
-        ]);*/
 
         BuildingProfile::creating(function($entry) {
             $count = BuildingProfile::count();
@@ -1114,9 +906,6 @@ class BuildingProfileCrudController extends CrudController
 
             /*$ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
             $entry->ARPNo = $ARPNo;*/
-            
-            /*$TDNo = 'TD-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
-            $entry->TDNo = $TDNo;*/
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -1135,34 +924,6 @@ class BuildingProfileCrudController extends CrudController
 
     protected function setupUpdateOperation()
     {
-        /*$this->crud->addField([
-            'name'=>'ARPNo',
-            'label' => "ARP No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-
-        $this->crud->addField([
-            'name'=>'TDNo',
-            'label' => "TD No.",
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);*/
-
         $this->setupCreateOperation();
 
         BuildingProfile::updating(function($entry) {
@@ -1181,16 +942,38 @@ class BuildingProfileCrudController extends CrudController
         $results = [];
         if (!empty($id))
         {
-            $citizenProfiles = DB::table('faas_building_profiles')
+            /*$citizenProfiles = DB::table('faas_building_profiles')
             ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
             ->select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
             ->where('faas_building_profiles.isActive', '=', '1')
             ->where('faas_building_profiles.id', '=', $id)
+            ->get();*/
+
+            $citizenProfiles = BuildingProfile::select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+            ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+            ->with('citizen_profile')
+            ->with('barangay')
+            ->with('building_owner')
+            ->with('structural_type')
+            ->with('building_classification')
+            ->where('faas_building_profiles.isActive', '=', '1')
+            ->where('faas_building_profiles.id', '=', $id)
             ->get();
             
-            $nameProfiles = DB::table('faas_building_profiles')
+            /*$nameProfiles = DB::table('faas_building_profiles')
             ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
             ->select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+            ->where('faas_building_profiles.isActive', '=', '1')
+            ->where('faas_building_profiles.id', '=', $id)
+            ->get();*/
+
+            $nameProfiles = BuildingProfile::select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+            ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+            ->with('name_profile')
+            ->with('barangay')
+            ->with('building_owner')
+            ->with('structural_type')
+            ->with('building_classification')
             ->where('faas_building_profiles.isActive', '=', '1')
             ->where('faas_building_profiles.id', '=', $id)
             ->get();

@@ -26,6 +26,9 @@ class RptLandsRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
+            'assessmentType' => 'required',
+            'assessmentEffectivity' => 'required',
+            'assessmentEffectivityValue' => 'required',
         ];
     }
 
