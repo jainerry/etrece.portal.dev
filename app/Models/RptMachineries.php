@@ -27,7 +27,12 @@ class RptMachineries extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    // protected $casts = [
+    //     'propertyAssessment' => 'array'
+    // ];
+
     protected $casts = [
+        'propertyAppraisal' => 'array',
         'propertyAssessment' => 'array'
     ];
 

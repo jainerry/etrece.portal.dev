@@ -31,12 +31,12 @@ class FaasLand extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $casts = [
-        'landAppraisal' => 'array',
-        'otherImprovements' => 'array',
-        'marketValue' => 'array',
-        'propertyAssessment' => 'array'
-    ];
+    // protected $casts = [
+    //     'landAppraisal' => 'array',
+    //     'otherImprovements' => 'array',
+    //     'marketValue' => 'array',
+    //     'propertyAssessment' => 'array'
+    // ];
 
     /*
     |--------------------------------------------------------------------------
@@ -52,6 +52,10 @@ class FaasLand extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
+    }
+
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primary_owner','id');
     }
 
     public function old_owner_citizen_profile(){

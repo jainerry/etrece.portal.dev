@@ -118,7 +118,7 @@ class FaasLandCrudController extends CrudController
     {
         $this->crud->setValidation(FaasLandRequest::class);
         /*Main Information*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'  => 'isIdleLand',
             'label' => 'Is Idle Land',
             'type'  => 'checkbox',
@@ -133,15 +133,16 @@ class FaasLandCrudController extends CrudController
             'value' => '<hr>',
             'tab'  => 'Main Information',
         ]);
-        // $this->crud->addField([
-        //     'label' => 'Transaction Code',
-        //     'type' => 'text',
-        //     'name' => 'transactionCode',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        //     'tab' => 'Main Information',
-        // ]);
+        $this->crud->addField([
+            'label' => 'Transaction Code',
+            'type' => 'text',
+            'name' => 'transactionCode',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);*/
+        
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -178,13 +179,8 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        $this->crud->addField([
-            'name'  => 'separator0',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'  => 'Main Information',
-        ]);
-        $this->crud->addField([
+        
+        /*$this->crud->addField([
             'name'  => 'isOwnerNonTreceResident',
             'label' => 'Non Trece Resident',
             'type'  => 'checkbox',
@@ -192,150 +188,8 @@ class FaasLandCrudController extends CrudController
                 'class' => 'isOwnerNonTreceResident_checkbox'
             ],
             'tab'  => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'label' => 'Primary Owner <span style="color:red;">*</span>',
-            'type' => 'primary_owner_union',
-            'name' => 'primaryOwnerId',
-            'entity' => 'citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'primaryOwnerText',
-            'label'=>'Primary Owner <span style="color:red;">*</span>',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name' => 'land_owner',
-            'label' => 'Secondary Owner/s',
-            'type' => 'secondary_owner',
-            'entity' => 'land_owner',
-            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
-            'attribute' => 'full_name',
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 land_owner_select'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'secondaryOwnersText',
-            'label'=>'Secondary Owner/s',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 secondaryOwnersText hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerAddress',
-            'label'=>'Address',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerAddress_fake',
-            'label'=>'Address <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                '' => '-',
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerTelephoneNo',
-            'label'=>'Telephone No.',
-            'type'=>'text',
-            'attributes' => [
-                'class' => 'form-control',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerTinNo',
-            'label'=>'TIN No.',
-            'type'=>'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_tin',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator1',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'administrator',
-            'label'=>'Administrator/Occupant',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'administratorAddress',
-            'label'=>'Address',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'administratorTelephoneNo',
-            'label'=>'Telephone No.',
-            'type'=>'text',
-            'attributes' => [
-                'class' => 'form-control',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'administratorTinNo',
-            'label'=>'TIN No.',
-            'type'=>'text',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_tin',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator2',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Main Information',
-        ]);
+        ]);*/
+
         $this->crud->addField([
             'name'=>'noOfStreet',
             'label'=>'No. of Street',
@@ -416,6 +270,199 @@ class FaasLandCrudController extends CrudController
             'type'  => 'hidden',
             'tab' => 'Main Information',
         ]);
+
+        /*Property Boundaries*/
+        $this->crud->addField([
+            'name'=>'propertyBoundaryNorth',
+            'label'=>'North',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundaryEast',
+            'label'=>'East',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundarySouth',
+            'label'=>'South',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundaryWest',
+            'label'=>'West',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'label' => "Land Sketch",
+            'name' => "landSketch",
+            'type' => 'image',
+            'crop' => true,
+            'aspect_ratio' => 0,
+            'hint'=>'(Not necessary drawn to scale)',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'  => 'separator0',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'label' => 'Primary Owner <span style="color:red;">*</span>',
+            'type' => 'primary_owner_union',
+            'name' => 'primaryOwnerId',
+            'entity' => 'citizen_profile',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        /*$this->crud->addField([
+            'name'=>'primaryOwnerText',
+            'label'=>'Primary Owner <span style="color:red;">*</span>',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
+            ],
+            'tab' => 'Main Information',
+        ]);*/
+        $this->crud->addField([
+            'name' => 'land_owner',
+            'label' => 'Secondary Owner/s',
+            'type' => 'secondary_owner',
+            'entity' => 'land_owner',
+            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
+            'attribute' => 'full_name',
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 land_owner_select'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'secondaryOwnersText',
+            'label'=>'Secondary Owner/s',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 secondaryOwnersText hidden'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'ownerAddress',
+            'label'=>'Address',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        /*$this->crud->addField([
+            'name'=>'ownerAddress_fake',
+            'label'=>'Address <span style="color:red;">*</span>',
+            'type' => 'select_from_array',
+            'options'     => [
+                '' => '-',
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
+            ],
+            'tab' => 'Main Information',
+        ]);*/
+        $this->crud->addField([
+            'name'=>'ownerTelephoneNo',
+            'label'=>'Telephone No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'ownerTinNo',
+            'label'=>'TIN No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_tin',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator1',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'administrator',
+            'label'=>'Administrator/Occupant',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'administratorAddress',
+            'label'=>'Address',
+            'type'=>'textarea',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'administratorTelephoneNo',
+            'label'=>'Telephone No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'administratorTinNo',
+            'label'=>'TIN No.',
+            'type'=>'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_tin',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        
         $this->crud->addField([
             'name'  => 'separator1a',
             'type'  => 'custom_html',
@@ -433,56 +480,11 @@ class FaasLandCrudController extends CrudController
             'allows_null' => false,
             'default'     => 'Y',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
-        /*Property Boundaries*/
-        $this->crud->addField([
-            'name'=>'propertyBoundaryNorth',
-            'label'=>'North',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundaryEast',
-            'label'=>'East',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundarySouth',
-            'label'=>'South',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundaryWest',
-            'label'=>'West',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'label' => "Land Sketch",
-            'name' => "landSketch",
-            'type' => 'image',
-            'crop' => true,
-            'aspect_ratio' => 0,
-            'hint'=>'(Not necessary drawn to scale)',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([   
+        /*$this->crud->addField([   
             'name'  => 'landAppraisal',
             'label' => 'Land Appraisal',
             'type'  => 'repeatable',
@@ -566,10 +568,12 @@ class FaasLandCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Land Appraisal',
-        ]);
+        ]);*/
+
+        /*
         $this->crud->addField([   
             'name'  => 'otherImprovements',
             'label' => 'Other Improvements',
@@ -631,11 +635,13 @@ class FaasLandCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Other Improvements',
         ]);
-        $this->crud->addField([   
+        */
+
+        /*$this->crud->addField([   
             'name'  => 'marketValue',
             'label' => 'Market Value',
             'type'  => 'repeatable',
@@ -706,10 +712,10 @@ class FaasLandCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Market Value',
-        ]);
+        ]);*/
 
         FaasLand::creating(function($entry) {
             $count = FaasLand::count();
@@ -835,6 +841,85 @@ class FaasLandCrudController extends CrudController
             ->select('faas_land_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
             ->where('faas_land_secondary_owners.land_profile_id', '=', $land_profile_id)
             ->get();
+        }
+
+        return $results;
+    }
+
+    public function searchLandProfile(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $citizenProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "CitizenProfile" as ownerType'))
+                ->with('barangay', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('municipality', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('province', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('citizen_profile', function ($q) use ($search_term) {
+                    $q->orWhere(DB::raw('CONCAT(fName," ",mName," ",lName)'), 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
+                ->orWhere('survey_no', 'like', '%'.$search_term.'%')
+                ->orWhere('lotNo', 'like', '%'.$search_term.'%')
+                ->orWhere('blkNo', 'like', '%'.$search_term.'%')
+                ->orWhere('noOfStreet', 'like', '%'.$search_term.'%')
+                ->where('isActive', '=', '1') 
+                ->orderBy('refID','ASC')
+                ->get();
+
+            $nameProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "NameProfile" as ownerType'))
+                ->with('barangay', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('municipality', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('province', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->with('name_profile', function ($q) use ($search_term) {
+                    $q->orWhere(DB::raw('CONCAT(first_name," ",middle_name," ",last_name)'), 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
+                ->orWhere('survey_no', 'like', '%'.$search_term.'%')
+                ->orWhere('lotNo', 'like', '%'.$search_term.'%')
+                ->orWhere('blkNo', 'like', '%'.$search_term.'%')
+                ->orWhere('noOfStreet', 'like', '%'.$search_term.'%')
+                ->where('isActive', '=', '1') 
+                ->orderBy('refID','ASC')
+                ->get();
+
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+        else
+        {
+            $citizenProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "CitizenProfile" as ownerType'))
+                ->with('barangay')
+                ->with('municipality')
+                ->with('province')
+                ->with('citizen_profile')   
+                ->where('isActive', '=', '1')
+                ->orderBy('refID','ASC')->paginate(5);
+
+            $nameProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "NameProfile" as ownerType'))
+                ->with('barangay')
+                ->with('municipality')
+                ->with('province')
+                ->with('name_profile')    
+                ->where('isActive', '=', '1')
+                ->orderBy('refID','ASC')->paginate(5);
+
+            $results = $citizenProfiles->merge($nameProfiles);
         }
 
         return $results;

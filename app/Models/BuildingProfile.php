@@ -77,6 +77,10 @@ class BuildingProfile extends Model
     public function building_classification(){
         return $this->belongsTo(FaasBuildingClassifications::class, 'kind_of_building_id', 'id');
     }
+
+    public function land_profile(){
+        return $this->belongsTo(FaasLand::class,'landProfileId','id');
+    }
     
     /*
     |--------------------------------------------------------------------------

@@ -17,6 +17,16 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('faasId')->nullable();
+
+            $table->string('unitConstructionCost')->nullable();
+            $table->string('unitConstructionSubTotal')->nullable();
+            $table->string('costOfAdditionalItemsSubTotal')->nullable();
+            $table->string('totalConstructionCost')->nullable();
+            $table->string('depreciationRate')->nullable();
+            $table->string('depreciationCost')->nullable();
+            $table->string('totalPercentDepreciation')->nullable();
+            $table->string('marketValue')->nullable();
+
             $table->string('transactionCode')->nullable();
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();

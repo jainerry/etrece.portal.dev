@@ -17,6 +17,9 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('faasId')->nullable();
+            $table->text('landAppraisal')->nullable();
+            $table->text('otherImprovements')->nullable();
+            $table->text('marketValue')->nullable();
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();
             $table->string('assessmentEffectivity')->nullable();

@@ -20,11 +20,12 @@ return new class extends Migration
             $table->string('pin')->nullable();
             $table->string('transactionCode')->nullable();
             $table->string('octTctNo')->nullable();
+            $table->string('survey_no',25)->nullable();
             $table->string('lotNo')->nullable();
             $table->string('blkNo')->nullable();
             $table->string('previousOwnerId')->nullable();
             $table->string('primaryOwnerId')->nullable();
-            $table->text('primaryOwnerText')->nullable();
+            //$table->text('primaryOwnerText')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTinNo')->nullable();
@@ -41,9 +42,9 @@ return new class extends Migration
             $table->string('propertyBoundarySouth')->nullable();
             $table->string('propertyBoundaryWest')->nullable();
             $table->string('landSketch')->nullable();
-            $table->text('landAppraisal')->nullable();
-            $table->text('otherImprovements')->nullable();
-            $table->text('marketValue')->nullable();
+            // $table->text('landAppraisal')->nullable();
+            // $table->text('otherImprovements')->nullable();
+            // $table->text('marketValue')->nullable();
             $table->boolean('isActive')->default(1);
             // $table->text('propertyAssessment')->nullable();
             // $table->string('assessmentType')->nullable();
@@ -59,11 +60,13 @@ return new class extends Migration
             // $table->string('recordOfAssesmentEntryDate')->nullable();
             // $table->string('recordingPersonel')->nullable();
             // $table->string('TDNo')->nullable();
-            $table->boolean('isIdleLand')->default(0);
-            $table->boolean('isOwnerNonTreceResident', 1)->default(0);
-            $table->string('totalLandAppraisalBaseMarketValue')->nullable();
-            $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
-            $table->string('totalMarketValueMarketValue')->nullable();
+
+            // $table->boolean('isIdleLand')->default(0);
+            // $table->boolean('isOwnerNonTreceResident', 1)->default(0);
+            // $table->string('totalLandAppraisalBaseMarketValue')->nullable();
+            // $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
+            // $table->string('totalMarketValueMarketValue')->nullable();
+
             // $table->string('totalPropertyAssessmentMarketValue')->nullable();
             // $table->string('totalPropertyAssessmentAssessmentValue')->nullable();
             // $table->boolean('isActive')->default(1);

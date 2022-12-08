@@ -27,7 +27,14 @@ class RptLands extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    // protected $casts = [
+    //     'propertyAssessment' => 'array'
+    // ];
+
     protected $casts = [
+        'landAppraisal' => 'array',
+        'otherImprovements' => 'array',
+        'marketValue' => 'array',
         'propertyAssessment' => 'array'
     ];
 

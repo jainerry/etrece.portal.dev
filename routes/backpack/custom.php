@@ -86,10 +86,12 @@ Route::group([
     Route::get('/api/rpt-building/apply-search-filters', 'RptBuildingsCrudController@applySearchFilters');
     Route::get('/api/faas-building/get-details', 'BuildingProfileCrudController@getDetails');
     Route::get('/api/faas-building/get-secondary-owners', 'BuildingProfileCrudController@getSecondaryOwners');
+    Route::get('/api/faas-building/search-building-profile', 'BuildingProfileCrudController@searchBuildingProfile');
 
     Route::get('/api/rpt-land/apply-search-filters', 'RptLandsCrudController@applySearchFilters');
     Route::get('/api/faas-land/get-details', 'FaasLandCrudController@getDetails');
     Route::get('/api/faas-land/get-secondary-owners', 'FaasLandCrudController@getSecondaryOwners');
+    Route::get('/api/faas-land/search-land-profile', 'FaasLandCrudController@searchLandProfile');
 
     Route::get('/api/rpt-machinery/apply-search-filters', 'RptMachineriesCrudController@applySearchFilters');
     Route::get('/api/faas-machinery/get-details', 'FaasMachineryCrudController@getDetails');

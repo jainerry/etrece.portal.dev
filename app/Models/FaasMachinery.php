@@ -30,10 +30,10 @@ class FaasMachinery extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $casts = [
-        'propertyAppraisal' => 'array',
-        'propertyAssessment' => 'array'
-    ];
+    // protected $casts = [
+    //     'propertyAppraisal' => 'array',
+    //     'propertyAssessment' => 'array'
+    // ];
 
     /*
     |--------------------------------------------------------------------------
@@ -84,6 +84,14 @@ class FaasMachinery extends Model
 
     public function province(){
         return $this->belongsTo(Province::class, 'provinceId', 'id');
+    }
+
+    public function building_profile(){
+        return $this->belongsTo(BuildingProfile::class,'buildingProfileId','id');
+    }
+
+    public function land_profile(){
+        return $this->belongsTo(FaasLand::class,'landProfileId','id');
     }
 
     /*

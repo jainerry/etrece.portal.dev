@@ -33,24 +33,24 @@ class CitizenProfileSeeder extends Seeder
             'c66ab4d6-dcf8-446e-b1fb-baa2ba3324c7',
             'ded2a76e-329c-4174-8f20-b5126cb5d553',
             'e367ac8f-efa2-40c3-89f5-4a2953d80f1c',
-            'ea7ef3bd-772c-4a3f-80d2-c1ba2c2dcd21',
+            'ea7ef3bd-772c-4a3f-80d2-c1ba2c2dcd21'
         );
 
-        $users = [
+        $citizenProfiles = [
             [
                 'id'    =>Str::uuid(),
                 'refId' => 'CITIZEN-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John Carlo',
                 'mName' => 'Sacro',
                 'lName' => 'Salazar',
-                'Sex' => '0',
-                'bdate' => Carbon::now(),
+                'sex' => '0',
+                'bdate' => '1991-05-24',
                 'civilStatus'=>'Single',
                 'brgyID'=>$barangayIds[0],
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()
             ],
             [
                 'id'    =>Str::uuid(),
@@ -58,41 +58,41 @@ class CitizenProfileSeeder extends Seeder
                 'fName' => 'John ',
                 'mName' => 'Sacro',
                 'lName' => 'Salazar',
-                'Sex' => '0',
-                'bdate' => Carbon::now(),
+                'sex' => '0',
+                'bdate' => '1990-01-30',
                 'civilStatus'=>'Single',
                 'brgyID'=>$barangayIds[1],
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()
             ]
         ];
-        $cid = 2;
-        for($i=0; 500>=$i; $i++ ){
+
+        $cpid = 2;
+        for($i=0; 5>=$i; $i++ ){
             $faker =app(Faker::class);
 
             $randomNum = rand(0, count($barangayIds)-1);
 
-            array_push($users, [
+            array_push($citizenProfiles, [
                 'id'    =>Str::uuid(),
-                'refId' => 'CITIZEN-'.str_pad(($cid++), 4, "0", STR_PAD_LEFT),
+                'refId' => 'CITIZEN-'.str_pad(($cpid++), 4, "0", STR_PAD_LEFT),
                 'fName' => $faker->firstNameMale(),
                 'mName' => '',
                 'lName' => $faker->lastName(),
-                'Sex' => '0',
-                'bdate' => Carbon::now(),
+                'sex' => '0',
+                'bdate' => '1989-07-15',
                 'civilStatus'=>'Single',
                 'brgyID'=>$barangayIds[$randomNum],
                 'purokID'=>'0',
                 'address'=>'N/A',
                 'placeOfOrigin'=>'N/A',
-                'created_at' => Carbon::now(),
+                'created_at' => Carbon::now()
             ]);
-            
         }
 
-        cp::insert($users);
+        cp::insert($citizenProfiles);
 
     }
 }

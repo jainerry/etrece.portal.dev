@@ -1,4 +1,4 @@
-{{-- Primary Owner Union --}}
+{{-- Building Profile Selection --}}
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
@@ -9,7 +9,7 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-    $field['placeholder'] = $field['placeholder'] ?? 'Select Primary Owner';
+    $field['placeholder'] = $field['placeholder'] ?? 'Select Land Profile';
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
@@ -19,7 +19,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-init-function="bpFieldInitPrimaryOwnerInputElement"
+        data-init-function="bpFieldInitBuildingProfileSelectionInputElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
@@ -54,7 +54,7 @@
             @endif
 
             <option value="{{ $item->id }}" selected>
-                {{ $item->full_name}}
+                {{ $item->building_reference_id}}
             </option>
             @endif
         @endif
@@ -107,9 +107,9 @@
 
 {{-- include field specific select2 js --}}
 @push('crud_fields_scripts')
-@loadOnce('bpFieldInitPrimaryOwnerInputElement')
+@loadOnce('bpFieldInitBuildingProfileSelectionInputElement')
 <script>
-    function bpFieldInitPrimaryOwnerInputElement(element) {
+    function bpFieldInitBuildingProfileSelectionInputElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -133,8 +133,8 @@
             let stateText = state.text
             stateText = stateText.trim()
             stateText = stateText.replaceAll("'", "\\'")
-            if($(stateText).find('.fullname').length > 0 ){
-                return $(stateText).find('.fullname').html();
+            if($(stateText).find('.building_reference_id').length > 0 ){
+                return $(stateText).find('.building_reference_id').html();
             }else{
                 return stateText;
             }
@@ -143,7 +143,7 @@
         $(element).select2({
             theme: 'bootstrap',
             multiple: false,
-            placeholder: 'Select Primary Owner',
+            placeholder: 'Select Land Profile',
             minimumInputLength: 2,
             allowClear: true,
             templateSelection: formatState,
@@ -178,45 +178,13 @@
                         results: $.map(data, function(item) {
 
                             let customText = ''
-                            if(item.ownerType === 'CitizenProfile') {
-                                customText = `
+                            customText = `
+                                <div>
                                     <div>
-                                        <div>
-                                            Fullname: <b class="fullname"> ${item.fullname}</b>
-                                        </div>
-                                        <div>
-                                            Owner Type: <b class="fullname"> Citizen Profile</b>
-                                        </div>
-                                        <div>
-                                            Reference ID: <b> ${item.refID}</b>
-                                        </div>
-                                        <div>
-                                            Birth Date: <b> ${item.bdate}</b>
-                                        </div>
-                                        <div>
-                                            Barangay: <b> ${item.barangay.name}</b>
-                                        </div>
-                                        <div>
-                                            Address: <b> ${item.address}</b>
-                                        </div>
+                                        Reference ID: <b class="building_reference_id"> ${item.refID}</b>
                                     </div>
-                                `
-                            }
-                            else if(item.ownerType === 'NameProfile') {
-                                customText = `
-                                    <div>
-                                        <div>
-                                            Business Name: <b class="fullname"> ${item.fullname}</b>
-                                        </div>
-                                        <div>
-                                            Owner Type: <b class="fullname"> Business Profile</b>
-                                        </div>
-                                        <div>
-                                            Reference ID: <b> ${item.refID}</b>
-                                        </div>
-                                    </div>
-                                `
-                            }
+                                </div>
+                            `
                             let searchResults = { text: customText, id: item.id }
                             return searchResults
 

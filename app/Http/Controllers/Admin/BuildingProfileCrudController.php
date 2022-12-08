@@ -126,6 +126,27 @@ class BuildingProfileCrudController extends CrudController
         
         /*Main Information*/
         $this->crud->addField([
+            'label' => 'Land Profile',
+            'type' => 'land_profile_selection',
+            'name' => 'land_profile_id',
+            'entity' => 'land_profile',
+            'attribute' => 'refID',
+            'data_source' => url('/admin/api/faas-land/search-land-profile'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'name'  => 'separator0',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
+        ]);
+
+        $this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_union',
             'name' => 'primary_owner',
@@ -138,6 +159,7 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
+
         $this->crud->addField([
             'name' => 'building_owner',
             'label' => 'Secondary Owner',
@@ -156,11 +178,11 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Address', 
             'type' => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress',
+                'class' => 'form-group col-12 col-md-6 ownerAddress',
             ],
             'tab' => 'Main Information',
         ]);
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'ownerAddress_fake',
             'label'=>'Address <span style="color:red;">*</span>',
             'type' => 'select_from_array',
@@ -172,7 +194,7 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
             ],
             'tab' => 'Main Information',
-        ]);
+        ]);*/
         $this->crud->addField([
             'name' => 'tel_no', 
             'label' => 'Telephone No.', 
@@ -203,9 +225,9 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'administrator',
             'label' => 'Administrator/Occupant',
-            'type' => 'text',
+            'type' => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12',
+                'class' => 'form-group col-12 col-md-6',
             ],
             'tab' => 'Main Information',
         ]);
@@ -214,7 +236,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Address',
             'type' => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12',
+                'class' => 'form-group col-12 col-md-6',
             ],
             'tab'  => 'Main Information',
         ]);
@@ -262,7 +284,7 @@ class BuildingProfileCrudController extends CrudController
         ]);
 
         /*Building Location Tab*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name' => 'no_of_street',
             'label' => 'No. of Street',
             'type' => 'text',
@@ -341,9 +363,10 @@ class BuildingProfileCrudController extends CrudController
             'name'  => 'barangay_code_text',
             'type'  => 'hidden',
             'tab' => 'Building Location',
-        ]);
+        ]);*/
+
         /*Land Reference Tab*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name' => 'oct_tct_no',
             'label' => 'OCT/TCT No.',
             'type' => 'text',
@@ -396,7 +419,8 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'Land Reference',
-        ]);
+        ]);*/
+
         /*General Description*/
         $this->crud->addField([
             'label' => "Kind of Building",
@@ -405,7 +429,7 @@ class BuildingProfileCrudController extends CrudController
             'model'     => "App\Models\FaasBuildingClassifications",
             'attribute' => 'name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4',
+                'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'General Description',
         ]);
@@ -414,7 +438,7 @@ class BuildingProfileCrudController extends CrudController
             'label' => 'Building Age',
             'type' => 'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4',
+                'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'General Description',
         ]);
@@ -425,7 +449,7 @@ class BuildingProfileCrudController extends CrudController
             'entity' => 'structural_type',
             'attribute' => 'name',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4',
+                'class' => 'form-group col-12 col-md-3',
             ],
             'tab' => 'General Description',
         ]);
@@ -440,7 +464,7 @@ class BuildingProfileCrudController extends CrudController
                 'readonly' => 'readonly',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden',
+                'class' => 'form-group col-12 col-md-3 hidden',
             ],
             'tab' => 'General Description',
         ]);
@@ -483,7 +507,7 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'name' => 'condominium_certificate_of_title',
             'label' => 'Condominium Certificate of Title (CCT)',
-            'type' => 'text',
+            'type' => 'textarea',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
             ],
@@ -790,7 +814,7 @@ class BuildingProfileCrudController extends CrudController
             'tab' => 'Structural Characteristic',
         ]);
         /*Property Appraisal*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'  => 'separator5',
             'type'  => 'custom_html',
             'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost_temp" id="unitConstructionCost_temp" value="" /> /sq.m.</p>
@@ -895,7 +919,7 @@ class BuildingProfileCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
-        ]);
+        ]);*/
 
         BuildingProfile::creating(function($entry) {
             $count = BuildingProfile::count();
@@ -994,6 +1018,38 @@ class BuildingProfileCrudController extends CrudController
             ->select('faas_building_profile_secondary_owners.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address')
             ->where('faas_building_profile_secondary_owners.building_profile_id', '=', $building_profile_id)
             ->get();
+        }
+
+        return $results;
+    }
+
+    public function searchBuildingProfile(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $results = BuildingProfile::select(DB::raw('id, refID, landProfileId'))
+                ->with('land_profile', function ($q) use ($search_term) {
+                    $q->orWhere('refID', 'like', '%'.$search_term.'%')
+                    ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
+                    ->orWhere('survey_no', 'like', '%'.$search_term.'%')
+                    ->orWhere('lotNo', 'like', '%'.$search_term.'%')
+                    ->orWhere('blkNo', 'like', '%'.$search_term.'%')
+                    ->orWhere('noOfStreet', 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->where('isActive', '=', '1') 
+                ->orderBy('refID','ASC')
+                ->get();
+        }
+        else
+        {
+            $results = BuildingProfile::select(DB::raw('id, refID, primary_owner, landProfileId'))
+                ->with('land_profile')
+                ->where('isActive', '=', '1')
+                ->orderBy('refID','ASC')->paginate(10);
         }
 
         return $results;

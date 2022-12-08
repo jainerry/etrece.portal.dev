@@ -389,25 +389,36 @@ class CitizenProfileCrudController extends CrudController
                 ->orderBy('fullname','ASC')
                 ->get();
 
-            $businessProfiles = BusinessProfiles::select(DB::raw('id, buss_id as refID, business_name as fullname, "BusinessProfiles" as ownerType'))
-                ->orWhere('buss_id', 'like', '%'.$search_term.'%')
-                ->orWhere('business_name', 'like', '%'.$search_term.'%')
+            $nameProfiles = NameProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname, id,first_name,middle_name,last_name,id, refID, suffix, address, bdate,  "NameProfile" as ownerType'))
+                ->with('municipality', function ($q) use ($search_term) {
+                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                })
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('first_name', 'like', '%'.$search_term.'%')
+                ->orWhere('middle_name', 'like', '%'.$search_term.'%')
+                ->orWhere('last_name', 'like', '%'.$search_term.'%')
+                ->orWhere('suffix', 'like', '%'.$search_term.'%')
+                ->orWhere('address', 'like', '%'.$search_term.'%')
+                ->orWhereDate('bdate', '=', date($search_term))
                 ->where('isActive', '=', 'Y') 
-                ->orderBy('business_name','ASC')
+                ->orderBy('fullname','ASC')
                 ->get();
 
-            $results = $citizenProfiles->merge($businessProfiles);
+            $results = $citizenProfiles->merge($nameProfiles);
         }
         else
         {
             $citizenProfiles = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex, "CitizenProfile" as ownerType'))
+                ->with('barangay')
                 ->where('isActive', '=', 'Y')
                 ->orderBy('fullname','ASC')->paginate(10);
-            $businessProfiles = BusinessProfiles::select(DB::raw('id, buss_id as refID, business_name as fullname, "BusinessProfiles" as ownerType'))
-                ->where('isActive', '=', 'Y')    
-                ->orderBy('business_name','ASC')->paginate(10);
             
-                $results = $citizenProfiles->merge($businessProfiles);
+            $nameProfiles = NameProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname, id,first_name,middle_name,last_name,id, refID, suffix, address, bdate,  "NameProfile" as ownerType'))
+                ->with('municipality')
+                ->where('isActive', '=', 'Y')    
+                ->orderBy('fullname','ASC')->paginate(10);
+            
+            $results = $citizenProfiles->merge($nameProfiles);
         }
 
         return $results;
@@ -458,33 +469,33 @@ class CitizenProfileCrudController extends CrudController
         if ($search_term)
         {
             $citizenProfiles = CitizenProfile::select(DB::raw('CONCAT(fName," ",mName," ",lName) as fullname, id, refID, suffix, address, bdate, brgyID, civilStatus, placeOfOrigin, purokID, sex, "CitizenProfile" as ownerType'))
-                ->with('barangay', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
-                })
-                ->orWhere('refID', 'like', '%'.$search_term.'%')
-                ->orWhere('fName', 'like', '%'.$search_term.'%')
-                ->orWhere('mName', 'like', '%'.$search_term.'%')
-                ->orWhere('lName', 'like', '%'.$search_term.'%')
-                ->orWhere('suffix', 'like', '%'.$search_term.'%')
-                ->orWhere('address', 'like', '%'.$search_term.'%')
-                ->orWhereDate('bdate', '=', date($search_term))
-                ->where('isActive', '=', 'Y') 
-                ->orderBy('fullname','ASC')
-                ->get();
+            ->with('barangay', function ($q) use ($search_term) {
+                $q->orWhere('name', 'like', '%'.$search_term.'%');
+            })
+            ->orWhere('refID', 'like', '%'.$search_term.'%')
+            ->orWhere('fName', 'like', '%'.$search_term.'%')
+            ->orWhere('mName', 'like', '%'.$search_term.'%')
+            ->orWhere('lName', 'like', '%'.$search_term.'%')
+            ->orWhere('suffix', 'like', '%'.$search_term.'%')
+            ->orWhere('address', 'like', '%'.$search_term.'%')
+            ->orWhereDate('bdate', '=', date($search_term))
+            ->where('isActive', '=', 'Y') 
+            ->orderBy('fullname','ASC')
+            ->get();
 
-                $businessNames = NameProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname, id,first_name,middle_name,last_name,id, refID, suffix, address, bdate,  "BussNameProfile" as ownerType'))
-                ->orWhere('refID', 'like', '%'.$search_term.'%')
-                ->orWhere('first_name', 'like', '%'.$search_term.'%')
-                ->orWhere('middle_name', 'like', '%'.$search_term.'%')
-                ->orWhere('last_name', 'like', '%'.$search_term.'%')
-                ->orWhere('suffix', 'like', '%'.$search_term.'%')
-                ->orWhere('address', 'like', '%'.$search_term.'%')
-                ->orWhereDate('bdate', '=', date($search_term))
-                ->where('isActive', '=', 'Y') 
-                ->orderBy('fullname','ASC')
-                ->get();
-                $results = $citizenProfiles->merge($businessNames);
-                return response()->json($results);
+            $businessNames = NameProfiles::select(DB::raw('CONCAT(first_name," ",middle_name," ",last_name) as fullname, id,first_name,middle_name,last_name,id, refID, suffix, address, bdate,  "BussNameProfile" as ownerType'))
+            ->orWhere('refID', 'like', '%'.$search_term.'%')
+            ->orWhere('first_name', 'like', '%'.$search_term.'%')
+            ->orWhere('middle_name', 'like', '%'.$search_term.'%')
+            ->orWhere('last_name', 'like', '%'.$search_term.'%')
+            ->orWhere('suffix', 'like', '%'.$search_term.'%')
+            ->orWhere('address', 'like', '%'.$search_term.'%')
+            ->orWhereDate('bdate', '=', date($search_term))
+            ->where('isActive', '=', 'Y') 
+            ->orderBy('fullname','ASC')
+            ->get();
+            $results = $citizenProfiles->merge($businessNames);
+            return response()->json($results);
         }
 
 

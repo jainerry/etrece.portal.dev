@@ -118,15 +118,16 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->setValidation(FaasMachineryRequest::class);
 
         /*Main Information*/
-        // $this->crud->addField([
-        //     'label' => 'Transaction Code',
-        //     'type' => 'text',
-        //     'name' => 'transactionCode',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        //     'tab' => 'Main Information',
-        // ]);
+        /*$this->crud->addField([
+            'label' => 'Transaction Code',
+            'type' => 'text',
+            'name' => 'transactionCode',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);*/
+
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -136,6 +137,42 @@ class FaasMachineryCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
+
+        $this->crud->addField([
+            'name'  => 'separator00',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'label' => 'Land Profile',
+            'type' => 'land_profile_selection',
+            'name' => 'land_profile_id',
+            'entity' => 'land_profile',
+            'attribute' => 'refID',
+            'data_source' => url('/admin/api/faas-land/search-land-profile'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+            'tab' => 'Main Information',
+        ]);
+
+        $this->crud->addField([
+            'label' => 'Building Profile',
+            'type' => 'building_profile_selection',
+            'name' => 'building_profile_id',
+            'entity' => 'building_profile',
+            'attribute' => 'refID',
+            'data_source' => url('/admin/api/faas-building/search-building-profile'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        
         $this->crud->addField([
             'name'  => 'separator0',
             'type'  => 'custom_html',
@@ -173,11 +210,11 @@ class FaasMachineryCrudController extends CrudController
             'label'=>'Address',
             'type'=>'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'ownerAddress_fake',
             'label'=>'Address <span style="color:red;">*</span>',
             'type' => 'select_from_array',
@@ -189,7 +226,7 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
             ],
             'tab' => 'Main Information',
-        ]);
+        ]);*/
         $this->crud->addField([
             'name'=>'ownerTelephoneNo',
             'label'=>'Telephone No.',
@@ -222,8 +259,9 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'name'=>'administrator',
             'label'=>'Administrator/Occupant',
+            'type'=>'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
@@ -232,7 +270,7 @@ class FaasMachineryCrudController extends CrudController
             'label'=>'Address',
             'type' => 'textarea',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
@@ -276,12 +314,13 @@ class FaasMachineryCrudController extends CrudController
             'allows_null' => false,
             'default'     => 'Y',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
+
         /*Property Location*/
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'noOfStreet',
             'label'=>'No. of Street',
             'type'=>'text',
@@ -408,9 +447,10 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Location',
-        ]);
+        ]);*/
+
         /*Property Appraisal*/
-        $this->crud->addField([   
+        /*$this->crud->addField([   
             'name'  => 'propertyAppraisal',
             'label' => 'Property Appraisal',
             'type'  => 'repeatable',
@@ -573,7 +613,7 @@ class FaasMachineryCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Appraisal',
         ]);
@@ -585,7 +625,7 @@ class FaasMachineryCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Appraisal',
         ]);
@@ -597,10 +637,10 @@ class FaasMachineryCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Appraisal',
-        ]);
+        ]);*/
 
         FaasMachinery::creating(function($entry) {
             $count = FaasMachinery::count();
