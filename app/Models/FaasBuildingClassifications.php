@@ -25,6 +25,11 @@ class FaasBuildingClassifications extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+
+    protected $casts = [
+        'assessmentLevels' => 'array'
+    ];
+    
     protected static function boot(){
         parent::boot();
 

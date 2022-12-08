@@ -13,6 +13,7 @@ use App\Models\TransactionLogs;
 use Illuminate\Contracts\Database\Eloquent\Builder;
 use Symfony\Component\HttpFoundation\Request;
 use Illuminate\Http\Request as HttpRequest;
+use App\Models\CitizenProfile;
 
 /**
  * Class FaasLandCrudController
@@ -51,7 +52,6 @@ class FaasLandCrudController extends CrudController
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        Widget::add()->type('script')->content('assets/js/faas/land/functions.js');
     }
 
     /**
@@ -76,13 +76,22 @@ class FaasLandCrudController extends CrudController
                 },
             ]
         ]);
-        $this->crud->addColumn([
-            'name'  => 'primaryOwner',
-            'label' => 'Primary Owner',
-            'type'  => 'select',
-            'entity'    => 'citizen_profile',
-            'attribute' => 'full_name'
-        ],);
+        CRUD::column('model_function')
+        ->type('model_function')
+        ->label('Primary Owner')
+        ->function_name('getPrimaryOwner')
+        ->searchLogic(function ($query, $column, $searchTerm) {
+            $query->orWhereHas('citizen_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('fName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+            })
+            ->orWhereHas('name_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+            });
+        });
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
             'name'  => 'isApproved',
@@ -118,31 +127,6 @@ class FaasLandCrudController extends CrudController
     {
         $this->crud->setValidation(FaasLandRequest::class);
         /*Main Information*/
-        /*$this->crud->addField([
-            'name'  => 'isIdleLand',
-            'label' => 'Is Idle Land',
-            'type'  => 'checkbox',
-            'attributes' => [
-                'class' => 'isIdleLand_checkbox'
-            ],
-            'tab'  => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator00',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'  => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'label' => 'Transaction Code',
-            'type' => 'text',
-            'name' => 'transactionCode',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);*/
-        
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -162,6 +146,21 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
+            'name'=>'survey_no',
+            'type'=>'text',
+            'label'=>'Survey No.',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator00',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
+        ]);
+        $this->crud->addField([
             'name'=>'lotNo',
             'type'=>'text',
             'label'=>'Lot No.',
@@ -179,17 +178,24 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        
-        /*$this->crud->addField([
-            'name'  => 'isOwnerNonTreceResident',
-            'label' => 'Non Trece Resident',
-            'type'  => 'checkbox',
-            'attributes' => [
-                'class' => 'isOwnerNonTreceResident_checkbox'
+        $this->crud->addField([
+            'name'=>'totalArea',
+            'type'=>'text',
+            'label'=>'Area',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
             ],
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency area',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator0001',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
             'tab'  => 'Main Information',
-        ]);*/
-
+        ]);
         $this->crud->addField([
             'name'=>'noOfStreet',
             'label'=>'No. of Street',
@@ -225,12 +231,6 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'cityId',
-            'type'  => 'hidden',
-            'value' => 'db3510e6-3add-4d81-8809-effafbbaa6fd',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
             'name'=>'provinceId_fake',
             'label' => "Province",
             'type'=>'text',
@@ -242,12 +242,6 @@ class FaasLandCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
             ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'provinceId',
-            'type'  => 'hidden',
-            'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
@@ -266,11 +260,11 @@ class FaasLandCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'barangay_code_text',
-            'type'  => 'hidden',
-            'tab' => 'Main Information',
+            'name'  => 'separator000',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
         ]);
-
         /*Property Boundaries*/
         $this->crud->addField([
             'name'=>'propertyBoundaryNorth',
@@ -316,36 +310,63 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-
         $this->crud->addField([
             'name'  => 'separator0',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab'  => 'Main Information',
         ]);
-
-        $this->crud->addField([
-            'label' => 'Primary Owner <span style="color:red;">*</span>',
-            'type' => 'primary_owner_union',
-            'name' => 'primaryOwnerId',
-            'entity' => 'citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        /*$this->crud->addField([
-            'name'=>'primaryOwnerText',
-            'label'=>'Primary Owner <span style="color:red;">*</span>',
-            'type'=>'textarea',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);*/
+        $id = $this->crud->getCurrentEntryId();
+        if ($id != false) {
+            $data = FaasLand::where('id', $id)->first();
+            $primaryOwnerId = $data->primaryOwnerId;
+            $ownerExist  = CitizenProfile::where("id", $primaryOwnerId)->count();
+            if ($ownerExist == 0) {
+                $this->crud->addField([
+                    'label' => 'Primary Owner <span style="color:red;">*</span>',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primaryOwnerId',
+                    'entity' => 'name_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+            else {
+                $this->crud->addField([
+                    'label' => 'Primary Owner <span style="color:red;">*</span>',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primaryOwnerId',
+                    'entity' => 'name_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+        }
+        else {
+            $this->crud->addField([
+                'label' => 'Primary Owner <span style="color:red;">*</span>',
+                'type' => 'primary_owner_union',
+                'name' => 'primaryOwnerId',
+                'entity' => 'name_profile',
+                'attribute' => 'full_name',
+                'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                'minimum_input_length' => 1,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                ],
+                'tab' => 'Main Information',
+            ]);
+        }
         $this->crud->addField([
             'name' => 'land_owner',
             'label' => 'Secondary Owner/s',
@@ -377,19 +398,6 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        /*$this->crud->addField([
-            'name'=>'ownerAddress_fake',
-            'label'=>'Address <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                '' => '-',
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);*/
         $this->crud->addField([
             'name'=>'ownerTelephoneNo',
             'label'=>'Telephone No.',
@@ -462,7 +470,6 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        
         $this->crud->addField([
             'name'  => 'separator1a',
             'type'  => 'custom_html',
@@ -484,243 +491,14 @@ class FaasLandCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        /*$this->crud->addField([   
-            'name'  => 'landAppraisal',
-            'label' => 'Land Appraisal',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'classification',
-                    'type'    => 'select',
-                    'label'   => 'Classification',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'name',
-                    'attributes' => [
-                        'class' => 'form-control classification',
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'subClass',
-                    'type'    => 'text',
-                    'label'   => 'Sub-Class',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'actualUse',
-                    'type'    => 'select',
-                    'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'code',
-                    'attributes' => [
-                        'class' => 'form-control actualUse',
-                        'readonly' => 'readonly'
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'  => 'area',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency area',
-                    ],
-                    'label' => 'Area',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'unitValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency unitValue',
-                    ],
-                    'label'   => 'Unit Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'baseMarketValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency baseMarketValue',
-                        'readonly' => 'readonly'
-                    ],
-                    'label'   => 'Base Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-            ],
-            'new_item_label'  => 'New Item',
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 10,
-            'reorder' => true,
-            'tab' => 'Land Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator1ab',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Land Appraisal',
-        ]);
-        $this->crud->addField([
-            'name'=>'totalLandAppraisalBaseMarketValue',
-            'label'=>'TOTAL (Base Market Value)',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency totalLandAppraisalBaseMarketValue',
-                'readonly' => 'readonly'
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Land Appraisal',
-        ]);*/
-
-        /*
-        $this->crud->addField([   
-            'name'  => 'otherImprovements',
-            'label' => 'Other Improvements',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'kind',
-                    'type'    => 'text',
-                    'label'   => 'Kind',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'totalNumber',
-                    'type'    => 'number',
-                    'label'   => 'Total Number',
-                    'attributes' => [
-                        'class' => 'form-control totalNumber',
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'unitValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency unitValue',
-                    ],
-                    'label'   => 'Unit Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'  => 'baseMarketValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency baseMarketValue',
-                        'readonly' => 'readonly'
-                    ],
-                    'label' => 'Base Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ]
-            ],
-            'new_item_label'  => 'New Item',
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 10,
-            'reorder' => true,
-            'tab' => 'Other Improvements',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator1abc',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Other Improvements',
-        ]);
-        $this->crud->addField([
-            'name'=>'totalOtherImprovementsBaseMarketValue',
-            'label'=>'TOTAL (Base Market Value)',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency totalOtherImprovementsBaseMarketValue',
-                'readonly' => 'readonly'
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Other Improvements',
-        ]);
-        */
-
-        /*$this->crud->addField([   
-            'name'  => 'marketValue',
-            'label' => 'Market Value',
-            'type'  => 'repeatable',
-            'subfields' => [
-                [
-                    'name'    => 'baseMarketValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency baseMarketValue',
-                    ],
-                    'label'   => 'Base Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'adjustmentFactor',
-                    'type'    => 'text',
-                    'label'   => 'Adjustment Factor',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'    => 'adjustmentFactorPercentage',
-                    'type'    => 'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_percent adjustmentFactorPercentage',
-                    ],
-                    'label'   => '% Adj',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'  => 'valueAdjustment',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency valueAdjustment',
-                        'readonly' => 'readonly'
-                    ],
-                    'label' => 'Value Adjustment',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ],
-                [
-                    'name'  => 'marketValue',
-                    'type'=>'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency marketValue',
-                        'readonly' => 'readonly'
-                    ],
-                    'label' => 'Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
-                ]
-            ],
-            'new_item_label'  => 'New Item',
-            'init_rows' => 1,
-            'min_rows' => 1,
-            'max_rows' => 10,
-            'reorder' => true,
-            'tab' => 'Market Value',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator1abcd',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Market Value',
-        ]);
-        $this->crud->addField([
-            'name'=>'totalMarketValueMarketValue',
-            'label'=>'TOTAL (Market Value)',
-            'attributes' => [
-                'class' => 'form-control text_input_mask_currency totalMarketValueMarketValue',
-                'readonly' => 'readonly'
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Market Value',
-        ]);*/
 
         FaasLand::creating(function($entry) {
             $count = FaasLand::count();
             $refID = 'LAND-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
+
+            $entry->cityId = 'db3510e6-3add-4d81-8809-effafbbaa6fd';
+            $entry->provinceId = 'eb9e8c56-957b-4084-b5ae-904054d2a1b3';
 
             $request = app(FaasLandRequest::class);
 
@@ -793,13 +571,6 @@ class FaasLandCrudController extends CrudController
         $results = [];
         if (!empty($id))
         {
-            /*$citizenProfiles = DB::table('faas_lands')
-            ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
-            ->select('faas_lands.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-            ->where('faas_lands.isActive', '=', '1')
-            ->where('faas_lands.id', '=', $id)
-            ->get();*/
-
             $citizenProfiles = FaasLand::select('faas_lands.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
             ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
             ->with('citizen_profile')
@@ -808,13 +579,6 @@ class FaasLandCrudController extends CrudController
             ->where('faas_lands.isActive', '=', '1')
             ->where('faas_lands.id', '=', $id)
             ->get();
-            
-            /*$nameProfiles = DB::table('faas_lands')
-            ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
-            ->select('faas_lands.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-            ->where('faas_lands.isActive', '=', '1')
-            ->where('faas_lands.id', '=', $id)
-            ->get();*/
 
             $nameProfiles = FaasLand::select('faas_lands.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
             ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')

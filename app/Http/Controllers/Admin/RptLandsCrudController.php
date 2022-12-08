@@ -41,10 +41,8 @@ class RptLandsCrudController extends CrudController
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('style')->content('assets/css/faas/land/styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        //Widget::add()->type('script')->content('assets/js/faas/land/functions.js');
     }
 
     /**
@@ -138,6 +136,15 @@ class RptLandsCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
+            'name' => 'searchByPinId', 
+            'label' => 'Search by PIN', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
             'name' => 'searchByOCTTCTNo', 
             'label' => 'Search by OCT/TCT No.', 
             'type' => 'text',
@@ -146,15 +153,24 @@ class RptLandsCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3',
             ],
         ]);
-        // $this->crud->addField([
-        //     'name' => 'searchByNoOfStreet', 
-        //     'label' => 'Search by No. of Street', 
-        //     'type' => 'text',
-        //     'fake' => true,
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        // ]);
+        $this->crud->addField([
+            'name' => 'searchBySurveyNo', 
+            'label' => 'Search by Survey No.', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByNoOfStreet', 
+            'label' => 'Search by No. of Street', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
         $this->crud->addField([
             'name' => 'searchByBarangayDistrict', 
             'label' => 'Search by Barangay/District', 
@@ -188,25 +204,6 @@ class RptLandsCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-2',
             ],
         ]);
-
-        /*Main Information*/
-        $this->crud->addField([
-            'name'  => 'isIdleLand',
-            'label' => 'Is Idle Land',
-            'type'  => 'checkbox',
-            'fake' => true,
-            'attributes' => [
-                'class' => 'isIdleLand_checkbox',
-                'disabled' => 'disabled',
-            ],
-            'tab'  => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator00',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab'  => 'Main Information',
-        ]);
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -232,6 +229,25 @@ class RptLandsCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'survey_no',
+            'type'=>'text',
+            'label'=>'Survey No.',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator00',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
             'name'=>'lotNo',
@@ -260,21 +276,130 @@ class RptLandsCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
+            'name'=>'noOfStreet',
+            'label'=>'No. of Street <span style="color:red;">*</span>',
+            'type'=>'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'barangayId',
+            'label'=>'Barangay/District <span style="color:red;">*</span>',
+            'type'=>'select',
+            'entity' => 'barangay',
+            'attribute' => 'name',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'cityId_fake',
+            'label' => "Municipality",
+            'type'=>'text',
+            'value' => 'Trece Martires City',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'provinceId_fake',
+            'label' => "Province",
+            'type'=>'text',
+            'value' => 'Cavite',
+            'fake' => true,
+            'attributes' => [
+                'readonly' => 'readonly',
+            ], 
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
             'name'  => 'separator0',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'isOwnerNonTreceResident',
-            'label' => 'Non Trece Resident',
-            'type'  => 'checkbox',
+            'name'=>'propertyBoundaryNorth',
+            'label'=>'North',
             'fake' => true,
             'attributes' => [
-                'class' => 'isOwnerNonTreceResident_checkbox',
                 'disabled' => 'disabled',
             ],
-            'tab'  => 'Main Information',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundaryEast',
+            'label'=>'East',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundarySouth',
+            'label'=>'South',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'propertyBoundaryWest',
+            'label'=>'West',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator5',
+            'type'  => 'custom_html',
+            'value' => '<label>Land Sketch</label>
+                <div class="landSketch" id="landSketch"><img src="" /></div>',
+            'tab' => 'Main Information',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator2',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab' => 'Main Information',
         ]);
         $this->crud->addField([
             'label' => 'Primary Owner <span style="color:red;">*</span>',
@@ -290,19 +415,6 @@ class RptLandsCrudController extends CrudController
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'primaryOwnerText',
-            'label'=>'Primary Owner <span style="color:red;">*</span>',
-            'type'=>'textarea',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 primaryOwnerText hidden'
             ],
             'tab' => 'Main Information',
         ]);
@@ -324,45 +436,15 @@ class RptLandsCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'=>'secondaryOwnersText',
-            'label'=>'Secondary Owner/s',
-            'type'=>'textarea',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 secondaryOwnersText hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
             'name'=>'ownerAddress',
-            'label'=>'Address',
+            'label'=>'Address <span style="color:red;">*</span>',
             'type'=>'textarea',
             'fake' => true,
             'attributes' => [
                 'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'ownerAddress_fake',
-            'label'=>'Address <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'options'     => [
-                '' => '-',
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
@@ -403,12 +485,13 @@ class RptLandsCrudController extends CrudController
         $this->crud->addField([
             'name'=>'administrator',
             'label'=>'Administrator/Occupant',
+            'type'=>'textarea',
             'fake' => true,
             'attributes' => [
                 'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
@@ -421,7 +504,7 @@ class RptLandsCrudController extends CrudController
                 'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
+                'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
         ]);
@@ -435,7 +518,7 @@ class RptLandsCrudController extends CrudController
                 'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
@@ -454,80 +537,6 @@ class RptLandsCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'separator2',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'noOfStreet',
-            'label'=>'No. of Street',
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'barangayId',
-            'label'=>'Barangay/District',
-            'type'=>'select',
-            'entity' => 'barangay',
-            'attribute' => 'name',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'cityId_fake',
-            'label' => "Municipality",
-            'type'=>'text',
-            'value' => 'Trece Martires City',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'cityId',
-            'type'  => 'hidden',
-            'value' => 'db3510e6-3add-4d81-8809-effafbbaa6fd',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'=>'provinceId_fake',
-            'label' => "Province",
-            'type'=>'text',
-            'value' => 'Cavite',
-            'fake' => true,
-            'attributes' => [
-                'readonly' => 'readonly',
-            ], 
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
-            'name'  => 'provinceId',
-            'type'  => 'hidden',
-            'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
-            'tab' => 'Main Information',
-        ]);
-        $this->crud->addField([
             'name'  => 'separator1a',
             'type'  => 'custom_html',
             'value' => '<hr>',
@@ -535,7 +544,7 @@ class RptLandsCrudController extends CrudController
         ]);
         $this->crud->addField([
             'name'=>'isActive',
-            'label'=>'Status',
+            'label'=>'Status <span style="color:red;">*</span>',
             'type' => 'select_from_array',
             'fake' => true,
             'attributes' => [
@@ -548,75 +557,11 @@ class RptLandsCrudController extends CrudController
             'allows_null' => false,
             'default'     => 'Y',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
         ]);
-        /*Property Boundaries*/
-        $this->crud->addField([
-            'name'=>'propertyBoundaryNorth',
-            'label'=>'North',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundaryEast',
-            'label'=>'East',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundarySouth',
-            'label'=>'South',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'name'=>'propertyBoundaryWest',
-            'label'=>'West',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
-        $this->crud->addField([
-            'label' => "Land Sketch",
-            'name' => "landSketch",
-            'type' => 'image',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'crop' => true,
-            'aspect_ratio' => 0,
-            'hint'=>'(Not necessary drawn to scale)',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12'
-            ],
-            'tab' => 'Property Boundaries',
-        ]);
+        /*Land Appraisal*/
         $this->crud->addField([   
             'name'  => 'landAppraisal',
             'label' => 'Land Appraisal',
@@ -628,10 +573,8 @@ class RptLandsCrudController extends CrudController
                     'label'   => 'Classification',
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'name',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control classification',
-                        'disabled' => 'disabled',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -639,9 +582,8 @@ class RptLandsCrudController extends CrudController
                     'name'    => 'subClass',
                     'type'    => 'text',
                     'label'   => 'Sub-Class',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control subClass',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -651,10 +593,20 @@ class RptLandsCrudController extends CrudController
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasLandClassification",
                     'attribute' => 'code',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control actualUse',
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly'
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3 hidden'],
+                ],
+                [
+                    'name'    => 'actualUse_fake',
+                    'type'    => 'text',
+                    'label'   => 'Actual Use',
+                    'fake'   => true,
+                    'attributes' => [
+                        'class' => 'form-control actualUse_fake',
+                        'readonly' => 'readonly'
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -664,11 +616,11 @@ class RptLandsCrudController extends CrudController
                     'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency area',
-                        'disabled' => 'disabled',
                     ],
                     'label' => 'Area',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
+                /*
                 [
                     'name'    => 'unitValue',
                     'type'=>'text',
@@ -680,13 +632,13 @@ class RptLandsCrudController extends CrudController
                     'label'   => 'Unit Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
+                */
                 [
                     'name'    => 'baseMarketValue',
                     'type'=>'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency baseMarketValue',
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -708,16 +660,16 @@ class RptLandsCrudController extends CrudController
         $this->crud->addField([
             'name'=>'totalLandAppraisalBaseMarketValue',
             'label'=>'TOTAL (Base Market Value)',
-            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency totalLandAppraisalBaseMarketValue',
-                'disabled' => 'disabled',
+                'readonly' => 'readonly',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Land Appraisal',
         ]);
+        /*Other Improvements*/
         $this->crud->addField([   
             'name'  => 'otherImprovements',
             'label' => 'Other Improvements',
@@ -727,9 +679,8 @@ class RptLandsCrudController extends CrudController
                     'name'    => 'kind',
                     'type'    => 'text',
                     'label'   => 'Kind',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control kind',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -737,20 +688,16 @@ class RptLandsCrudController extends CrudController
                     'name'    => 'totalNumber',
                     'type'    => 'number',
                     'label'   => 'Total Number',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control totalNumber',
-                        'disabled' => 'disabled',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'unitValue',
                     'type'=>'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency unitValue',
-                        'disabled' => 'disabled',
                     ],
                     'label'   => 'Unit Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -758,10 +705,9 @@ class RptLandsCrudController extends CrudController
                 [
                     'name'  => 'baseMarketValue',
                     'type'=>'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency baseMarketValue',
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly',
                     ],
                     'label' => 'Base Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -785,14 +731,14 @@ class RptLandsCrudController extends CrudController
             'label'=>'TOTAL (Base Market Value)',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency totalOtherImprovementsBaseMarketValue',
-                'disabled' => 'disabled',
+                'readonly' => 'readonly',
             ],
-            'fake' => true,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Other Improvements',
         ]);
+        /*Market Value*/
         $this->crud->addField([   
             'name'  => 'marketValue',
             'label' => 'Market Value',
@@ -803,19 +749,16 @@ class RptLandsCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency baseMarketValue',
-                        'disabled' => 'disabled',
                     ],
                     'label'   => 'Base Market Value',
-                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'adjustmentFactor',
                     'type'    => 'text',
                     'label'   => 'Adjustment Factor',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control adjustmentFactor',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -824,10 +767,8 @@ class RptLandsCrudController extends CrudController
                     'type'    => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent adjustmentFactorPercentage',
-                        'disabled' => 'disabled',
                     ],
                     'label'   => '% Adj',
-                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -835,10 +776,8 @@ class RptLandsCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency valueAdjustment',
-                        'disabled' => 'disabled',
                     ],
                     'label' => 'Value Adjustment',
-                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
@@ -846,10 +785,9 @@ class RptLandsCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency marketValue',
-                        'disabled' => 'disabled',
+                        'readonly' => 'readonly',
                     ],
                     'label' => 'Market Value',
-                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ]
             ],
@@ -871,15 +809,13 @@ class RptLandsCrudController extends CrudController
             'label'=>'TOTAL (Market Value)',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency totalMarketValueMarketValue',
-                'disabled' => 'disabled',
+                'readonly' => 'readonly',
             ],
-            'fake' => true,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Market Value',
         ]);
-
         /*Property Assessment*/
         $this->crud->addField([   
             'name'  => 'propertyAssessment',
@@ -894,6 +830,18 @@ class RptLandsCrudController extends CrudController
                     'attribute' => 'code',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency actualUse',
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                [
+                    'name'    => 'actualUse_fake',
+                    'type'    => 'text',
+                    'label'   => 'Actual Use',
+                    'fake'   => true,
+                    'attributes' => [
+                        'class' => 'form-control actualUse_fake',
+                        'readonly' => 'readonly'
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -902,18 +850,17 @@ class RptLandsCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency marketValue',
+                        'readonly' => 'readonly',
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'model'     => "App\Models\FaasLandClassification",
-                    'attribute' => 'assessmentLevel',
+                    'type'    => 'select_from_array',
+                    'options' => [],
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_percent assessmentLevel',
-                        'readonly' => 'readonly'
+                        'class' => 'form-control assessmentLevel',
                     ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -950,7 +897,7 @@ class RptLandsCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Assessment',
         ]);
@@ -962,7 +909,7 @@ class RptLandsCrudController extends CrudController
                 'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Assessment',
         ]);
@@ -971,6 +918,15 @@ class RptLandsCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'  => 'ifAssessmentTypeIsExempt',
+            'type'  => 'custom_html',
+            'value' => '<div class="alert alert-warning" role="alert"><i class="la la-exclamation-triangle"></i> This property needs to go through an approval process.</div>',
+            'tab' => 'Property Assessment',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 hidden ifAssessmentTypeIsExempt',
+            ],
         ]);
         $this->crud->addField([
             'name'=>'assessmentType',
@@ -982,64 +938,26 @@ class RptLandsCrudController extends CrudController
             ],
             'allows_null' => false,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
+                'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Property Assessment',
         ]);
-        
-        $this->crud->addField([
-            'name'=>'assessmentEffectivity',
-            'label'=>'Effectivity of Assessment/Reassessment',
-            'type' => 'select_from_array',
-            'options'     => [
-                "Quarter" => "Quarter",
-                "Year" => "Year"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_select_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                "1st Quarter" => "1st Quarter",
-                "2nd Quarter" => "2nd Quarter",
-                "3rd Quarter" => "3rd Quarter",
-                "4th Quarter" => "4th Quarter"
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 assessmentEffectivityValue_select_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'=>'assessmentEffectivityValue_input_fake',
-            'label'=>'Effectivity of Assessment/Reassessment Value <span style="color:red;">*</span>',
-            'type' => 'text',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden assessmentEffectivityValue_input_fake'
-            ],
-            'tab' => 'Property Assessment',
-        ]);
+        $year = date('Y', strtotime('+1 years'));
         $this->crud->addField([
             'name'=>'assessmentEffectivityValue',
-            'type' => 'hidden',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name'  => 'ifAssessmentTypeIsExempt',
-            'type'  => 'custom_html',
-            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
-            'tab' => 'Property Assessment',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
+            'label'=>'Effectivity of Assessment/Reassessment',
+            'type' => 'select_from_array',
+            'options' => [
+                '' => '-',
+                '1st Quarter of '.$year => '1st Quarter of '.$year, 
+                '2nd Quarter of '.$year => '2nd Quarter of '.$year,
+                '3rd Quarter of '.$year => '3rd Quarter of '.$year,
             ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name'  => 'separator10',
@@ -1084,7 +1002,6 @@ class RptLandsCrudController extends CrudController
                 'format'   => 'yyyy-mm-dd',
                 'language' => 'fr',
                 'endDate' => '0d',
-                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
             ],
             'hint'=>'Date',
             'wrapperAttributes' => [
@@ -1111,7 +1028,6 @@ class RptLandsCrudController extends CrudController
                 'format'   => 'yyyy-mm-dd',
                 'language' => 'fr',
                 'endDate' => '0d',
-                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
             ],
             'hint'=>'Date',
             'wrapperAttributes' => [
@@ -1125,12 +1041,6 @@ class RptLandsCrudController extends CrudController
             'value' => '<hr>',
             'tab' => 'Property Assessment',
         ]);
-        // $this->crud->addField([
-        //     'name'  => 'separator4',
-        //     'type'  => 'custom_html',
-        //     'value' => '<hr>',
-        //     'tab' => 'Property Assessment',
-        // ]);
         $this->crud->addField([
             'name'=>'memoranda',
             'label'=>'Memoranda',
@@ -1160,7 +1070,7 @@ class RptLandsCrudController extends CrudController
             'label'=>'Approved By',
             'type'=>'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
+                'class' => 'form-group col-12 col-md-3 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
         ]);
@@ -1173,20 +1083,14 @@ class RptLandsCrudController extends CrudController
                 'format'   => 'yyyy-mm-dd',
                 'language' => 'fr',
                 'endDate' => '0d',
-                //'startDate' => Carbon::now()->subYears(130)->format('Y-m-d')
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 approve_items hidden'
+                'class' => 'form-group col-12 col-md-3 approve_items hidden'
             ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name' => 'faasId', 
-            'type' => 'hidden',
-            'tab' => 'Property Assessment',
-        ]);
-        $this->crud->addField([
-            'name' => 'barangayCode', 
             'type' => 'hidden',
             'tab' => 'Property Assessment',
         ]);
@@ -1199,7 +1103,7 @@ class RptLandsCrudController extends CrudController
             $request = app(RptLandsRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'TD-LAND-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                $TDNo = 'LAND-TDNo.-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
 
@@ -1240,7 +1144,7 @@ class RptLandsCrudController extends CrudController
             $request = app(RptLandsRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'TD-LAND-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                $TDNo = 'LAND-TDNo.-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
           
@@ -1287,13 +1191,6 @@ class RptLandsCrudController extends CrudController
 
         $results = [];
 
-        /*$citizenProfile = DB::table('faas_lands')
-        ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
-        ->select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
-            'faas_lands.barangayId', 'faas_lands.octTctNo',
-            'faas_lands.isActive',
-            'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'));*/
-
         $citizenProfile = FaasLand::select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
         'faas_lands.barangayId', 'faas_lands.octTctNo', 
         'faas_lands.isActive',
@@ -1303,13 +1200,6 @@ class RptLandsCrudController extends CrudController
         ->with('barangay')
         ->with('land_owner');
         
-        /*$nameProfile = DB::table('faas_lands')
-        ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
-        ->select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
-            'faas_lands.barangayId', 'faas_lands.octTctNo',
-            'faas_lands.isActive',
-            'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'));*/
-
         $nameProfile = FaasLand::select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
         'faas_lands.barangayId', 'faas_lands.octTctNo',
         'faas_lands.isActive',

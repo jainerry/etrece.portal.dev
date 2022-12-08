@@ -18,9 +18,8 @@ return new class extends Migration
             $table->string('name')->unique();
             $table->string('refID')->unique();
             $table->string('code')->unique();
-            $table->string('rangeFrom')->nullable();
-            $table->string('rangeTo')->nullable();
-            $table->string('assessmentLevel')->nullable();
+            $table->string('unitValuePerArea')->default(0);
+            $table->text('assessmentLevels')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

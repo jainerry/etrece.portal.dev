@@ -46,6 +46,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
+        Widget::add()->type('script')->content('assets/js/faas/create-building-classification-function.js');
     }
 
     /**
@@ -73,7 +74,6 @@ class FaasBuildingClassificationsCrudController extends CrudController
         ]);
        $this->crud->column('name');
        $this->crud->column('code');
-       $this->crud->column('assessmentLevel');
         $this->crud->column('isActive')->label('Active');
     }
 
@@ -93,7 +93,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 'label'=>'Name',
                 'allows_null' => false,
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-4'
                 ]
             ]
         );
@@ -103,53 +103,49 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 'label'=>'Code',
                 'allows_null' => false,
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'rangeFrom',
-                'label'=>'From',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_currency',
-                ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
                 ]
             ]
         );
-        $this->crud->addField(
-            [
-                'name'=>'rangeTo',
-                'label'=>'To',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_currency',
+        /*Assessment Levels*/
+        $this->crud->addField([   
+            'name'  => 'assessmentLevels',
+            'label' => 'Assessment Levels',
+            'type'  => 'repeatable',
+            'subfields' => [
+                [
+                    'name'    => 'rangeFrom',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency rangeFrom',
+                    ],
+                    'label'   => 'Range From',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'assessmentLevel',
-                'label'=>'Assessment Level',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_percent',
+                [
+                    'name'    => 'rangeTo',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency rangeTo',
+                    ],
+                    'label'   => 'Range To',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
-            ]
-        );
-        $this->crud->addField([
-            'name'  => 'separator',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
+                [
+                    'name'    => 'percentage',
+                    'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent percentage',
+                    ],
+                    'label'   => 'Percentage (%)',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
+                ],
+            ],
+            'new_item_label'  => 'New Item',
+            'init_rows' => 1,
+            'min_rows' => 1,
+            'max_rows' => 10,
+            'reorder' => true,
         ]);
         $this->crud->addField(
             [
@@ -163,7 +159,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 'allows_null' => false,
                 'default'     => 'Y',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
+                    'class' => 'form-group col-12 col-md-4'
                 ],
             ]
         );

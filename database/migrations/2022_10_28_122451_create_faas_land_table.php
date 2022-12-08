@@ -25,7 +25,6 @@ return new class extends Migration
             $table->string('blkNo')->nullable();
             $table->string('previousOwnerId')->nullable();
             $table->string('primaryOwnerId')->nullable();
-            //$table->text('primaryOwnerText')->nullable();
             $table->string('ownerAddress')->nullable();
             $table->string('ownerTelephoneNo')->nullable();
             $table->string('ownerTinNo')->nullable();
@@ -42,35 +41,8 @@ return new class extends Migration
             $table->string('propertyBoundarySouth')->nullable();
             $table->string('propertyBoundaryWest')->nullable();
             $table->string('landSketch')->nullable();
-            // $table->text('landAppraisal')->nullable();
-            // $table->text('otherImprovements')->nullable();
-            // $table->text('marketValue')->nullable();
+            $table->string('totalArea')->default(0);
             $table->boolean('isActive')->default(1);
-            // $table->text('propertyAssessment')->nullable();
-            // $table->string('assessmentType')->nullable();
-            // $table->string('assessmentEffectivity')->nullable();
-            // $table->string('assessmentEffectivityValue')->nullable();
-            // $table->string('assessedBy')->nullable();
-            // $table->string('assessedDate')->nullable();
-            // $table->string('recommendingPersonel')->nullable();
-            // $table->string('recommendingApprovalDate')->nullable();
-            // $table->string('approvedBy')->nullable();
-            // $table->string('approvedDate')->nullable();
-            // $table->text('memoranda')->nullable();
-            // $table->string('recordOfAssesmentEntryDate')->nullable();
-            // $table->string('recordingPersonel')->nullable();
-            // $table->string('TDNo')->nullable();
-
-            // $table->boolean('isIdleLand')->default(0);
-            // $table->boolean('isOwnerNonTreceResident', 1)->default(0);
-            // $table->string('totalLandAppraisalBaseMarketValue')->nullable();
-            // $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
-            // $table->string('totalMarketValueMarketValue')->nullable();
-
-            // $table->string('totalPropertyAssessmentMarketValue')->nullable();
-            // $table->string('totalPropertyAssessmentAssessmentValue')->nullable();
-            // $table->boolean('isActive')->default(1);
-            // $table->boolean('isApproved')->default(0);
             $table->timestamps();
         });
     }

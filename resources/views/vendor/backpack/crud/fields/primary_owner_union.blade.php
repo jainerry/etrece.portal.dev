@@ -206,13 +206,19 @@
                                 customText = `
                                     <div>
                                         <div>
-                                            Business Name: <b class="fullname"> ${item.fullname}</b>
+                                            Business Name: <b class="fullname"> ${item.full_name}</b>
                                         </div>
                                         <div>
                                             Owner Type: <b class="fullname"> Business Profile</b>
                                         </div>
                                         <div>
                                             Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Birth Date: <b> ${item.bdate}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
                                         </div>
                                     </div>
                                 `

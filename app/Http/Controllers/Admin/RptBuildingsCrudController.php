@@ -40,10 +40,8 @@ class RptBuildingsCrudController extends CrudController
 
         Widget::add()->type('style')->content('assets/css/faas/styles.css');
         Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('style')->content('assets/css/faas/building/styles.css');
         Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
         Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        //Widget::add()->type('script')->content('assets/js/faas/building/functions.js');
     }
 
     /**

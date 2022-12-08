@@ -26,6 +26,10 @@ class FaasMachineryClassifications extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $casts = [
+        'assessmentLevels' => 'array'
+    ];
+
     protected static function boot(){
         parent::boot();
 

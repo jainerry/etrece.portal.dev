@@ -1,3 +1,7 @@
+let url = window.location.href
+let protocol = new URL(url).protocol
+let hostname = new URL(url).hostname
+
 $(function () {
 
     $.ajaxSetup({
@@ -99,7 +103,7 @@ $(function () {
         $('select[name="searchByBarangayDistrict"]').val('')
     })
 
-    $('#tab_property-assessment select.actualUse').on('change', function(){
+    /*$('#tab_property-assessment select.actualUse').on('change', function(){
         let actualUse = $(this).val()
         let rowNumber = $(this).attr('data-row-number')
         $('#tab_property-assessment .assessmentLevel[data-row-number="'+rowNumber+'"]').val(actualUse)
@@ -109,9 +113,9 @@ $(function () {
     $('#tab_property-assessment input.marketValue').on('change', function(){
         let rowNumber = $(this).attr('data-row-number')
         propertyAssessmentComputation(rowNumber)
-    })
+    })*/
 
-    //isApproved
+    //Property Assessment Tab > isApproved
     $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
         if($(this).val() === '1') {
             $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
@@ -129,7 +133,7 @@ $(function () {
         }
     })
 
-    //assessmentType
+    //Property Assessment Tab > assessmentType
     $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
         if($(this).val() === 'Exempt') {
             $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
@@ -139,7 +143,7 @@ $(function () {
         }
     })
 
-    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
+    /*$('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
         if($(this).val() === 'Quarter') {
             $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
             $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
@@ -158,7 +162,16 @@ $(function () {
 
     $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
         $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    })*/
+
+    //Land Appraisal Tab > classification
+    $('#tab_land-appraisal select.classification').on('change', function(){
+        let classification = $(this).val()
+        let dataRowNumber = $(this).attr('data-row-number')
+        setClassification(classification,dataRowNumber)
     })
+
+
     
 })
 
@@ -173,20 +186,7 @@ function fetchData(id){
         success: function (data) {
             if(data.length > 0) {
                 data = data[0]
-                console.log(data)
                 $('#tab_property-assessment input[name="faasId"]').val(data.id)
-                $('#tab_property-assessment input[name="barangayCode"]').val(data.barangay.code)
-
-                console.log(data.isIdleLand === 1)
-                if(data.isIdleLand === 1) {
-                    $('#tab_main-information input.isIdleLand_checkbox').attr('checked',true)
-                    $('#tab_main-information input.isIdleLand_checkbox').prop('checked',true)
-                }
-                if(data.isOwnerNonTreceResident === 1) {
-                    $('#tab_main-information input.isOwnerNonTreceResident_checkbox').attr('checked',true)
-                    $('#tab_main-information input.isOwnerNonTreceResident_checkbox').prop('checked',true)
-                }
-                
 
                 let primaryOwner = ''
                 let suffix = ''
@@ -202,28 +202,40 @@ function fetchData(id){
 
                 $('#tab_main-information input[name="pin"]').val(data.pin)
                 $('#tab_main-information input[name="octTctNo"]').val(data.octTctNo)
+                $('#tab_main-information input[name="survey_no"]').val(data.survey_no)
+
                 $('#tab_main-information input[name="lotNo"]').val(data.lotNo)
                 $('#tab_main-information input[name="blkNo"]').val(data.blkNo)
-
-                $('#tab_main-information select[name="primaryOwnerId"]').append('<option value="'+data.primaryOwnerId+'">'+primaryOwner+'</option>')
-                $('#tab_main-information select[name="primaryOwnerId"]').val(data.primaryOwnerId)
-                $('#tab_main-information textarea[name="ownerAddress"]').val(data.ownerAddress)
-                $('#tab_main-information input[name="ownerTelephoneNo"]').val(data.ownerTelephoneNo)
-                $('#tab_main-information input[name="ownerTinNo"]').val(data.ownerTinNo)
-                $('#tab_main-information input[name="administrator"]').val(data.administrator)
-                $('#tab_main-information textarea[name="administratorAddress"]').val(data.administratorAddress)
-                $('#tab_main-information input[name="administratorTelephoneNo"]').val(data.administratorTelephoneNo)
-                $('#tab_main-information input[name="administratorTinNo"]').val(data.administratorTinNo)
-                $('#tab_main-information select[name="isActive"]').val(data.isActive)
-                
                 $('#tab_main-information input[name="noOfStreet"]').val(data.noOfStreet)
                 $('#tab_main-information select[name="barangayId"]').val(data.barangayId)
 
-                $('#tab_property-boundaries input[name="propertyBoundaryEast"]').val(data.propertyBoundaryEast)
-                $('#tab_property-boundaries input[name="propertyBoundaryNorth"]').val(data.propertyBoundaryNorth)
-                $('#tab_property-boundaries input[name="propertyBoundarySouth"]').val(data.propertyBoundarySouth)
-                $('#tab_property-boundaries input[name="propertyBoundaryWest"]').val(data.propertyBoundaryWest)
+                $('#tab_main-information input[name="propertyBoundaryNorth"]').val(data.propertyBoundaryNorth)
+                $('#tab_main-information input[name="propertyBoundaryEast"]').val(data.propertyBoundaryEast)
+                $('#tab_main-information input[name="propertyBoundarySouth"]').val(data.propertyBoundarySouth)
+                $('#tab_main-information input[name="propertyBoundaryWest"]').val(data.propertyBoundaryWest)
 
+                let landSketchUrl = protocol+"//"+hostname+"/"+data.landSketch
+                $('#tab_main-information div.landSketch img').attr('src', landSketchUrl)
+
+                $('#tab_main-information select[name="primaryOwnerId"]').append('<option value="'+data.primaryOwnerId+'">'+primaryOwner+'</option>')
+                $('#tab_main-information select[name="primaryOwnerId"]').val(data.primaryOwnerId)
+
+                fetchSecondaryOwners(data.id)
+
+                $('#tab_main-information textarea[name="ownerAddress"]').val(data.ownerAddress)
+                $('#tab_main-information input[name="ownerTelephoneNo"]').val(data.ownerTelephoneNo)
+                $('#tab_main-information input[name="ownerTinNo"]').val(data.ownerTinNo)
+
+                $('#tab_main-information textarea[name="administrator"]').val(data.administrator)
+                $('#tab_main-information textarea[name="administratorAddress"]').val(data.administratorAddress)
+                $('#tab_main-information input[name="administratorTelephoneNo"]').val(data.administratorTelephoneNo)
+                $('#tab_main-information input[name="administratorTinNo"]').val(data.administratorTinNo)
+
+                $('#tab_main-information select[name="isActive"]').val(data.isActive)
+
+                $('.repeatable-group[bp-field-name="propertyAssessment"] button.add-repeatable-element-button').addClass('hidden')
+                
+                /*
                 $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.landAppraisal.length > 0) {
                     const landAppraisal = data.landAppraisal
@@ -292,12 +304,13 @@ function fetchData(id){
                     })
                 }
                 $('#tab_market-value input[name="totalMarketValueMarketValue"]').val(data.totalMarketValueMarketValue)
+                */
 
                 $('.rptModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
                 $('#saveActions').removeClass('hidden')
 
-                fetchSecondaryOwners(data.id)
+                
             }
         }
     })
@@ -362,6 +375,14 @@ function totalPropertyAssessmentMarketValue(){
         totalPropertyAssessmentMarketValue = totalPropertyAssessmentMarketValue + marketValue
     })
     $('#tab_property-assessment input[name="totalPropertyAssessmentMarketValue"]').val(totalPropertyAssessmentMarketValue)
+}
+
+function setClassification(classification,dataRowNumber){
+    $('#tab_land-appraisal select.actualUse').val(classification)
+    let classificationCode = $('#tab_land-appraisal select.actualUse option:selected').text()
+    $('#tab_land-appraisal input.actualUse_fake').val(classificationCode)
+
+    //computation
 }
 
 function formatStringToFloat(num){

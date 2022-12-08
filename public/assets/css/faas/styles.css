@@ -16,7 +16,6 @@
 
 input.simple-form-input {
     background-clip: padding-box;
-    /* background-color: #fff; */
     border: 1px solid rgba(0,40,100,.12);
     border-radius: 3px;
     color: #506690;
@@ -29,14 +28,12 @@ input.simple-form-input {
     width: 45%;
 }
 input.simple-form-input:focus {
-    /* background-color: #fff; */
     border-color: #9080f1;
     box-shadow: 0 0 0 2px #e1dcfb;
     color: #495057;
     outline: 0;
 }
 input.simple-form-input[readonly] {
-    /* background-color: #f8f9fa; */
     opacity: 1;
 }
 
@@ -44,4 +41,30 @@ input.simple-form-input[readonly] {
     color: #856404;
     background-color: #fff3cd;
     border-color: #ffeeba;
+}
+
+.structural-roof-checklist .form-check {
+    display: inline-block;
+    width: 23%;
+}
+
+.select2-container--bootstrap.select2-container--disabled .select2-selection, 
+.select2-container--bootstrap.select2-container--disabled .select2-selection--multiple .select2-selection__choice {
+    background-color: #f8f9fa;
+}
+
+form .select2.select2-container.select2-container--focus, form .select2.select2-container.select2-container--open {
+    color: #506690;
+}
+
+.select2-container--bootstrap .select2-selection--single .select2-selection__rendered {
+    color: #506690;
+}
+
+.select2-container--bootstrap .select2-selection--multiple .select2-selection__choice {
+    color: #506690;
+}
+
+.rptModal .modal-dialog.modal-xl {
+    max-width: 1500px;
 }

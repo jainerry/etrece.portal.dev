@@ -17,7 +17,6 @@ class FaasMachineryClassificationsCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
@@ -40,6 +39,12 @@ class FaasMachineryClassificationsCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/faas-machinery-classifications');
         $this->crud->setEntityNameStrings('faas machinery classifications', 'faas machinery classifications');
         $this->crud->removeButton('delete');
+
+        Widget::add()->type('style')->content('assets/css/faas/styles.css');
+        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
+        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
+        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
+        Widget::add()->type('script')->content('assets/js/faas/create-machinery-classification-function.js');
     }
 
     /**
@@ -77,16 +82,8 @@ class FaasMachineryClassificationsCrudController extends CrudController
           ]);
         $this->crud->column('name');
         $this->crud->column('code');
-        $this->crud->column('rangeFrom');
-        $this->crud->column('rangeTo');
-        $this->crud->column('assessmentLevel');
         $this->crud->column('isActive')->label('Status');
         $this->crud->column('created_at');
-        /**
-         * Columns can be defined using the fluent syntax or array syntax:
-         * - $this->crud->column('price')->type('number');
-         * - $this->crud->addColumn(['name' => 'price', 'type' => 'number']); 
-         */
     }
 
     /**
@@ -97,11 +94,6 @@ class FaasMachineryClassificationsCrudController extends CrudController
      */
     protected function setupCreateOperation()
     {
-        Widget::add()->type('style')->content('assets/css/faas/styles.css');
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
-        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-
         $this->crud->setValidation(FaasMachineryClassificationsRequest::class);
 
         $this->crud->addField(
@@ -110,7 +102,7 @@ class FaasMachineryClassificationsCrudController extends CrudController
                 'label'=>'Name',
                 'allows_null' => false,
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-4'
                 ]
             ]
         );
@@ -120,49 +112,50 @@ class FaasMachineryClassificationsCrudController extends CrudController
                 'label'=>'Code',
                 'allows_null' => false,
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'rangeFrom',
-                'label'=>'From',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_currency',
-                ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4'
                 ]
             ]
         );
-        $this->crud->addField(
-            [
-                'name'=>'rangeTo',
-                'label'=>'To',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_currency',
+        /*Assessment Levels*/
+        $this->crud->addField([   
+            'name'  => 'assessmentLevels',
+            'label' => 'Assessment Levels',
+            'type'  => 'repeatable',
+            'subfields' => [
+                [
+                    'name'    => 'rangeFrom',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency rangeFrom',
+                    ],
+                    'label'   => 'Range From',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'assessmentLevel',
-                'label'=>'Assessment Level',
-                'attributes' => [
-                    'class' => 'form-control text_input_mask_percent',
+                [
+                    'name'    => 'rangeTo',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency rangeTo',
+                    ],
+                    'label'   => 'Range To',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ],
-                'allows_null' => false,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
-                ]
-            ]
-        );
+                [
+                    'name'    => 'percentage',
+                    'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent percentage',
+                    ],
+                    'label'   => 'Percentage (%)',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
+                ],
+            ],
+            'new_item_label'  => 'New Item',
+            'init_rows' => 1,
+            'min_rows' => 1,
+            'max_rows' => 10,
+            'reorder' => true,
+        ]);
         $this->crud->addField(
             [
                 'name'=>'isActive',
@@ -175,16 +168,10 @@ class FaasMachineryClassificationsCrudController extends CrudController
                 'allows_null' => false,
                 'default'     => 'Y',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-4'
                 ],
             ]
         );
-
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * - $this->crud->field('price')->type('number');
-         * - $this->crud->addField(['name' => 'price', 'type' => 'number'])); 
-         */
     }
 
     /**
@@ -195,12 +182,6 @@ class FaasMachineryClassificationsCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-
-        Widget::add()->type('style')->content('assets/css/faas/styles.css');
-        Widget::add()->type('style')->content('assets/css/backpack/crud/crud_fields_styles.css');
-        Widget::add()->type('script')->content('assets/js/jquery.inputmask.bundle.min.js');
-        Widget::add()->type('script')->content('assets/js/backpack/crud/inputmask.js');
-        
         $this->setupCreateOperation();
     }
 }

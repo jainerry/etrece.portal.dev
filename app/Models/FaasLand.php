@@ -44,6 +44,32 @@ class FaasLand extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getPrimaryOwner()
+    {
+        $ownerExist = CitizenProfile::where("id", $this->primaryOwnerId)->count();
+        if ($ownerExist == 0) {
+            $primaryOwner = NameProfiles::where("id", $this->primaryOwnerId)->first();
+            $first_name = $primaryOwner->first_name;
+            $middle_name = $primaryOwner->middle_name;
+            $last_name = $primaryOwner->last_name;
+            $suffix = $primaryOwner->suffix;
+        }
+        else {
+            $primaryOwner = CitizenProfile::where("id", $this->primaryOwnerId)->first();
+            $first_name = $primaryOwner->fName;
+            $middle_name = $primaryOwner->mName;
+            $last_name = $primaryOwner->lName;
+            $suffix = $primaryOwner->suffix;
+        }
+
+        $fName = ucfirst($first_name)." ";
+        $mName = ($middle_name == null? "":" ").ucfirst($middle_name)." ";
+        $lName = ucfirst($last_name);
+        $suffix = ($suffix == null || $suffix == ""? "":" ").ucfirst($suffix);
+        
+        return "{$fName}{$mName}{$lName}{$suffix}";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -55,7 +81,7 @@ class FaasLand extends Model
     }
 
     public function name_profile(){
-        return $this->belongsTo(NameProfiles::class,'primary_owner','id');
+        return $this->belongsTo(NameProfiles::class,'primaryOwnerId','id');
     }
 
     public function old_owner_citizen_profile(){

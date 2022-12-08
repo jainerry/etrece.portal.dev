@@ -25,6 +25,10 @@ class FaasLandClassification extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
+    protected $casts = [
+        'assessmentLevels' => 'array'
+    ];
+
     protected static function boot(){
         parent::boot();
         FaasLandClassification::creating(function($model){
