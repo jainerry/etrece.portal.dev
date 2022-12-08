@@ -36,6 +36,7 @@ return new class extends Migration
             $table->string('business_activity_id')->nullable();
             $table->string('other_buss_type')->nullable();
             $table->string('buss_activity_address_id')->nullable();
+            $table->string('same_as_head_office')->nullable();
             $table->string('sec_no')->nullable();
             $table->date('sec_reg_date')->nullable();
             $table->string('dti_no')->nullable();

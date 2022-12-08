@@ -771,6 +771,7 @@ class FaasLandCrudController extends CrudController
         })
         
         ->with('citizen_profile')
+        ->with('municipality')
         ->with('barangay')
         ->with('land_owner')->get();
 

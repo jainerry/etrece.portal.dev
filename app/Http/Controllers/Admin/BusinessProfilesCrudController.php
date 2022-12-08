@@ -9,7 +9,7 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use GuzzleHttp\Psr7\Request;
-
+use Illuminate\Support\Carbon;
 /**
  * Class BusinessProfilesCrudController
  * @package App\Http\Controllers\Admin
@@ -66,38 +66,38 @@ class BusinessProfilesCrudController extends CrudController
     {
         $this->crud->setValidation(BusinessProfilesRequest::class);
         Widget::add([
-         'type'     => 'script',
-         'name'      => 'custom_script',
-         'content'  => '/assets/js/business.js',
-          ]);
+            'type'     => 'script',
+            'name'      => 'custom_script',
+            'content'  => '/assets/js/business.js',
+        ]);
 
 
         $this->crud->addField([
-         'name' => 'business_name',
-         'type' => 'text',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-6 mt-3'
-         ],
-         'tab' => 'Details',
+            'name' => 'business_name',
+            'type' => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 mt-3'
+            ],
+            'tab' => 'Details',
         ]);
         $this->crud->addField([  // Select2
-         'label'     => "Category",
-         'type'      => 'select2',
-         'name'      => 'category_id', // the db column for the foreign key
+            'label'     => "Category",
+            'type'      => 'select2',
+            'name'      => 'category_id', // the db column for the foreign key
 
-        // optional
-         'entity'    => 'category', // the method that defines the relationship in your Model
-         'model'     => "App\Models\BusinessCategory", // foreign key model
-         'attribute' => 'name', // foreign key attribute that is shown to user
-         'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-6 mt-3'
-         ],
-          // also optional
-         'options'   => (function ($query) {
-             return $query->orderBy('name', 'ASC')->get();
-         }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-     ]);
+            // optional
+            'entity'    => 'category', // the method that defines the relationship in your Model
+            'model'     => "App\Models\BusinessCategory", // foreign key model
+            'attribute' => 'name', // foreign key attribute that is shown to user
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 mt-3'
+            ],
+            // also optional
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+        ]);
         $id = $this->crud->getCurrentEntryId();
         if ($id != false) {
             $data = BusinessProfiles::where('id', $id)->first();
@@ -116,7 +116,7 @@ class BusinessProfilesCrudController extends CrudController
                         'class' => 'form-group col-12 col-md-12 ',
                     ],
                     'tab' => 'Details',
-                    ]);
+                ]);
             } else {
                 $this->crud->addField([
                     'label' => 'Owner/Pres/OIC',
@@ -130,7 +130,7 @@ class BusinessProfilesCrudController extends CrudController
                         'class' => 'form-group col-12 col-md-12 ',
                     ],
                     'tab' => 'Details',
-                    ]);
+                ]);
             }
         } else {
             $this->crud->addField([
@@ -145,39 +145,39 @@ class BusinessProfilesCrudController extends CrudController
                     'class' => 'form-group col-12 col-md-12 ',
                 ],
                 'tab' => 'Details',
-                ]);
+            ]);
         }
 
 
 
         $this->crud->addField([
 
-         'label' => 'Main Office Business Address',
-         'type' => 'business_main_office',
-         'name' => 'main_office_address',
-         'entity' => 'owner',
+            'label' => 'Main Office Business Address',
+            'type' => 'business_main_office',
+            'name' => 'main_office_address',
+            'entity' => 'main_office',
 
-         'attribute' => 'full_name',
-         'data_source' => url('/admin/api/faas-land/search'),
-         'minimum_input_length' => 2,
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-12 ',
-         ],
-         'tab' => 'Details',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/faas-land/search'),
+            'minimum_input_length' => 2,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 ',
+            ],
+            'tab' => 'Details',
 
         ]);
 
         $this->crud->addField([
-         'name'        => 'property_owner',
-         'label'       => "Property Owner (Y/N)",
-         'type'        => 'select_from_array',
-         'options'     => ['Y' => 'Yes', 'N' => 'No'],
-         'allows_null' => false,
-         'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-6'
-         ]
-    ]);
+            'name'        => 'property_owner',
+            'label'       => "Property Owner (Y/N)",
+            'type'        => 'select_from_array',
+            'options'     => ['Y' => 'Yes', 'N' => 'No'],
+            'allows_null' => false,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+            ]
+        ]);
 
         if ($id != false) {
             $data = BusinessProfiles::where('id', $id)->first();
@@ -196,7 +196,7 @@ class BusinessProfilesCrudController extends CrudController
                         'class' => 'form-group col-12 col-md-6 ',
                     ],
                     'tab' => 'Details',
-                    ]);
+                ]);
             } else {
                 $this->crud->addField([
                     'label' => 'Lessor Name',
@@ -210,7 +210,7 @@ class BusinessProfilesCrudController extends CrudController
                         'class' => 'form-group col-12 col-md-6 ',
                     ],
                     'tab' => 'Details',
-                    ]);
+                ]);
             }
         } else {
             $this->crud->addField([
@@ -225,18 +225,18 @@ class BusinessProfilesCrudController extends CrudController
                     'class' => 'form-group col-12 col-md-6 ',
                 ],
                 'tab' => 'Details',
-                ]);
+            ]);
         }
         $this->crud->addField([   // phone
-         'name'  => 'tel', // db column for phone
-         'label' => 'Phone',
-         'type'  => 'text',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-3 ',
-         ],
-         'tab' => 'Details',
+            'name'  => 'tel', // db column for phone
+            'label' => 'Phone',
+            'type'  => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 ',
+            ],
+            'tab' => 'Details',
 
-         ]);
+        ]);
         $this->crud->addField([   // phone
             'name'  => 'mobile', // db column for phone
             'label' => 'Mobile No',
@@ -246,7 +246,7 @@ class BusinessProfilesCrudController extends CrudController
             ],
             'tab' => 'Details',
 
-            ]);
+        ]);
         $this->crud->addField([   // phone
             'name'  => 'email', // db column for phone
             'label' => 'Email',
@@ -256,94 +256,207 @@ class BusinessProfilesCrudController extends CrudController
             ],
             'tab' => 'Details',
 
-            ]);
+        ]);
         $this->crud->addField([   // phone
-                    'name'  => 'tin', // db column for phone
-                    'label' => 'TIN',
-                    'type'  => 'text',
-                    'wrapperAttributes' => [
-                        'class' => 'form-group col-12 col-md-3 ',
-                    ],
-                    'tab' => 'Details',
+            'name'  => 'tin', // db column for phone
+            'label' => 'TIN',
+            'type'  => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 ',
+            ],
+            'tab' => 'Details',
 
         ]);
         $this->crud->addField([
-              'label'     => "Business Type",
-              'type'      => 'select2',
-              'name'      => 'bus_type',
-              'entity'    => 'bus_type',
-              'model'     => "App\Models\BusinessType",
-              'attribute' => 'name',
-              'tab' => 'Details',
-              'wrapperAttributes' => [
-                  'class' => 'form-group col-12 col-md-3'
-              ],
-              'options'   => (function ($query) {
-                  return $query->orderBy('name', 'ASC')->get();
-              }),
+            'label'     => "Business Type",
+            'type'      => 'select2',
+            'name'      => 'bus_type',
+            'entity'    => 'bus_type',
+            'model'     => "App\Models\BusinessType",
+            'attribute' => 'name',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
         ]);
         $this->crud->addField([
-         'name'        => 'corp_type',
-         'label'       => "Corp. Type(Fil/Foreign)",
-         'type'        => 'select_from_array',
-         'options'     => ['0' => 'Fil', '1' => 'Foreign'],
-         'allows_null' => true,
-         'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-3'
-         ]
+            'name'        => 'corp_type',
+            'label'       => "Corp. Type(Fil/Foreign)",
+            'type'        => 'select_from_array',
+            'options'     => ['0' => 'Fil', '1' => 'Foreign'],
+            'allows_null' => true,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ]
         ]);
         $this->crud->addField([
-                'name'        => 'trade_name_franchise',
-                'label'       => "Trade Name/Franchise",
-                'type'        => 'text',
-                'tab' => 'Details',
-                'wrapperAttributes' => [
-                     'class' => 'form-group col-12 col-md-6'
-                ]
+            'name'        => 'trade_name_franchise',
+            'label'       => "Trade Name/Franchise",
+            'type'        => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6'
+            ]
+        ]);
+        $this->crud->addField([   // CustomHTML
+            'name'  => 'separator',
+            'type'  => 'custom_html',
+            'value' => '<div class=""></div>',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-8 d-none d-md-block  mb-0'
+            ]
         ]);
         $this->crud->addField([
-          'label'     => "Business Activity",
-          'type'      => 'select2',
-          'name'      => 'business_activity_id',
-          'entity'    => 'bus_activity',
-          'model'     => "App\Models\BusinessActivity",
-          'attribute' => 'name',
-          'tab' => 'Details',
-          'wrapperAttributes' => [
-               'class' => 'form-group col-12 col-md-3'
-          ],
-          'options'   => (function ($query) {
-              return $query->orderBy('name', 'ASC')->get();
-          }),
+
+            'label' => 'Same as head office',
+            'type'  => 'checkbox',
+            'name'  => 'same_as_head_office',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 same_head_office text-right order-1 order-sm-0 mb-0',
+            ],
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
-                  'name'        => 'other_buss_type',
-                  'label'       => "Other Buss. Type",
-                  'type'        => 'text',
-                  'tab' => 'Details',
-                  'wrapperAttributes' => [
-                       'class' => 'form-group col-12 col-md-3'
-                  ]
-          ]);
+            'label'     => "Business Activity",
+            'type'      => 'select2',
+            'name'      => 'business_activity_id',
+            'entity'    => 'bus_activity',
+            'model'     => "App\Models\BusinessActivity",
+            'attribute' => 'name',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'options'   => (function ($query) {
+                return $query->orderBy('name', 'ASC')->get();
+            }),
+        ]);
+        $this->crud->addField([
+            'name'        => 'other_buss_type',
+            'label'       => "Other Buss. Type",
+            'type'        => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ]
+        ]);
+      
+
+       
+        $this->crud->addField([
+
+            'label' => 'Business Activity Address (Land Profile)',
+            'type' => 'business_main_office',
+            'name' => 'buss_activity_address_id',
+            'entity' => 'bus_act_address',
+
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/faas-land/search'),
+            'minimum_input_length' => 2,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 buss_act_add position-relative order-2 order-sm-0 ',
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([   // phone
+            'name'  => 'sec_no', // db column for phone
+            'label' => 'Sec No',
+            'type'  => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 order-last',
+            ],
+            'tab' => 'Details',
+
+        ]);
+        $this->crud->addField([
+            'name'  => 'sec_reg_date',
+            'type'  => 'date_picker',
+            'label' => 'Sec Reg Date',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                'startDate' => Carbon::now()->subYears(130)->format('Y-m-d'),
+            ],
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 order-last'
+            ]
+         ]);
+         $this->crud->addField([   // phone
+            'name'  => 'dti_no', // db column for phone
+            'label' => 'DTI No',
+            'type'  => 'text',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 order-last',
+            ],
+            'tab' => 'Details',
+
+        ]);
+        $this->crud->addField([
+            'name'  => 'dti_reg_date',
+            'type'  => 'date_picker',
+            'label' => 'DTI Reg Date',
+            'date_picker_options' => [
+                'todayBtn' => 'linked',
+                'format'   => 'yyyy-mm-dd',
+                'language' => 'fr',
+                'endDate' => '0d',
+                'startDate' => Carbon::now()->subYears(130)->format('Y-m-d'),
+            ],
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 order-last'
+            ]
+         ]);
+
+         $this->crud->addField([
+            'name'        => 'tax_incentives',
+            'label'       => "Tax Incentives (Y/N)",
+            'type'        => 'select_from_array',
+            'options'     => ['Y' => 'Yes', 'N' => 'No'],
+            'allows_null' => false,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 order-last'
+            ]
+        ]);
+        $this->crud->addField([   // Upload
+            'name'      => 'certificate',
+            'label'     => 'Image',
+            'type'      => 'upload',
+            'upload'    => true,
+            'tab' => 'Details',
+            'disk' =>'public',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 order-last'
+            ]
+        ]);
+       
 
 
-    //    $this->crud->field('tel_no');
-    //    $this->crud->field('mobile');
-    //    $this->crud->field('email');
-    //    $this->crud->field('buss_type');
-    //    $this->crud->field('corp_type');
-    //    $this->crud->field('trade_name_franchise');
-    //    $this->crud->field('business_activity_id');
-    //    $this->crud->field('other_buss_type');
-    //    $this->crud->field('faas_land_id');
-    //    $this->crud->field('sec_no');
-    //    $this->crud->field('sec_reg_date');
-    //    $this->crud->field('dti_no');
-    //    $this->crud->field('dti_reg_date');
-    //    $this->crud->field('tax_incentives');
-    //    $this->crud->field('certificate');
-    //    $this->crud->field('isActive');
+        //    $this->crud->field('tel_no');
+        //    $this->crud->field('mobile');
+        //    $this->crud->field('email');
+        //    $this->crud->field('buss_type');
+        //    $this->crud->field('corp_type');
+        //    $this->crud->field('trade_name_franchise');
+        //    $this->crud->field('business_activity_id');
+        //    $this->crud->field('other_buss_type');
+        //    $this->crud->field('faas_land_id');
+        //    $this->crud->field('sec_no');
+        //    $this->crud->field('sec_reg_date');
+        //    $this->crud->field('dti_no');
+        //    $this->crud->field('dti_reg_date');
+        //    $this->crud->field('tax_incentives');
+        //    $this->crud->field('certificate');
+        //    $this->crud->field('isActive');
 
         /**
          * Fields can be defined using the fluent syntax or array syntax:
@@ -358,7 +471,7 @@ class BusinessProfilesCrudController extends CrudController
      * @see https://backpackforlaravel.com/docs/crud-operation-update
      * @return void
      */
-
+   
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();

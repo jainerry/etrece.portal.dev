@@ -7,6 +7,8 @@ use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
+
 class BusinessProfiles extends Model
 {
     use CrudTrait;
@@ -50,8 +52,11 @@ class BusinessProfiles extends Model
             $refID = 'BUS-ID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $model->buss_id = $refID;
         });
+        BusinessProfiles::deleting(function ($obj) {
+            Storage::disk('public')->delete($obj->certificate);
+        });
     }
-
+  
     public function owner(){
         $citizenProfile = $this->belongsTo(CitizenProfile::class,'owner_id','id');
         return $citizenProfile;
@@ -61,6 +66,9 @@ class BusinessProfiles extends Model
         $citizenProfile = $this->belongsTo(CitizenProfile::class,'lessor_name','id');
         return $citizenProfile;
        
+    }
+    public function  main_office(){
+        return $this->BelongsTo(FaasLand::class, "main_office_address", "id");
     }
     public function  names(){
             return $this->belongsTo(NameProfiles::class,'owner_id','id');
@@ -80,7 +88,23 @@ class BusinessProfiles extends Model
     public function bus_activity(){
         return $this->belongsTo(BusinessActivity::class,"business_activity_id","id");
     }
+    public function bus_act_address(){
+       return  $this->belongsTo(FaasLand::class, "buss_activity_address_id", "id");
+    }
+    public function setCertificateAttribute($value)
+    {
+        $attribute_name = "certificate";
+        $disk = "public";
+        $destination_path = "bussprofile";
+
+        $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
+
+    // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
+    }
+
+
     /*
+
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------

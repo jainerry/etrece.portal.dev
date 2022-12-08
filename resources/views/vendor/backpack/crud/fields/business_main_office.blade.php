@@ -3,7 +3,7 @@
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
     $old_value = old_empty_or_null($field['name'], false) ??  $field['value'] ?? $field['default'] ?? false;
-   
+  
     // by default set ajax query delay to 500ms
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
@@ -15,6 +15,7 @@
 
 @include('crud::fields.inc.wrapper_start')
     <label>{!! $field['label'] !!}</label>
+  
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
@@ -38,11 +39,11 @@
       
             @php
                 if(!is_object($old_value)) {
-                    $item = $connected_entity->find($old_value);
+                    $item = $connected_entity->with('barangay')->with('municipality')->find($old_value);
                 }else{
                     $item = $old_value;
                 }
-
+                
             @endphp
             @if ($item)
             {{-- allow clear --}}
@@ -53,12 +54,12 @@
             @endif
 
             <option value="{{ $item->id }}" selected>
-                {{ $item->full_name}}
+                {{ $item->noOfStreet." ".$item->barangay->name." ".$item->municipality->name." "}}
             </option>
             @endif
         @endif
     </select>
-
+   
     {{-- HINT --}}
     @if (isset($field['hint']))
         <p class="help-block">{!! $field['hint'] !!}</p>
@@ -130,7 +131,7 @@
         }
         function formatState(state) {
                     if($(state.text).find('.fullname').length > 0 ){
-                        return $(state.text).find('.fullname').html();
+                        return $(state.text).find('.street').html()+" "+$(state.text).find('.barangay').html()+" "+$(state.text).find('.municipality').html();
                     }else{
                         return state.text;
                     }
@@ -189,13 +190,17 @@
                                             Reference ID: <b> ${item.refID}</b>
                                         </div>
                                         <div>
-                                            Barangay: <b> ${item.barangay.name}</b>
+                                            Street: <b class="street"> ${item.noOfStreet}</b>
                                         </div>
                                         <div>
-                                            Street: <b> ${item.noOfStreet}</b>
+                                            Barangay: <b class="barangay"> ${item.barangay.name}</b>
+                                        </div>
+                                       
+                                        <div>
+                                            City: <b class="municipality"> ${item.municipality.name}</b>
                                         </div>
                                         <div>
-                                            Address: <b> ${item.ownerAddress}</b>
+                                            Address: <b class="address"> ${item.ownerAddress}</b>
                                         </div>
                                  </div>
                               `;
