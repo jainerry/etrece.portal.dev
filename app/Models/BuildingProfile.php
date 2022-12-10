@@ -42,6 +42,32 @@ class BuildingProfile extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getPrimaryOwner()
+    {
+        $ownerExist = CitizenProfile::where("id", $this->primary_owner)->count();
+        if ($ownerExist == 0) {
+            $primaryOwner = NameProfiles::where("id", $this->primary_owner)->first();
+            $first_name = $primaryOwner->first_name;
+            $middle_name = $primaryOwner->middle_name;
+            $last_name = $primaryOwner->last_name;
+            $suffix = $primaryOwner->suffix;
+        }
+        else {
+            $primaryOwner = CitizenProfile::where("id", $this->primary_owner)->first();
+            $first_name = $primaryOwner->fName;
+            $middle_name = $primaryOwner->mName;
+            $last_name = $primaryOwner->lName;
+            $suffix = $primaryOwner->suffix;
+        }
+
+        $fName = ucfirst($first_name)." ";
+        $mName = ($middle_name == null? "":" ").ucfirst($middle_name)." ";
+        $lName = ucfirst($last_name);
+        $suffix = ($suffix == null || $suffix == ""? "":" ").ucfirst($suffix);
+        
+        return "{$fName}{$mName}{$lName}{$suffix}";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -53,6 +79,10 @@ class BuildingProfile extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
+    }
+
+    public function faas_land_profile(){
+        return $this->belongsTo(FaasLand::class,'landProfileId','id');
     }
 
     public function name_profile(){

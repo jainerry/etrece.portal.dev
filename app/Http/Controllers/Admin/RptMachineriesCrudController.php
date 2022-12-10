@@ -69,15 +69,33 @@ class RptMachineriesCrudController extends CrudController
         ]);
         $this->crud->column('TDNo')->label('TD No.');
         $this->crud->addColumn([
-            'label'=>'Primary Owner',
-            'type'  => 'model_function',
+            'type' => 'model_function',
+            'label' => 'Primary Owner',
             'function_name' => 'getPrimaryOwner',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->with('faas_machinery_profile')
+                ->orWhereHas('faas_machinery_profile.citizen_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('fName', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+                })
+                ->orWhereHas('faas_machinery_profile.name_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+                });
+            }
         ]);
         $this->crud->addColumn([
-            'label'=>'Address',
-            'type'  => 'model_function',
+            'type' => 'model_function',
+            'label' => 'Address',
             'function_name' => 'getAddress',
             'limit' => 255,
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('faas_machinery_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('ownerAddress', 'like', '%'.$searchTerm.'%');
+                });
+            }
         ]);
         $this->crud->addColumn([
             'name'  => 'isApproved',
@@ -134,30 +152,28 @@ class RptMachineriesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3',
             ],
         ]);
-        // $this->crud->addField([
-        //     'name' => 'searchByOCTTCTNo', 
-        //     'label' => 'Search by OCT/TCT No.', 
-        //     'type' => 'text',
-        //     'fake' => true,
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        // ]);
-        // $this->crud->addField([
-        //     'name' => 'searchByNoOfStreet', 
-        //     'label' => 'Search by No. of Street', 
-        //     'type' => 'text',
-        //     'fake' => true,
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        // ]);
         $this->crud->addField([
-            'name' => 'searchByBarangayDistrict', 
-            'label' => 'Search by Barangay/District', 
-            'type' => 'select',
-            'model'     => "App\Models\Barangay",
-            'attribute' => 'name',
+            'name' => 'searchByPinId', 
+            'label' => 'Search by PIN', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBuildingReferenceId', 
+            'label' => 'Search by Building Reference ID', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByLandReferenceId', 
+            'label' => 'Search by Land Reference ID', 
+            'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -187,15 +203,6 @@ class RptMachineriesCrudController extends CrudController
         ]);
 
         /*Main Information*/
-        // $this->crud->addField([
-        //     'label' => 'Transaction Code',
-        //     'type' => 'text',
-        //     'name' => 'transactionCode',
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        //     'tab' => 'Main Information',
-        // ]);
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -1061,7 +1068,8 @@ class RptMachineriesCrudController extends CrudController
             $request = app(RptMachineriesRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'TD-MCHN-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                // $TDNo = 'TD-MCHN-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                $TDNo = 'TD-MCHN-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
 
@@ -1102,7 +1110,8 @@ class RptMachineriesCrudController extends CrudController
             $request = app(RptMachineriesRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'TD-MCHN-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                // $TDNo = 'TD-MCHN-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+                $TDNo = 'TD-MCHN-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
           
@@ -1144,7 +1153,9 @@ class RptMachineriesCrudController extends CrudController
     public function applySearchFilters(Request $request){
         $searchByPrimaryOwner = $request->input('searchByPrimaryOwner');
         $searchByReferenceId = $request->input('searchByReferenceId');
-        $searchByBarangayDistrict = $request->input('searchByBarangayDistrict');
+        $searchByPinId = $request->input('searchByPinId');
+        $searchByBuildingReferenceId = $request->input('searchByBuildingReferenceId');
+        $searchByLandReferenceId = $request->input('searchByLandReferenceId');
 
         $results = [];
 
@@ -1171,9 +1182,19 @@ class RptMachineriesCrudController extends CrudController
             $nameProfile->where('faas_machineries.refID', 'like', '%'.$searchByReferenceId.'%');
         }
 
-        if (!empty($searchByBarangayDistrict)) { 
-            $citizenProfile->where('faas_machineries.barangayId', '=', $searchByBarangayDistrict);
-            $nameProfile->where('faas_machineries.barangayId', '=', $searchByBarangayDistrict);
+        if (!empty($searchByPinId)) { 
+            $citizenProfile->where('faas_machineries.pin', '=', $searchByPinId);
+            $nameProfile->where('faas_machineries.pin', '=', $searchByPinId);
+        }
+
+        if (!empty($searchByBuildingReferenceId)) { 
+            $citizenProfile->where('faas_machineries.refID', '=', $searchByBuildingReferenceId);
+            $nameProfile->where('faas_machineries.refID', '=', $searchByBuildingReferenceId);
+        }
+
+        if (!empty($searchByLandReferenceId)) { 
+            $citizenProfile->where('faas_machineries.refID', '=', $searchByLandReferenceId);
+            $nameProfile->where('faas_machineries.refID', '=', $searchByLandReferenceId);
         }
 
         if (!empty($searchByPrimaryOwner)) {

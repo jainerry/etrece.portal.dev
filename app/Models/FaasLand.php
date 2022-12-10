@@ -31,13 +31,6 @@ class FaasLand extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    // protected $casts = [
-    //     'landAppraisal' => 'array',
-    //     'otherImprovements' => 'array',
-    //     'marketValue' => 'array',
-    //     'propertyAssessment' => 'array'
-    // ];
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS

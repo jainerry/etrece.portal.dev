@@ -178,10 +178,52 @@
                         results: $.map(data, function(item) {
 
                             let customText = ''
+                            let primaryOwner = ''
+
+                            if(item.ownerType === 'NameProfile') {
+                                primaryOwner = item.name_profile.full_name
+                            }
+                            else {
+                                primaryOwner = item.citizen_profile.full_name
+                            }
+
                             customText = `
                                 <div>
                                     <div>
                                         Reference ID: <b class="land_reference_id"> ${item.refID}</b>
+                                    </div>
+                                    <div>
+                                        Primary Owner: <b class="land_reference_id"> ${primaryOwner}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        PIN: <b class="land_reference_id"> ${item.pin}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        OCT/TCT No.: <b class="land_reference_id"> ${item.octTctNo}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        Survey No.: <b class="land_reference_id"> ${item.survey_no}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        Lot No.: <b class="land_reference_id"> ${item.lotNo}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        Block No.: <b class="land_reference_id"> ${item.blkNo}</b>
+                                    </div>
+                                    <div>
+                                        No. of Street: <b class="land_reference_id"> ${item.noOfStreet}</b>
+                                    </div>
+                                    <div>
+                                        Barangay/District: <b class="land_reference_id"> ${item.barangay.name}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        Municipality: <b class="land_reference_id"> ${item.municipality.name}</b>
+                                    </div>
+                                    <div class="hidden">
+                                        Province: <b class="land_reference_id"> ${item.province.name}</b>
+                                    </div>
+                                    <div>
+                                        Address: <b class="land_reference_id"> ${item.ownerAddress}</b>
                                     </div>
                                 </div>
                             `

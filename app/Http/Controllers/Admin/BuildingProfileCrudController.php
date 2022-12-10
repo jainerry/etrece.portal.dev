@@ -75,35 +75,30 @@ class BuildingProfileCrudController extends CrudController
                 },
             ]
         ]);
-        $this->crud->addColumn([
-            'name'  => 'primary_owner',
-            'label' => 'Primary Owner',
-            'type'  => 'select',
-            'entity'    => 'citizen_profile',
-            'attribute' => 'full_name'
-        ]);
+        CRUD::column('model_function')
+        ->type('model_function')
+        ->label('Primary Owner')
+        ->function_name('getPrimaryOwner')
+        ->searchLogic(function ($query, $column, $searchTerm) {
+            $query->orWhereHas('citizen_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('fName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+            })
+            ->orWhereHas('name_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+            });
+        });
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
-        $this->crud->addColumn([
-            'name'  => 'isApproved',
-            'label' => 'Approved',
-            'type'  => 'boolean',
-            'options' => [0 => 'No', 1 => 'Yes'],
-            'wrapper' => [
-                'element' => 'span',
-                'class'   => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Yes') {
-                        return 'badge badge-success';
-                    }
-                    return 'badge badge-default';
-                },
-            ],
-        ]);
         $this->crud->addColumn([
             'name'  => 'isActive',
             'label' => 'Status',
             'type'  => 'boolean',
             'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
+        $this->crud->column('created_at')->label('Date Created');
         $this->crud->orderBy('refID','ASC');
     }
     protected function setupShowOperation()
@@ -598,7 +593,7 @@ class BuildingProfileCrudController extends CrudController
         ]);
         $this->crud->addField([   
             'name'  => 'floorsArea',
-            'label' => 'Area',
+            'label' => 'Floor/s Area',
             'type'  => 'repeatable',
             'subfields' => [
                 [
@@ -653,6 +648,7 @@ class BuildingProfileCrudController extends CrudController
             'type' => 'text',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3',
@@ -964,13 +960,6 @@ class BuildingProfileCrudController extends CrudController
         $results = [];
         if (!empty($id))
         {
-            /*$citizenProfiles = DB::table('faas_building_profiles')
-            ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
-            ->select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-            ->where('faas_building_profiles.isActive', '=', '1')
-            ->where('faas_building_profiles.id', '=', $id)
-            ->get();*/
-
             $citizenProfiles = BuildingProfile::select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
             ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
             ->with('citizen_profile')
@@ -981,13 +970,6 @@ class BuildingProfileCrudController extends CrudController
             ->where('faas_building_profiles.isActive', '=', '1')
             ->where('faas_building_profiles.id', '=', $id)
             ->get();
-            
-            /*$nameProfiles = DB::table('faas_building_profiles')
-            ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
-            ->select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-            ->where('faas_building_profiles.isActive', '=', '1')
-            ->where('faas_building_profiles.id', '=', $id)
-            ->get();*/
 
             $nameProfiles = BuildingProfile::select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
             ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')

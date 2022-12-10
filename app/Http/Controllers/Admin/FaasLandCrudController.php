@@ -94,26 +94,12 @@ class FaasLandCrudController extends CrudController
         });
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
         $this->crud->addColumn([
-            'name'  => 'isApproved',
-            'label' => 'Approved',
-            'type'  => 'boolean',
-            'options' => [0 => 'No', 1 => 'Yes'],
-            'wrapper' => [
-                'element' => 'span',
-                'class'   => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Yes') {
-                        return 'badge badge-success';
-                    }
-                    return 'badge badge-default';
-                },
-            ],
-        ]);
-        $this->crud->addColumn([
             'name'  => 'isActive',
             'label' => 'Status',
             'type'  => 'boolean',
             'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
+        $this->crud->column('created_at')->label('Date Created');
         $this->crud->orderBy('refID','ASC');
     }
 
@@ -341,7 +327,7 @@ class FaasLandCrudController extends CrudController
                     'label' => 'Primary Owner <span style="color:red;">*</span>',
                     'type' => 'primary_owner_union',
                     'name' => 'primaryOwnerId',
-                    'entity' => 'name_profile',
+                    'entity' => 'citizen_profile',
                     'attribute' => 'full_name',
                     'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
                     'minimum_input_length' => 1,
@@ -357,7 +343,7 @@ class FaasLandCrudController extends CrudController
                 'label' => 'Primary Owner <span style="color:red;">*</span>',
                 'type' => 'primary_owner_union',
                 'name' => 'primaryOwnerId',
-                'entity' => 'name_profile',
+                'entity' => 'citizen_profile',
                 'attribute' => 'full_name',
                 'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
                 'minimum_input_length' => 1,
@@ -617,47 +603,57 @@ class FaasLandCrudController extends CrudController
 
         if ($search_term)
         {
-            $citizenProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "CitizenProfile" as ownerType'))
-                ->with('barangay', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+            $citizenProfiles = FaasLand::select(DB::raw('id, refID, pin, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, ownerAddress, "CitizenProfile" as ownerType'))   
+                ->orWhereHas('barangay', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('municipality', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                ->orWhereHas('municipality', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('province', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                ->orWhereHas('province', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('citizen_profile', function ($q) use ($search_term) {
-                    $q->orWhere(DB::raw('CONCAT(fName," ",mName," ",lName)'), 'like', '%'.$search_term.'%');
+                ->orWhereHas('citizen_profile', function ($q) use ($search_term) {
+                    $q->where(DB::raw('CONCAT(fName," ",mName," ",lName)'), 'like', '%'.$search_term.'%');
                 })
+                ->with('barangay')
+                ->with('municipality')
+                ->with('province')
+                ->with('citizen_profile') 
                 ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('pin', 'like', '%'.$search_term.'%')
                 ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
                 ->orWhere('survey_no', 'like', '%'.$search_term.'%')
-                ->orWhere('lotNo', 'like', '%'.$search_term.'%')
-                ->orWhere('blkNo', 'like', '%'.$search_term.'%')
+                // ->orWhere('lotNo', 'like', '%'.$search_term.'%')
+                // ->orWhere('blkNo', 'like', '%'.$search_term.'%')
                 ->orWhere('noOfStreet', 'like', '%'.$search_term.'%')
                 ->where('isActive', '=', '1') 
                 ->orderBy('refID','ASC')
                 ->get();
 
-            $nameProfiles = FaasLand::select(DB::raw('id, refID, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, "NameProfile" as ownerType'))
-                ->with('barangay', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+            $nameProfiles = FaasLand::select(DB::raw('id, refID, pin, octTctNo, survey_no, lotNo, blkNo, primaryOwnerId, noOfStreet, barangayId, cityId, provinceId, ownerAddress, "NameProfile" as ownerType'))
+                ->orWhereHas('barangay', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('municipality', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                ->orWhereHas('municipality', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('province', function ($q) use ($search_term) {
-                    $q->orWhere('name', 'like', '%'.$search_term.'%');
+                ->orWhereHas('province', function ($q) use ($search_term) {
+                    $q->where('name', 'like', '%'.$search_term.'%');
                 })
-                ->with('name_profile', function ($q) use ($search_term) {
-                    $q->orWhere(DB::raw('CONCAT(first_name," ",middle_name," ",last_name)'), 'like', '%'.$search_term.'%');
+                ->orWhereHas('name_profile', function ($q) use ($search_term) {
+                    $q->where(DB::raw('CONCAT(first_name," ",middle_name," ",last_name)'), 'like', '%'.$search_term.'%');
                 })
+                ->with('barangay')
+                ->with('municipality')
+                ->with('province')
+                ->with('name_profile')
                 ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('pin', 'like', '%'.$search_term.'%')
                 ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
                 ->orWhere('survey_no', 'like', '%'.$search_term.'%')
-                ->orWhere('lotNo', 'like', '%'.$search_term.'%')
-                ->orWhere('blkNo', 'like', '%'.$search_term.'%')
+                // ->orWhere('lotNo', 'like', '%'.$search_term.'%')
+                // ->orWhere('blkNo', 'like', '%'.$search_term.'%')
                 ->orWhere('noOfStreet', 'like', '%'.$search_term.'%')
                 ->where('isActive', '=', '1') 
                 ->orderBy('refID','ASC')

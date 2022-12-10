@@ -65,7 +65,7 @@ class RptBuildings extends Model
         $faas = json_decode($results);
     
         $primaryOwner = '';
-        if($faas[0]->citizen_profile) {
+        if(isset($faas[0]->citizen_profile)) {
             $citizen_profile = $faas[0]->citizen_profile;
             $primaryOwner = $citizen_profile->fName.' '.$citizen_profile->mName.' '.$citizen_profile->lName;
         }
@@ -101,6 +101,10 @@ class RptBuildings extends Model
 
     public function building_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
+    }
+
+    public function faas_building_profile(){
+        return $this->belongsTo(BuildingProfile::class,'faasId','id');
     }
 
     public function barangay(){

@@ -70,7 +70,7 @@ class RptMachineries extends Model
         $faas = json_decode($results);
     
         $primaryOwner = '';
-        if($faas[0]->citizen_profile) {
+        if(isset($faas[0]->citizen_profile)) {
             $citizen_profile = $faas[0]->citizen_profile;
             $primaryOwner = $citizen_profile->fName.' '.$citizen_profile->mName.' '.$citizen_profile->lName;
         }
@@ -106,6 +106,10 @@ class RptMachineries extends Model
 
     public function land_owner_citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'landOwnerId','id');
+    }
+
+    public function faas_machinery_profile(){
+        return $this->belongsTo(FaasMachinery::class,'faasId','id');
     }
 
     public function building_owner_citizen_profile(){

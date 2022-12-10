@@ -42,7 +42,6 @@ Route::group([
     Route::get('/api/citizen-profile/search-business-owner', 'CitizenProfileCrudController@searchBusinessOwner');
     Route::get('/api/faas-land/search', 'FaasLandCrudController@ajaxsearch');
 
-
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');
     Route::crud('office', 'OfficeCrudController');
@@ -96,5 +95,9 @@ Route::group([
     Route::get('/api/rpt-machinery/apply-search-filters', 'RptMachineriesCrudController@applySearchFilters');
     Route::get('/api/faas-machinery/get-details', 'FaasMachineryCrudController@getDetails');
     Route::get('/api/faas-machinery/get-secondary-owners', 'FaasMachineryCrudController@getSecondaryOwners');
+
+    Route::get('/api/faas-land-classification/get-details', 'FaasLandClassificationCrudController@getDetails');
+    Route::get('/api/faas-building-classification/get-details', 'FaasBuildingClassificationsCrudController@getDetails');
+    Route::get('/api/faas-machinery-classification/get-details', 'FaasMachineryClassificationsCrudController@getDetails');
 
 }); // this should be the absolute last line of this file

@@ -44,6 +44,7 @@ class RptLands extends Model
     |--------------------------------------------------------------------------
     */
 
+    
     public function getFaas(){
         $faasId = $this->faasId;
 
@@ -70,9 +71,9 @@ class RptLands extends Model
         $results = $this->getFaas();
 
         $faas = json_decode($results);
-    
+
         $primaryOwner = '';
-        if($faas[0]->citizen_profile) {
+        if(isset($faas[0]->citizen_profile)) {
             $citizen_profile = $faas[0]->citizen_profile;
             $primaryOwner = $citizen_profile->fName.' '.$citizen_profile->mName.' '.$citizen_profile->lName;
         }
@@ -95,6 +96,7 @@ class RptLands extends Model
 
         return $address;
     }
+    
 
     /*
     |--------------------------------------------------------------------------
@@ -104,6 +106,14 @@ class RptLands extends Model
 
     public function citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
+    }
+
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primaryOwnerId','id');
+    }
+
+    public function faas_land_profile(){
+        return $this->belongsTo(FaasLand::class,'faasId','id');
     }
 
     public function old_owner_citizen_profile(){

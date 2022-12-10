@@ -204,4 +204,18 @@ class FaasBuildingClassificationsCrudController extends CrudController
             ]);
         });
     }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $results = FaasBuildingClassifications::select('id', 'name', 'refID', 'code', 'assessmentLevels')
+            ->where('isActive', '=', 'Y')
+            ->where('id', '=', $id)
+            ->get();
+        }
+
+        return $results;
+    }
 }

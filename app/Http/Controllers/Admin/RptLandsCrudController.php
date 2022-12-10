@@ -69,15 +69,33 @@ class RptLandsCrudController extends CrudController
         ]);
         $this->crud->column('TDNo')->label('TD No.');
         $this->crud->addColumn([
-            'label'=>'Primary Owner',
-            'type'  => 'model_function',
+            'type' => 'model_function',
+            'label' => 'Primary Owner',
             'function_name' => 'getPrimaryOwner',
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->with('faas_land_profile')
+                ->orWhereHas('faas_land_profile.citizen_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('fName', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+                })
+                ->orWhereHas('faas_land_profile.name_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                    $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+                });
+            }
         ]);
         $this->crud->addColumn([
-            'label'=>'Address',
-            'type'  => 'model_function',
+            'type' => 'model_function',
+            'label' => 'Address',
             'function_name' => 'getAddress',
             'limit' => 255,
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                $query->orWhereHas('faas_land_profile', function ($q) use ($column, $searchTerm) {
+                    $q->where('ownerAddress', 'like', '%'.$searchTerm.'%');
+                });
+            }
         ]);
         $this->crud->addColumn([
             'name'  => 'isApproved',
@@ -274,6 +292,26 @@ class RptLandsCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3'
             ],
             'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalArea',
+            'type'=>'text',
+            'label'=>'Area',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency area',
+                'disabled' => 'disabled',
+            ],
+            'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator0001',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+            'tab'  => 'Main Information',
         ]);
         $this->crud->addField([
             'name'=>'noOfStreet',
@@ -562,6 +600,21 @@ class RptLandsCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         /*Land Appraisal*/
+        $this->crud->addField([
+            'name'=>'landAreaLeft',
+            'type'=>'text',
+            'label'=>'Area Left',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency landAreaLeft',
+                'disabled' => 'disabled',
+            ],
+            'tab' => 'Land Appraisal',
+        ]);
+
         $this->crud->addField([   
             'name'  => 'landAppraisal',
             'label' => 'Land Appraisal',
@@ -620,19 +673,17 @@ class RptLandsCrudController extends CrudController
                     'label' => 'Area',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
-                /*
                 [
-                    'name'    => 'unitValue',
+                    'name'    => 'unitValuePerArea',
                     'type'=>'text',
                     'fake' => true,
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency unitValue',
+                        'class' => 'form-control text_input_mask_currency unitValuePerArea',
                         'disabled' => 'disabled',
                     ],
-                    'label'   => 'Unit Value',
+                    'label'   => 'Unit Value Per Area',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
-                */
                 [
                     'name'    => 'baseMarketValue',
                     'type'=>'text',
@@ -776,6 +827,7 @@ class RptLandsCrudController extends CrudController
                     'type'=>'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency valueAdjustment',
+                        'readonly' => 'readonly',
                     ],
                     'label' => 'Value Adjustment',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -832,7 +884,7 @@ class RptLandsCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency actualUse',
                         'readonly' => 'readonly',
                     ],
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-3 hidden'],
                 ],
                 [
                     'name'    => 'actualUse_fake',
@@ -857,10 +909,10 @@ class RptLandsCrudController extends CrudController
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'    => 'select_from_array',
-                    'options' => [],
+                    'type'    => 'text',
                     'attributes' => [
-                        'class' => 'form-control assessmentLevel',
+                        'class' => 'form-control text_input_mask_percent assessmentLevel',
+                        'readonly' => 'readonly',
                     ],
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -1090,6 +1142,19 @@ class RptLandsCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
+            'name' => 'TDNo', 
+            'label' => 'TD No.', 
+            'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
             'name' => 'faasId', 
             'type' => 'hidden',
             'tab' => 'Property Assessment',
@@ -1103,7 +1168,7 @@ class RptLandsCrudController extends CrudController
             $request = app(RptLandsRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'LAND-TDNo.-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
+                $TDNo = 'TD-LAND-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
 
@@ -1124,27 +1189,13 @@ class RptLandsCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-
-        $this->crud->addField([
-            'name' => 'TDNo', 
-            'label' => 'TD No.', 
-            'type' => 'text',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Property Assessment',
-        ]);
         
         RptLands::updating(function($entry) {
             $count = RptLands::count();
             $request = app(RptLandsRequest::class);
 
             if($request->isApproved === '1') {
-                $TDNo = 'LAND-TDNo.-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
+                $TDNo = 'TD-LAND-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
           
@@ -1188,26 +1239,29 @@ class RptLandsCrudController extends CrudController
         $searchByReferenceId = $request->input('searchByReferenceId');
         $searchByOCTTCTNo = $request->input('searchByOCTTCTNo');
         $searchByBarangayDistrict = $request->input('searchByBarangayDistrict');
+        $searchByPinId = $request->input('searchByPinId');
+        $searchBySurveyNo = $request->input('searchBySurveyNo');
+        $searchByNoOfStreet = $request->input('searchByNoOfStreet');
 
         $results = [];
 
         $citizenProfile = FaasLand::select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
-        'faas_lands.barangayId', 'faas_lands.octTctNo', 
-        'faas_lands.isActive',
-        'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-        ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
-        ->with('citizen_profile')
-        ->with('barangay')
-        ->with('land_owner');
+            'faas_lands.barangayId', 'faas_lands.octTctNo', 'faas_lands.pin', 'faas_lands.survey_no',
+            'faas_lands.isActive',
+            'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+            ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
+            ->with('citizen_profile')
+            ->with('barangay')
+            ->with('land_owner');
         
         $nameProfile = FaasLand::select('faas_lands.id', 'faas_lands.refID', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.noOfStreet', 
-        'faas_lands.barangayId', 'faas_lands.octTctNo',
-        'faas_lands.isActive',
-        'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-        ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
-        ->with('name_profile')
-        ->with('barangay')
-        ->with('land_owner');
+            'faas_lands.barangayId', 'faas_lands.octTctNo', 'faas_lands.pin', 'faas_lands.survey_no',
+            'faas_lands.isActive',
+            'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+            ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
+            ->with('name_profile')
+            ->with('barangay')
+            ->with('land_owner');
 
         if (!empty($searchByReferenceId)) { 
             $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByReferenceId.'%');
@@ -1222,6 +1276,21 @@ class RptLandsCrudController extends CrudController
         if (!empty($searchByBarangayDistrict)) { 
             $citizenProfile->where('faas_lands.barangayId', '=', $searchByBarangayDistrict);
             $nameProfile->where('faas_lands.barangayId', '=', $searchByBarangayDistrict);
+        }
+
+        if (!empty($searchByPinId)) { 
+            $citizenProfile->where('faas_lands.pin', '=', $searchByPinId);
+            $nameProfile->where('faas_lands.pin', '=', $searchByPinId);
+        }
+
+        if (!empty($searchBySurveyNo)) { 
+            $citizenProfile->where('faas_lands.survey_no', '=', $searchBySurveyNo);
+            $nameProfile->where('faas_lands.survey_no', '=', $searchBySurveyNo);
+        }
+
+        if (!empty($searchByNoOfStreet)) { 
+            $citizenProfile->where('faas_lands.noOfStreet', '=', $searchByNoOfStreet);
+            $nameProfile->where('faas_lands.noOfStreet', '=', $searchByNoOfStreet);
         }
 
         if (!empty($searchByPrimaryOwner)) {

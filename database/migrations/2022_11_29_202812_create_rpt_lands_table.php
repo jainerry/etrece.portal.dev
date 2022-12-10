@@ -35,6 +35,11 @@ return new class extends Migration
             $table->string('TDNo')->nullable();
             $table->string('totalPropertyAssessmentMarketValue')->nullable();
             $table->string('totalPropertyAssessmentAssessmentValue')->nullable();
+
+            $table->string('totalLandAppraisalBaseMarketValue')->nullable();
+            $table->string('totalOtherImprovementsBaseMarketValue')->nullable();
+            $table->string('totalMarketValueMarketValue')->nullable();
+
             $table->boolean('isActive')->default(1);
             $table->boolean('isApproved')->default(0);
             $table->timestamps();

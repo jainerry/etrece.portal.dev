@@ -26,10 +26,11 @@ class BuildingProfileRequest extends FormRequest
     {
         return [
             'isActive' => 'required',
+            'land_profile_id' => 'required',
             'primary_owner' => 'required',
             'ownerAddress' => 'required',
-            'no_of_street' => 'required',
-            'barangay_id' => 'required',
+            // 'no_of_street' => 'required',
+            // 'barangay_id' => 'required',
             // 'assessmentType' => 'required',
             // 'assessmentEffectivity' => 'required',
             // 'assessmentEffectivityValue' => 'required',
@@ -48,7 +49,7 @@ class BuildingProfileRequest extends FormRequest
             'TDNo' => 'max:25',
             'kind_of_building_id' => 'required',
             'no_of_storeys' => 'required',
-            'totalFloorArea' => 'required'
+            // 'totalFloorArea' => 'required'
         ];
     }
 

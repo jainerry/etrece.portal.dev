@@ -18,6 +18,9 @@ $(function () {
         let searchByReferenceId = $('input[name="searchByReferenceId"]').val()
         let searchByOCTTCTNo = $('input[name="searchByOCTTCTNo"]').val()
         let searchByBarangayDistrict = $('select[name="searchByBarangayDistrict"]').val()
+        let searchByPinId = $('input[name="searchByPinId"]').val()
+        let searchBySurveyNo = $('input[name="searchBySurveyNo"]').val()
+        let searchByNoOfStreet = $('input[name="searchByNoOfStreet"]').val()
 
         $.ajax({
             url: '/admin/api/rpt-land/apply-search-filters',
@@ -27,7 +30,10 @@ $(function () {
                 searchByPrimaryOwner: searchByPrimaryOwner,
                 searchByReferenceId: searchByReferenceId,
                 searchByOCTTCTNo: searchByOCTTCTNo,
-                searchByBarangayDistrict: searchByBarangayDistrict
+                searchByBarangayDistrict: searchByBarangayDistrict,
+                searchByPinId: searchByPinId,
+                searchBySurveyNo: searchBySurveyNo,
+                searchByNoOfStreet: searchByNoOfStreet
             },
             success: function (data) {
                 let html = ''
@@ -40,9 +46,11 @@ $(function () {
                             <th scope="col">Reference ID</th>\n\
                             <th scope="col">Primary Owner</th>\n\
                             <th scope="col">OCT/TCT No.</th>\n\
-                            <th scope="col">Owner Address</th>\n\
+                            <th scope="col">PIN</th>\n\
+                            <th scope="col">Survey No.</th>\n\
                             <th scope="col">No. of Street</th>\n\
                             <th scope="col">Barangay/District</th>\n\
+                            <th scope="col">Address</th>\n\
                             <th scope="col">Status</th>\n\
                             </tr>\n\
                         </thead>\n\
@@ -66,17 +74,19 @@ $(function () {
                         let barangay = value.barangay.name
                         let noOfStreet = value.noOfStreet
                         let isActive = 'Active'
-                        if(value.TDNo !== null) { TDNo = value.TDNo }
                         if(value.ARPNo !== null) { ARPNo = value.ARPNo }
                         if(value.isActive === '0') { isActive = 'Inactive' }
+                        let address = value.ownerAddress
 
                         html += '<tr>\n\
                             <td>'+refID+'</td>\n\
                             <td>'+primaryOwner+'</td>\n\
                             <td>'+octTctNo+'</td>\n\
-                            <td>'+value.ownerAddress+'</td>\n\
+                            <td>'+value.pin+'</td>\n\
+                            <td>'+value.survey_no+'</td>\n\
                             <td>'+noOfStreet+'</td>\n\
                             <td>'+barangay+'</td>\n\
+                            <td>'+address+'</td>\n\
                             <td>'+isActive+'</td>\n\
                         </tr>'
                     });
@@ -101,19 +111,10 @@ $(function () {
         $('input[name="searchByReferenceId"]').val('')
         $('input[name="searchByOCTTCTNo"]').val('')
         $('select[name="searchByBarangayDistrict"]').val('')
+        $('input[name="searchByPinId"]').val('')
+        $('input[name="searchBySurveyNo"]').val('')
+        $('input[name="searchByNoOfStreet"]').val('')
     })
-
-    /*$('#tab_property-assessment select.actualUse').on('change', function(){
-        let actualUse = $(this).val()
-        let rowNumber = $(this).attr('data-row-number')
-        $('#tab_property-assessment .assessmentLevel[data-row-number="'+rowNumber+'"]').val(actualUse)
-        propertyAssessmentComputation(rowNumber)
-    })
-
-    $('#tab_property-assessment input.marketValue').on('change', function(){
-        let rowNumber = $(this).attr('data-row-number')
-        propertyAssessmentComputation(rowNumber)
-    })*/
 
     //Property Assessment Tab > isApproved
     $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
@@ -143,35 +144,36 @@ $(function () {
         }
     })
 
-    /*$('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
-        if($(this).val() === 'Quarter') {
-            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
-            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
-            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
-        }
-        else {
-            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
-            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
-            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
-        }
+    landAppraisalActions()
+    otherImprovementsActions()
+    marketValueActions()
+
+    //Land Appraisal Tab > Land Appraisal add item action
+    $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').on('click', function(){
+        $('div[data-repeatable-holder="landAppraisal"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+        $('div[data-repeatable-holder="landAppraisal"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+        landAppraisalActions()
     })
 
-    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
-        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
+    //If Other Improvements Tab is being clicked
+    $('a.nav-link[tab_name="other-improvements"]').on('click', function(){
+        landAreaLeftComputation()
+        landAppraisalCheckIfClassificationHasDuplicates()
     })
 
-    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
-        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
-    })*/
-
-    //Land Appraisal Tab > classification
-    $('#tab_land-appraisal select.classification').on('change', function(){
-        let classification = $(this).val()
-        let dataRowNumber = $(this).attr('data-row-number')
-        setClassification(classification,dataRowNumber)
+    //Other Improvements Tab > Other Improvements add item action
+    $('.repeatable-group[bp-field-name="otherImprovements"] button.add-repeatable-element-button').on('click', function(){
+        $('div[data-repeatable-holder="otherImprovements"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+        $('div[data-repeatable-holder="otherImprovements"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+        otherImprovementsActions()
     })
 
-
+    //Market Value Tab > Market Value add item action
+    $('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').on('click', function(){
+        $('div[data-repeatable-holder="marketValue"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+        $('div[data-repeatable-holder="marketValue"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+        marketValueActions()
+    })
     
 })
 
@@ -206,6 +208,8 @@ function fetchData(id){
 
                 $('#tab_main-information input[name="lotNo"]').val(data.lotNo)
                 $('#tab_main-information input[name="blkNo"]').val(data.blkNo)
+                $('#tab_main-information input[name="totalArea"]').val(data.totalArea)
+
                 $('#tab_main-information input[name="noOfStreet"]').val(data.noOfStreet)
                 $('#tab_main-information select[name="barangayId"]').val(data.barangayId)
 
@@ -214,8 +218,14 @@ function fetchData(id){
                 $('#tab_main-information input[name="propertyBoundarySouth"]').val(data.propertyBoundarySouth)
                 $('#tab_main-information input[name="propertyBoundaryWest"]').val(data.propertyBoundaryWest)
 
-                let landSketchUrl = protocol+"//"+hostname+"/"+data.landSketch
-                $('#tab_main-information div.landSketch img').attr('src', landSketchUrl)
+                if(data.landSketch !== '' && data.landSketch !== 'null' && data.landSketch !== null) {
+                    let landSketchUrl = protocol+"//"+hostname+"/"+data.landSketch
+                    $('#tab_main-information div.landSketch img').attr('src', landSketchUrl)
+                }
+                else {
+                    let landSketchUrl = protocol+"//"+hostname+"/uploads/images/defaults/no-image-available.jpg"
+                    $('#tab_main-information div.landSketch img').attr('src', landSketchUrl)
+                }
 
                 $('#tab_main-information select[name="primaryOwnerId"]').append('<option value="'+data.primaryOwnerId+'">'+primaryOwner+'</option>')
                 $('#tab_main-information select[name="primaryOwnerId"]').val(data.primaryOwnerId)
@@ -234,83 +244,10 @@ function fetchData(id){
                 $('#tab_main-information select[name="isActive"]').val(data.isActive)
 
                 $('.repeatable-group[bp-field-name="propertyAssessment"] button.add-repeatable-element-button').addClass('hidden')
-                
-                /*
-                $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.landAppraisal.length > 0) {
-                    const landAppraisal = data.landAppraisal
-                    let landAppraisalLen = landAppraisal.length
-                    let landAppraisalCtr = 0
-                    $.each(landAppraisal, function(j, value1) {
-                        landAppraisalCtr++
-                        if($('div[data-repeatable-holder="landAppraisal"] .repeatable-element[data-row-number="'+landAppraisalCtr+'"]').length > 0){}
-                        else {
-                            if(landAppraisalCtr <= landAppraisalLen) {
-                                $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').click()
-                            }
-                        }
-                        $('div[data-repeatable-holder="landAppraisal"] .repeatable-element[data-row-number="'+landAppraisalCtr+'"] button.delete-element').addClass('hidden')
-                        $('#tab_land-appraisal select[name="landAppraisal['+j+'][classification]"]').val(value1.classification)
-                        $('#tab_land-appraisal input[name="landAppraisal['+j+'][subClass]"]').val(value1.subClass)
-                        $('#tab_land-appraisal select[name="landAppraisal['+j+'][actualUse]"]').val(value1.actualUse)
-                        $('#tab_land-appraisal select[name="landAppraisal['+j+'][area]"]').val(value1.area)
-                        $('#tab_land-appraisal input[name="landAppraisal['+j+'][unitValue]"]').val(value1.unitValue)
-                        $('#tab_land-appraisal select[name="landAppraisal['+j+'][baseMarketValue]"]').val(value1.baseMarketValue)
-                    })
-                }
-                $('#tab_land-appraisal input[name="totalLandAppraisalBaseMarketValue"]').val(data.totalLandAppraisalBaseMarketValue)
-
-                $('.repeatable-group[bp-field-name="otherImprovements"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.otherImprovements.length > 0) {
-                    const otherImprovements = data.otherImprovements
-                    let otherImprovementsLen = otherImprovements.length
-                    let otherImprovementsCtr = 0
-                    $.each(otherImprovements, function(k, value2) {
-                        otherImprovementsCtr++
-                        if($('div[data-repeatable-holder="otherImprovements"] .repeatable-element[data-row-number="'+otherImprovementsCtr+'"]').length > 0){}
-                        else {
-                            if(otherImprovementsCtr <= otherImprovementsLen) {
-                                $('.repeatable-group[bp-field-name="otherImprovements"] button.add-repeatable-element-button').click()
-                            }
-                        }
-                        $('div[data-repeatable-holder="otherImprovements"] .repeatable-element[data-row-number="'+otherImprovementsCtr+'"] button.delete-element').addClass('hidden')
-                        $('#tab_other-improvements input[name="otherImprovements['+k+'][baseMarketValue]"]').val(value2.baseMarketValue)
-                        $('#tab_other-improvements input[name="otherImprovements['+k+'][kind]"]').val(value2.kind)
-                        $('#tab_other-improvements input[name="otherImprovements['+k+'][totalNumber]"]').val(value2.totalNumber)
-                        $('#tab_other-improvements input[name="otherImprovements['+k+'][unitValue]"]').val(value2.unitValue)
-                    })
-                }
-                $('#tab_other-improvements input[name="totalOtherImprovementsBaseMarketValue"]').val(data.totalOtherImprovementsBaseMarketValue)
-
-                $('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').addClass('hidden')
-                if(data.marketValue.length > 0) {
-                    const marketValue = data.marketValue
-                    let marketValueLen = marketValue.length
-                    let marketValueCtr = 0
-                    $.each(marketValue, function(l, value3) {
-                        marketValueCtr++
-                        if($('div[data-repeatable-holder="marketValue"] .repeatable-element[data-row-number="'+marketValueCtr+'"]').length > 0){}
-                        else {
-                            if(marketValueCtr <= marketValueLen) {
-                                $('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').click()
-                            }
-                        }
-                        $('div[data-repeatable-holder="marketValue"] .repeatable-element[data-row-number="'+marketValueCtr+'"] button.delete-element').addClass('hidden')
-                        $('#tab_market-value input[name="marketValue['+l+'][baseMarketValue]"]').val(value3.baseMarketValue)
-                        $('#tab_market-value input[name="marketValue['+l+'][adjustmentFactor]"]').val(value3.adjustmentFactor)
-                        $('#tab_market-value input[name="marketValue['+l+'][adjustmentFactorPercentage]"]').val(value3.adjustmentFactorPercentage)
-                        $('#tab_market-value input[name="marketValue['+l+'][valueAdjustment]"]').val(value3.valueAdjustment)
-                        $('#tab_market-value input[name="marketValue['+l+'][marketValue]"]').val(value3.marketValue)
-                    })
-                }
-                $('#tab_market-value input[name="totalMarketValueMarketValue"]').val(data.totalMarketValueMarketValue)
-                */
 
                 $('.rptModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
                 $('#saveActions').removeClass('hidden')
-
-                
             }
         }
     })
@@ -341,48 +278,317 @@ function fetchSecondaryOwners(land_profile_id){
     })
 }
 
-function propertyAssessmentComputation(rowNumber){
-    let assessmentLevel = $('#tab_property-assessment select.assessmentLevel[data-row-number="'+rowNumber+'"] option:selected').text()
-    let marketValue = $('#tab_property-assessment input.marketValue[data-row-number="'+rowNumber+'"]').val()
-    let assessmentValue = 0
-
-    assessmentLevel = parseFloat(assessmentLevel.replaceAll('%',''))
-    marketValue = formatStringToFloat(marketValue)
-    
-    assessmentValue = (marketValue / 100) * assessmentLevel
-
-    $('#tab_property-assessment input.assessmentValue[data-row-number="'+rowNumber+'"]').val(assessmentValue)
-
-    totalPropertyAssessmentMarketValue()
-    totalPropertyAssessmentAssessmentValue()
-}
-
-function totalPropertyAssessmentAssessmentValue(){
-    let totalPropertyAssessmentAssessmentValue = 0
-    $('#tab_property-assessment .assessmentValue').each(function(){
-        let assessmentValue = $(this).val()
-        assessmentValue = formatStringToFloat(assessmentValue)
-        totalPropertyAssessmentAssessmentValue = totalPropertyAssessmentAssessmentValue + assessmentValue
+function setClassification(classification,dataRowNumber){
+    $('#tab_land-appraisal select.actualUse[data-row-number="'+dataRowNumber+'"]').val(classification)
+    let classificationCode = $('#tab_land-appraisal select.actualUse[data-row-number="'+dataRowNumber+'"] option:selected').text()
+    $('#tab_land-appraisal input.actualUse_fake[data-row-number="'+dataRowNumber+'"]').val(classificationCode)
+    $.ajax({
+        url: '/admin/api/faas-land-classification/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: classification
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                data = data[0]
+                let unitValuePerArea = data.unitValuePerArea
+                $('#tab_land-appraisal input.unitValuePerArea[data-row-number="'+dataRowNumber+'"]').val(unitValuePerArea)
+                landAppraisalComputation(dataRowNumber)
+            }
+        }
     })
-    $('#tab_property-assessment input[name="totalPropertyAssessmentAssessmentValue"]').val(totalPropertyAssessmentAssessmentValue)
 }
 
-function totalPropertyAssessmentMarketValue(){
-    let totalPropertyAssessmentMarketValue = 0
-    $('#tab_property-assessment .marketValue').each(function(){
+function landAppraisalComputation(dataRowNumber){
+    let unitValuePerArea = $('#tab_land-appraisal input.unitValuePerArea[data-row-number="'+dataRowNumber+'"]').val()
+    let area = $('#tab_land-appraisal input.area[data-row-number="'+dataRowNumber+'"]').val()
+    unitValuePerArea = formatStringToFloat(unitValuePerArea)
+    area = formatStringToFloat(area)
+    let baseMarketValue = unitValuePerArea * area
+    $('#tab_land-appraisal input.baseMarketValue[data-row-number="'+dataRowNumber+'"]').val(baseMarketValue)
+    landAppraisalComputationTotal()
+}
+
+function landAppraisalComputationTotal(){
+    let baseMarketValueTotal = 0
+    $('#tab_land-appraisal input.baseMarketValue').each(function(){
+        let baseMarketValue = $(this).val()
+        baseMarketValue = formatStringToFloat(baseMarketValue)
+        baseMarketValueTotal += baseMarketValue
+    })
+    $('#tab_land-appraisal input[name="totalLandAppraisalBaseMarketValue"]').val(baseMarketValueTotal)
+    setPropertyAssessmentValues()
+}
+
+function landAreaLeftComputation(dataRowNumber=null){
+    let landAreaLeft = 0
+    let landApraisalTotalArea = 0
+    let totalArea = $('#tab_main-information input[name="totalArea"]').val()
+    totalArea = formatStringToFloat(totalArea)
+    $('#tab_land-appraisal input.area').each(function(){
+        let area = $(this).val()
+        area = formatStringToFloat(area)
+        landApraisalTotalArea += area
+    })
+    
+    if(landApraisalTotalArea > totalArea) {
+        let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+        let msg = 'Please check your inputs on Land Appraisal Tab. The sum of areas entered on Land Appraisal are more than the value of the Land actual total area, which is '+totalArea+' sqm.'
+        if(dataRowNumber !== null) {
+            $('#tab_land-appraisal input.area[data-row-number="'+dataRowNumber+'"]').val('')
+            $('#tab_land-appraisal input.baseMarketValue[data-row-number="'+dataRowNumber+'"]').val('')
+        }
+        $('.alertMessageModal .modal-title').html(title)
+        $('.alertMessageModal .modal-body').html(msg)
+        $('.alertMessageModal').modal('show');
+    }
+    else {
+        if(landApraisalTotalArea === totalArea) {
+            $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').addClass('hidden')
+        }
+        else {
+            landAreaLeft = totalArea - landApraisalTotalArea
+            $('.repeatable-group[bp-field-name="landAppraisal"] button.add-repeatable-element-button').removeClass('hidden')
+        }
+        $('#tab_land-appraisal input[name="landAreaLeft"]').val(landAreaLeft)
+    }
+}
+
+function landAppraisalActions(){
+    //Land Appraisal Tab > change classification action
+    $('#tab_land-appraisal select.classification').on('change', function(){
+        let classification = $(this).val()
+        let dataRowNumber = $(this).attr('data-row-number')
+
+        //check if classification already exist
+        let isClassificationExist = 0
+        $('#tab_land-appraisal select.classification').each(function(){
+            let thisClassification = $(this).val()
+            if(thisClassification === classification) {
+                isClassificationExist++
+            }
+        })
+
+        if(isClassificationExist > 1) {
+            $(this).val('')
+            let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+            let msg = 'Please check your inputs on Land Appraisal Tab. Classification on Land Appraisal must be unique and should not have a duplicate.'
+            $('.alertMessageModal .modal-title').html(title)
+            $('.alertMessageModal .modal-body').html(msg)
+            $('.alertMessageModal').modal('show');
+        }
+        else {
+            setClassification(classification,dataRowNumber)
+        }
+    })
+
+    //Land Appraisal Tab > change area action
+    $('#tab_land-appraisal input.area').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let unitValuePerArea = $('#tab_land-appraisal input.unitValuePerArea[data-row-number="'+dataRowNumber+'"]').val()
+        let classification = $('#tab_land-appraisal select.classification[data-row-number="'+dataRowNumber+'"]').val()
+        if(unitValuePerArea === '') {
+            if(classification !== '') {
+                setClassification(classification,dataRowNumber)
+            }
+        }
+        else {
+            landAppraisalComputation(dataRowNumber)
+        }
+        landAreaLeftComputation(dataRowNumber)
+    })
+}
+
+function landAppraisalCheckIfClassificationHasDuplicates(){
+    let classifications = []
+    $('#tab_land-appraisal select.classification').each(function(){
+        let thisClassification = $(this).val()
+        if($.inArray(thisClassification,classifications) === -1) {
+            classifications.push(thisClassification)
+        }
+        else {
+            let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+            let msg = 'Please check your inputs on Land Appraisal Tab. Classification on Land Appraisal must be unique and should not have a duplicate.'
+            $('.alertMessageModal .modal-title').html(title)
+            $('.alertMessageModal .modal-body').html(msg)
+            $('.alertMessageModal').modal('show');
+        }
+    })
+}
+
+function otherImprovementsActions(){
+    $('#tab_other-improvements input.totalNumber').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        otherImprovementsComputation(dataRowNumber)
+    })
+
+    $('#tab_other-improvements input.unitValue').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        otherImprovementsComputation(dataRowNumber)
+    })
+}
+
+function otherImprovementsComputation(dataRowNumber){
+    let totalNumber = $('#tab_other-improvements input.totalNumber[data-row-number="'+dataRowNumber+'"]').val()
+    let unitValue = $('#tab_other-improvements input.unitValue[data-row-number="'+dataRowNumber+'"]').val()
+    let baseMarketValue = 0
+    unitValue = formatStringToFloat(unitValue)
+    totalNumber = formatStringToFloat(totalNumber)
+    baseMarketValue = totalNumber * unitValue
+    $('#tab_other-improvements input.baseMarketValue[data-row-number="'+dataRowNumber+'"]').val(baseMarketValue)
+    otherImprovementsComputationTotal()
+}
+
+function otherImprovementsComputationTotal(){
+    let baseMarketValueTotal = 0
+    $('#tab_other-improvements input.baseMarketValue').each(function(){
+        let baseMarketValue = $(this).val()
+        baseMarketValue = formatStringToFloat(baseMarketValue)
+        baseMarketValueTotal += baseMarketValue
+    })
+    $('#tab_other-improvements input[name="totalOtherImprovementsBaseMarketValue"]').val(baseMarketValueTotal)
+    setPropertyAssessmentValues()
+}
+
+function marketValueActions(){
+    $('#tab_market-value input.baseMarketValue').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        marketValueComputation(dataRowNumber)
+    })
+
+    $('#tab_market-value input.adjustmentFactorPercentage').on('change', function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        marketValueComputation(dataRowNumber)
+    })
+}
+
+function marketValueComputation(dataRowNumber){
+    let baseMarketValue = $('#tab_market-value input.baseMarketValue[data-row-number="'+dataRowNumber+'"]').val()
+    let adjustmentFactorPercentage = $('#tab_market-value input.adjustmentFactorPercentage[data-row-number="'+dataRowNumber+'"]').val()
+    let valueAdjustment = 0
+    let marketValue = 0
+    baseMarketValue = formatStringToFloat(baseMarketValue)
+    adjustmentFactorPercentage = formatStringToInteger(adjustmentFactorPercentage)
+    valueAdjustment = (baseMarketValue / 100) * adjustmentFactorPercentage
+    $('#tab_market-value input.valueAdjustment[data-row-number="'+dataRowNumber+'"]').val(valueAdjustment)
+    if(baseMarketValue > valueAdjustment) {
+        marketValue = baseMarketValue + valueAdjustment
+        $('#tab_market-value input.marketValue[data-row-number="'+dataRowNumber+'"]').val(marketValue)
+        marketValueComputationTotal()
+    }
+}
+
+function marketValueComputationTotal(){
+    let marketValueTotal = 0
+    $('#tab_market-value input.marketValue').each(function(){
         let marketValue = $(this).val()
         marketValue = formatStringToFloat(marketValue)
-        totalPropertyAssessmentMarketValue = totalPropertyAssessmentMarketValue + marketValue
+        marketValueTotal += marketValue
     })
-    $('#tab_property-assessment input[name="totalPropertyAssessmentMarketValue"]').val(totalPropertyAssessmentMarketValue)
+    $('#tab_market-value input[name="totalMarketValueMarketValue"]').val(marketValueTotal)
+    setPropertyAssessmentValues()
 }
 
-function setClassification(classification,dataRowNumber){
-    $('#tab_land-appraisal select.actualUse').val(classification)
-    let classificationCode = $('#tab_land-appraisal select.actualUse option:selected').text()
-    $('#tab_land-appraisal input.actualUse_fake').val(classificationCode)
+function setPropertyAssessmentValues(){
+    let landAppraisalRepeatable = $('.repeatable-group[bp-field-name="landAppraisal"] .repeatable-element')
+    let landAppraisalRepeatableLen = landAppraisalRepeatable.length
 
-    //computation
+    let propertyAssessmentRepeatable = $('.repeatable-group[bp-field-name="propertyAssessment"] .repeatable-element')
+    let propertyAssessmentRepeatableLen = propertyAssessmentRepeatable.length
+
+    for (let index = 0; index < landAppraisalRepeatableLen; index++) {
+        let dataRowNumber = index + 1
+        
+        if(propertyAssessmentRepeatable[index]) {}
+        else {
+            $('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').trigger('click')
+        }
+        getClassificationAssessmentLevel(dataRowNumber)
+    }
+}
+
+function getClassificationAssessmentLevel(dataRowNumber){
+    let classification = $('#tab_land-appraisal select.classification[data-row-number="'+dataRowNumber+'"]').val()
+    let actualUse_fake = $('#tab_land-appraisal input.actualUse_fake[data-row-number="'+dataRowNumber+'"]').val()
+    
+    $('#tab_property-assessment select.actualUse[data-row-number="'+dataRowNumber+'"]').val(classification)
+    $('#tab_property-assessment input.actualUse_fake[data-row-number="'+dataRowNumber+'"]').val(actualUse_fake)
+
+    let landAppraisalBaseMarketValue = $('#tab_land-appraisal input.baseMarketValue[data-row-number="'+dataRowNumber+'"]').val()
+    let totalOtherImprovementsBaseMarketValue = $('#tab_other-improvements input.totalOtherImprovementsBaseMarketValue').val()
+    let totalMarketValueMarketValue = $('#tab_market-value input.totalMarketValueMarketValue').val()
+
+    landAppraisalBaseMarketValue = formatStringToFloat(landAppraisalBaseMarketValue)
+    totalOtherImprovementsBaseMarketValue = formatStringToFloat(totalOtherImprovementsBaseMarketValue)
+    totalMarketValueMarketValue = formatStringToFloat(totalMarketValueMarketValue)
+
+    
+
+    let propertyAssessmentMarketValue = 0
+
+    $.ajax({
+        url: '/admin/api/faas-land-classification/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: classification
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                data = data[0]
+                let assessmentLevels = data.assessmentLevels
+                let percentage = 0
+
+                $.each(assessmentLevels, function(i, assessmentLevel) {
+                    let rangeFrom = assessmentLevel.rangeFrom
+                    let rangeTo = assessmentLevel.rangeTo
+                    
+                    rangeFrom = formatStringToFloat(rangeFrom)
+                    rangeTo = formatStringToFloat(rangeTo)
+                    
+                    if(landAppraisalBaseMarketValue >= rangeFrom && rangeFrom < rangeTo) {
+                        percentage = assessmentLevel.percentage
+                        percentage = formatStringToInteger(percentage)
+                    }
+                })
+                $('#tab_property-assessment input.assessmentLevel[data-row-number="'+dataRowNumber+'"]').val(percentage)
+                propertyAssessmentMarketValue = landAppraisalBaseMarketValue + totalOtherImprovementsBaseMarketValue + totalMarketValueMarketValue
+                $('#tab_property-assessment input.marketValue[data-row-number="'+dataRowNumber+'"]').val(propertyAssessmentMarketValue)
+                propertyAssessmentComputation(dataRowNumber)
+            }
+        }
+    })
+}
+
+function propertyAssessmentComputation(dataRowNumber){
+    let marketValue = $('#tab_property-assessment input.marketValue[data-row-number="'+dataRowNumber+'"]').val()
+    let assessmentLevel = $('#tab_property-assessment input.assessmentLevel[data-row-number="'+dataRowNumber+'"]').val()
+    let assessmentValue = 0
+    marketValue = formatStringToFloat(marketValue)
+    assessmentLevel = formatStringToInteger(assessmentLevel)
+    assessmentValue = (marketValue / 100) * assessmentLevel
+    $('#tab_property-assessment input.assessmentValue[data-row-number="'+dataRowNumber+'"]').val(assessmentValue)
+    propertyAssessmentComputationTotal()
+}
+
+function propertyAssessmentComputationTotal(){
+    let assessmentValueTotal = 0
+    let marketValueTotal = 0
+    $('#tab_property-assessment input.assessmentValue').each(function(){
+        let assessmentValue = $(this).val()
+        assessmentValue = formatStringToFloat(assessmentValue)
+        assessmentValueTotal += assessmentValue
+    })
+
+    $('#tab_property-assessment input.marketValue').each(function(){
+        let marketValue = $(this).val()
+        marketValue = formatStringToFloat(marketValue)
+        marketValueTotal += marketValue
+    })
+
+    $('#tab_property-assessment input[name="totalPropertyAssessmentMarketValue"]').val(marketValueTotal)
+    $('#tab_property-assessment input[name="totalPropertyAssessmentAssessmentValue"]').val(assessmentValueTotal)
 }
 
 function formatStringToFloat(num){

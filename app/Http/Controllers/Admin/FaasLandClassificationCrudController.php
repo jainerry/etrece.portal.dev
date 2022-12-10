@@ -6,6 +6,8 @@ use App\Http\Requests\FaasLandClassificationRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Illuminate\Http\Request;
+use App\Models\FaasLandClassification;
 
 /**
  * Class FaasLandClassificationCrudController
@@ -199,5 +201,19 @@ class FaasLandClassificationCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $results = FaasLandClassification::select('id', 'name', 'refID', 'code', 'unitValuePerArea', 'assessmentLevels')
+            ->where('isActive', '=', 'Y')
+            ->where('id', '=', $id)
+            ->get();
+        }
+
+        return $results;
     }
 }

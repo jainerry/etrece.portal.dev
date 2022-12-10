@@ -63,7 +63,6 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update'); 
-        
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -74,35 +73,30 @@ class FaasMachineryCrudController extends CrudController
                 },
             ],
         ]);
-        //$this->crud->column('ARPNo')->label('ARP No.');
-        $this->crud->addColumn([
-            'label'=>'Primary Owner',
-            'type'  => 'model_function',
-            'function_name' => 'getPrimaryOwner',
-        ]);
-
+        CRUD::column('model_function')
+        ->type('model_function')
+        ->label('Primary Owner')
+        ->function_name('getPrimaryOwner')
+        ->searchLogic(function ($query, $column, $searchTerm) {
+            $query->orWhereHas('citizen_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('fName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+            })
+            ->orWhereHas('name_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+            });
+        });
         $this->crud->column('ownerAddress')->limit(255)->label('Owner Address');
-        $this->crud->addColumn([
-            'name'  => 'isApproved',
-            'label' => 'Approved',
-            'type'  => 'boolean',
-            'options' => [0 => 'No', 1 => 'Yes'],
-            'wrapper' => [
-                'element' => 'span',
-                'class'   => function ($crud, $column, $entry, $related_key) {
-                    if ($column['text'] == 'Yes') {
-                        return 'badge badge-success';
-                    }
-                    return 'badge badge-default';
-                },
-            ],
-        ]);
         $this->crud->addColumn([
             'name'  => 'isActive',
             'label' => 'Status',
             'type'  => 'boolean',
             'options' => [0 => 'Inactive', 1 => 'Active'],
         ]);
+        $this->crud->column('created_at')->label('Date Created');
         $this->crud->orderBy('refID','ASC');
     }
 

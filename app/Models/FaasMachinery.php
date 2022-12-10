@@ -41,15 +41,30 @@ class FaasMachinery extends Model
     |--------------------------------------------------------------------------
     */
 
-    public function getPrimaryOwner(){
-        $citizen = CitizenProfile::find($this->primaryOwnerId);
-        $business = BusinessProfiles::where("id",$this->primaryOwnerId)->first();
-        if(!empty($citizen)){
-            return "{$citizen->fName} {$citizen->mName} {$citizen->lName}";
+    public function getPrimaryOwner()
+    {
+        $ownerExist = CitizenProfile::where("id", $this->primaryOwnerId)->count();
+        if ($ownerExist == 0) {
+            $primaryOwner = NameProfiles::where("id", $this->primaryOwnerId)->first();
+            $first_name = $primaryOwner->first_name;
+            $middle_name = $primaryOwner->middle_name;
+            $last_name = $primaryOwner->last_name;
+            $suffix = $primaryOwner->suffix;
         }
         else {
-            return "{$business->business_name}";
+            $primaryOwner = CitizenProfile::where("id", $this->primaryOwnerId)->first();
+            $first_name = $primaryOwner->fName;
+            $middle_name = $primaryOwner->mName;
+            $last_name = $primaryOwner->lName;
+            $suffix = $primaryOwner->suffix;
         }
+
+        $fName = ucfirst($first_name)." ";
+        $mName = ($middle_name == null? "":" ").ucfirst($middle_name)." ";
+        $lName = ucfirst($last_name);
+        $suffix = ($suffix == null || $suffix == ""? "":" ").ucfirst($suffix);
+        
+        return "{$fName}{$mName}{$lName}{$suffix}";
     }
 
     /*
@@ -62,6 +77,18 @@ class FaasMachinery extends Model
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
     }
 
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primaryOwnerId','id');
+    }
+
+    public function faas_land_profile(){
+        return $this->belongsTo(FaasLand::class,'landProfileId','id');
+    }
+
+    public function faas_building_profile(){
+        return $this->belongsTo(BuildingProfile::class,'buildingProfileId','id');
+    }
+    
     public function land_owner_citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'landOwnerId','id');
     }

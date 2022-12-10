@@ -12,8 +12,9 @@ $(function () {
     $('#btnSearch').on('click', function(){
         let searchByPrimaryOwner = $('input[name="searchByPrimaryOwner"]').val()
         let searchByReferenceId = $('input[name="searchByReferenceId"]').val()
-        let searchByOCTTCTNo = $('input[name="searchByOCTTCTNo"]').val()
-        let searchByBarangayDistrict = $('select[name="searchByBarangayDistrict"]').val()
+        let searchByPinId = $('input[name="searchByPinId"]').val()
+        let searchByBuildingReferenceId = $('input[name="searchByBuildingReferenceId"]').val()
+        let searchByLandReferenceId = $('input[name="searchByLandReferenceId"]').val()
 
         $.ajax({
             url: '/admin/api/rpt-machinery/apply-search-filters',
@@ -22,8 +23,9 @@ $(function () {
             data: {
                 searchByPrimaryOwner: searchByPrimaryOwner,
                 searchByReferenceId: searchByReferenceId,
-                searchByOCTTCTNo: searchByOCTTCTNo,
-                searchByBarangayDistrict: searchByBarangayDistrict
+                searchByPinId: searchByPinId,
+                searchByBuildingReferenceId: searchByBuildingReferenceId,
+                searchByLandReferenceId: searchByLandReferenceId
             },
             success: function (data) {
                 let html = ''
@@ -35,9 +37,9 @@ $(function () {
                             <tr>\n\
                             <th scope="col">Reference ID</th>\n\
                             <th scope="col">Primary Owner</th>\n\
-                            <th scope="col">Owner Address</th>\n\
-                            <th scope="col">No. of Street</th>\n\
-                            <th scope="col">Barangay/District</th>\n\
+                            <th scope="col">PIN</th>\n\
+                            <th scope="col">Building Reference ID</th>\n\
+                            <th scope="col">Land Reference ID</th>\n\
                             <th scope="col">Status</th>\n\
                             </tr>\n\
                         </thead>\n\
@@ -57,19 +59,21 @@ $(function () {
                         else {
                             primaryOwner = value.first_name+' '+value.middle_name+' '+value.last_name+' '+suffix
                         }
-                        let barangay = value.barangay.name
-                        let noOfStreet = value.noOfStreet
+                        
                         let isActive = 'Active'
-                        if(value.TDNo !== null) { TDNo = value.TDNo }
                         if(value.ARPNo !== null) { ARPNo = value.ARPNo }
                         if(value.isActive === '0') { isActive = 'Inactive' }
+
+                        let pin = value.pin
+                        let buildingRefId = '-'
+                        let landRefId = '-'
 
                         html += '<tr>\n\
                             <td>'+refID+'</td>\n\
                             <td>'+primaryOwner+'</td>\n\
-                            <td>'+value.ownerAddress+'</td>\n\
-                            <td>'+noOfStreet+'</td>\n\
-                            <td>'+barangay+'</td>\n\
+                            <td>'+pin+'</td>\n\
+                            <td>'+buildingRefId+'</td>\n\
+                            <td>'+landRefId+'</td>\n\
                             <td>'+isActive+'</td>\n\
                         </tr>'
                     });
@@ -92,11 +96,12 @@ $(function () {
     $('#btnClear').on('click', function(){
         $('input[name="searchByPrimaryOwner"]').val('')
         $('input[name="searchByReferenceId"]').val('')
-        $('input[name="searchByOCTTCTNo"]').val('')
-        $('select[name="searchByBarangayDistrict"]').val('')
+        $('input[name="searchByPinId"]').val('')
+        $('input[name="searchByBuildingReferenceId"]').val('')
+        $('input[name="searchByLandReferenceId"]').val('')
     })
 
-    $('#tab_property-assessment select.actualUse').on('change', function(){
+    /*$('#tab_property-assessment select.actualUse').on('change', function(){
         let actualUse = $(this).val()
         let rowNumber = $(this).attr('data-row-number')
 
@@ -107,9 +112,9 @@ $(function () {
     $('#tab_property-assessment input.marketValue').on('change', function(){
         let rowNumber = $(this).attr('data-row-number')
         propertyAssessmentComputation(rowNumber)
-    })
+    })*/
 
-    //isApproved
+    //Property Assessment Tab > isApproved
     $('.tab-container #tab_property-assessment input[name="isApproved"]').on('change', function(){
         if($(this).val() === '1') {
             $('.tab-container #tab_property-assessment .approve_items input[name="approvedBy"]').val('')
@@ -127,7 +132,7 @@ $(function () {
         }
     })
 
-    //assessmentType
+    //Property Assessment Tab > assessmentType
     $('#tab_property-assessment select[name="assessmentType"]').on('change', function(){
         if($(this).val() === 'Exempt') {
             $('#tab_property-assessment .ifAssessmentTypeIsExempt').removeClass('hidden')
@@ -135,27 +140,6 @@ $(function () {
         else {
             $('#tab_property-assessment .ifAssessmentTypeIsExempt').addClass('hidden')
         }
-    })
-
-    $('#tab_property-assessment select[name="assessmentEffectivity"]').on('change', function(){
-        if($(this).val() === 'Quarter') {
-            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val('')
-            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').addClass('hidden')
-            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').removeClass('hidden')
-        }
-        else {
-            $('#tab_property-assessment .assessmentEffectivityValue_input_fake').removeClass('hidden')
-            $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($('#tab_property-assessment .assessmentEffectivityValue_input_fake input').val())
-            $('#tab_property-assessment .assessmentEffectivityValue_select_fake').addClass('hidden')
-        }
-    })
-
-    $('#tab_property-assessment .assessmentEffectivityValue_select_fake select').on('change', function(){
-        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
-    })
-
-    $('#tab_property-assessment .assessmentEffectivityValue_input_fake input').on('change', function(){
-        $('#tab_property-assessment input[name="assessmentEffectivityValue"]').val($(this).val())
     })
     
 })
@@ -172,7 +156,6 @@ function fetchData(id){
             if(data.length > 0) {
                 data = data[0]
                 $('#tab_property-assessment input[name="faasId"]').val(data.id)
-                $('#tab_property-assessment input[name="barangayCode"]').val(data.barangay.code)
                 
                 let primaryOwner = ''
                 let suffix = ''
@@ -190,6 +173,9 @@ function fetchData(id){
 
                 $('#tab_main-information select[name="primaryOwnerId"]').append('<option value="'+data.primaryOwnerId+'">'+primaryOwner+'</option>')
                 $('#tab_main-information select[name="primaryOwnerId"]').val(data.primaryOwnerId)
+
+                fetchSecondaryOwners(data.id)
+
                 $('#tab_main-information textarea[name="ownerAddress"]').val(data.ownerAddress)
                 $('#tab_main-information input[name="ownerTelephoneNo"]').val(data.ownerTelephoneNo)
                 $('#tab_main-information input[name="ownerTin"]').val(data.ownerTin)
@@ -197,9 +183,10 @@ function fetchData(id){
                 $('#tab_main-information textarea[name="administratorAddress"]').val(data.administratorAddress)
                 $('#tab_main-information input[name="administratorTelephoneNo"]').val(data.administratorTelephoneNo)
                 $('#tab_main-information input[name="administratorTin"]').val(data.administratorTin)
+                
                 $('#tab_main-information select[name="isActive"]').val(data.isActive)
                 
-                $('#tab_property-location input[name="noOfStreet"]').val(data.noOfStreet)
+                /*$('#tab_property-location input[name="noOfStreet"]').val(data.noOfStreet)
                 $('#tab_property-location select[name="barangayId"]').val(data.barangayId)
 
                 let landOwner = ''
@@ -233,9 +220,9 @@ function fetchData(id){
                 $('#tab_property-location select[name="buildingOwnerId"]').val(data.buildingOwnerId)
 
                 $('#tab_property-location input[name="landOwnerPin"]').val(data.landOwnerPin)
-                $('#tab_property-location input[name="buildingOwnerPin"]').val(data.buildingOwnerPin)
+                $('#tab_property-location input[name="buildingOwnerPin"]').val(data.buildingOwnerPin)*/
 
-                $('.repeatable-group[bp-field-name="propertyAppraisal"] button.add-repeatable-element-button').addClass('hidden')
+                /*$('.repeatable-group[bp-field-name="propertyAppraisal"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.propertyAppraisal.length > 0) {
                     const propertyAppraisal = data.propertyAppraisal
                     let propertyAppraisalLen = propertyAppraisal.length
@@ -267,7 +254,8 @@ function fetchData(id){
                         $('#tab_property-appraisal input[name="propertyAppraisal['+j+'][totalDepreciationValue]"]').val(value1.totalDepreciationValue)
                         $('#tab_property-appraisal input[name="propertyAppraisal['+j+'][depreciatedValue]"]').val(value1.depreciatedValue)
                     })
-                }
+                }*/
+
                 $('#tab_property-appraisal input[name="totalOriginalCost"]').val(data.totalOriginalCost)
                 $('#tab_property-appraisal input[name="totalTotalDepreciationValue"]').val(data.totalTotalDepreciationValue)
                 $('#tab_property-appraisal input[name="totalDepreciatedValue"]').val(data.totalDepreciatedValue)
@@ -275,8 +263,6 @@ function fetchData(id){
                 $('.rptModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
                 $('#saveActions').removeClass('hidden')
-
-                fetchSecondaryOwners(data.id)
             }
         }
     })
@@ -305,19 +291,6 @@ function fetchSecondaryOwners(machinery_profile_id){
             $('#tab_main-information select[name="machinery_owner[]"]').val(secondaryOwnerIds)
         }
     })
-}
-
-function propertyAssessmentComputation(rowNumber){
-    let assessmentLevel = $('#tab_property-assessment select.assessmentLevel[data-row-number="'+rowNumber+'"] option:selected').text()
-    let marketValue = $('#tab_property-assessment input.marketValue[data-row-number="'+rowNumber+'"]').val()
-    let assessedValue = 0
-
-    assessmentLevel = parseFloat(assessmentLevel.replaceAll('%',''))
-    marketValue = formatStringToFloat(marketValue)
-    
-    assessedValue = (marketValue / 100) * assessmentLevel
-
-    $('#tab_property-assessment input.assessedValue[data-row-number="'+rowNumber+'"]').val(assessedValue)
 }
 
 function formatStringToFloat(num){
