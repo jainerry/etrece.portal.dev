@@ -25,11 +25,14 @@ class FaasLandRequest extends FormRequest
     public function rules()
     {
         return [
-            //'primaryOwnerId' => 'required',
+            'primaryOwnerId' => 'required',
             'ownerAddress' => 'required',
             'noOfStreet' => 'required',
             'barangayId' => 'required',
             'isActive' => 'required',
+            'pin' => 'unique:faas_lands,pin,'.$this->id,
+            'octTctNo' => 'unique:faas_lands,octTctNo,'.$this->id,
+            'survey_no' => 'unique:faas_lands,survey_no,'.$this->id,
             // 'assessmentType' => 'required',
             // 'assessmentEffectivity' => 'required',
             // 'assessmentEffectivityValue' => 'required',

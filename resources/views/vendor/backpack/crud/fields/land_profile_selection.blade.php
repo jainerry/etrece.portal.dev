@@ -54,7 +54,7 @@
             @endif
 
             <option value="{{ $item->id }}" selected>
-                {{ $item->land_reference_id}}
+                {{ $item->refID}}
             </option>
             @endif
         @endif
@@ -195,13 +195,13 @@
                                     <div>
                                         Primary Owner: <b class="land_reference_id"> ${primaryOwner}</b>
                                     </div>
-                                    <div class="hidden">
+                                    <div class="">
                                         PIN: <b class="land_reference_id"> ${item.pin}</b>
                                     </div>
-                                    <div class="hidden">
+                                    <div class="">
                                         OCT/TCT No.: <b class="land_reference_id"> ${item.octTctNo}</b>
                                     </div>
-                                    <div class="hidden">
+                                    <div class="">
                                         Survey No.: <b class="land_reference_id"> ${item.survey_no}</b>
                                     </div>
                                     <div class="hidden">

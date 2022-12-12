@@ -15,6 +15,7 @@ $(function () {
         let searchByBuildingClassification = $('select[name="searchByBuildingClassification"]').val()
         let searchByStructuralType = $('select[name="searchByStructuralType"]').val()
         let searchByLandReferenceId = $('input[name="searchByLandReferenceId"]').val()
+        let searchByPrimaryOwnerAddress = $('textarea[name="searchByPrimaryOwnerAddress"]').val()
 
         $.ajax({
             url: '/admin/api/rpt-building/apply-search-filters',
@@ -25,7 +26,8 @@ $(function () {
                 searchByReferenceId: searchByReferenceId,
                 searchByBuildingClassification: searchByBuildingClassification,
                 searchByStructuralType: searchByStructuralType,
-                searchByLandReferenceId: searchByLandReferenceId
+                searchByLandReferenceId: searchByLandReferenceId,
+                searchByPrimaryOwnerAddress: searchByPrimaryOwnerAddress
             },
             success: function (data) {
                 let html = ''
@@ -36,13 +38,11 @@ $(function () {
                         <thead>\n\
                             <tr>\n\
                             <th scope="col">Reference ID</th>\n\
+                            <th scope="col">Land Reference ID</th>\n\
                             <th scope="col">Primary Owner</th>\n\
-                            <th scope="col">OCT/TCT No.</th>\n\
                             <th scope="col">Owner Address</th>\n\
-                            <th scope="col">No. of Street</th>\n\
-                            <th scope="col">Barangay/District</th>\n\
-                            <th scope="col">Classification</th>\n\
-                            <th scope="col">Structural Type</th>\n\
+                            <th scope="col">Building Classification</th>\n\
+                            <th scope="col">Building Structural Type</th>\n\
                             <th scope="col">Status</th>\n\
                             </tr>\n\
                         </thead>\n\
@@ -50,6 +50,7 @@ $(function () {
 
                     $.each(data, function(i, value) {
                         let refID = '<a href="javascript:void(0)" onclick="fetchData(\''+value.id+'\')">'+value.refID+'</a>'
+                        let landRefID = value.landRefID
                         let primaryOwner = '-'
                         let suffix = ''
                         if(value.suffix !== null && value.suffix !== 'null') {
@@ -62,23 +63,16 @@ $(function () {
                         else {
                             primaryOwner = value.first_name+' '+value.middle_name+' '+value.last_name+' '+suffix
                         }
-                        let oct_tct_no = value.oct_tct_no
                         let classification = value.building_classification.name
-                        let barangay = value.barangay.name
-                        let no_of_street = value.no_of_street
                         let structural_type_id = value.structural_type.name
                         let isActive = 'Active'
-                        if(value.TDNo !== null) { TDNo = value.TDNo }
-                        if(value.ARPNo !== null) { ARPNo = value.ARPNo }
                         if(value.isActive === '0') { isActive = 'Inactive' }
 
                         html += '<tr>\n\
                             <td>'+refID+'</td>\n\
+                            <td>'+landRefID+'</td>\n\
                             <td>'+primaryOwner+'</td>\n\
-                            <td>'+oct_tct_no+'</td>\n\
                             <td>'+value.ownerAddress+'</td>\n\
-                            <td>'+no_of_street+'</td>\n\
-                            <td>'+barangay+'</td>\n\
                             <td>'+classification+'</td>\n\
                             <td>'+structural_type_id+'</td>\n\
                             <td>'+isActive+'</td>\n\
@@ -106,7 +100,8 @@ $(function () {
         $('input[name="searchByOCTTCTNo"]').val('')
         $('select[name="searchByBuildingClassification"]').val('')
         $('select[name="searchByStructuralType"]').val('')
-        $('select[name="searchByBarangayDistrict"]').val('')
+        $('input[name="searchByLandReferenceId"]').val('')
+        $('textarea[name="searchByPrimaryOwnerAddress"]').val('')
     })
 
     //Property Assessment Tab > isApproved
@@ -148,6 +143,7 @@ function fetchData(id){
             id: id
         },
         success: function (data) {
+            console.log(data)
             if(data.length > 0) {
                 data = data[0]
                 $('#tab_property-assessment input[name="faasId"]').val(data.id)
@@ -192,12 +188,12 @@ function fetchData(id){
                 
                 $('#tab_general-description input[name="no_of_storeys"]').val(data.no_of_storeys)
 
-                //$('#tab_general-description input[name="totalFloorArea"]').val(data.totalFloorArea)
+                $('#tab_general-description input[name="totalFloorArea"]').val(data.totalFloorArea)
                 
                 $('#tab_structural-characteristic select[name="roof"]').val(data.roof)
                 $('#tab_structural-characteristic input[name="other_roof"]').val(data.other_roof)
 
-                /*
+                
                 $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').addClass('hidden')
                 if(data.floorsArea.length > 0) {
                     const floorsArea = data.floorsArea
@@ -209,6 +205,10 @@ function fetchData(id){
                         else {
                             if(floorsAreaCtr <= floorsAreaLen) {
                                 $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').click()
+
+                                $('#tab_general-description input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+                                $('#tab_general-description input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+                
                             }
                         }
                         $('div[data-repeatable-holder="floorsArea"] .repeatable-element[data-row-number="'+floorsAreaCtr+'"] button.delete-element').addClass('hidden')
@@ -281,7 +281,7 @@ function fetchData(id){
                     })
                 }
 
-                $('#tab_property-appraisal input[name="unitConstructionCost"]').val(data.unitConstructionCost)
+                /*$('#tab_property-appraisal input[name="unitConstructionCost"]').val(data.unitConstructionCost)
                 $('#tab_property-appraisal input[name="unitConstructionSubTotal"]').val(data.unitConstructionSubTotal)
                 $('#tab_property-appraisal input[name="costOfAdditionalItemsSubTotal"]').val(data.costOfAdditionalItemsSubTotal)
                 $('#tab_property-appraisal input[name="totalConstructionCost"]').val(data.totalConstructionCost)
@@ -290,8 +290,8 @@ function fetchData(id){
                 $('#tab_property-appraisal input[name="totalPercentDepreciation"]').val(data.totalPercentDepreciation)
                 $('#tab_property-appraisal input[name="marketValue"]').val(data.marketValue)
 
-                $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val(data.marketValue)
-                */
+                $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val(data.marketValue)*/
+                
 
                 $('.rptModal').modal('hide');
                 $('.tab-container').removeClass('hidden')

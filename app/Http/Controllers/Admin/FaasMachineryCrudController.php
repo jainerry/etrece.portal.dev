@@ -141,7 +141,7 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->addField([
             'label' => 'Land Profile',
             'type' => 'land_profile_selection',
-            'name' => 'land_profile_id',
+            'name' => 'landProfileId',
             'entity' => 'land_profile',
             'attribute' => 'refID',
             'data_source' => url('/admin/api/faas-land/search-land-profile'),
@@ -151,11 +151,19 @@ class FaasMachineryCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-
+        $this->crud->addField([
+            'name'  => 'separator5',
+            'type'  => 'custom_html',
+            'value' => '<div class="selectedLandProfile" id="selectedLandProfile"></div>',
+            'tab' => 'Main Information',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
         $this->crud->addField([
             'label' => 'Building Profile',
             'type' => 'building_profile_selection',
-            'name' => 'building_profile_id',
+            'name' => 'buildingProfileId',
             'entity' => 'building_profile',
             'attribute' => 'refID',
             'data_source' => url('/admin/api/faas-building/search-building-profile'),
@@ -164,6 +172,15 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-6',
             ],
             'tab' => 'Main Information',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator5',
+            'type'  => 'custom_html',
+            'value' => '<div class="selectedBuildingProfile" id="selectedBuildingProfile"></div>',
+            'tab' => 'Main Information',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
         ]);
         
         $this->crud->addField([

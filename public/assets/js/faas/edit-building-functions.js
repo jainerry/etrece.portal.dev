@@ -14,12 +14,8 @@ $(function () {
     $('.repeatable-group[bp-field-name="floorsArea"] button.add-repeatable-element-button').addClass('hidden')
     $('.repeatable-group[bp-field-name="flooring"] button.add-repeatable-element-button').addClass('hidden')
     $('.repeatable-group[bp-field-name="walling"] button.add-repeatable-element-button').addClass('hidden')
-    $('.repeatable-group[bp-field-name="floorsArea"] .repeatable-element').remove()
-    $('.repeatable-group[bp-field-name="flooring"] .repeatable-element').remove()
-    $('.repeatable-group[bp-field-name="walling"] .repeatable-element').remove()
 
-    $('#tab_general-description input[name="no_of_storeys"]').val('1')
-    setFloorsInputs($('#tab_general-description input[name="no_of_storeys"]').val())
+    getLandProfileDetails($('#tab_main-information select[name="landProfileId"]').val())
 
     //Land Profile: select on change action
     $('#tab_main-information select[name="landProfileId"]').on('change', function(){

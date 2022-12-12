@@ -153,6 +153,15 @@ class RptBuildingsCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
+            'name' => 'searchByPrimaryOwnerAddress', 
+            'label' => 'Search by Owner Address', 
+            'type' => 'textarea',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([
             'name' => 'searchByBuildingClassification', 
             'label' => 'Search by Building Classification', 
             'type'=>'select',
@@ -822,7 +831,7 @@ class RptBuildingsCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost" id="unitConstructionCost" value="" disabled="disabled" /> /sq.m.</p>
                 <p>Building Core: <i>(Use additional sheets if necessary)</i></p>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal" id="unitConstructionSubTotal" value="" disabled="disabled" /> </p>',
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal" id="unitConstructionSubTotal" value="" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -833,7 +842,7 @@ class RptBuildingsCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<p>Cost of Additional Items:</p>
                 <br><br>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal" id="costOfAdditionalItemsSubTotal" value="" disabled="disabled" /> </p>',
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal" id="costOfAdditionalItemsSubTotal" value="" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -860,8 +869,7 @@ class RptBuildingsCrudController extends CrudController
             'type' => 'text',
             'fake' => true,
             'attributes' => [
-                'class' => 'form-control text_input_mask_percent',
-                'disabled' => 'disabled',
+                'class' => 'form-control text_input_mask_percent depreciationRate',
             ],
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
@@ -874,8 +882,7 @@ class RptBuildingsCrudController extends CrudController
             'type' => 'text',
             'fake' => true,
             'attributes' => [
-                'class' => 'form-control text_input_mask_currency',
-                'disabled' => 'disabled',
+                'class' => 'form-control text_input_mask_currency depreciationCost',
             ],
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
@@ -888,8 +895,7 @@ class RptBuildingsCrudController extends CrudController
             'type' => 'text',
             'fake' => true,
             'attributes' => [
-                'class' => 'form-control text_input_mask_percent',
-                'disabled' => 'disabled',
+                'class' => 'form-control text_input_mask_percent totalPercentDepreciation',
             ],
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
@@ -902,8 +908,8 @@ class RptBuildingsCrudController extends CrudController
             'type' => 'text',
             'fake' => true,
             'attributes' => [
-                'class' => 'form-control text_input_mask_currency',
-                'disabled' => 'disabled',
+                'class' => 'form-control text_input_mask_currency marketValue',
+                'readonly' => 'readonly',
             ],
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
@@ -917,25 +923,48 @@ class RptBuildingsCrudController extends CrudController
             'label' => 'Property Assessment',
             'type'  => 'repeatable',
             'subfields' => [
-                [
+                /*[
                     'name'    => 'actualUse',
                     'type'    => 'select',
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasBuildingClassifications",
                     'attribute' => 'name',
                     'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
+                ],*/
+                [
+                    'name'    => 'actualUse',
+                    'type'    => 'select',
+                    'label'   => 'Actual Use',
+                    'model'     => "App\Models\FaasBuildingClassifications",
+                    'attribute' => 'code',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency actualUse',
+                        'readonly' => 'readonly',
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3 hidden'],
+                ],
+                [
+                    'name'    => 'actualUse_fake',
+                    'type'    => 'text',
+                    'label'   => 'Actual Use',
+                    'fake'   => true,
+                    'attributes' => [
+                        'class' => 'form-control actualUse_fake',
+                        'readonly' => 'readonly'
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'    => 'marketValue',
-                    'type'    => 'text',
+                    'type'=>'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency marketValue',
                         'readonly' => 'readonly',
                     ],
                     'label'   => 'Market Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
+                    'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
                 ],
-                [
+                /*[
                     'name'    => 'assessmentLevel',
                     'type'    => 'select',
                     'label'   => 'Assessment Level',
@@ -945,8 +974,18 @@ class RptBuildingsCrudController extends CrudController
                         'readonly' => 'readonly',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
-                ],
+                ],*/
                 [
+                    'name'    => 'assessmentLevel',
+                    'type'    => 'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_percent assessmentLevel',
+                        'readonly' => 'readonly',
+                    ],
+                    'label'   => 'Assessment Level',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
+                ],
+                /*[
                     'name'  => 'assessedValue',
                     'type'  => 'text',
                     'attributes' => [
@@ -955,6 +994,16 @@ class RptBuildingsCrudController extends CrudController
                     ],
                     'label' => 'Assessed Value',
                     'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
+                ],*/
+                [
+                    'name'  => 'assessmentValue',
+                    'type'=>'text',
+                    'attributes' => [
+                        'class' => 'form-control text_input_mask_currency assessmentValue',
+                        'readonly' => 'readonly'
+                    ],
+                    'label' => 'Assessment Value',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'yearOfEffectivity',
@@ -977,6 +1026,15 @@ class RptBuildingsCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
+            'name'  => 'ifAssessmentTypeIsExempt',
+            'type'  => 'custom_html',
+            'value' => '<div class="alert alert-warning" role="alert"><i class="la la-exclamation-triangle"></i> This property needs to go through an approval process.</div>',
+            'tab' => 'Property Assessment',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 hidden ifAssessmentTypeIsExempt',
+            ],
+        ]);
+        $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
             'type' => 'select_from_array',
@@ -990,8 +1048,7 @@ class RptBuildingsCrudController extends CrudController
             ],
             'tab' => 'Property Assessment',
         ]);
-
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'assessmentEffectivity',
             'label'=>'Effectivity of Assessment/Reassessment',
             'type' => 'select_from_array',
@@ -1034,15 +1091,23 @@ class RptBuildingsCrudController extends CrudController
             'name'=>'assessmentEffectivityValue',
             'type' => 'hidden',
             'tab' => 'Property Assessment',
-        ]);
+        ]);*/
+        $year = date('Y', strtotime('+1 years'));
         $this->crud->addField([
-            'name'  => 'ifAssessmentTypeIsExempt',
-            'type'  => 'custom_html',
-            'value' => '<div class="alert alert-warning" role="alert">This property needs to go through an approval process.</div>',
-            'tab' => 'Property Assessment',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
+            'name'=>'assessmentEffectivityValue',
+            'label'=>'Effectivity of Assessment/Reassessment',
+            'type' => 'select_from_array',
+            'options' => [
+                '' => '-',
+                '1st Quarter of '.$year => '1st Quarter of '.$year, 
+                '2nd Quarter of '.$year => '2nd Quarter of '.$year,
+                '3rd Quarter of '.$year => '3rd Quarter of '.$year,
             ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name'  => 'separator10',
@@ -1176,6 +1241,19 @@ class RptBuildingsCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
+            'name' => 'TDNo', 
+            'label' => 'TD No.', 
+            'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 approve_items hidden',
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
             'name' => 'faasId', 
             'type' => 'hidden',
             'tab' => 'Property Assessment',
@@ -1277,30 +1355,42 @@ class RptBuildingsCrudController extends CrudController
         $searchByBuildingClassification = $request->input('searchByBuildingClassification');
         $searchByStructuralType = $request->input('searchByStructuralType');
         $searchByLandReferenceId = $request->input('searchByLandReferenceId');
+        $searchByPrimaryOwnerAddress = $request->input('searchByPrimaryOwnerAddress');
 
         $results = [];
 
-        $citizenProfile = BuildingProfile::select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress', 'faas_building_profiles.no_of_street', 
-        'faas_building_profiles.barangay_id', 'faas_building_profiles.oct_tct_no', 'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 
-        'faas_building_profiles.isActive',
-        'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-        ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
-        ->with('citizen_profile')
-        ->with('barangay')
-        ->with('building_owner')
-        ->with('structural_type')
-        ->with('building_classification');
+        $citizenProfile = BuildingProfile::select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress',
+            'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 'faas_building_profiles.landProfileId',
+            'faas_building_profiles.isActive',
+            'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+            'faas_lands.refID as landRefID')
+            ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+            ->join('faas_lands', 'faas_building_profiles.landProfileId', '=', 'faas_lands.id')
+            ->with('citizen_profile')
+            ->with('faas_land_profile')
+            ->with('barangay')
+            ->with('building_owner')
+            ->with('structural_type')
+            ->with('building_classification');
 
-        $nameProfile = BuildingProfile::select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress', 'faas_building_profiles.no_of_street', 
-        'faas_building_profiles.barangay_id', 'faas_building_profiles.oct_tct_no', 'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 
-        'faas_building_profiles.isActive',
-        'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-        ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
-        ->with('name_profile')
-        ->with('barangay')
-        ->with('building_owner')
-        ->with('structural_type')
-        ->with('building_classification');
+        $nameProfile = BuildingProfile::select('faas_building_profiles.id', 'faas_building_profiles.refID', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress', 
+            'faas_building_profiles.kind_of_building_id', 'faas_building_profiles.structural_type_id', 'faas_building_profiles.landProfileId',
+            'faas_building_profiles.isActive',
+            'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+            'faas_lands.refID as landRefID')
+            ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+            ->join('faas_lands', 'faas_building_profiles.landProfileId', '=', 'faas_lands.id')
+            ->with('name_profile')
+            ->with('faas_land_profile')
+            ->with('barangay')
+            ->with('building_owner')
+            ->with('structural_type')
+            ->with('building_classification');
+
+        if (!empty($searchByPrimaryOwnerAddress)) { 
+            $citizenProfile->where('faas_building_profiles.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+            $nameProfile->where('faas_building_profiles.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+        }
 
         if (!empty($searchByReferenceId)) { 
             $citizenProfile->where('faas_building_profiles.refID', 'like', '%'.$searchByReferenceId.'%');
@@ -1318,8 +1408,8 @@ class RptBuildingsCrudController extends CrudController
         }
 
         if (!empty($searchByLandReferenceId)) { 
-            $citizenProfile->where('faas_building_profiles.refID', '=', $searchByLandReferenceId);
-            $nameProfile->where('faas_building_profiles.refID', '=', $searchByLandReferenceId);
+            $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId);
+            $nameProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId);
         }
 
         if (!empty($searchByPrimaryOwner)) {

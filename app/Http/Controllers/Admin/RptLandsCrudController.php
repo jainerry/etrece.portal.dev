@@ -154,6 +154,15 @@ class RptLandsCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
+            'name' => 'searchByPrimaryOwnerAddress', 
+            'label' => 'Search by Owner Address', 
+            'type' => 'textarea',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([
             'name' => 'searchByPinId', 
             'label' => 'Search by PIN', 
             'type' => 'text',
@@ -1150,7 +1159,7 @@ class RptLandsCrudController extends CrudController
                 'disabled' => 'disabled',
             ],
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
+                'class' => 'form-group col-12 col-md-3 approve_items hidden',
             ],
             'tab' => 'Property Assessment',
         ]);
@@ -1242,6 +1251,7 @@ class RptLandsCrudController extends CrudController
         $searchByPinId = $request->input('searchByPinId');
         $searchBySurveyNo = $request->input('searchBySurveyNo');
         $searchByNoOfStreet = $request->input('searchByNoOfStreet');
+        $searchByPrimaryOwnerAddress = $request->input('searchByPrimaryOwnerAddress');
 
         $results = [];
 
@@ -1262,6 +1272,11 @@ class RptLandsCrudController extends CrudController
             ->with('name_profile')
             ->with('barangay')
             ->with('land_owner');
+
+        if (!empty($searchByPrimaryOwnerAddress)) { 
+            $citizenProfile->where('faas_lands.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+            $nameProfile->where('faas_lands.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+        }
 
         if (!empty($searchByReferenceId)) { 
             $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByReferenceId.'%');

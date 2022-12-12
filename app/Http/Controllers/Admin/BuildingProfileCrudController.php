@@ -121,7 +121,7 @@ class BuildingProfileCrudController extends CrudController
         $this->crud->addField([
             'label' => 'Land Profile',
             'type' => 'land_profile_selection',
-            'name' => 'land_profile_id',
+            'name' => 'landProfileId',
             'entity' => 'land_profile',
             'attribute' => 'refID',
             'data_source' => url('/admin/api/faas-land/search-land-profile'),
@@ -131,7 +131,15 @@ class BuildingProfileCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-
+        $this->crud->addField([
+            'name'  => 'separator5',
+            'type'  => 'custom_html',
+            'value' => '<label class="selectedLandProfileLabel">View Selected Land Profile</label><div class="selectedLandProfile" id="selectedLandProfile"></div>',
+            'tab' => 'Main Information',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 hidden selectedLandProfileWrapper',
+            ],
+        ]);
         $this->crud->addField([
             'name'  => 'separator0',
             'type'  => 'custom_html',
@@ -139,7 +147,7 @@ class BuildingProfileCrudController extends CrudController
             'tab'  => 'Main Information',
         ]);
 
-        $this->crud->addField([
+        /*$this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_union',
             'name' => 'primary_owner',
@@ -151,7 +159,59 @@ class BuildingProfileCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-6',
             ],
             'tab' => 'Main Information',
-        ]);
+        ]);*/
+
+        $id = $this->crud->getCurrentEntryId();
+        if ($id != false) {
+            $data = BuildingProfile::where('id', $id)->first();
+            $primaryOwnerId = $data->primary_owner;
+            $ownerExist  = CitizenProfile::where("id", $primaryOwnerId)->count();
+            if ($ownerExist == 0) {
+                $this->crud->addField([
+                    'label' => 'Primary Owner',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primary_owner',
+                    'entity' => 'name_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+            else {
+                $this->crud->addField([
+                    'label' => 'Primary Owner',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primary_owner',
+                    'entity' => 'citizen_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+        }
+        else {
+            $this->crud->addField([
+                'label' => 'Primary Owner',
+                'type' => 'primary_owner_union',
+                'name' => 'primary_owner',
+                'entity' => 'citizen_profile',
+                'attribute' => 'full_name',
+                'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                'minimum_input_length' => 1,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                ],
+                'tab' => 'Main Information',
+            ]);
+        }
 
         $this->crud->addField([
             'name' => 'building_owner',
@@ -603,6 +663,7 @@ class BuildingProfileCrudController extends CrudController
                     'fake' => true,
                     'attributes' => [
                         'readonly' => 'readonly',
+                        'class' => 'form-control floorNo_fake',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -611,6 +672,10 @@ class BuildingProfileCrudController extends CrudController
                 [
                     'name'    => 'floorNo',
                     'type'    => 'hidden',
+                    'attributes' => [
+                        'readonly' => 'readonly',
+                        'class' => 'form-control floorNo',
+                    ],
                 ],
                 [
                     'name'    => 'area',
@@ -618,7 +683,7 @@ class BuildingProfileCrudController extends CrudController
                     'label'   => 'Area',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
+                        'class' => 'form-control text_input_mask_currency area',
                     ],
                 ],
             ],
@@ -695,6 +760,7 @@ class BuildingProfileCrudController extends CrudController
                     'fake' => true,
                     'attributes' => [
                         'readonly' => 'readonly',
+                        'class' => 'form-control floorNo_fake',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -703,6 +769,9 @@ class BuildingProfileCrudController extends CrudController
                 [
                     'name'    => 'floorNo',
                     'type'    => 'hidden',
+                    'attributes' => [
+                        'class' => 'form-control floorNo',
+                    ],
                 ],
                 [
                     'name'    => 'type',
@@ -711,12 +780,18 @@ class BuildingProfileCrudController extends CrudController
                     'attribute' => 'name',
                     'label'   => 'Type',
                     'wrapper' => ['class' => 'form-group col-md-3 type'],
+                    'attributes' => [
+                        'class' => 'form-control type',
+                    ],
                 ],
                 [
                     'name'    => 'others',
                     'type'    => 'text',
                     'label'   => 'Please Specify',
                     'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                    'attributes' => [
+                        'class' => 'form-control others',
+                    ],
                 ],
             ],
             'new_item_label'  => 'New Item',
@@ -738,6 +813,7 @@ class BuildingProfileCrudController extends CrudController
                     'fake' => true,
                     'attributes' => [
                         'readonly' => 'readonly',
+                        'class' => 'form-control floorNo_fake',
                     ], 
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-3',
@@ -746,6 +822,9 @@ class BuildingProfileCrudController extends CrudController
                 [
                     'name'    => 'floorNo',
                     'type'    => 'hidden',
+                    'attributes' => [
+                        'class' => 'form-control floorNo',
+                    ], 
                 ],
                 [
                     'name'    => 'type',
@@ -754,12 +833,18 @@ class BuildingProfileCrudController extends CrudController
                     'attribute' => 'name',
                     'label'   => 'Type',
                     'wrapper' => ['class' => 'form-group col-md-3 type'],
+                    'attributes' => [
+                        'class' => 'form-control type',
+                    ],
                 ],
                 [
                     'name'    => 'others',
                     'type'    => 'text',
                     'label'   => 'Please Specify',
                     'wrapper' => ['class' => 'form-group col-md-3 others hidden'],
+                    'attributes' => [
+                        'class' => 'form-control others',
+                    ],
                 ],
             ],
             'new_item_label'  => 'New Item',
@@ -1010,29 +1095,65 @@ class BuildingProfileCrudController extends CrudController
 
         if ($search_term)
         {
-            $results = BuildingProfile::select(DB::raw('id, refID, landProfileId'))
-                ->with('land_profile', function ($q) use ($search_term) {
-                    $q->orWhere('refID', 'like', '%'.$search_term.'%')
-                    ->orWhere('octTctNo', 'like', '%'.$search_term.'%')
-                    ->orWhere('survey_no', 'like', '%'.$search_term.'%')
-                    ->orWhere('lotNo', 'like', '%'.$search_term.'%')
-                    ->orWhere('blkNo', 'like', '%'.$search_term.'%')
-                    ->orWhere('noOfStreet', 'like', '%'.$search_term.'%');
-                })
-                ->orWhere('refID', 'like', '%'.$search_term.'%')
-                ->where('isActive', '=', '1') 
-                ->orderBy('refID','ASC')
-                ->get();
-        }
-        else
-        {
-            $results = BuildingProfile::select(DB::raw('id, refID, primary_owner, landProfileId'))
-                ->with('land_profile')
-                ->where('isActive', '=', '1')
-                ->orderBy('refID','ASC')->paginate(10);
+            $citizenProfile = BuildingProfile::select('faas_building_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+                ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+                ->join('faas_lands', 'faas_building_profiles.landProfileId', '=', 'faas_lands.id')
+                ->with('citizen_profile')
+                ->with('faas_land_profile')
+                ->orWhere('citizen_profiles.fName', 'like', '%'.$search_term.'%')
+                ->orWhere('citizen_profiles.mName', 'like', '%'.$search_term.'%')
+                ->orWhere('citizen_profiles.lName', 'like', '%'.$search_term.'%')
+                ->orWhere('citizen_profiles.suffix', 'like', '%'.$search_term.'%')
+                ->orWhere('faas_lands.refID', 'like', '%'.$search_term.'%')
+                ->orWhere('faas_building_profiles.refID', 'like', '%'.$search_term.'%');
+        
+            $nameProfile = BuildingProfile::select('faas_building_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+                ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+                ->join('faas_lands', 'faas_building_profiles.landProfileId', '=', 'faas_lands.id')
+                ->with('name_profile')
+                ->with('faas_land_profile')
+                ->orWhere('name_profiles.first_name', 'like', '%'.$search_term.'%')
+                ->orWhere('name_profiles.middle_name', 'like', '%'.$search_term.'%')
+                ->orWhere('name_profiles.last_name', 'like', '%'.$search_term.'%')
+                ->orWhere('name_profiles.suffix', 'like', '%'.$search_term.'%')
+                ->orWhere('faas_lands.refID', 'like', '%'.$search_term.'%')
+                ->orWhere('faas_building_profiles.refID', 'like', '%'.$search_term.'%');
+
+                    
+            $citizenProfiles = $citizenProfile->where('faas_building_profiles.isActive', '=', '1')->orderBy('faas_building_profiles.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('faas_building_profiles.isActive', '=', '1')->orderBy('faas_building_profiles.refID','ASC')->get();
+    
+            $results = $citizenProfiles->merge($nameProfiles);
         }
 
         return $results;
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/faas/create-building-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('faas.building.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/faas/edit-building-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('faas.building.edit', $this->data);
     }
 
 }

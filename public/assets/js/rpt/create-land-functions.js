@@ -21,6 +21,7 @@ $(function () {
         let searchByPinId = $('input[name="searchByPinId"]').val()
         let searchBySurveyNo = $('input[name="searchBySurveyNo"]').val()
         let searchByNoOfStreet = $('input[name="searchByNoOfStreet"]').val()
+        let searchByPrimaryOwnerAddress = $('textarea[name="searchByPrimaryOwnerAddress"]').val()
 
         $.ajax({
             url: '/admin/api/rpt-land/apply-search-filters',
@@ -33,7 +34,8 @@ $(function () {
                 searchByBarangayDistrict: searchByBarangayDistrict,
                 searchByPinId: searchByPinId,
                 searchBySurveyNo: searchBySurveyNo,
-                searchByNoOfStreet: searchByNoOfStreet
+                searchByNoOfStreet: searchByNoOfStreet,
+                searchByPrimaryOwnerAddress: searchByPrimaryOwnerAddress
             },
             success: function (data) {
                 let html = ''
@@ -50,7 +52,7 @@ $(function () {
                             <th scope="col">Survey No.</th>\n\
                             <th scope="col">No. of Street</th>\n\
                             <th scope="col">Barangay/District</th>\n\
-                            <th scope="col">Address</th>\n\
+                            <th scope="col">Owner Address</th>\n\
                             <th scope="col">Status</th>\n\
                             </tr>\n\
                         </thead>\n\
@@ -114,6 +116,7 @@ $(function () {
         $('input[name="searchByPinId"]').val('')
         $('input[name="searchBySurveyNo"]').val('')
         $('input[name="searchByNoOfStreet"]').val('')
+        $('textarea[name="searchByPrimaryOwnerAddress"]').val('')
     })
 
     //Property Assessment Tab > isApproved

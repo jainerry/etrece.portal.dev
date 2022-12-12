@@ -26,7 +26,7 @@ class BuildingProfileRequest extends FormRequest
     {
         return [
             'isActive' => 'required',
-            'land_profile_id' => 'required',
+            'landProfileId' => 'required',
             'primary_owner' => 'required',
             'ownerAddress' => 'required',
             // 'no_of_street' => 'required',
@@ -41,15 +41,15 @@ class BuildingProfileRequest extends FormRequest
             'owner_tin_no' => 'max:25',
             'admin_tel_no' => 'max:25',
             'admin_tin_no' => 'max:25',
-            'oct_tct_no' => 'max:25',
-            'lot_no' => 'max:25',
-            'survey_no' => 'max:25',
-            'block_no' => 'max:25',
+            // 'oct_tct_no' => 'max:25',
+            // 'lot_no' => 'max:25',
+            // 'survey_no' => 'max:25',
+            // 'block_no' => 'max:25',
             'building_permit_no' => 'max:25',
-            'TDNo' => 'max:25',
+            //'TDNo' => 'max:25',
             'kind_of_building_id' => 'required',
             'no_of_storeys' => 'required',
-            // 'totalFloorArea' => 'required'
+            'totalFloorArea' => 'required'
         ];
     }
 
