@@ -27,9 +27,10 @@ class FaasMachineryRequest extends FormRequest
         return [
             'primaryOwnerId' => 'required',
             'ownerAddress' => 'required',
-            'noOfStreet' => 'required',
-            'barangayId' => 'required',
+            // 'noOfStreet' => 'required',
+            // 'barangayId' => 'required',
             'isActive' => 'required',
+            'pin' => 'unique:faas_lands,pin,'.$this->id,
             // 'assessmentType' => 'required',
             // 'assessmentEffectivity' => 'required',
             // 'assessmentEffectivityValue' => 'required',

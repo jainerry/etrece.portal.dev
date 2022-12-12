@@ -8,6 +8,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use App\Models\FaasBuildingClassifications;
 use App\Models\TransactionLogs;
+use Illuminate\Http\Request;
 
 /**
  * Class FaasBuildingClassificationsCrudController
@@ -107,6 +108,20 @@ class FaasBuildingClassificationsCrudController extends CrudController
                 ]
             ]
         );
+        $this->crud->addField(
+            [
+                'name'=>'unitValuePerArea',
+                'label'=>'Unit Value Per Area (sqm)',
+                'attributes' => [
+                    'class' => 'form-control text_input_mask_currency',
+                ],
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+            ]
+        );
+        
         /*Assessment Levels*/
         $this->crud->addField([   
             'name'  => 'assessmentLevels',
@@ -210,7 +225,7 @@ class FaasBuildingClassificationsCrudController extends CrudController
         $results = [];
         if (!empty($id))
         {
-            $results = FaasBuildingClassifications::select('id', 'name', 'refID', 'code', 'assessmentLevels')
+            $results = FaasBuildingClassifications::select('id', 'name', 'refID', 'code', 'unitValuePerArea', 'assessmentLevels')
             ->where('isActive', '=', 'Y')
             ->where('id', '=', $id)
             ->get();

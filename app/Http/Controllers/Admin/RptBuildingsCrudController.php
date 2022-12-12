@@ -829,9 +829,9 @@ class RptBuildingsCrudController extends CrudController
         $this->crud->addField([
             'name'  => 'separator5',
             'type'  => 'custom_html',
-            'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost" id="unitConstructionCost" value="" disabled="disabled" /> /sq.m.</p>
+            'value' => '<p>Unit Construction Cost: Php - <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionCost_fake" id="unitConstructionCost_fake" value="" disabled="disabled" /> /sq.m.</p>
                 <p>Building Core: <i>(Use additional sheets if necessary)</i></p>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal" id="unitConstructionSubTotal" value="" /> </p>',
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="unitConstructionSubTotal_fake" id="unitConstructionSubTotal_fake" value="" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -842,7 +842,7 @@ class RptBuildingsCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<p>Cost of Additional Items:</p>
                 <br><br>
-                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal" id="costOfAdditionalItemsSubTotal" value="" /> </p>',
+                <p><b>Sub-Total: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="costOfAdditionalItemsSubTotal_fake" id="costOfAdditionalItemsSubTotal_fake" value="" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
@@ -851,10 +851,62 @@ class RptBuildingsCrudController extends CrudController
         $this->crud->addField([
             'name'  => 'separator6a',
             'type'  => 'custom_html',
-            'value' => '<p><b>TOTAL CONSTRUCTION COST: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="totalConstructionCost" id="totalConstructionCost" value="" disabled="disabled" /> </p>',
+            'value' => '<p><b>TOTAL CONSTRUCTION COST: Php - </b> <input type="text" class="simple-form-input text_input_mask_currency" name="totalConstructionCost_fake" id="totalConstructionCost_fake" value="" disabled="disabled" /> </p>',
             'tab' => 'Property Appraisal',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([   
+            'name'  => 'unitConstructionCost',
+            'label' => 'unitConstructionCost',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency unitConstructionCost',
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Property Appraisal',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([   
+            'name'  => 'unitConstructionSubTotal',
+            'label' => 'unitConstructionSubTotal',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency unitConstructionSubTotal',
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Property Appraisal',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([   
+            'name'  => 'costOfAdditionalItemsSubTotal',
+            'label' => 'costOfAdditionalItemsSubTotal',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency costOfAdditionalItemsSubTotal',
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Property Appraisal',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([   
+            'name'  => 'totalConstructionCost',
+            'label' => 'totalConstructionCost',
+            'type' => 'text',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalConstructionCost',
+                'readonly' => 'readonly',
+            ],
+            'tab' => 'Property Appraisal',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
             ],
         ]);
         $this->crud->addField([
@@ -867,7 +919,6 @@ class RptBuildingsCrudController extends CrudController
             'name'  => 'depreciationRate',
             'label' => 'Depreciation Rate',
             'type' => 'text',
-            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_percent depreciationRate',
             ],
@@ -880,7 +931,6 @@ class RptBuildingsCrudController extends CrudController
             'name'  => 'depreciationCost',
             'label' => 'Depreciation Cost',
             'type' => 'text',
-            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency depreciationCost',
             ],
@@ -893,7 +943,6 @@ class RptBuildingsCrudController extends CrudController
             'name'  => 'totalPercentDepreciation',
             'label' => 'Total % Depreciation',
             'type' => 'text',
-            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_percent totalPercentDepreciation',
             ],
@@ -906,7 +955,6 @@ class RptBuildingsCrudController extends CrudController
             'name'  => 'marketValue',
             'label' => 'Market Value',
             'type' => 'text',
-            'fake' => true,
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency marketValue',
                 'readonly' => 'readonly',
@@ -1289,20 +1337,6 @@ class RptBuildingsCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-
-        $this->crud->addField([
-            'name' => 'TDNo', 
-            'label' => 'TD No.', 
-            'type' => 'text',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Property Assessment',
-        ]);
         
         RptBuildings::updating(function($entry) {
             $count = RptBuildings::count();
@@ -1408,8 +1442,8 @@ class RptBuildingsCrudController extends CrudController
         }
 
         if (!empty($searchByLandReferenceId)) { 
-            $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId);
-            $nameProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId);
+            $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId.'%');
+            $nameProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId.'%');
         }
 
         if (!empty($searchByPrimaryOwner)) {
@@ -1421,6 +1455,21 @@ class RptBuildingsCrudController extends CrudController
         $nameProfiles = $nameProfile->where('faas_building_profiles.isActive', '=', '1')->orderBy('faas_building_profiles.refID','ASC')->get();
 
         $results = $citizenProfiles->merge($nameProfiles);
+
+        return $results;
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        
+        $results = [];
+        if (!empty($id))
+        {
+            $results = RptBuildings::select('id', 'unitConstructionCost', 'unitConstructionSubTotal', 'costOfAdditionalItemsSubTotal', 'totalConstructionCost')
+            ->where('isActive', '=', '1')
+            ->where('id', '=', $id)
+            ->get();
+        }
 
         return $results;
     }

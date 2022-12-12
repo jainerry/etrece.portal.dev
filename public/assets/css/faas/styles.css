@@ -34,6 +34,7 @@ input.simple-form-input:focus {
     outline: 0;
 }
 input.simple-form-input[readonly] {
+    background-color: #f8f9fa;
     opacity: 1;
 }
 
@@ -69,6 +70,7 @@ form .select2.select2-container.select2-container--focus, form .select2.select2-
     max-width: 1500px;
 }
 
-.selectedLandProfileWrapper .selectedLandProfileLabel {
+.selectedLandProfileWrapper .selectedLandProfileLabel,
+.selectedBuildingProfileWrapper .selectedBuildingProfileLabel {
     color: #fff;
 }

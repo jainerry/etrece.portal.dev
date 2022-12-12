@@ -100,4 +100,6 @@ Route::group([
     Route::get('/api/faas-building-classification/get-details', 'FaasBuildingClassificationsCrudController@getDetails');
     Route::get('/api/faas-machinery-classification/get-details', 'FaasMachineryClassificationsCrudController@getDetails');
 
+    Route::get('/api/rpt-building/get-details', 'RptBuildingsCrudController@getDetails');
+
 }); // this should be the absolute last line of this file

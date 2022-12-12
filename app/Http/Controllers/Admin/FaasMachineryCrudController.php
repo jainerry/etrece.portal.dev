@@ -11,6 +11,7 @@ use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Support\Facades\Auth;
 use App\Models\TransactionLogs;
 use Illuminate\Http\Request;
+use App\Models\CitizenProfile;
 
 /**
  * Class FaasMachineryCrudController
@@ -111,16 +112,6 @@ class FaasMachineryCrudController extends CrudController
         $this->crud->setValidation(FaasMachineryRequest::class);
 
         /*Main Information*/
-        /*$this->crud->addField([
-            'label' => 'Transaction Code',
-            'type' => 'text',
-            'name' => 'transactionCode',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Main Information',
-        ]);*/
-
         $this->crud->addField([
             'name'=>'pin',
             'type'=>'text',
@@ -152,12 +143,12 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'separator5',
+            'name'  => 'separator5a',
             'type'  => 'custom_html',
-            'value' => '<div class="selectedLandProfile" id="selectedLandProfile"></div>',
+            'value' => '<label class="selectedLandProfileLabel">View Selected Land Profile</label><div class="selectedLandProfile" id="selectedLandProfile"></div>',
             'tab' => 'Main Information',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6',
+                'class' => 'form-group col-12 col-md-6 hidden selectedLandProfileWrapper',
             ],
         ]);
         $this->crud->addField([
@@ -174,12 +165,12 @@ class FaasMachineryCrudController extends CrudController
             'tab' => 'Main Information',
         ]);
         $this->crud->addField([
-            'name'  => 'separator5',
+            'name'  => 'separator5b',
             'type'  => 'custom_html',
-            'value' => '<div class="selectedBuildingProfile" id="selectedBuildingProfile"></div>',
+            'value' => '<label class="selectedBuildingProfileLabel">View Selected Building Profile</label><div class="selectedBuildingProfile" id="selectedBuildingProfile"></div>',
             'tab' => 'Main Information',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6',
+                'class' => 'form-group col-12 col-md-6 hidden selectedBuildingProfileWrapper',
             ],
         ]);
         
@@ -189,7 +180,7 @@ class FaasMachineryCrudController extends CrudController
             'value' => '<hr>',
             'tab'  => 'Main Information',
         ]);
-        $this->crud->addField([
+        /*$this->crud->addField([
             'label' => 'Primary Owner',
             'type' => 'primary_owner_union',
             'name' => 'primaryOwnerId',
@@ -201,7 +192,58 @@ class FaasMachineryCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-6'
             ],
             'tab' => 'Main Information',
-        ]);
+        ]);*/
+        $id = $this->crud->getCurrentEntryId();
+        if ($id != false) {
+            $data = FaasMachinery::where('id', $id)->first();
+            $primaryOwnerId = $data->primaryOwnerId;
+            $ownerExist  = CitizenProfile::where("id", $primaryOwnerId)->count();
+            if ($ownerExist == 0) {
+                $this->crud->addField([
+                    'label' => 'Primary Owner',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primaryOwnerId',
+                    'entity' => 'name_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+            else {
+                $this->crud->addField([
+                    'label' => 'Primary Owner',
+                    'type' => 'primary_owner_union',
+                    'name' => 'primaryOwnerId',
+                    'entity' => 'citizen_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                    ],
+                    'tab' => 'Main Information',
+                ]);
+            }
+        }
+        else {
+            $this->crud->addField([
+                'label' => 'Primary Owner',
+                'type' => 'primary_owner_union',
+                'name' => 'primaryOwnerId',
+                'entity' => 'citizen_profile',
+                'attribute' => 'full_name',
+                'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                'minimum_input_length' => 1,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6 primaryOwnerId_select'
+                ],
+                'tab' => 'Main Information',
+            ]);
+        }
         $this->crud->addField([
             'name' => 'machinery_owner',
             'label' => 'Secondary Owner/s',
@@ -224,19 +266,6 @@ class FaasMachineryCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        /*$this->crud->addField([
-            'name'=>'ownerAddress_fake',
-            'label'=>'Address <span style="color:red;">*</span>',
-            'type' => 'select_from_array',
-            'options'     => [
-                '' => '-',
-            ],
-            'allows_null' => false,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-12 ownerAddress_fake hidden'
-            ],
-            'tab' => 'Main Information',
-        ]);*/
         $this->crud->addField([
             'name'=>'ownerTelephoneNo',
             'label'=>'Telephone No.',
@@ -733,6 +762,33 @@ class FaasMachineryCrudController extends CrudController
         }
 
         return $results;
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/faas/create-machinery-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('faas.machinery.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/faas/edit-machinery-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('faas.machinery.edit', $this->data);
     }
     
 }

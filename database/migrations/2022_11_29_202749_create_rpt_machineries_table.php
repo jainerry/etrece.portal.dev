@@ -20,7 +20,6 @@ return new class extends Migration
             $table->text('propertyAppraisal')->nullable();
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();
-            $table->string('assessmentEffectivity')->nullable();
             $table->string('assessmentEffectivityValue')->nullable();
             $table->string('assessedBy')->nullable();
             $table->string('assessedDate')->nullable();
@@ -31,6 +30,11 @@ return new class extends Migration
             $table->text('memoranda')->nullable();
             $table->string('recordOfAssesmentEntryDate')->nullable();
             $table->string('recordingPersonel')->nullable();
+
+            $table->string('totalOriginalCost')->nullable();
+            $table->string('totalTotalDepreciationValue')->nullable();
+            $table->string('totalDepreciatedValue')->nullable();
+
             $table->string('TDNo')->nullable();
             $table->boolean('isActive')->default(1);
             $table->boolean('isApproved')->default(0);

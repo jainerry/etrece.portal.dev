@@ -24,7 +24,8 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'name' => 'Residential',
                 'code' => 'RES',
-                'assessmentLevel' => '10%',
+                'unitValuePerArea' => '1,250.00',
+                'assessmentLevels' => '[{"rangeFrom":"0.00","rangeTo":"300,000.00","percentage":"25%"},{"rangeFrom":"300,000.00","rangeTo":"500,000.00","percentage":"30%"},{"rangeFrom":"500,000.00","rangeTo":"750,000.00","percentage":"35%"},{"rangeFrom":"750,000.00","rangeTo":"1,000,000.00","percentage":"40%"},{"rangeFrom":"1,000,000.00","rangeTo":"2,000,000.00","percentage":"50%"}]',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -32,7 +33,8 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'name' => 'Commercial',
                 'code' => 'COM',
-                'assessmentLevel' => '50%',
+                'unitValuePerArea' => '1,250.00',
+                'assessmentLevels' => '[{"rangeFrom":"0.00","rangeTo":"300,000.00","percentage":"25%"},{"rangeFrom":"300,000.00","rangeTo":"500,000.00","percentage":"30%"},{"rangeFrom":"500,000.00","rangeTo":"750,000.00","percentage":"35%"},{"rangeFrom":"750,000.00","rangeTo":"1,000,000.00","percentage":"40%"},{"rangeFrom":"1,000,000.00","rangeTo":"2,000,000.00","percentage":"50%"}]',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -40,7 +42,8 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Agricultural',
                 'code' => 'AGR',
-                'assessmentLevel' => '40%',
+                'unitValuePerArea' => '1,250.00',
+                'assessmentLevels' => '[{"rangeFrom":"0.00","rangeTo":"300,000.00","percentage":"25%"},{"rangeFrom":"300,000.00","rangeTo":"500,000.00","percentage":"30%"},{"rangeFrom":"500,000.00","rangeTo":"750,000.00","percentage":"35%"},{"rangeFrom":"750,000.00","rangeTo":"1,000,000.00","percentage":"40%"},{"rangeFrom":"1,000,000.00","rangeTo":"2,000,000.00","percentage":"50%"}]',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -48,7 +51,8 @@ class FaasBuildingClassificationSeeder extends Seeder
                 'refID' => 'BLDG-CLASS'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
                 'name' => 'Industrial',
                 'code' => 'IND',
-                'assessmentLevel' => '50%',
+                'unitValuePerArea' => '1,250.00',
+                'assessmentLevels' => '[{"rangeFrom":"0.00","rangeTo":"300,000.00","percentage":"25%"},{"rangeFrom":"300,000.00","rangeTo":"500,000.00","percentage":"30%"},{"rangeFrom":"500,000.00","rangeTo":"750,000.00","percentage":"35%"},{"rangeFrom":"750,000.00","rangeTo":"1,000,000.00","percentage":"40%"},{"rangeFrom":"1,000,000.00","rangeTo":"2,000,000.00","percentage":"50%"}]',
                 'created_at' => Carbon::now(),
             ],
         ];

@@ -153,6 +153,15 @@ class RptMachineriesCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
+            'name' => 'searchByPrimaryOwnerAddress', 
+            'label' => 'Search by Owner Address', 
+            'type' => 'textarea',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6',
+            ],
+        ]);
+        $this->crud->addField([
             'name' => 'searchByPinId', 
             'label' => 'Search by PIN', 
             'type' => 'text',
@@ -162,8 +171,8 @@ class RptMachineriesCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
-            'name' => 'searchByBuildingReferenceId', 
-            'label' => 'Search by Building Reference ID', 
+            'name' => 'searchByLandReferenceId', 
+            'label' => 'Search by Land Reference ID', 
             'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
@@ -171,8 +180,8 @@ class RptMachineriesCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
-            'name' => 'searchByLandReferenceId', 
-            'label' => 'Search by Land Reference ID', 
+            'name' => 'searchByBuildingReferenceId', 
+            'label' => 'Search by Building Reference ID', 
             'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
@@ -396,141 +405,6 @@ class RptMachineriesCrudController extends CrudController
             ],
             'tab' => 'Main Information',
         ]);
-        /*Property Location*/
-        $this->crud->addField([
-            'name'=>'noOfStreet',
-            'label'=>'No. of Street',
-            'type'=>'text',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'=>'barangayId',
-            'label'=>'Barangay/District',
-            'type'=>'select',
-            'entity' => 'barangay',
-            'attribute' => 'name',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'=>'cityId_fake',
-            'label' => "Municipality",
-            'type'=>'text',
-            'value' => 'Trece Martires City',
-            'fake' => true,
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'  => 'cityId',
-            'type'  => 'hidden',
-            'value' => 'db3510e6-3add-4d81-8809-effafbbaa6fd',
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'=>'provinceId_fake',
-            'label' => "Province",
-            'type'=>'text',
-            'value' => 'Cavite',
-            'fake' => true,
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'  => 'provinceId',
-            'type'  => 'hidden',
-            'value' => 'eb9e8c56-957b-4084-b5ae-904054d2a1b3',
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'  => 'separator2',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'label' => 'Land Owner',
-            'type' => 'primary_owner_input',
-            'name' => 'landOwnerId',
-            'entity' => 'land_owner_citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
-            'minimum_input_length' => 1,
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'=>'landOwnerPin',
-            'label'=>'PIN',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'label' => 'Building Owner',
-            'type' => 'primary_owner_input',
-            'name' => 'buildingOwnerId',
-            'entity' => 'building_owner_citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/search-secondary-owners'),
-            'minimum_input_length' => 1,
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6'
-            ],
-            'tab' => 'Property Location',
-        ]);
-        $this->crud->addField([
-            'name'=>'buildingOwnerPin',
-            'label'=>'PIN',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
-            ],
-            'tab' => 'Property Location',
-        ]);
         /*Property Appraisal*/
         $this->crud->addField([   
             'name'  => 'propertyAppraisal',
@@ -541,9 +415,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'    => 'kindOfMachinery',
                     'type'    => 'text',
                     'label'   => 'Kind of Machinery',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control kindOfMachinery',
                     ],
                     'hint'    => '(Use additional sheets if necessary)',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -552,9 +425,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'    => 'brandModel',
                     'type'    => 'text',
                     'label'   => 'Brand & Model',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control brandModel',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -562,9 +434,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'    => 'capacity',
                     'type'    => 'text',
                     'label'   => 'Capacity/HP',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control capacity',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -573,9 +444,8 @@ class RptMachineriesCrudController extends CrudController
                     'type'  => 'text',
                     'label' => 'Date Acquired',
                     'hint' => '(Year)',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control dateAcquired',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -587,9 +457,8 @@ class RptMachineriesCrudController extends CrudController
                         'New' => 'New',
                         'Second Hand' => 'Second Hand'
                     ],
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control conditionWhenAcquired',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -598,9 +467,8 @@ class RptMachineriesCrudController extends CrudController
                     'type'    => 'number',
                     'label'   => 'Economic Life - Estimated',
                     'hint'    => '(No. of Years)',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control economicLifeEstimated',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -609,9 +477,8 @@ class RptMachineriesCrudController extends CrudController
                     'type'    => 'number',
                     'label'   => 'Economic Life - Remain',
                     'hint'    => '(No. of Years)',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control economicLifeRemain',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -619,9 +486,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'    => 'yearInstalled',
                     'type'    => 'text',
                     'label'   => 'Year Installed',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control yearInstalled',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -629,9 +495,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'  => 'yearOfInitialOperation',
                     'type'  => 'text',
                     'label' => 'Year of Initial Operation',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control yearOfInitialOperation',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -647,19 +512,14 @@ class RptMachineriesCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency originalCost',
                     ],
                     'label' => 'Original Cost',
-                    'fake' => true,
-                    'attributes' => [
-                        'disabled' => 'disabled',
-                    ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'conversionFactor',
                     'type'  => 'text',
                     'label' => 'Conversion Factor',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control yearOfInitialOperation',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -667,9 +527,8 @@ class RptMachineriesCrudController extends CrudController
                     'name'  => 'rcn',
                     'type'  => 'text',
                     'label' => 'RCN',
-                    'fake' => true,
                     'attributes' => [
-                        'disabled' => 'disabled',
+                        'class' => 'form-control rcn',
                     ],
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
@@ -679,18 +538,14 @@ class RptMachineriesCrudController extends CrudController
                     'label' => 'No. of Years Used',
                     'attributes' => [
                         'class' => 'form-control noOfYearsUsed',
-                        'disabled' => 'disabled',
                     ],
-                    'fake' => true,
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'rateOfDepreciation',
                     'type'  => 'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent rateOfDepreciation',
-                        'disabled' => 'disabled',
                     ],
                     'label' => 'Rate of Depreciation',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -698,10 +553,9 @@ class RptMachineriesCrudController extends CrudController
                 [
                     'name'  => 'totalDepreciationPercentage',
                     'type'  => 'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent totalDepreciationPercentage',
-                        'disabled' => 'disabled'
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Total Depreciation - %',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -709,10 +563,9 @@ class RptMachineriesCrudController extends CrudController
                 [
                     'name'  => 'totalDepreciationValue',
                     'type'  => 'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency totalDepreciationValue',
-                        'disabled' => 'disabled'
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Total Depreciation - Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -720,10 +573,9 @@ class RptMachineriesCrudController extends CrudController
                 [
                     'name'  => 'depreciatedValue',
                     'type'=>'text',
-                    'fake' => true,
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency depreciatedValue',
-                        'disabled' => 'disabled'
+                        'readonly' => 'readonly'
                     ],
                     'label' => 'Depreciated Value',
                     'wrapper' => ['class' => 'form-group col-md-3'],
@@ -747,7 +599,7 @@ class RptMachineriesCrudController extends CrudController
             'label'=>'TOTAL (Original Cost)',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
-                'disabled' => 'disabled'
+                'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -759,7 +611,7 @@ class RptMachineriesCrudController extends CrudController
             'label'=>'TOTAL (Total Depreciation Value)',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
-                'disabled' => 'disabled'
+                'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -771,7 +623,7 @@ class RptMachineriesCrudController extends CrudController
             'label'=>'TOTAL (Depreciated Value)',
             'attributes' => [
                 'class' => 'form-control text_input_mask_currency',
-                'disabled' => 'disabled'
+                'readonly' => 'readonly'
             ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
@@ -790,42 +642,52 @@ class RptMachineriesCrudController extends CrudController
                     'type'    => 'select',
                     'label'   => 'Actual Use',
                     'model'     => "App\Models\FaasMachineryClassifications",
-                    'attribute' => 'name',
-                    'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
+                    'attribute' => 'code',
                     'attributes' => [
-                        'class' => 'form-control actualUse',
+                        'class' => 'form-control text_input_mask_currency actualUse',
                     ],
+                    'wrapper' => ['class' => 'form-group col-md-3 '],
+                ],
+                [
+                    'name'    => 'actualUse_fake',
+                    'type'    => 'text',
+                    'label'   => 'Actual Use',
+                    'fake'   => true,
+                    'attributes' => [
+                        'class' => 'form-control actualUse_fake',
+                        'readonly' => 'readonly'
+                    ],
+                    'wrapper' => ['class' => 'form-group col-md-3 hidden'],
                 ],
                 [
                     'name'    => 'marketValue',
                     'type'    => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_currency marketValue',
+                        'readonly' => 'readonly'
                     ],
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 marketValue'],
                 ],
                 [
                     'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'model'     => "App\Models\FaasMachineryClassifications",
-                    'attribute' => 'assessmentLevel',
+                    'type'    => 'text',
                     'attributes' => [
                         'class' => 'form-control text_input_mask_percent assessmentLevel',
-                        'readonly' => 'readonly'
+                        'readonly' => 'readonly',
                     ],
                     'label'   => 'Assessment Level',
-                    'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
-                    'name'  => 'assessedValue',
-                    'type'  => 'text',
+                    'name'    => 'assessmentValue',
+                    'type'    => 'text',
                     'attributes' => [
-                        'class' => 'form-control text_input_mask_currency assessedValue',
-                        'readonly' => 'readonly'
+                        'class' => 'form-control text_input_mask_currency assessmentValue',
+                        'readonly' => 'readonly',
                     ],
-                    'label' => 'Assessed Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
+                    'label'   => 'Assessment Value',
+                    'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
                 [
                     'name'  => 'yearOfEffectivity',
@@ -847,6 +709,16 @@ class RptMachineriesCrudController extends CrudController
             'value' => '<hr>',
             'tab' => 'Property Assessment',
         ]);
+
+        $this->crud->addField([
+            'name'  => 'ifAssessmentTypeIsExempt',
+            'type'  => 'custom_html',
+            'value' => '<div class="alert alert-warning" role="alert"><i class="la la-exclamation-triangle"></i> This property needs to go through an approval process.</div>',
+            'tab' => 'Property Assessment',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12 hidden ifAssessmentTypeIsExempt',
+            ],
+        ]);
         $this->crud->addField([
             'name'=>'assessmentType',
             'label'=>'Assessment Type',
@@ -862,7 +734,7 @@ class RptMachineriesCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'assessmentEffectivity',
             'label'=>'Effectivity of Assessment/Reassessment',
             'type' => 'select_from_array',
@@ -915,6 +787,24 @@ class RptMachineriesCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4 hidden ifAssessmentTypeIsExempt',
             ],
+        ]);*/
+
+        $year = date('Y', strtotime('+1 years'));
+        $this->crud->addField([
+            'name'=>'assessmentEffectivityValue',
+            'label'=>'Effectivity of Assessment/Reassessment',
+            'type' => 'select_from_array',
+            'options' => [
+                '' => '-',
+                '1st Quarter of '.$year => '1st Quarter of '.$year, 
+                '2nd Quarter of '.$year => '2nd Quarter of '.$year,
+                '3rd Quarter of '.$year => '3rd Quarter of '.$year,
+            ],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
             'name'  => 'separator10',
@@ -1050,12 +940,20 @@ class RptMachineriesCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
-            'name' => 'faasId', 
-            'type' => 'hidden',
+            'name' => 'TDNo', 
+            'label' => 'TD No.', 
+            'type' => 'text',
+            'fake' => true,
+            'attributes' => [
+                'disabled' => 'disabled',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 approve_items hidden',
+            ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
-            'name' => 'barangayCode', 
+            'name' => 'faasId', 
             'type' => 'hidden',
             'tab' => 'Property Assessment',
         ]);
@@ -1091,19 +989,19 @@ class RptMachineriesCrudController extends CrudController
     {
         $this->setupCreateOperation();
 
-        $this->crud->addField([
-            'name' => 'TDNo', 
-            'label' => 'TD No.', 
-            'type' => 'text',
-            'fake' => true,
-            'attributes' => [
-                'disabled' => 'disabled',
-            ],
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-            'tab' => 'Property Assessment',
-        ]);
+        // $this->crud->addField([
+        //     'name' => 'TDNo', 
+        //     'label' => 'TD No.', 
+        //     'type' => 'text',
+        //     'fake' => true,
+        //     'attributes' => [
+        //         'disabled' => 'disabled',
+        //     ],
+        //     'wrapperAttributes' => [
+        //         'class' => 'form-group col-12 col-md-3',
+        //     ],
+        //     'tab' => 'Property Assessment',
+        // ]);
         
         RptMachineries::updating(function($entry) {
             $count = RptMachineries::count();
@@ -1156,26 +1054,36 @@ class RptMachineriesCrudController extends CrudController
         $searchByPinId = $request->input('searchByPinId');
         $searchByBuildingReferenceId = $request->input('searchByBuildingReferenceId');
         $searchByLandReferenceId = $request->input('searchByLandReferenceId');
+        $searchByPrimaryOwnerAddress = $request->input('searchByPrimaryOwnerAddress');
 
         $results = [];
 
-        $citizenProfile = FaasMachinery::select('faas_machineries.id', 'faas_machineries.refID', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress', 'faas_machineries.noOfStreet', 
-        'faas_machineries.barangayId',
+        $citizenProfile = FaasMachinery::select('faas_machineries.id', 'faas_machineries.refID', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress', 'faas_machineries.pin',
         'faas_machineries.isActive',
-        'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+        'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+        'faas_lands.refID as landRefID', 'faas_building_profiles.refID as buildingRefId')
         ->join('citizen_profiles', 'faas_machineries.primaryOwnerId', '=', 'citizen_profiles.id')
+        ->join('faas_lands', 'faas_machineries.landProfileId', '=', 'faas_lands.id')
+        ->join('faas_building_profiles', 'faas_machineries.buildingProfileId', '=', 'faas_building_profiles.id')
         ->with('citizen_profile')
         ->with('barangay')
         ->with('machinery_owner');
 
-        $nameProfile = FaasMachinery::select('faas_machineries.id', 'faas_machineries.refID', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress', 'faas_machineries.noOfStreet', 
-        'faas_machineries.barangayId',
+        $nameProfile = FaasMachinery::select('faas_machineries.id', 'faas_machineries.refID', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress', 'faas_machineries.pin',
         'faas_machineries.isActive',
-        'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+        'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+        'faas_lands.refID as landRefID', 'faas_building_profiles.refID as buildingRefId')
         ->join('name_profiles', 'faas_machineries.primaryOwnerId', '=', 'name_profiles.id')
+        ->join('faas_lands', 'faas_machineries.landProfileId', '=', 'faas_lands.id')
+        ->join('faas_building_profiles', 'faas_machineries.buildingProfileId', '=', 'faas_building_profiles.id')
         ->with('name_profile')
         ->with('barangay')
         ->with('machinery_owner');
+
+        if (!empty($searchByPrimaryOwnerAddress)) { 
+            $citizenProfile->where('faas_machineries.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+            $nameProfile->where('faas_machineries.ownerAddress', 'like', '%'.$searchByPrimaryOwnerAddress.'%');
+        }
 
         if (!empty($searchByReferenceId)) { 
             $citizenProfile->where('faas_machineries.refID', 'like', '%'.$searchByReferenceId.'%');
@@ -1183,18 +1091,18 @@ class RptMachineriesCrudController extends CrudController
         }
 
         if (!empty($searchByPinId)) { 
-            $citizenProfile->where('faas_machineries.pin', '=', $searchByPinId);
-            $nameProfile->where('faas_machineries.pin', '=', $searchByPinId);
+            $citizenProfile->where('faas_machineries.pin', 'like', '%'.$searchByPinId);
+            $nameProfile->where('faas_machineries.pin', 'like', '%'.$searchByPinId);
         }
 
         if (!empty($searchByBuildingReferenceId)) { 
-            $citizenProfile->where('faas_machineries.refID', '=', $searchByBuildingReferenceId);
-            $nameProfile->where('faas_machineries.refID', '=', $searchByBuildingReferenceId);
+            $citizenProfile->where('faas_building_profiles.refID', 'like', '%'.$searchByBuildingReferenceId.'%');
+            $nameProfile->where('faas_building_profiles.refID', 'like', '%'.$searchByBuildingReferenceId.'%');
         }
 
         if (!empty($searchByLandReferenceId)) { 
-            $citizenProfile->where('faas_machineries.refID', '=', $searchByLandReferenceId);
-            $nameProfile->where('faas_machineries.refID', '=', $searchByLandReferenceId);
+            $citizenProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId.'%');
+            $nameProfile->where('faas_lands.refID', 'like', '%'.$searchByLandReferenceId.'%');
         }
 
         if (!empty($searchByPrimaryOwner)) {

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('refID')->unique();
             $table->string('code')->unique();
             $table->string('name')->unique();
+            $table->string('unitValuePerArea')->default(0);
             $table->text('assessmentLevels')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();

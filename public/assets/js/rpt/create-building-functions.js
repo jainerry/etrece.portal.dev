@@ -132,6 +132,30 @@ $(function () {
         }
     })
 
+    $('#tab_property-appraisal input[name="unitConstructionSubTotal_fake"]').on('change', function(){
+        let unitConstructionSubTotal_fake = $(this).val()
+        $('#tab_property-appraisal input[name="unitConstructionSubTotal"]').val(unitConstructionSubTotal_fake)
+        totalConstructionCostComputation()
+    })
+
+    $('#tab_property-appraisal input[name="costOfAdditionalItemsSubTotal_fake"]').on('change', function(){
+        let costOfAdditionalItemsSubTotal_fake = $(this).val()
+        $('#tab_property-appraisal input[name="costOfAdditionalItemsSubTotal"]').val(costOfAdditionalItemsSubTotal_fake)
+        totalConstructionCostComputation()
+    })
+
+    $('#tab_property-appraisal input[name="depreciationRate"]').on('change', function(){
+        propertyAppraisalComputation()
+    })
+
+    $('#tab_property-appraisal input[name="depreciationCost"]').on('change', function(){
+        propertyAppraisalComputation()
+    })
+
+    $('#tab_property-appraisal input[name="totalPercentDepreciation"]').on('change', function(){
+        propertyAppraisalComputation()
+    })
+
 })
 
 function fetchData(id){
@@ -143,7 +167,6 @@ function fetchData(id){
             id: id
         },
         success: function (data) {
-            console.log(data)
             if(data.length > 0) {
                 data = data[0]
                 $('#tab_property-assessment input[name="faasId"]').val(data.id)
@@ -176,6 +199,7 @@ function fetchData(id){
                 $('#tab_main-information select[name="isActive"]').val(data.isActive)
 
                 $('#tab_general-description select[name="kind_of_building_id"]').val(data.kind_of_building_id)
+
                 $('#tab_general-description input[name="buildingAge"]').val(data.buildingAge)
                 $('#tab_general-description select[name="structural_type_id"]').val(data.structural_type_id)
                 $('#tab_general-description input[name="building_permit_no"]').val(data.building_permit_no)
@@ -187,8 +211,9 @@ function fetchData(id){
                 $('#tab_general-description input[name="date_occupied"]').val(data.date_occupied)
                 
                 $('#tab_general-description input[name="no_of_storeys"]').val(data.no_of_storeys)
-
                 $('#tab_general-description input[name="totalFloorArea"]').val(data.totalFloorArea)
+
+                setUnitConstructionCost(data.kind_of_building_id,data.totalFloorArea)
                 
                 $('#tab_structural-characteristic select[name="roof"]').val(data.roof)
                 $('#tab_structural-characteristic input[name="other_roof"]').val(data.other_roof)
@@ -281,18 +306,6 @@ function fetchData(id){
                     })
                 }
 
-                /*$('#tab_property-appraisal input[name="unitConstructionCost"]').val(data.unitConstructionCost)
-                $('#tab_property-appraisal input[name="unitConstructionSubTotal"]').val(data.unitConstructionSubTotal)
-                $('#tab_property-appraisal input[name="costOfAdditionalItemsSubTotal"]').val(data.costOfAdditionalItemsSubTotal)
-                $('#tab_property-appraisal input[name="totalConstructionCost"]').val(data.totalConstructionCost)
-                $('#tab_property-appraisal input[name="depreciationRate"]').val(data.depreciationRate)
-                $('#tab_property-appraisal input[name="depreciationCost"]').val(data.depreciationCost)
-                $('#tab_property-appraisal input[name="totalPercentDepreciation"]').val(data.totalPercentDepreciation)
-                $('#tab_property-appraisal input[name="marketValue"]').val(data.marketValue)
-
-                $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val(data.marketValue)*/
-                
-
                 $('.rptModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
                 $('#saveActions').removeClass('hidden')
@@ -324,6 +337,115 @@ function fetchSecondaryOwners(building_profile_id){
             $('#tab_main-information select[name="building_owner[]"]').val(secondaryOwnerIds)
         }
     })
+}
+
+function setUnitConstructionCost(kind_of_building_id,totalFloorArea) {
+    $('#tab_property-assessment select[name="propertyAssessment[0][actualUse]"]').val(kind_of_building_id)
+    let actualUseCode = $('#tab_property-assessment select[name="propertyAssessment[0][actualUse]"] option:selected').text()
+    $('#tab_property-assessment input[name="propertyAssessment[0][actualUse_fake]"]').val(actualUseCode)
+
+    $.ajax({
+        url: '/admin/api/faas-building-classification/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: kind_of_building_id
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                data = data[0]
+                let unitValuePerArea = data.unitValuePerArea
+                totalFloorArea = formatStringToFloat(totalFloorArea)
+                unitValuePerArea = formatStringToFloat(unitValuePerArea)
+                let unitConstructionCost = unitValuePerArea * totalFloorArea
+                $('#tab_property-appraisal input[name="unitConstructionCost_fake"]').val(unitConstructionCost)
+                $('#tab_property-appraisal input[name="unitConstructionCost"]').val(unitConstructionCost)
+                totalConstructionCostComputation()
+            }
+        }
+    })
+}
+
+function totalConstructionCostComputation() {
+    let unitConstructionCost = $('#tab_property-appraisal input[name="unitConstructionCost"]').val()
+    let unitConstructionSubTotal = $('#tab_property-appraisal input[name="unitConstructionSubTotal"]').val()
+    let costOfAdditionalItemsSubTotal = $('#tab_property-appraisal input[name="costOfAdditionalItemsSubTotal"]').val()
+    unitConstructionCost = formatStringToFloat(unitConstructionCost)
+    unitConstructionSubTotal = formatStringToFloat(unitConstructionSubTotal)
+    costOfAdditionalItemsSubTotal = formatStringToFloat(costOfAdditionalItemsSubTotal)
+
+    let totalConstructionCost = unitConstructionCost + unitConstructionSubTotal + costOfAdditionalItemsSubTotal
+
+    $('#tab_property-appraisal input[name="totalConstructionCost_fake"]').val(totalConstructionCost)
+    $('#tab_property-appraisal input[name="totalConstructionCost"]').val(totalConstructionCost)
+    propertyAppraisalComputation()
+}
+
+function propertyAppraisalComputation(){
+    let totalConstructionCost =  $('#tab_property-appraisal input[name="totalConstructionCost"]').val()
+    let depreciationRate =  $('#tab_property-appraisal input[name="depreciationRate"]').val()
+    let depreciationCost =  $('#tab_property-appraisal input[name="depreciationCost"]').val()
+    let totalPercentDepreciation =  $('#tab_property-appraisal input[name="totalPercentDepreciation"]').val()
+
+    totalConstructionCost = formatStringToFloat(totalConstructionCost)
+    depreciationRate = formatStringToInteger(depreciationRate)
+    depreciationCost = formatStringToFloat(depreciationCost)
+    totalPercentDepreciation = formatStringToInteger(totalPercentDepreciation)
+
+    let marketValue = totalConstructionCost - depreciationCost
+    $('#tab_property-appraisal input[name="marketValue"]').val(marketValue)
+    $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val(marketValue)
+
+    setPropertyAssessmentLevel()
+}
+
+function setPropertyAssessmentLevel(){
+    let kind_of_building_id = $('#tab_general-description select[name="kind_of_building_id"]').val()
+    let marketValue = $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val()
+    marketValue = formatStringToFloat(marketValue)
+    
+
+    $.ajax({
+        url: '/admin/api/faas-building-classification/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: kind_of_building_id
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                data = data[0]
+                let assessmentLevels = data.assessmentLevels
+                let percentage = 0
+
+                $.each(assessmentLevels, function(i, assessmentLevel) {
+                    let rangeFrom = assessmentLevel.rangeFrom
+                    let rangeTo = assessmentLevel.rangeTo
+                    
+                    rangeFrom = formatStringToFloat(rangeFrom)
+                    rangeTo = formatStringToFloat(rangeTo)
+                    
+                    if(marketValue >= rangeFrom && rangeFrom < rangeTo) {
+                        percentage = assessmentLevel.percentage
+                        percentage = formatStringToInteger(percentage)
+                    }
+                })
+                
+                $('#tab_property-assessment input[name="propertyAssessment[0][assessmentLevel]').val(percentage)
+                propertyAssessmentComputation()
+            }
+        }
+    })
+}
+
+function propertyAssessmentComputation(){
+    let marketValue = $('#tab_property-assessment input[name="propertyAssessment[0][marketValue]"]').val()
+    let assessmentLevel = $('#tab_property-assessment input[name="propertyAssessment[0][assessmentLevel]"]').val()
+    marketValue = formatStringToFloat(marketValue)
+    assessmentLevel = formatStringToInteger(assessmentLevel)
+
+    let assessmentValue = (marketValue / 100) * assessmentLevel
+    $('#tab_property-assessment input[name="propertyAssessment[0][assessmentValue]').val(assessmentValue)
 }
 
 function formatStringToFloat(num){

@@ -6,6 +6,8 @@ use App\Http\Requests\FaasMachineryClassificationsRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Illuminate\Http\Request;
+use App\Models\FaasMachineryClassifications;
 
 /**
  * Class FaasMachineryClassificationsCrudController

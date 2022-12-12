@@ -30,7 +30,6 @@ return new class extends Migration
             $table->string('transactionCode')->nullable();
             $table->text('propertyAssessment')->nullable();
             $table->string('assessmentType')->nullable();
-            $table->string('assessmentEffectivity')->nullable();
             $table->string('assessmentEffectivityValue')->nullable();
             $table->string('assessedBy')->nullable();
             $table->string('assessedDate')->nullable();

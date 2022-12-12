@@ -28,7 +28,7 @@ class RptBuildingsRequest extends FormRequest
             // 'name' => 'required|min:5|max:255'
             //'isActive' => 'required',
             'assessmentType' => 'required',
-            'assessmentEffectivity' => 'required',
+            //'assessmentEffectivity' => 'required',
             'assessmentEffectivityValue' => 'required',
         ];
     }

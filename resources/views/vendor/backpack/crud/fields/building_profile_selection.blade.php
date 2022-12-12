@@ -9,7 +9,7 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-    $field['placeholder'] = $field['placeholder'] ?? 'Select Land Profile';
+    $field['placeholder'] = $field['placeholder'] ?? 'Select Building Profile';
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
@@ -54,7 +54,7 @@
             @endif
 
             <option value="{{ $item->id }}" selected>
-                {{ $item->building_reference_id}}
+                {{ $item->refID}}
             </option>
             @endif
         @endif
@@ -143,7 +143,7 @@
         $(element).select2({
             theme: 'bootstrap',
             multiple: false,
-            placeholder: 'Select Land Profile',
+            placeholder: 'Select Building Profile',
             minimumInputLength: 2,
             allowClear: true,
             templateSelection: formatState,
@@ -178,10 +178,38 @@
                         results: $.map(data, function(item) {
 
                             let customText = ''
+
+                            let primaryOwner = ''
+
+                            if(item.ownerType === 'NameProfile') {
+                                primaryOwner = item.name_profile.full_name
+                            }
+                            else {
+                                primaryOwner = item.citizen_profile.full_name
+                            }
+                            
                             customText = `
                                 <div>
                                     <div>
                                         Reference ID: <b class="building_reference_id"> ${item.refID}</b>
+                                    </div>
+                                    <div>
+                                        Land Profile Reference ID: <b class="building_reference_id"> ${item.faas_land_profile.refID}</b>
+                                    </div>
+                                    <div>
+                                        Primary Owner: <b class="building_reference_id"> ${primaryOwner}</b>
+                                    </div>
+                                    <div>
+                                        Kind of Building: <b class="building_reference_id"> ${item.building_classification.name}</b>
+                                    </div>
+                                    <div>
+                                        Building Age: <b class="building_reference_id"> ${item.buildingAge}</b>
+                                    </div>
+                                    <div>
+                                        Structural Type: <b class="building_reference_id"> ${item.structural_type.name}</b>
+                                    </div>
+                                    <div>
+                                        Address: <b class="building_reference_id"> ${item.ownerAddress}</b>
                                     </div>
                                 </div>
                             `
