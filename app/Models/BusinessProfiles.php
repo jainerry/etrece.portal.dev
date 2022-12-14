@@ -28,6 +28,11 @@ class BusinessProfiles extends Model
     // protected $dates = [];
 
     protected $appends = ['full_name'];
+    protected $casts = [
+        'line_of_business' => 'array',
+    ];
+
+
 
     /*
     |--------------------------------------------------------------------------
@@ -50,7 +55,7 @@ class BusinessProfiles extends Model
         BusinessProfiles::creating(function($model){
             $count = BusinessProfiles::count();
             $refID = 'BUS-ID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
-            $model->buss_id = $refID;
+            $model->refID = $refID;
         });
         BusinessProfiles::deleting(function ($obj) {
             Storage::disk('public')->delete($obj->certificate);
@@ -82,6 +87,7 @@ class BusinessProfiles extends Model
     public function category(){
         return $this->belongsTo(BusinessCategory::class,'category_id',"id");
     }
+   
     public function bus_type(){
         return $this->belongsTo(BusinessType::class,"buss_type","id");
     }
@@ -100,6 +106,19 @@ class BusinessProfiles extends Model
         $this->uploadFileToDisk($value, $attribute_name, $disk, $destination_path, $fileName = null);
 
     // return $this->attributes[{$attribute_name}]; // uncomment if this is a translatable field
+    }
+    public function getOwner(){
+        if($this->names()->get()->first() == null){
+            return $this->owner()->get()->first()->full_name;
+        }else{
+            return $this->names()->get()->first()->full_name;
+        }   
+    }
+    public function getFullAddress(){
+        $mainOffice = $this->main_office()->get()->first();
+        if($mainOffice != null ){
+            return trim($mainOffice->lotNo." ".$mainOffice->noOfStreet." ".$mainOffice->barangay->name);
+        }
     }
 
 

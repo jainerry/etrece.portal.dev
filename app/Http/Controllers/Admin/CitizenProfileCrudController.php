@@ -476,6 +476,10 @@ class CitizenProfileCrudController extends CrudController
             ->orWhere('fName', 'like', '%'.$search_term.'%')
             ->orWhere('mName', 'like', '%'.$search_term.'%')
             ->orWhere('lName', 'like', '%'.$search_term.'%')
+            ->orWhere(DB::raw('CONCAT(TRIM(citizen_profiles.fName)," ",
+                (IF(citizen_profiles.mName IS NULL OR citizen_profiles.mName = ""  , "",CONCAT(citizen_profiles.mName," "))),
+                TRIM(citizen_profiles.lName),
+                (IF(citizen_profiles.suffix IS NULL OR citizen_profiles.suffix = ""  , "",CONCAT(" ",TRIM(citizen_profiles.suffix)))))'),'LIKE',"%".strtolower($search_term)."%")
             ->orWhere('suffix', 'like', '%'.$search_term.'%')
             ->orWhere('address', 'like', '%'.$search_term.'%')
             ->orWhereDate('bdate', '=', date($search_term))
@@ -488,6 +492,11 @@ class CitizenProfileCrudController extends CrudController
             ->orWhere('first_name', 'like', '%'.$search_term.'%')
             ->orWhere('middle_name', 'like', '%'.$search_term.'%')
             ->orWhere('last_name', 'like', '%'.$search_term.'%')
+            ->orWhere(DB::raw('CONCAT(TRIM(name_profiles.first_name)," ",
+                (IF(name_profiles.middle_name IS NULL OR name_profiles.middle_name = ""  , "",CONCAT(name_profiles.middle_name," "))),
+                TRIM(name_profiles.last_name),
+                (IF(name_profiles.suffix IS NULL OR name_profiles.suffix = ""  , "",CONCAT(" ",TRIM(name_profiles.suffix)))))'),'LIKE',"%".strtolower($search_term)."%")
+
             ->orWhere('suffix', 'like', '%'.$search_term.'%')
             ->orWhere('address', 'like', '%'.$search_term.'%')
             ->orWhereDate('bdate', '=', date($search_term))

@@ -34,6 +34,7 @@ return new class extends Migration
             $table->string('administratorTinNo')->nullable();
             $table->string('noOfStreet')->nullable();
             $table->string('barangayId')->nullable();
+          
             $table->string('cityId')->nullable();
             $table->string('provinceId')->nullable();
             $table->string('propertyBoundaryNorth')->nullable();

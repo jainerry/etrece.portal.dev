@@ -15,7 +15,8 @@ return new class extends Migration
     {
         Schema::create('business_profiles', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->string('buss_id')->unique();
+            $table->string('refID')->unique();
+            $table->string('buss_id')->unique()->nullable();
             $table->string('business_name')->unique();
             $table->string('category_id')->nullable();
             $table->string('owner_id')->nullable();
@@ -44,7 +45,7 @@ return new class extends Migration
             $table->string('tax_incentives')->nullable();
             $table->string('certificate')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->string('line_of_business', 1)->nullable();
+            $table->json('line_of_business', 1)->nullable();
             $table->timestamps();
         });
     }

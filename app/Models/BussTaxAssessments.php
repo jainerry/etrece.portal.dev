@@ -3,15 +3,11 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Casts\Attribute;
 
-
-class NameProfiles extends Model
+class BussTaxAssessments extends Model
 {
     use CrudTrait;
-    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -19,7 +15,7 @@ class NameProfiles extends Model
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'name_profiles';
+    protected $table = 'buss_tax_assessments';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -27,33 +23,33 @@ class NameProfiles extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $appends = ['full_name'];
-
-    
-    protected static function boot(){
-        parent::boot();
-
-        NameProfiles::creating(function($model){
-            $count = NameProfiles::count();
-            $refID = 'BUS-NAME'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
-            $model->refID = $refID;
-        });
-    }
-
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot(){
+        parent::boot();
+
+        BussTaxAssessments::creating(function($model){
+            $count = BussTaxAssessments::count();
+            $refID = 'BUSS-TAX-ASSESSMENT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+    }
+
+
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function municipality(){
-        return $this->belongsTo(Municipality::class,"municipality_id","id");
+    public function bussType(){
+        return $this->belongsTo(BusinessType::class, "application_type", "id");
+    }
+    public function bussProf(){
+        return $this->belongsTo(BusinessProfiles::class, "business_profiles_id", "id");
     }
     /*
     |--------------------------------------------------------------------------
@@ -72,24 +68,4 @@ class NameProfiles extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    public function getFullNameAttribute(){
-        $fName = ucfirst($this->first_name)." ";
-        $mName = ($this->middle_name == null? "":ucfirst($this->middle_name)." ");
-        $lName = ucfirst($this->last_name);
-        $suffix = ($this->suffix == null || $this->suffix == ""? "":" ").ucfirst($this->suffix);
-        return "{$fName}{$mName}{$lName}{$suffix}";
-    }
-
-    protected function sex(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 1? 'Male':'Female'),
-        );
-    }
-    protected function isActive(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
-        );
-    }
 }

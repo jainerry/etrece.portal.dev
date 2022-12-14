@@ -179,7 +179,7 @@
       @if ($crud->inlineErrorsEnabled() && $errors->any())
 
         window.errors = {!! json_encode($errors->messages()) !!};
-
+      
         $.each(errors, function(property, messages){
 
             var normalizedProperty = property.split('.').map(function(item, index){
@@ -193,6 +193,7 @@
 
             // iterate the inputs to add invalid classes to fields and red text to the field container.
             container.children('input, textarea, select').each(function() {
+             
                 let containerField = $(this);
                 // add the invalida class to the field.
                 containerField.addClass('is-invalid');

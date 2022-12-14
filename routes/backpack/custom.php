@@ -102,4 +102,6 @@ Route::group([
 
     Route::get('/api/rpt-building/get-details', 'RptBuildingsCrudController@getDetails');
 
+    Route::crud('bus-mayors-permits', 'BusMayorsPermitsCrudController');
+    Route::crud('buss-tax-assessments', 'BussTaxAssessmentsCrudController');
 }); // this should be the absolute last line of this file

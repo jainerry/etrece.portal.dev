@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BusinessProfilesRequest;
 use App\Models\BusinessProfiles;
+use App\Models\BusinessTaxCode;
 use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
@@ -43,8 +44,36 @@ class BusinessProfilesCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->column('buss_id')->label('Business ID');
+        $this->crud->enableExportButtons();
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');  
+        $this->crud->removeButton('update');  
+
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('business-profiles.edit',$entry->id);
+                },
+            ],
+          ]);
+        
+       
         $this->crud->column('business_name')->label('Business Name');
+        $this->crud->addColumn([
+            'name'  => 'main_office_address',
+            'label' => 'Address', // Table column heading
+            'type'  => 'model_function',
+            'function_name' => 'getFullAddress', 
+        ]);
+        $this->crud->addColumn([
+            'name'  => 'owner_id',
+            'label' => 'Owner', // Table column heading
+            'type'  => 'model_function',
+            'function_name' => 'getOwner', 
+         ]);
 
         $this->crud->column('sec_reg_date');
         $this->crud->column('isActive')->label('Status');
@@ -429,7 +458,7 @@ class BusinessProfilesCrudController extends CrudController
         ]);
         $this->crud->addField([   // Upload
             'name'      => 'certificate',
-            'label'     => 'Image',
+            'label'     => 'Upload Certificate',
             'type'      => 'upload',
             'upload'    => true,
             'tab' => 'Details',
@@ -438,7 +467,58 @@ class BusinessProfilesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-6 order-last'
             ]
         ]);
-       
+        $taxcodes = BusinessTaxCode::all();
+        $tx = [];
+        foreach($taxcodes as $taxcode){
+            $tx += [$taxcode->id => $taxcode->code];
+        }
+        $this->crud->addField([   // repeatable
+            'name'  => 'line_of_business',
+            'label' => 'Line of business(multiple)',
+            'type'  => 'repeatable',
+            'tab' => 'Details',
+            'wrapper' => [
+                'class' => 'form-group col-12 col-md-12 order-last'
+            ],
+            'subfields' => [ // also works as: "fields"
+                [
+                    'name'    => 'taxcode',
+                    'type'        => 'select_from_array',
+                    'options'     => $tx,
+                    'allows_null' => false,
+                    'tab' => 'Details',
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-md-2 '
+                    ]
+                ],
+                [
+                    'name'    => 'particular',
+                    'type'  => 'custom_html',
+                    'label'   => 'Particular',
+                    'value' => '<div class="d-flex flex-wrap">
+                    <label class="col-12 text-center">Particular</label>
+                    <div class="info pt-1 text-center col-12">
+                    Auto generate based upon tax code selection
+                    </div>
+                    </div>',
+                    'wrapper' => ['class' => 'form-group col-md-5'],
+                ],
+                [
+                    'name'    => 'capital',
+                    'type'    => 'text',
+                    'label'   => 'Company',
+                    'wrapper' => ['class' => 'form-group col-md-5'],
+                ]
+            ],
+        
+            // optional
+            'new_item_label'  => 'Add Group', // customize the text of the button
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' =>1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            'max_rows' => 10, // maximum rows allowed, when reached the "new item" button will be hidden
+            // allow reordering?
+            'reorder' => false, // hide up&down arrows next to each row (no reordering)
+        ],);
 
 
         //    $this->crud->field('tel_no');
