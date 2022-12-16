@@ -42,6 +42,9 @@ Route::group([
     Route::get('/api/citizen-profile/search-business-owner', 'CitizenProfileCrudController@searchBusinessOwner');
     Route::get('/api/faas-land/search', 'FaasLandCrudController@ajaxsearch');
 
+    Route::get('/api/citizen-profile/selection-search', 'CitizenProfileCrudController@selectionSearch');
+    Route::get('/api/business-profiles/selection-search', 'BusinessProfilesCrudController@selectionSearch');
+
     Route::crud('user', 'UserCrudController');
     Route::crud('citizen-profile', 'CitizenProfileCrudController');
     Route::crud('office', 'OfficeCrudController');
@@ -104,4 +107,9 @@ Route::group([
 
     Route::crud('bus-mayors-permits', 'BusMayorsPermitsCrudController');
     Route::crud('buss-tax-assessments', 'BussTaxAssessmentsCrudController');
+    Route::crud('treasury-rpt', 'TreasuryRptCrudController');
+    Route::crud('treasury-business', 'TreasuryBusinessCrudController');
+    Route::crud('treasury-other', 'TreasuryOtherCrudController');
+    Route::crud('treasury-ctc', 'TreasuryCtcCrudController');
+    Route::crud('ctc-type', 'CtcTypeCrudController');
 }); // this should be the absolute last line of this file

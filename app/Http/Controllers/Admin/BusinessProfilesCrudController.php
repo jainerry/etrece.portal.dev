@@ -556,4 +556,28 @@ class BusinessProfilesCrudController extends CrudController
     {
         $this->setupCreateOperation();
     }
+
+    public function selectionSearch(Request $request){ // This is the function which I want to call from ajax
+        //do something awesome with that post data 
+
+        $search_term = $request->input('q');
+
+        if ($search_term)
+        {
+            $results = BusinessProfiles::select(DB::raw('id, refID, business_name'))
+                ->orWhere('refID', 'like', '%'.$search_term.'%')
+                ->orWhere('business_name', 'like', '%'.$search_term.'%')
+                ->where('isActive', '=', 'Y') 
+                ->orderBy('business_name','ASC')
+                ->get();
+        }
+        else
+        {
+            $results = BusinessProfiles::select(DB::raw('id, refID, business_name'))
+                ->where('isActive', '=', 'Y')
+                ->orderBy('business_name','ASC')->paginate(10);
+        }
+
+        return $results;
+    }
 }

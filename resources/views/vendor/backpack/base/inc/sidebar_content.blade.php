@@ -117,6 +117,13 @@
 </li>
 @endcan
 
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i>Tresury Configurations</a>
+    <ul class="nav-dropdown-items"> 
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('ctc-type') }}"><i class="nav-icon la la-ellipsis-v"></i> Ctc types</a></li>
+    </ul>
+</li>
+
 <!-- RPT -->
 @can('rpt-view-assessment-requests')
 <li class="nav-item nav-dropdown">
@@ -134,6 +141,17 @@
 </li>
 @endcan
 
+<!-- Treasury -->
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> Treasury</a>
+    <ul class="nav-dropdown-items">
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('treasury-business') }}"><i class="nav-icon la la-ellipsis-v"></i> Business</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('treasury-rpt') }}"><i class="nav-icon la la-ellipsis-v"></i> RPT</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('treasury-ctc') }}"><i class="nav-icon la la-ellipsis-v"></i> CTC</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('treasury-other') }}"><i class="nav-icon la la-ellipsis-v"></i> Other</a></li>
+    </ul>
+</li>
+
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Business</a>
     <ul class="nav-dropdown-items">
@@ -150,5 +168,3 @@
 @can('view-transaction-logs')
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-clipboard"></i> Transaction logs</a></li>
 @endcan
-
-
