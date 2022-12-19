@@ -16,9 +16,11 @@ return new class extends Migration
         Schema::create('bus_mayors_permits', function (Blueprint $table) {
             $table->uuid('id')->primary();
             $table->string('refID')->nullable();
-            $table->integer('category')->nullable(0);
+            $table->string('category_id')->nullable(0);
+            $table->date('effective_date')->nullable();
             $table->string('from')->nullable();
             $table->string('to')->nullable();
+            $table->string('amount')->nullable();
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });

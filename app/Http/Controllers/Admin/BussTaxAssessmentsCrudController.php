@@ -109,48 +109,138 @@ class BussTaxAssessmentsCrudController extends CrudController
          ],
      ]);
 
-     $this->crud->addField([  // Select2
-      'label'     => "Application Type",
-      'type'      => 'select2',
-      'name'      => 'business_profiles_id', // the db column for the foreign key
+        $this->crud->addField([  // Select2
+         'label'     => "Application Type",
+         'type'      => 'select2',
+         'name'      => 'business_profiles_id', // the db column for the foreign key
 
      // optional
-      'entity'    => 'bussProf', // the method that defines the relationship in your Model
-      'attribute' => 'business_name', // foreign key attribute that is shown to user
-      'tab' => 'Details',
-      'wrapperAttributes' => [
-          'class' => 'form-group col-12 col-md-12 '
-      ],
-      // also optional
-      'options'   => (function ($query) {
-          return $query->orderBy('business_name', 'ASC')->get();
-      }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-       ]);
-       $this->crud->addField([
-         "name"=>'assessment_year',
-         "label"=>"Assessment Year",
+         'entity'    => 'bussProf', // the method that defines the relationship in your Model
+         'attribute' => 'business_name', // foreign key attribute that is shown to user
          'tab' => 'Details',
          'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-4 '
+             'class' => 'form-group col-12 col-md-12 '
          ],
-       ]);
-       $this->crud->addField([
-         "name"=>'payment_type',
-         "label"=>"Payment Type",
+         // also optional
+         'options'   => (function ($query) {
+             return $query->orderBy('business_name', 'ASC')->get();
+         }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
+          ]);
+        $this->crud->addField([
+          "name"=>'assessment_year',
+          "label"=>"Assessment Year",
+          'tab' => 'Details',
+          'wrapperAttributes' => [
+              'class' => 'form-group col-12 col-md-4 '
+          ],
+        ]);
+        $this->crud->addField([
+          "name"=>'payment_type',
+          "label"=>"Payment Type",
+          'tab' => 'Details',
+          'wrapperAttributes' => [
+              'class' => 'form-group col-12 col-md-4 '
+          ],
+
+        ]);
+        $this->crud->addField([
+          "name"=>'net_profit',
+          "label"=>"Net Profit",
+          'tab' => 'Details',
+          'wrapperAttributes' => [
+              'class' => 'form-group col-12 col-md-4 '
+          ],
+        ]);
+        $this->crud->addField([   // repeatable
+         'name'  => 'fees_and_delinquency',
+         'label' => 'Fees and Delinquency',
+         'type'  => 'repeatable',
+         'subfields' => [ // also works as: "fields"
+            [
+                'name'        => 'fees_list',
+                'label'       => "Fees List",
+                'type'        => 'select_from_array',
+                'options'     => ['Y' => 'Yes', 'N' => 'No'],
+                'allows_null' => true,
+                'tab' => 'Details',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+                ],
+             [
+                 'name'    => 'name',
+                 'type'    => 'text',
+                 'label'   => 'Name',
+                 'wrapper' => ['class' => 'form-group col-md-4'],
+
+             ],
+             
+             [
+                 'name'    => 'amount',
+                 'type'    => 'text',
+                 'label'   => 'Amount',
+                 'wrapper' => ['class' => 'form-group col-md-4'],
+
+             ],
+
+         ],
+
+         // optional
          'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-4 '
-         ],
-        
-       ]);
-       $this->crud->addField([
-         "name"=>'net_profit',
-         "label"=>"Net Profit",
-         'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-4 '
-         ],
-       ]);
+         'new_item_label'  => 'Add Group', // customize the text of the button
+         'init_rows' => 1, // number of empty rows to be initialized, by default 1
+        // allow reordering?
+         'reorder' => false, // hide up&down arrows next to each row (no reordering)
+
+    ], );
+    $this->crud->addField([   // repeatable
+        'name'  => 'tax_withheld_discount',
+        'label' => 'Tax withheld discount',
+        'type'  => 'repeatable',
+        'subfields' => [ // also works as: "fields"
+            [
+                'name'        => 'tax_withheld_discount',
+                'label'       => "Tax withheld Discount",
+                'type'        => 'select_from_array',
+                'options'     => ['Y' => 'Yes', 'N' => 'No'],
+                'allows_null' => true,
+                'tab' => 'Details',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-4'
+                ]
+                ],
+            [
+                'name'    => 'name',
+                'type'    => 'text',
+                'label'   => 'Name',
+                'wrapper' => ['class' => 'form-group col-md-4'],
+
+            ],
+          
+            [
+                'name'    => 'amount',
+                'type'    => 'text',
+                'label'   => 'Amount',
+                'wrapper' => ['class' => 'form-group col-md-4'],
+
+            ],
+
+        ],
+
+        // optional
+        'tab' => 'Details',
+        'new_item_label'  => 'Add Group', // customize the text of the button
+        'init_rows' => 1, // number of empty rows to be initialized, by default 1
+       // allow reordering?
+        'reorder' => false, // hide up&down arrows next to each row (no reordering)
+
+   ], );
+   $this->crud->addField([
+    "name"=>"remarks",
+    "type"=>"textarea",
+    "label"=>"Remarks",
+    'tab' => 'Details',
+   ]);
     //    $this->crud->field('payment_type');
     //    $this->crud->field('net_profit');
     //    $this->crud->field('num_of_employees');

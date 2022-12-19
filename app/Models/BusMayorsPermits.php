@@ -3,12 +3,14 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
+use App\Models\BusinessCategory;
 
 class BusMayorsPermits extends Model
 {
     use CrudTrait;
-
+    use HasUuids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
@@ -28,13 +30,25 @@ class BusMayorsPermits extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+    protected static function boot(){
+        parent::boot();
+
+        BusMayorsPermits::creating(function($model){
+            $count = BusMayorsPermits::count();
+            $refID = 'BUS-MAYOR-PERMIT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $model->refID = $refID;
+        });
+      
+    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function category(){
+        return $this->belongsTo(BusinessCategory::class,"category_id","id");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES
