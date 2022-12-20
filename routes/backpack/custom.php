@@ -112,4 +112,9 @@ Route::group([
     Route::crud('treasury-other', 'TreasuryOtherCrudController');
     Route::crud('treasury-ctc', 'TreasuryCtcCrudController');
     Route::crud('ctc-type', 'CtcTypeCrudController');
+    
+    Route::crud('chart-of-account-lvl1', 'ChartOfAccountLvl1CrudController');
+    Route::crud('chart-of-account-lvl2', 'ChartOfAccountLvl2CrudController');
+    Route::crud('chart-of-account-lvl3', 'ChartOfAccountLvl3CrudController');
+    Route::crud('chart-of-account-lvl4', 'ChartOfAccountLvl4CrudController');
 }); // this should be the absolute last line of this file

@@ -152,6 +152,17 @@
     </ul>
 </li>
 
+<!-- Chart of Account -->
+<li class="nav-item nav-dropdown">
+    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-list"></i> Chart of Accounts</a>
+    <ul class="nav-dropdown-items">
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('chart-of-account-lvl1') }}"><i class="nav-icon la la-ellipsis-v"></i> Level 1</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('chart-of-account-lvl2') }}"><i class="nav-icon la la-ellipsis-v"></i> Level 2</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('chart-of-account-lvl3') }}"><i class="nav-icon la la-ellipsis-v"></i> Level 3</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('chart-of-account-lvl4') }}"><i class="nav-icon la la-ellipsis-v"></i> Level 4</a></li>
+    </ul>
+</li>
+
 <li class="nav-item nav-dropdown">
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Business</a>
     <ul class="nav-dropdown-items">

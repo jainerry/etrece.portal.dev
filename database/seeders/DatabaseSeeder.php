@@ -40,6 +40,10 @@ class DatabaseSeeder extends Seeder
             FaasMachineryClassificationSeeder::class,
             regionSeeder::class,
             CTCTypesSeeder::class,
+            ChartOfAccountLVL1Seeder::class,
+            ChartOfAccountLVL2Seeder::class,
+            ChartOfAccountLVL3Seeder::class,
+            ChartOfAccountLVL4Seeder::class,
         ]);
     }
 }
