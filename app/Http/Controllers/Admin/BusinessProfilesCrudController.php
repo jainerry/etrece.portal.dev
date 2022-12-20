@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Requests\BusinessProfilesRequest;
+use App\Models\BusinessCategory;
+use App\Models\BusinessJobCategories;
 use App\Models\BusinessProfiles;
 use App\Models\BusinessTaxCode;
 use App\Models\CitizenProfile;
@@ -34,6 +36,8 @@ class BusinessProfilesCrudController extends CrudController
         $this->crud->setModel(\App\Models\BusinessProfiles::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-profiles');
         $this->crud->setEntityNameStrings('business profiles', 'business profiles');
+        $this->crud->setCreateView('business/profiles/crud/create');
+        $this->crud->setEditView('business/profiles/crud/edit');
     }
 
     /**
@@ -105,28 +109,11 @@ class BusinessProfilesCrudController extends CrudController
             'name' => 'business_name',
             'type' => 'text',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 mt-3'
+                'class' => 'form-group col-12 col-md-12 mt-3'
             ],
             'tab' => 'Details',
         ]);
-        $this->crud->addField([  // Select2
-            'label'     => "Category",
-            'type'      => 'select2',
-            'name'      => 'category_id', // the db column for the foreign key
-
-            // optional
-            'entity'    => 'category', // the method that defines the relationship in your Model
-            'model'     => "App\Models\BusinessCategory", // foreign key model
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            'tab' => 'Details',
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 mt-3'
-            ],
-            // also optional
-            'options'   => (function ($query) {
-                return $query->orderBy('name', 'ASC')->get();
-            }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-        ]);
+       
         $id = $this->crud->getCurrentEntryId();
         if ($id != false) {
             $data = BusinessProfiles::where('id', $id)->first();
@@ -258,7 +245,7 @@ class BusinessProfilesCrudController extends CrudController
         }
         $this->crud->addField([   // phone
             'name'  => 'tel', // db column for phone
-            'label' => 'Phone',
+            'label' => 'Telephone Phone',
             'type'  => 'text',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3 ',
@@ -467,26 +454,27 @@ class BusinessProfilesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-6 order-last'
             ]
         ]);
-        $taxcodes = BusinessTaxCode::all();
-        $tx = [];
-        foreach($taxcodes as $taxcode){
-            $tx += [$taxcode->id => $taxcode->code];
+        $buscat = BusinessCategory::all();
+        $cat = [];
+        foreach($buscat as $busc){
+            $cat += [$busc->id => $busc->name];
         }
+
         $this->crud->addField([   // repeatable
             'name'  => 'line_of_business',
-            'label' => 'Line of business(multiple)',
+            'label' => '',
             'type'  => 'repeatable',
             'tab' => 'Details',
             'wrapper' => [
-                'class' => 'form-group col-12 col-md-12 order-last'
+                'class' => 'form-group col-12 col-md-12 p-0'
             ],
             'subfields' => [ // also works as: "fields"
                 [
                     'name'    => 'taxcode',
                     'type'        => 'select_from_array',
-                    'options'     => $tx,
+                    'options'     => $cat,
                     'allows_null' => false,
-                    'tab' => 'Details',
+                   
                     'wrapper' => [
                         'class' => 'form-group col-12 col-md-2 '
                     ]
@@ -506,43 +494,73 @@ class BusinessProfilesCrudController extends CrudController
                 [
                     'name'    => 'capital',
                     'type'    => 'text',
-                    'label'   => 'Company',
+                    'label'   => 'Capital',
                     'wrapper' => ['class' => 'form-group col-md-5'],
                 ]
             ],
         
             // optional
-            'new_item_label'  => 'Add Group', // customize the text of the button
+            'new_item_label'  => 'Add', // customize the text of the button
             'init_rows' => 1, // number of empty rows to be initialized, by default 1
             'min_rows' =>1, // minimum rows allowed, when reached the "delete" buttons will be hidden
             'max_rows' => 10, // maximum rows allowed, when reached the "new item" button will be hidden
             // allow reordering?
             'reorder' => false, // hide up&down arrows next to each row (no reordering)
-        ],);
+        ]);
 
+        $jobcats = BusinessJobCategories::all();
+        $jcats = [];
+        foreach($jobcats as $jcat){
+            $jcats += [$jcat->id => $jcat->name];
+        }
 
-        //    $this->crud->field('tel_no');
-        //    $this->crud->field('mobile');
-        //    $this->crud->field('email');
-        //    $this->crud->field('buss_type');
-        //    $this->crud->field('corp_type');
-        //    $this->crud->field('trade_name_franchise');
-        //    $this->crud->field('business_activity_id');
-        //    $this->crud->field('other_buss_type');
-        //    $this->crud->field('faas_land_id');
-        //    $this->crud->field('sec_no');
-        //    $this->crud->field('sec_reg_date');
-        //    $this->crud->field('dti_no');
-        //    $this->crud->field('dti_reg_date');
-        //    $this->crud->field('tax_incentives');
-        //    $this->crud->field('certificate');
-        //    $this->crud->field('isActive');
+        $this->crud->addField([   // repeatable
+            'name'  => 'number_of_employee',
+            'label' => '',
+            'type'  => 'repeatable',
+            'tab' => 'Details',
+            'wrapper' => [
+                'class' => 'form-group col-12 col-md-12 p-0 '
+            ],
+            'subfields' => [ // also works as: "fields"
+                [
+                    'name'    => 'job_category',
+                    'type'        => 'select_from_array',
+                    'options'     => $jcats,
+                    'allows_null' => false,
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-md-4 '
+                    ]
+                ],
+                [ 
+                    'name'        => 'sex',
+                    'label'       => "Sex",
+                    'type'        => 'select_from_array',
+                    'options'     => ['1' => 'Male', '0' => 'Female'],
+                    'allows_null' => false,
+                   
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-4'
+                    ]
+                ],
+                [
+                    'name'    => 'number',
+                    'type'    => 'number',
+                    'label'   => 'No',
+                    'wrapper' => ['class' => 'form-group col-md-4'],
+                ]
+            ],
+        
+            // optional
+            'new_item_label'  => 'Add', // customize the text of the button
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' =>1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            // allow reordering?
+            'reorder' => false, // hide up&down arrows next to each row (no reordering)
+        ]);
 
-        /**
-         * Fields can be defined using the fluent syntax or array syntax:
-         * -$this->crud->field('price')->type('number');
-         * -$this->crud->addField(['name' => 'price', 'type' => 'number']));
-         */
+        
+      
     }
 
     /**

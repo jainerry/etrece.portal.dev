@@ -173,9 +173,14 @@
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-category') }}"><i class="nav-icon la la-ellipsis-v"></i> Business categories</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-tax-code') }}"><i class="nav-icon la la-ellipsis-v"></i> Business tax codes</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('bus-mayors-permits') }}"><i class="nav-icon la la-ellipsis-v"></i>  Mayors Permits</a></li>
+        
+        <li class="nav-item"><a class="nav-link d-flex"  href="{{ backpack_url('business-job-categories') }}"><i class="nav-icon la la-ellipsis-v"></i> Business job categories</a></li>
+        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('business-fees') }}"><i class="nav-icon la la-ellipsis-v"></i> Business fees</a></li>
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('buss-tax-assessments') }}"><i class="nav-icon la la-ellipsis-v"></i> Business tax assessments</a></li>
+        
     </ul>
 </li>
 @can('view-transaction-logs')
 <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-clipboard"></i> Transaction logs</a></li>
 @endcan
+

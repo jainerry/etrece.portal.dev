@@ -30,6 +30,7 @@ class BusinessProfiles extends Model
     protected $appends = ['full_name'];
     protected $casts = [
         'line_of_business' => 'array',
+        'number_of_employee' => 'array',
     ];
 
 

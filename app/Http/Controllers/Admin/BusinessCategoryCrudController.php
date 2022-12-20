@@ -28,7 +28,7 @@ class BusinessCategoryCrudController extends CrudController
     {
         $this->crud->setModel(\App\Models\BusinessCategory::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-category');
-        $this->crud->setEntityNameStrings('business category', 'business categories');
+        $this->crud->setEntityNameStrings('business category', 'business category');
     }
 
     /**
@@ -86,11 +86,21 @@ class BusinessCategoryCrudController extends CrudController
     {
         $this->crud->setValidation(BusinessCategoryRequest::class);
 
-        
+        $this->crud->addField([
+            'name'=>'code',
+            'label'=>'Code',
+            'type'=>'text',
+            'wrapper' => [
+                'class' => 'form-group col-12 col-md-6'
+            ],
+        ]);
         $this->crud->addField([
             'name'=>'name',
             'label'=>'Name',
-            'type'=>'text'
+            'type'=>'text',
+            'wrapper' => [
+                'class' => 'form-group col-12 col-md-6'
+            ],
         ]);
         $this->crud->addField([
             'name'=>'description',
@@ -108,7 +118,7 @@ class BusinessCategoryCrudController extends CrudController
             'allows_null' => false,
             'default'     => 'Y',
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-12'
             ],
         ]);
 

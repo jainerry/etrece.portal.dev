@@ -26,6 +26,7 @@ class BusinessCategoryRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:App\Models\BusinessCategory,name,'.$this->id,
+            'code' => 'required|unique:App\Models\BusinessCategory,code,'.$this->id,
             'description' => 'required'
 
         ];

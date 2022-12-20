@@ -28,7 +28,7 @@ class BusinessActivityCrudController extends CrudController
     {
         $this->crud->setModel(\App\Models\BusinessActivity::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-activity');
-        $this->crud->setEntityNameStrings('business activity', 'business activities');
+        $this->crud->setEntityNameStrings('business activity', 'business activity');
     }
 
     /**

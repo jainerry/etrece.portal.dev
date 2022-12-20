@@ -18,7 +18,6 @@ return new class extends Migration
             $table->string('refID')->unique();
             $table->string('buss_id')->unique()->nullable();
             $table->string('business_name')->unique();
-            $table->string('category_id')->nullable();
             $table->string('owner_id')->nullable();
             $table->string('main_office_address')->nullable();
             $table->char('property_owner',1)->nullable();
@@ -44,8 +43,9 @@ return new class extends Migration
             $table->date('dti_reg_date')->nullable();
             $table->string('tax_incentives')->nullable();
             $table->string('certificate')->nullable();
+            $table->json('line_of_business')->nullable();
+            $table->json('number_of_employee')->nullable();
             $table->char('isActive', 1)->default('Y');
-            $table->json('line_of_business', 1)->nullable();
             $table->timestamps();
         });
     }
