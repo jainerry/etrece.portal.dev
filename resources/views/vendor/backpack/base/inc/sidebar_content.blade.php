@@ -167,15 +167,17 @@
     <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-briefcase"></i> Business</a>
     <ul class="nav-dropdown-items">
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-profiles') }}"><i class="nav-icon la la-ellipsis-v "></i>Business Profile</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-activity') }}"><i class="nav-icon la la-ellipsis-v"></i> Business activities</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('name-profiles') }}"><i class="nav-icon la la la-ellipsis-v"></i> Name profiles</a></li>
+        <li class="nav-item"><a class="nav-link d-flex"  href="{{ backpack_url('business-job-categories') }}"><i class="nav-icon la la-ellipsis-v"></i> Business job categories</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-type') }}"><i class="nav-icon la la-ellipsis-v"></i> Business types</a></li>
+        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-activity') }}"><i class="nav-icon la la-ellipsis-v"></i> Business activities</a></li>
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-category') }}"><i class="nav-icon la la-ellipsis-v"></i> Business categories</a></li>
-        <li class="nav-item"><a class="nav-link" href="{{ backpack_url('business-tax-code') }}"><i class="nav-icon la la-ellipsis-v"></i> Business tax codes</a></li>
+        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('business-fees') }}"><i class="nav-icon la la-ellipsis-v"></i> Business fees</a></li>
+
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('bus-mayors-permits') }}"><i class="nav-icon la la-ellipsis-v"></i>  Mayors Permits</a></li>
         
-        <li class="nav-item"><a class="nav-link d-flex"  href="{{ backpack_url('business-job-categories') }}"><i class="nav-icon la la-ellipsis-v"></i> Business job categories</a></li>
-        <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('business-fees') }}"><i class="nav-icon la la-ellipsis-v"></i> Business fees</a></li>
+        
+
         <li class="nav-item"><a class="nav-link d-flex" href="{{ backpack_url('buss-tax-assessments') }}"><i class="nav-icon la la-ellipsis-v"></i> Business tax assessments</a></li>
         
     </ul>

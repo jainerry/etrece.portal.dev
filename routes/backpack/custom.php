@@ -79,7 +79,7 @@ Route::group([
     Route::crud('business-type', 'BusinessTypeCrudController');
     Route::crud('business-category', 'BusinessCategoryCrudController');
     Route::crud('business-activity', 'BusinessActivityCrudController');
-    Route::crud('business-tax-code', 'BusinessTaxCodeCrudController');
+   
 
     Route::crud('rpt-buildings', 'RptBuildingsCrudController');
     Route::crud('rpt-machineries', 'RptMachineriesCrudController');
