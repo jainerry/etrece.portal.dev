@@ -988,20 +988,6 @@ class RptMachineriesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-
-        // $this->crud->addField([
-        //     'name' => 'TDNo', 
-        //     'label' => 'TD No.', 
-        //     'type' => 'text',
-        //     'fake' => true,
-        //     'attributes' => [
-        //         'disabled' => 'disabled',
-        //     ],
-        //     'wrapperAttributes' => [
-        //         'class' => 'form-group col-12 col-md-3',
-        //     ],
-        //     'tab' => 'Property Assessment',
-        // ]);
         
         RptMachineries::updating(function($entry) {
             $count = RptMachineries::count();
@@ -1114,6 +1100,40 @@ class RptMachineriesCrudController extends CrudController
         $nameProfiles = $nameProfile->where('faas_machineries.isActive', '=', '1')->orderBy('faas_machineries.refID','ASC')->get();
 
         $results = $citizenProfiles->merge($nameProfiles);
+
+        return $results;
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        
+        $results = [];
+        if (!empty($id))
+        {
+            $citizenProfiles = RptMachineries::select('rpt_machineries.*',
+                'faas_machineries.refID as faasRefId', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType')
+                )
+                ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
+                ->join('citizen_profiles', 'faas_machineries.primaryOwnerId', '=', 'citizen_profiles.id')
+                ->with('citizen_profile')
+                ->where('rpt_buildings.isActive', '=', '1')
+                ->where('rpt_buildings.id', '=', $id)
+                ->get();
+
+            $nameProfiles = RptMachineries::select('rpt_machineries.*',
+                'faas_machineries.refID as faasRefId', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType')
+                )
+                ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
+                ->join('name_profiles', 'faas_machineries.primaryOwnerId', '=', 'name_profiles.id')
+                ->with('name_profile')
+                ->where('rpt_buildings.isActive', '=', '1')
+                ->where('rpt_buildings.id', '=', $id)
+                ->get();
+            
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
 
         return $results;
     }

@@ -104,6 +104,10 @@ class RptMachineries extends Model
         return $this->belongsTo(CitizenProfile::class,'primaryOwnerId','id');
     }
 
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primaryOwnerId','id');
+    }
+
     public function land_owner_citizen_profile(){
         return $this->belongsTo(CitizenProfile::class,'landOwnerId','id');
     }

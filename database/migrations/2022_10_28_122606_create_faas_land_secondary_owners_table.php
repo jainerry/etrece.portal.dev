@@ -15,8 +15,6 @@ return new class extends Migration
     public function up()
     {
         Schema::create('faas_land_secondary_owners', function (Blueprint $table) {
-            $uuid = Str::uuid();
-            $table->uuid('id')->default($uuid);
             $table->foreignUuid('citizen_profile_id')->nullable();
             $table->foreignUuid('land_profile_id')->nullable();
             $table->timestamps();

@@ -1320,4 +1320,38 @@ class RptLandsCrudController extends CrudController
 
         return $results;
     }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        
+        $results = [];
+        if (!empty($id))
+        {
+            $citizenProfiles = RptLands::select('rpt_lands.*',
+                'faas_lands.refID as faasRefId', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.lotNo', 'faas_lands.totalArea',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType')
+                )
+                ->join('faas_lands', 'rpt_lands.faasId', '=', 'faas_lands.id')
+                ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
+                ->with('citizen_profile')
+                ->where('rpt_lands.isActive', '=', '1')
+                ->where('rpt_lands.id', '=', $id)
+                ->get();
+
+            $nameProfiles = RptLands::select('rpt_lands.*',
+                'faas_lands.refID as faasRefId', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress', 'faas_lands.lotNo', 'faas_lands.totalArea',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType')
+                )
+                ->join('faas_lands', 'rpt_lands.faasId', '=', 'faas_lands.id')
+                ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
+                ->with('name_profile')
+                ->where('rpt_lands.isActive', '=', '1')
+                ->where('rpt_lands.id', '=', $id)
+                ->get();
+            
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        return $results;
+    }
 }

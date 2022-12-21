@@ -105,6 +105,13 @@ Route::group([
 
     Route::get('/api/rpt-building/get-details', 'RptBuildingsCrudController@getDetails');
 
+    Route::get('/api/treasury-business/apply-search-filters', 'TreasuryBusinessCrudController@applySearchFilters');
+    Route::get('/api/business-assessment/get-details', 'BussTaxAssessmentsCrudController@getDetails');
+    Route::get('/api/treasury-rpt/apply-search-filters', 'TreasuryRptCrudController@applySearchFilters');
+    Route::get('/api/rpt-building-assessment/get-details', 'RptBuildingsCrudController@getDetails');
+    Route::get('/api/rpt-land-assessment/get-details', 'RptLandsCrudController@getDetails');
+    Route::get('/api/rpt-machinery-assessment/get-details', 'RptMachineriesCrudController@getDetails');
+    
     Route::crud('bus-mayors-permits', 'BusMayorsPermitsCrudController');
     Route::crud('buss-tax-assessments', 'BussTaxAssessmentsCrudController');
     Route::crud('treasury-rpt', 'TreasuryRptCrudController');
@@ -119,4 +126,5 @@ Route::group([
     Route::crud('chart-of-account-lvl4', 'ChartOfAccountLvl4CrudController');
     Route::crud('business-job-categories', 'BusinessJobCategoriesCrudController');
     Route::crud('business-fees', 'BusinessFeesCrudController');
+    Route::crud('rpt-rates', 'RptRatesCrudController');
 }); // this should be the absolute last line of this file

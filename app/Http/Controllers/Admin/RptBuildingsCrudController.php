@@ -1343,7 +1343,6 @@ class RptBuildingsCrudController extends CrudController
             $request = app(RptBuildingsRequest::class);
 
             if($request->isApproved === '1') {
-                //$TDNo = 'TD-BLDG-'.$request->barangayCode.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
                 $TDNo = 'TD-BLDG-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
                 $entry->TDNo = $TDNo;
             }
@@ -1465,10 +1464,29 @@ class RptBuildingsCrudController extends CrudController
         $results = [];
         if (!empty($id))
         {
-            $results = RptBuildings::select('id', 'unitConstructionCost', 'unitConstructionSubTotal', 'costOfAdditionalItemsSubTotal', 'totalConstructionCost')
-            ->where('isActive', '=', '1')
-            ->where('id', '=', $id)
-            ->get();
+            $citizenProfiles = RptBuildings::select('rpt_buildings.*',
+                'faas_building_profiles.refID as faasRefId', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType')
+                )
+                ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
+                ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+                ->with('citizen_profile')
+                ->where('rpt_buildings.isActive', '=', '1')
+                ->where('rpt_buildings.id', '=', $id)
+                ->get();
+
+            $nameProfiles = RptBuildings::select('rpt_buildings.*',
+                'faas_building_profiles.refID as faasRefId', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType')
+                )
+                ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
+                ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+                ->with('name_profile')
+                ->where('rpt_buildings.isActive', '=', '1')
+                ->where('rpt_buildings.id', '=', $id)
+                ->get();
+            
+            $results = $citizenProfiles->merge($nameProfiles);
         }
 
         return $results;

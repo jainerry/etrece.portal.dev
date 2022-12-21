@@ -3,7 +3,6 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
-use Illuminate\Support\Str;
 
 return new class extends Migration
 {
@@ -14,9 +13,12 @@ return new class extends Migration
      */
     public function up()
     {
-        Schema::create('faas_machinery_secondary_owners', function (Blueprint $table) {
-            $table->foreignUuid('citizen_profile_id')->nullable();
-            $table->foreignUuid('machinery_profile_id')->nullable();
+        Schema::create('rpt_rates', function (Blueprint $table) {
+            $table->uuid('id')->primary();
+            $table->string('refID')->nullable();
+            $table->string('name')->unique();
+            $table->string('percentage')->nullable();
+            $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
     }
@@ -28,6 +30,6 @@ return new class extends Migration
      */
     public function down()
     {
-        Schema::dropIfExists('faas_machinery_secondary_owners');
+        Schema::dropIfExists('rpt_rates');
     }
 };

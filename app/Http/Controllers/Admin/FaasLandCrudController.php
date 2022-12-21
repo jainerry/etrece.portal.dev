@@ -488,6 +488,9 @@ class FaasLandCrudController extends CrudController
 
             $request = app(FaasLandRequest::class);
 
+            $ARPNo = 'ARP-LAND-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+            $entry->ARPNo = $ARPNo;
+
             TransactionLogs::create([
                 'transId' =>$refID,
                 'category' =>'faas_land',

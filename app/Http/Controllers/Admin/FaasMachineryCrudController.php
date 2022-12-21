@@ -74,6 +74,26 @@ class FaasMachineryCrudController extends CrudController
                 },
             ],
         ]);
+        $this->crud->addColumn([
+            'label'     => 'Land Reference ID',
+            'type'      => 'text',
+            'name'      => 'land_profile.refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-land.edit',$entry->landProfileId);
+                },
+            ]
+        ]);
+        $this->crud->addColumn([
+            'label'     => 'Building Reference ID',
+            'type'      => 'text',
+            'name'      => 'building_profile.refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('building-profile.edit',$entry->buildingProfileId);
+                },
+            ]
+        ]);
         CRUD::column('model_function')
         ->type('model_function')
         ->label('Primary Owner')
@@ -687,6 +707,9 @@ class FaasMachineryCrudController extends CrudController
             $entry->refID = $refID;
 
             $request = app(FaasMachineryRequest::class);
+
+            $ARPNo = 'ARP-MCHN-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+            $entry->ARPNo = $ARPNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,

@@ -7,6 +7,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Http\Request;
+use App\Models\BussTaxAssessments;
+use Illuminate\Support\Facades\DB;
 
 /**
  * Class TreasuryBusinessCrudController
@@ -80,27 +82,73 @@ class TreasuryBusinessCrudController extends CrudController
     {
         CRUD::setValidation(TreasuryBusinessRequest::class);
 
-        $this->crud->addField(
-            [
-                'name'=>'referenceNo',
-                'label'=>'Reference No.',
-                'fake'=>true,
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
-                ]
-            ]
-        );
+        /*Search Fields*/
+        $this->crud->addField([
+            'name' => 'searchByAssessmentRefID', 
+            'label' => 'Search by Assessment Reference ID', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBusinessRefID', 
+            'label' => 'Search by Business Reference ID', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBusinessName', 
+            'label' => 'Search by Business Name', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByBusinessOwner', 
+            'label' => 'Search by Business Owner', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator01x',
+            'type'  => 'custom_html',
+            'value' => '<br>',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator02x',
+            'type'  => 'custom_html',
+            'value' => '',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-10',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator04x',
+            'type'  => 'custom_html',
+            'value' => '<a href="javascript:void(0)" id="btnSearch" class="btn btn-primary" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-search"></i> Search</span></a>
+                <a href="javascript:void(0)" id="btnClear" class="btn btn-default" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-eraser"></i> Clear</span></a>',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-2',
+            ],
+        ]);
         $this->crud->addField(
             [
                 'name'=>'businessId',
                 'type'=>'hidden',
             ]
         );
-        $this->crud->addField([
-            'name'  => 'separator01',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-        ]);
+        
+        /*Details*/
         $this->crud->addField(
             [
                 'name'=>'businessName',
@@ -111,7 +159,8 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -124,7 +173,8 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -138,7 +188,8 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-12'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -151,7 +202,8 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -165,13 +217,15 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-12'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField([
             'name'  => 'separator02',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField([   
             'name'  => 'otherFees',
@@ -180,12 +234,14 @@ class TreasuryBusinessCrudController extends CrudController
             'subfields' => [
                 [
                     'name'    => 'particulars',
-                    'type'    => 'text',
+                    'type'    => 'select',
                     'label'   => 'Particulars',
+                    'model'     => "App\Models\ChartOfAccountLvl4",
+                    'attribute' => 'code_name',
                     'attributes' => [
                         'class' => 'form-control particulars',
                     ],
-                    'wrapper' => ['class' => 'form-group col-md-9'],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
                     'name'    => 'amount',
@@ -194,7 +250,7 @@ class TreasuryBusinessCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency amount',
                     ],
                     'label'   => 'Amount',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
             ],
             'new_item_label'  => 'New Item', 
@@ -202,11 +258,13 @@ class TreasuryBusinessCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => false,
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'  => 'separator03',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField([   
             'name'  => 'details',
@@ -246,11 +304,13 @@ class TreasuryBusinessCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => false,
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'  => 'separator04',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'=>'isActive',
@@ -265,6 +325,7 @@ class TreasuryBusinessCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
+            'tab' => 'Details',
         ]);
     }
 
@@ -277,5 +338,83 @@ class TreasuryBusinessCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/create-treasury-business-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('treasury.business.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/edit-treasury-business-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('treasury.business.edit', $this->data);
+    }
+
+    public function applySearchFilters(Request $request){
+        $searchByAssessmentRefID = $request->input('searchByAssessmentRefID');
+        $searchByBusinessRefID = $request->input('searchByBusinessRefID');
+        $searchByBusinessName = $request->input('searchByBusinessName');
+        $searchByBusinessOwner = $request->input('searchByBusinessOwner');
+
+        $results = [];
+
+        $citizenProfile = BussTaxAssessments::select('buss_tax_assessments.id', 'buss_tax_assessments.refID',
+            'buss_tax_assessments.isActive',
+            'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+            'business_profiles.refID as businessRefID', 'business_profiles.business_name')
+            ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
+            ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+            ->with('owner');
+
+        $nameProfile = BussTaxAssessments::select('buss_tax_assessments.id', 'buss_tax_assessments.refID',
+            'buss_tax_assessments.isActive',
+            'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+            'business_profiles.refID as businessRefID', 'business_profiles.business_name')
+            ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
+            ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+            ->with('names');
+
+        if (!empty($searchByAssessmentRefID)) { 
+            $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByAssessmentRefID.'%');
+            $nameProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByAssessmentRefID.'%');
+        }
+
+        if (!empty($searchByBusinessRefID)) { 
+            $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByBusinessRefID.'%');
+            $nameProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByBusinessRefID.'%');
+        }
+
+        if (!empty($searchByBusinessName)) { 
+            $citizenProfile->where('business_profiles.business_name', 'like', '%'.$searchByBusinessName.'%');
+            $nameProfile->where('business_profiles.business_name', 'like', '%'.$searchByBusinessName.'%');
+        }
+
+        if (!empty($searchByBusinessOwner)) { 
+            $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByBusinessOwner.'%');
+            $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByBusinessOwner.'%');
+        }
+
+        $citizenProfiles = $citizenProfile->where('buss_tax_assessments.isActive', '=', 'Y')->orderBy('buss_tax_assessments.refID','ASC')->get();
+        $nameProfiles = $nameProfile->where('buss_tax_assessments.isActive', '=', 'Y')->orderBy('buss_tax_assessments.refID','ASC')->get();
+
+        $results = $citizenProfiles->merge($nameProfiles);
+        return $results;
     }
 }

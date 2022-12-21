@@ -75,6 +75,16 @@ class BuildingProfileCrudController extends CrudController
                 },
             ]
         ]);
+        $this->crud->addColumn([
+            'label'     => 'Land Reference ID',
+            'type'      => 'text',
+            'name'      => 'land_profile.refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('faas-land.edit',$entry->landProfileId);
+                },
+            ]
+        ]);
         CRUD::column('model_function')
         ->type('model_function')
         ->label('Primary Owner')
@@ -1007,8 +1017,8 @@ class BuildingProfileCrudController extends CrudController
 
             $request = app(BuildingProfileRequest::class);
 
-            /*$ARPNo = 'ARP-BLDG-'.$request->barangay_code_text.'-01-'.str_pad(($count), 5, "0", STR_PAD_LEFT).'-'.$request->kind_of_building_code_text;
-            $entry->ARPNo = $ARPNo;*/
+            $ARPNo = 'ARP-BLDG-'.str_pad(($count), 5, "0", STR_PAD_LEFT);
+            $entry->ARPNo = $ARPNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,

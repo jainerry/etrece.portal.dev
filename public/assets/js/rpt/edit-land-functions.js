@@ -422,7 +422,7 @@ function setPropertyAssessmentValues(){
         
         if(propertyAssessmentRepeatable[index]) {}
         else {
-            $('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').trigger('click')
+            //$('.repeatable-group[bp-field-name="marketValue"] button.add-repeatable-element-button').trigger('click')
         }
         getClassificationAssessmentLevel(dataRowNumber)
     }

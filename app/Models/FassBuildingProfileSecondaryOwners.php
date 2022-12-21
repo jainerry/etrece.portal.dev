@@ -4,13 +4,11 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Support\Str;
 
 class FassBuildingProfileSecondaryOwners extends Model
 {
     use CrudTrait;
-    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -36,15 +34,6 @@ class FassBuildingProfileSecondaryOwners extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-
-    protected static function boot()
-    {
-        parent::boot();
-
-        static::creating(function ($model) {
-            $model->{$model->getKeyName()} = Str::uuid()->toString();
-        });
-    }
 
     /*
     |--------------------------------------------------------------------------

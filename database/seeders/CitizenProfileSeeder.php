@@ -38,7 +38,7 @@ class CitizenProfileSeeder extends Seeder
 
         $citizenProfiles = [
             [
-                'id'    =>Str::uuid(),
+                'id'    =>'55e25338-a90b-466d-b942-4121caab9687',
                 'refId' => 'CITIZEN-'.str_pad((0), 4, "0", STR_PAD_LEFT),
                 'fName' => 'John Carlo',
                 'mName' => 'Sacro',
@@ -53,11 +53,26 @@ class CitizenProfileSeeder extends Seeder
                 'created_at' => Carbon::now()
             ],
             [
-                'id'    =>Str::uuid(),
+                'id'    =>'4fa638ad-0ae0-400d-ac9c-5c7af12f4949',
                 'refId' => 'CITIZEN-'.str_pad((1), 4, "0", STR_PAD_LEFT),
-                'fName' => 'John ',
-                'mName' => 'Sacro',
-                'lName' => 'Salazar',
+                'fName' => 'Mark Anthony',
+                'mName' => 'Felix',
+                'lName' => 'Bernado',
+                'sex' => '0',
+                'bdate' => '1990-01-30',
+                'civilStatus'=>'Single',
+                'brgyID'=>$barangayIds[1],
+                'purokID'=>'0',
+                'address'=>'N/A',
+                'placeOfOrigin'=>'N/A',
+                'created_at' => Carbon::now()
+            ],
+            [
+                'id'    =>'b969444e-9e09-4945-949a-69f1a6278ceb',
+                'refId' => 'CITIZEN-'.str_pad((2), 4, "0", STR_PAD_LEFT),
+                'fName' => 'Jerry',
+                'mName' => 'Agustin',
+                'lName' => 'Dela Tores',
                 'sex' => '0',
                 'bdate' => '1990-01-30',
                 'civilStatus'=>'Single',
@@ -69,8 +84,8 @@ class CitizenProfileSeeder extends Seeder
             ]
         ];
 
-        $cpid = 2;
-        for($i=0; 5>=$i; $i++ ){
+        $cpid = 3;
+        for($i=0; 10>=$i; $i++ ){
             $faker =app(Faker::class);
 
             $randomNum = rand(0, count($barangayIds)-1);

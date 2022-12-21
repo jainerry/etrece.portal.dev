@@ -19,7 +19,7 @@ class StructuralTypes extends Seeder
     {
         StructuralType::insert([
             [
-            'id' => STR::uuid(),
+            'id' => '9e5e6b7b-9d7f-4fcb-a917-bd1d5dc31b89',
             'refID' => 
             'STRUC-TYPE-'.str_pad((0), 4, "0", STR_PAD_LEFT),
             'name'=>'Residential Bldg',

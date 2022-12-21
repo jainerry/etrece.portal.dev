@@ -99,6 +99,10 @@ class RptBuildings extends Model
         return $this->belongsTo(CitizenProfile::class,'primary_owner','id');
     }
 
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'primary_owner','id');
+    }
+
     public function building_owner(){
         return $this->belongsToMany(CitizenProfile::class,'faas_building_profile_secondary_owners','citizen_profile_id','building_profile_id');
     }

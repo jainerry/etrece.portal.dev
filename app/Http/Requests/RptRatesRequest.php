@@ -4,7 +4,7 @@ namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
 
-class CtcTypeRequest extends FormRequest
+class RptRatesRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -26,7 +26,8 @@ class CtcTypeRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
-            'name' => 'required|unique:ctc_types,name,'.$this->id,
+            'name' => 'required|unique:rpt_rates,name,'.$this->id,
+            'percentage' => 'required',
             'isActive' => 'required'
         ];
     }

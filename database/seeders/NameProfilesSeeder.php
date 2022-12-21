@@ -46,11 +46,11 @@ class NameProfilesSeeder extends Seeder
 
         $nameProfiles = [
             [
-                'id'    =>Str::uuid(),
-                'refId' => 'BUS-NAME-'.str_pad((0), 4, "0", STR_PAD_LEFT),
-                'first_name' => 'Juan',
+                'id'    =>'7c6c6272-0dd2-49f8-8dc5-f9fd43da78d2',
+                'refId' => 'NAME-'.str_pad((0), 4, "0", STR_PAD_LEFT),
+                'first_name' => 'Kyle',
                 'middle_name' => 'Reyes',
-                'last_name' => 'Dela Cruz',
+                'last_name' => 'Baltazar',
                 'suffix' => 'SR',
                 'sex' => '0',
                 'bdate' => '1990-12-07',
@@ -59,8 +59,8 @@ class NameProfilesSeeder extends Seeder
                 'created_at' => Carbon::now()
             ],
             [
-                'id'    =>Str::uuid(),
-                'refId' => 'BUS-NAME-'.str_pad((1), 4, "0", STR_PAD_LEFT),
+                'id'    =>'8044fcc2-828d-478a-8e17-d2bd83f153de',
+                'refId' => 'NAME-'.str_pad((1), 4, "0", STR_PAD_LEFT),
                 'first_name' => 'Kelvin',
                 'middle_name' => 'Louis',
                 'last_name' => 'Doe',
@@ -70,18 +70,31 @@ class NameProfilesSeeder extends Seeder
                 'municipality_id'=>$municipalityIds[1],
                 'address'=>'N/A',
                 'created_at' => Carbon::now()
+            ],
+            [
+                'id'    =>'2e71d819-b487-4e2b-a020-6ee6dbb629dd',
+                'refId' => 'NAME-'.str_pad((2), 4, "0", STR_PAD_LEFT),
+                'first_name' => 'Brent',
+                'middle_name' => 'Mendoza',
+                'last_name' => 'Guilipardo',
+                'suffix' => '',
+                'sex' => '0',
+                'bdate' => '1991-09-24',
+                'municipality_id'=>$municipalityIds[1],
+                'address'=>'N/A',
+                'created_at' => Carbon::now()
             ]
         ];
 
-        $npid = 2;
-        for($i=0; 5>=$i; $i++ ){
+        $npid = 3;
+        for($i=0; 10>=$i; $i++ ){
             $faker =app(Faker::class);
 
             $randomNum = rand(0, count($municipalityIds)-1);
 
             array_push($nameProfiles, [
                 'id'    =>Str::uuid(),
-                'refId' => 'BUS-NAME-'.str_pad(($npid++), 4, "0", STR_PAD_LEFT),
+                'refId' => 'NAME-'.str_pad(($npid++), 4, "0", STR_PAD_LEFT),
                 'first_name' => $faker->firstNameMale(),
                 'middle_name' => '',
                 'last_name' => $faker->lastName(),

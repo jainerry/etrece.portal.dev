@@ -7,6 +7,11 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Http\Request;
+use App\Models\BussTaxAssessments;
+use Illuminate\Support\Facades\DB;
+use App\Models\RptLands;
+use App\Models\RptBuildings;
+use App\Models\RptMachineries;
 
 /**
  * Class TreasuryRptCrudController
@@ -80,21 +85,96 @@ class TreasuryRptCrudController extends CrudController
     {
         CRUD::setValidation(TreasuryRptRequest::class);
 
+        /*Search Fields*/
+        $this->crud->addField(
+            [
+                'name'=>'searchByType',
+                'label'=>'Search by Type',
+                'type' => 'select_from_array',
+                'fake' => true,
+                'options' => [
+                    'Land' => 'Land',
+                    'Building' => 'Building', 
+                    'Machinery' => 'Machinery'
+                ],
+                'allows_null' => false,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-3'
+                ],
+            ]
+        );
+        $this->crud->addField([
+            'name' => 'searchByReferenceId', 
+            'label' => 'Search by Reference ID', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByTDNo', 
+            'label' => 'Search by TD No.', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name' => 'searchByOwner', 
+            'label' => 'Search by Owner', 
+            'type' => 'text',
+            'fake' => true,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator01x',
+            'type'  => 'custom_html',
+            'value' => '<br>',
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator02x',
+            'type'  => 'custom_html',
+            'value' => '',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-10',
+            ],
+        ]);
+        $this->crud->addField([
+            'name'  => 'separator04x',
+            'type'  => 'custom_html',
+            'value' => '<a href="javascript:void(0)" id="btnSearch" class="btn btn-primary" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-search"></i> Search</span></a>
+                <a href="javascript:void(0)" id="btnClear" class="btn btn-default" data-style="zoom-in" style="width:110px;"><span class="ladda-label"><i class="la la-eraser"></i> Clear</span></a>',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-2',
+            ],
+        ]);
+        $this->crud->addField(
+            [
+                'name'=>'rptId',
+                'type'=>'hidden',
+            ]
+        );
+
+        /*Details*/
         $this->crud->addField(
             [
                 'name'=>'rptType',
                 'label'=>'Type',
                 'type' => 'select_from_array',
                 'options' => [
+                    'Land' => 'Land',
                     'Building' => 'Building', 
-                    'Machinery' => 'Machinery',
-                    'Land' => 'Land'
+                    'Machinery' => 'Machinery'
                 ],
                 'allows_null' => false,
-                'default'     => 'Y',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
+                    'class' => 'form-group col-12 col-md-3 hidden'
                 ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -102,31 +182,31 @@ class TreasuryRptCrudController extends CrudController
                 'name'=>'TDNo',
                 'label'=>'TD No.',
                 'fake'=>true,
+                'attributes' => [
+                    'readonly' => 'readonly'
+                ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-3'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
-        $this->crud->addField(
+        /*$this->crud->addField(
             [
                 'name'=>'ARPNo',
                 'label'=>'ARP No.',
                 'fake'=>true,
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-3'
-                ]
+                ],
+                'tab' => 'Details',
             ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'rptId',
-                'type'=>'hidden',
-            ]
-        );
+        );*/
         $this->crud->addField([
             'name'  => 'separator01',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField(
             [
@@ -138,7 +218,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -152,10 +233,11 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-12'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
-        $this->crud->addField(
+        /*$this->crud->addField(
             [
                 'name'=>'administrator',
                 'label'=>'Owner',
@@ -165,7 +247,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -179,9 +262,10 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-12'
-                ]
+                ],
+                'tab' => 'Details',
             ]
-        );
+        );*/
         $this->crud->addField(
             [
                 'name'=>'assessedValue',
@@ -193,7 +277,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -206,7 +291,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -220,7 +306,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -233,7 +320,8 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField(
@@ -246,14 +334,26 @@ class TreasuryRptCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
-                ]
+                ],
+                'tab' => 'Details',
             ]
         );
         $this->crud->addField([
             'name'  => 'separator02',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
+        $this->crud->addField(
+            [
+                'name'=>'year',
+                'label'=>'Year',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-3'
+                ],
+                'tab' => 'Details',
+            ]
+        );
         $this->crud->addField([
             'name'=>'periodCovered',
             'label'=>'Period Covered',
@@ -267,13 +367,15 @@ class TreasuryRptCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'  => 'separator02a',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
-        $this->crud->addField([   
+        /*$this->crud->addField([   
             'name'  => 'otherFees',
             'label' => 'Other Fees',
             'type'  => 'repeatable',
@@ -302,11 +404,13 @@ class TreasuryRptCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => false,
-        ]);
+            'tab' => 'Details',
+        ]);*/
         $this->crud->addField([
             'name'  => 'separator03',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField([   
             'name'  => 'summary',
@@ -320,7 +424,7 @@ class TreasuryRptCrudController extends CrudController
                     'attributes' => [
                         'class' => 'form-control particulars',
                     ],
-                    'wrapper' => ['class' => 'form-group col-md-9'],
+                    'wrapper' => ['class' => 'form-group col-md-8'],
                 ],
                 [
                     'name'    => 'amount',
@@ -329,7 +433,7 @@ class TreasuryRptCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency amount',
                     ],
                     'label'   => 'Amount',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ],
             ],
             'new_item_label'  => 'New Item', 
@@ -337,11 +441,13 @@ class TreasuryRptCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 10,
             'reorder' => false,
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'  => 'separator04',
             'type'  => 'custom_html',
             'value' => '<hr>',
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
             'name'=>'isActive',
@@ -356,6 +462,7 @@ class TreasuryRptCrudController extends CrudController
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
+            'tab' => 'Details',
         ]);
     }
 
@@ -368,5 +475,147 @@ class TreasuryRptCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/create-treasury-rpt-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('treasury.rpt.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/edit-treasury-rpt-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('treasury.rpt.edit', $this->data);
+    }
+
+    public function applySearchFilters(Request $request){
+        $searchByType = $request->input('searchByType');
+        $searchByReferenceId = $request->input('searchByReferenceId');
+        $searchByTDNo = $request->input('searchByTDNo');
+        $searchByOwner = $request->input('searchByOwner');
+
+        $results = [];
+
+        if($searchByType === 'Land') {
+            $citizenProfile = RptLands::select('rpt_lands.id', 'rpt_lands.refID', 'rpt_lands.faasId', 'rpt_lands.isActive', 'rpt_lands.TDNo',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+                'faas_lands.refID as faasRefId', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress')
+                ->join('faas_lands', 'rpt_lands.faasId', '=', 'faas_lands.id')
+                ->join('citizen_profiles', 'faas_lands.primaryOwnerId', '=', 'citizen_profiles.id')
+                ->with('citizen_profile');
+
+            $nameProfile = RptLands::select('rpt_lands.id', 'rpt_lands.refID', 'rpt_lands.faasId', 'rpt_lands.isActive', 'rpt_lands.TDNo',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+                'faas_lands.refID as faasRefId', 'faas_lands.primaryOwnerId', 'faas_lands.ownerAddress')
+                ->join('faas_lands', 'rpt_lands.faasId', '=', 'faas_lands.id')
+                ->join('name_profiles', 'faas_lands.primaryOwnerId', '=', 'name_profiles.id')
+                ->with('name_profile');
+
+            if (!empty($searchByReferenceId)) { 
+                $citizenProfile->where('rpt_lands.refID', 'like', '%'.$searchByReferenceId.'%');
+                $nameProfile->where('rpt_lands.refID', 'like', '%'.$searchByReferenceId.'%');
+            }
+    
+            if (!empty($searchByTDNo)) { 
+                $citizenProfile->where('rpt_lands.TDNo', 'like', '%'.$searchByTDNo.'%');
+                $nameProfile->where('rpt_lands.TDNo', 'like', '%'.$searchByTDNo.'%');
+            }
+    
+            if (!empty($searchByOwner)) { 
+                $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByOwner.'%');
+                $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByOwner.'%');
+            }
+    
+            $citizenProfiles = $citizenProfile->where('rpt_lands.isActive', '=', '1')->orderBy('rpt_lands.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('rpt_lands.isActive', '=', '1')->orderBy('rpt_lands.refID','ASC')->get();
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+        else if($searchByType === 'Building') {
+            $citizenProfile = RptBuildings::select('rpt_buildings.id', 'rpt_buildings.refID', 'rpt_buildings.faasId', 'rpt_buildings.isActive', 'rpt_buildings.TDNo',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+                'faas_building_profiles.refID as faasRefId', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress')
+                ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
+                ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
+                ->with('citizen_profile');
+
+            $nameProfile = RptBuildings::select('rpt_buildings.id', 'rpt_buildings.refID', 'rpt_buildings.faasId', 'rpt_buildings.isActive', 'rpt_buildings.TDNo',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+                'faas_building_profiles.refID as faasRefId', 'faas_building_profiles.primary_owner', 'faas_building_profiles.ownerAddress')
+                ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
+                ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
+                ->with('name_profile');
+
+            if (!empty($searchByReferenceId)) { 
+                $citizenProfile->where('rpt_buildings.refID', 'like', '%'.$searchByReferenceId.'%');
+                $nameProfile->where('rpt_buildings.refID', 'like', '%'.$searchByReferenceId.'%');
+            }
+    
+            if (!empty($searchByTDNo)) { 
+                $citizenProfile->where('rpt_buildings.TDNo', 'like', '%'.$searchByTDNo.'%');
+                $nameProfile->where('rpt_buildings.TDNo', 'like', '%'.$searchByTDNo.'%');
+            }
+    
+            if (!empty($searchByOwner)) { 
+                $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByOwner.'%');
+                $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByOwner.'%');
+            }
+    
+            $citizenProfiles = $citizenProfile->where('rpt_buildings.isActive', '=', '1')->orderBy('rpt_buildings.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('rpt_buildings.isActive', '=', '1')->orderBy('rpt_buildings.refID','ASC')->get();
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+        else if($searchByType === 'Machinery') {
+            $citizenProfile = RptMachineries::select('rpt_machineries.id', 'rpt_machineries.refID', 'rpt_machineries.faasId', 'rpt_machineries.isActive', 'rpt_machineries.TDNo',
+                'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
+                'faas_machineries.refID as faasRefId', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress')
+                ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
+                ->join('citizen_profiles', 'faas_machineries.primaryOwnerId', '=', 'citizen_profiles.id')
+                ->with('citizen_profile');
+
+            $nameProfile = RptMachineries::select('rpt_machineries.id', 'rpt_machineries.refID', 'rpt_machineries.faasId', 'rpt_machineries.isActive', 'rpt_machineries.TDNo',
+                'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
+                'faas_machineries.refID as faasRefId', 'faas_machineries.primaryOwnerId', 'faas_machineries.ownerAddress')
+                ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
+                ->join('name_profiles', 'faas_machineries.primaryOwnerId', '=', 'name_profiles.id')
+                ->with('name_profile');
+            
+            if (!empty($searchByReferenceId)) { 
+                $citizenProfile->where('rpt_machineries.refID', 'like', '%'.$searchByReferenceId.'%');
+                $nameProfile->where('rpt_machineries.refID', 'like', '%'.$searchByReferenceId.'%');
+            }
+    
+            if (!empty($searchByTDNo)) { 
+                $citizenProfile->where('rpt_machineries.TDNo', 'like', '%'.$searchByTDNo.'%');
+                $nameProfile->where('rpt_machineries.TDNo', 'like', '%'.$searchByTDNo.'%');
+            }
+    
+            if (!empty($searchByOwner)) { 
+                $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByOwner.'%');
+                $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByOwner.'%');
+            }
+    
+            $citizenProfiles = $citizenProfile->where('rpt_machineries.isActive', '=', '1')->orderBy('rpt_machineries.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('rpt_machineries.isActive', '=', '1')->orderBy('rpt_machineries.refID','ASC')->get();
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        
+        return $results;
     }
 }
