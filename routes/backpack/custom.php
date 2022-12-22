@@ -106,7 +106,7 @@ Route::group([
     Route::get('/api/rpt-building/get-details', 'RptBuildingsCrudController@getDetails');
 
     Route::get('/api/treasury-business/apply-search-filters', 'TreasuryBusinessCrudController@applySearchFilters');
-    Route::get('/api/business-assessment/get-details', 'BussTaxAssessmentsCrudController@getDetails');
+    Route::get('/api/business-tax-assessment/get-details', 'BussTaxAssessmentsCrudController@getDetails');
     Route::get('/api/treasury-rpt/apply-search-filters', 'TreasuryRptCrudController@applySearchFilters');
     Route::get('/api/rpt-building-assessment/get-details', 'RptBuildingsCrudController@getDetails');
     Route::get('/api/rpt-land-assessment/get-details', 'RptLandsCrudController@getDetails');

@@ -365,21 +365,23 @@ class TreasuryBusinessCrudController extends CrudController
 
         $results = [];
 
-        $citizenProfile = BussTaxAssessments::select('buss_tax_assessments.id', 'buss_tax_assessments.refID',
-            'buss_tax_assessments.isActive',
+        $citizenProfile = BussTaxAssessments::select('buss_tax_assessments.*',
             'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
             'business_profiles.refID as businessRefID', 'business_profiles.business_name')
             ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
-            ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id');
-            //->with('owner');
+            ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+            ->with('bussProf')
+            ->with('bussProf.main_office')
+            ->with('bussType');
 
-        $nameProfile = BussTaxAssessments::select('buss_tax_assessments.id', 'buss_tax_assessments.refID',
-            'buss_tax_assessments.isActive',
+        $nameProfile = BussTaxAssessments::select('buss_tax_assessments.*',
             'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
             'business_profiles.refID as businessRefID', 'business_profiles.business_name')
             ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
-            ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id');
-            //->with('names');
+            ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+            ->with('bussProf')
+            ->with('bussProf.main_office')
+            ->with('bussType');
 
         if (!empty($searchByReferenceId)) { 
             $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByReferenceId.'%');
