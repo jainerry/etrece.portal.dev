@@ -14,6 +14,7 @@ use Backpack\CRUD\app\Library\Widget;
 // use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\DB;
 /**
  * Class BusinessProfilesCrudController
  * @package App\Http\Controllers\Admin
@@ -416,6 +417,7 @@ class BusinessProfilesCrudController extends CrudController
             'tab' => 'Details',
 
         ]);
+        
         $this->crud->addField([
             'name'  => 'dti_reg_date',
             'type'  => 'date_picker',
@@ -432,6 +434,37 @@ class BusinessProfilesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-3 order-last'
             ]
          ]);
+         $this->crud->addField([
+            'name'        => 'weight_and_measure',
+            'label'       => "Weight & Measure (Y/N)",
+            'type'        => 'select_from_array',
+            'options'     => ['N' => 'No', 'Y' => 'Yes'],
+            'allows_null' => FALSE,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 order-last'
+            ]
+        ]);
+        $this->crud->addField([
+            'name'        => 'unit_of_measurement',
+            'label'       => "UOM(liter/kilogram)",
+            'type'        => 'select_from_array',
+            'options'     => ['L' => 'Liter', 'K' => 'Kilogram'],
+            'allows_null' => true,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 order-last'
+            ]
+        ]);
+        $this->crud->addField([
+            'name'        => 'weight_and_measure_value',
+            'label'       => "Weight & Measure Value*",
+            'type'        => 'text',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 order-last'
+            ]
+        ]);
 
          $this->crud->addField([
             'name'        => 'tax_incentives',
@@ -471,32 +504,21 @@ class BusinessProfilesCrudController extends CrudController
             ],
             'subfields' => [ // also works as: "fields"
                 [
-                    'name'    => 'taxcode',
-                    'type'        => 'select_from_array',
-                    'options'     => $cat,
+                    'name'    => 'particulars',
+                    'type'        => 'select',
+                    'entity'    => 'businessCategory',
+                    'attribute' => 'name',
                     'allows_null' => false,
                    
                     'wrapper' => [
-                        'class' => 'form-group col-12 col-md-2 '
+                        'class' => 'form-group col-12 col-md-8 '
                     ]
-                ],
-                [
-                    'name'    => 'particular',
-                    'type'  => 'custom_html',
-                    'label'   => 'Particular',
-                    'value' => '<div class="d-flex flex-wrap">
-                    <label class="col-12 text-center">Particular</label>
-                    <div class="info pt-1 text-center col-12">
-                    Auto generate based upon tax code selection
-                    </div>
-                    </div>',
-                    'wrapper' => ['class' => 'form-group col-md-5'],
                 ],
                 [
                     'name'    => 'capital',
                     'type'    => 'text',
                     'label'   => 'Capital',
-                    'wrapper' => ['class' => 'form-group col-md-5'],
+                    'wrapper' => ['class' => 'form-group col-md-4'],
                 ]
             ],
         
@@ -516,7 +538,7 @@ class BusinessProfilesCrudController extends CrudController
         }
 
         $this->crud->addField([   // repeatable
-            'name'  => 'number_of_employee',
+            'name'  => 'number_of_employees',
             'label' => '',
             'type'  => 'repeatable',
             'tab' => 'Details',
@@ -524,15 +546,6 @@ class BusinessProfilesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-12 p-0 '
             ],
             'subfields' => [ // also works as: "fields"
-                [
-                    'name'    => 'job_category',
-                    'type'        => 'select_from_array',
-                    'options'     => $jcats,
-                    'allows_null' => false,
-                    'wrapper' => [
-                        'class' => 'form-group col-12 col-md-4 '
-                    ]
-                ],
                 [ 
                     'name'        => 'sex',
                     'label'       => "Sex",
@@ -541,9 +554,43 @@ class BusinessProfilesCrudController extends CrudController
                     'allows_null' => false,
                    
                     'wrapperAttributes' => [
-                        'class' => 'form-group col-12 col-md-4'
+                        'class' => 'form-group col-12 col-md-7'
                     ]
                 ],
+                [
+                    'name'    => 'number',
+                    'type'    => 'number',
+                    'label'   => 'No',
+                    'wrapper' => ['class' => 'form-group col-md-5'],
+                ]
+            ],
+        
+            // optional
+            'new_item_label'  => 'Add', // customize the text of the button
+            'init_rows' => 1, // number of empty rows to be initialized, by default 1
+            'min_rows' =>1, // minimum rows allowed, when reached the "delete" buttons will be hidden
+            // allow reordering?
+            'max_rows' =>2,
+            'reorder' => false, // hide up&down arrows next to each row (no reordering)
+        ]);
+        $this->crud->addField([   // repeatable
+            'name'  => 'vehicles',
+            'label' => '',
+            'type'  => 'repeatable',
+            'tab' => 'Details',
+            'wrapper' => [
+                'class' => 'form-group col-12 col-md-12 p-0 '
+            ],
+            'subfields' => [ // also works as: "fields"
+                [
+                    'name'    => 'type',
+                    'type'        => 'select',
+                    'entity'     => "vehicleType",
+                    'attribute' => "name",
+                    'wrapper' => [
+                        'class' => 'form-group col-12 col-md-8 '
+                    ]
+                    ],
                 [
                     'name'    => 'number',
                     'type'    => 'number',

@@ -49,6 +49,8 @@ class BusinessProfilesRequest extends FormRequest
                 }
             },
             "certificate" => "exclude_if:tax_incentives,N|required",
+            "unit_of_measurement" => "exclude_if:weight_and_measure,N|required",
+            "weight_and_measure_value" => "exclude_if:weight_and_measure,N|required",
         ];
     }
 

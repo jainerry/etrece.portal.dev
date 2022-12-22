@@ -3,21 +3,19 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
-use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use App\Models\BusinessCategory;
 
-class BusMayorsPermits extends Model
+class BusinessTaxFees extends Model
 {
     use CrudTrait;
-    use HasUuids;
+
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
     |--------------------------------------------------------------------------
     */
 
-    protected $table = 'bus_mayors_permits';
+    protected $table = 'business_tax_fees';
     // protected $primaryKey = 'id';
     // public $timestamps = false;
     protected $guarded = ['id'];
@@ -30,24 +28,14 @@ class BusMayorsPermits extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
-    protected static function boot(){
-        parent::boot();
-
-        BusMayorsPermits::creating(function($model){
-            $count = BusMayorsPermits::count();
-            $refID = 'BUS-MAYOR-PERMIT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
-            $model->refID = $refID;
-        });
-      
-    }
 
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function category(){
-        return $this->belongsTo(BusinessCategory::class,"category_id","id");
+    public function fees(){
+        return $this->belongsTo(BusinessFees::class, "business_fees_id", "id");
     }
     /*
     |--------------------------------------------------------------------------

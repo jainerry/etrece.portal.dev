@@ -4,7 +4,7 @@
 @endphp
 @foreach ($fields as $index=> $field)
 
-@if(($field['name'] == "line_of_business") || ($field['name'] == "number_of_employee") )
+@if( ($field['name'] == "line_of_business") || ($field['name'] == "number_of_employees" ) ||  ($field['name'] == "vehicles"))
     @php
     array_push($reRender,$field);
     @endphp
@@ -24,8 +24,12 @@
                     class="nav-link active">Line Of Businesses (multiple)</a>
             </li>
             <li role="presentation" class="nav-item">
-                <a href="#number-of-employee" aria-controls="number-of-employee" role="tab" tab_name="number-of-employee" data-toggle="tab"
+                <a href="#number-of-employees" aria-controls="number_of_employees" role="tab" tab_name="number-of-employees" data-toggle="tab"
                     class="nav-link ">Number of Employee</a>
+            </li>
+            <li role="presentation" class="nav-item">
+                <a href="#vehicles" aria-controls="number-of-employee" role="tab" tab_name="vehicles" data-toggle="tab"
+                    class="nav-link ">Vehicle</a>
             </li>
         </ul>
         {{-- @dd($crud->c($fields['line_of_business']['type'], $fields['line_of_business']['view_namespace'] ?? false), $fields['line_of_business'])) --}}

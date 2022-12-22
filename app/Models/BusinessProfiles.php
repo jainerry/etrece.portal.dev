@@ -98,6 +98,12 @@ class BusinessProfiles extends Model
     public function bus_act_address(){
        return  $this->belongsTo(FaasLand::class, "buss_activity_address_id", "id");
     }
+    public function businessCategory(){
+        return  $this->belongsTo(BusinessFees::class, "line_of_business->particulars", "id");
+     }
+     public function vehicleType(){
+        return  $this->belongsTo(BusinessVehicles::class, "line_of_business->particulars", "id");
+     }
     public function setCertificateAttribute($value)
     {
         $attribute_name = "certificate";

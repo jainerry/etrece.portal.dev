@@ -41,10 +41,20 @@ return new class extends Migration
             $table->date('sec_reg_date')->nullable();
             $table->string('dti_no')->nullable();
             $table->date('dti_reg_date')->nullable();
+
+            $table->char('weight_and_measure',1)->nullable();
+            $table->char('unit_of_measurement',1)->nullable();
+            $table->char('weight_and_measure_value',1)->nullable();
+
+
             $table->string('tax_incentives')->nullable();
             $table->string('certificate')->nullable();
+            
             $table->json('line_of_business')->nullable();
-            $table->json('number_of_employee')->nullable();
+            $table->json('number_of_employees')->nullable();
+            $table->json('vehicles')->nullable();
+
+
             $table->char('isActive', 1)->default('Y');
             $table->timestamps();
         });
