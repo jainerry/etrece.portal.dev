@@ -10,3 +10,6 @@ Installation: (Please run these commands below)
 
 `php artisan db:seed`
 
+For every fresh pull: (Please run these commands below)
+
+`php artisan migrate:fresh --seed`
