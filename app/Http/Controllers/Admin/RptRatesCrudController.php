@@ -8,6 +8,7 @@ use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
+use App\Models\RptRates;
 
 /**
  * Class RptRatesCrudController
@@ -135,5 +136,19 @@ class RptRatesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $results = RptRates::select('id', 'refId', 'percentage')
+            ->where('isActive', '=', 'Y')
+            ->where('id', '=', $id)
+            ->get();
+        }
+
+        return $results;
     }
 }

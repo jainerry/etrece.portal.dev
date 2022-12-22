@@ -1141,6 +1141,7 @@ class RptMachineriesCrudController extends CrudController
                 ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
                 ->join('citizen_profiles', 'faas_machineries.primaryOwnerId', '=', 'citizen_profiles.id')
                 ->with('citizen_profile')
+                ->with('faas_machinery_profile.land_profile')
                 ->where('rpt_machineries.isActive', '=', '1')
                 ->where('rpt_machineries.id', '=', $id)
                 ->get();
@@ -1152,6 +1153,7 @@ class RptMachineriesCrudController extends CrudController
                 ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
                 ->join('name_profiles', 'faas_machineries.primaryOwnerId', '=', 'name_profiles.id')
                 ->with('name_profile')
+                ->with('faas_machinery_profile.land_profile')
                 ->where('rpt_machineries.isActive', '=', '1')
                 ->where('rpt_machineries.id', '=', $id)
                 ->get();

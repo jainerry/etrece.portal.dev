@@ -59,20 +59,40 @@ class TreasuryRptCrudController extends CrudController
         $this->crud->removeButton('update'); 
 
         $this->crud->addColumn([
-            'label'     => 'Reference ID',
+            'label'     => 'OR No.',
             'type'      => 'text',
-            'name'      => 'refID',
+            'name'      => 'orNo',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
                     return route('treasury-rpt.edit',$entry->id);
                 },
             ],
-          ]);
+        ]);
 
-        $this->crud->column('or_no');
-        $this->crud->column('rptId');
-        $this->crud->column('isActive')->label('Status');
-        $this->crud->column('created_at');
+        $this->crud->addColumn([
+            'type' => 'model_function',
+            'label' => 'TD No.',
+            'function_name' => 'getRPTTDNo',
+        ]);
+
+        $this->crud->addColumn([
+            'type' => 'model_function',
+            'label' => 'Primary Owner',
+            'function_name' => 'getPrimaryOwner',
+        ]);
+
+        $this->crud->addColumn([
+            'type' => 'model_function',
+            'label' => 'Primary Address',
+            'function_name' => 'getAddress',
+            'limit' => 255
+        ]);
+
+        $this->crud->column('rptType')->label('Classification');
+        $this->crud->column('totalSummaryAmount')->label('Assessment Amount');
+        //$this->crud->column('isActive')->label('Status');
+        //$this->crud->column('paymentDate')->label('Payment Date');
+        $this->crud->column('created_at')->label('Payment Date');
     }
 
     /**
@@ -369,12 +389,14 @@ class TreasuryRptCrudController extends CrudController
             ],
             'tab' => 'Details',
         ]);
-        $this->crud->addField([
+        
+        /*$this->crud->addField([
             'name'  => 'separator02a',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Details',
-        ]);
+        ]);*/
+
         /*$this->crud->addField([   
             'name'  => 'otherFees',
             'label' => 'Other Fees',
@@ -406,7 +428,8 @@ class TreasuryRptCrudController extends CrudController
             'reorder' => false,
             'tab' => 'Details',
         ]);*/
-        $this->crud->addField([
+
+        /*$this->crud->addField([
             'name'  => 'separator03',
             'type'  => 'custom_html',
             'value' => '<hr>',
@@ -442,13 +465,182 @@ class TreasuryRptCrudController extends CrudController
             'max_rows' => 10,
             'reorder' => false,
             'tab' => 'Details',
+        ]);*/
+
+        $this->crud->addField([
+            'name'=>'basic_amount',
+            'label'=>'Basic',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
         ]);
         $this->crud->addField([
+            'name'=>'basicPenalty_amount',
+            'label'=>'Penalty',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'basicDiscount_amount',
+            'label'=>'Discount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalBasic_amount',
+            'label'=>'Total Basic',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'sef_amount',
+            'label'=>'SEF',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'sefPenalty_amount',
+            'label'=>'Penalty',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'sefDiscount_amount',
+            'label'=>'Discount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalSef_amount',
+            'label'=>'Total SEF',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+        
+        $this->crud->addField([
+            'name'=>'totalSummaryAmount',
+            'label'=>'Total Summary Amount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+
+        $this->crud->addField([
+            'name'  => 'separator5x',
+            'type'  => 'custom_html',
+            'value' => '<label>Summary</label>
+                <table class="table table-bordered summaryTable" id="summaryTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="70%">Particulars</th>
+                            <th scope="col" width="30%">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Basic</td>
+                            <td id="basic_amount"></td>
+                        </tr>
+                        <tr>
+                            <td>Penalty</td>
+                            <td id="basicPenalty_amount"></td>
+                        </tr>
+                        <tr>
+                            <td>Discount</td>
+                            <td id= "basicDiscount_amount"></td>
+                        </tr>
+                        <tr style="background-color: #fafafa; font-weight: 600;">
+                            <td>Total Basic</td>
+                            <td id="totalBasic_amount"></td>
+                        </tr>
+                        <tr>
+                            <td>SEF</td>
+                            <td id="sef_amount"></td>
+                        </tr>
+                        <tr>
+                            <td>Penalty</td>
+                            <td id="sefPenalty_amount"></td>
+                        </tr>
+                        <tr>
+                            <td>Discount</td>
+                            <td id= "sefDiscount_amount"></td>
+                        </tr>
+                        <tr style="background-color: #fafafa; font-weight: 600;">
+                            <td>Total SEF</td>
+                            <td id="totalSef_amount"></td>
+                        </tr>
+                        <tr style="background-color: #fafafa; font-weight: 600; font-size: 20px; text-transform: uppercase;">
+                            <td>Total</td>
+                            <td id="totalSummaryAmount"></td>
+                        </tr>
+                    </tbody>
+                </table>'
+            ,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12',
+            ],
+        ]);
+
+        /*$this->crud->addField([
             'name'  => 'separator04',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Details',
-        ]);
+        ]);*/
+
         $this->crud->addField([
             'name'=>'isActive',
             'label'=>'Status <span style="color:red;">*</span>',
@@ -460,7 +652,7 @@ class TreasuryRptCrudController extends CrudController
             'allows_null' => false,
             'default'     => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-3 hidden'
             ],
             'tab' => 'Details',
         ]);
@@ -474,6 +666,21 @@ class TreasuryRptCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
+        $this->crud->addField(
+            [
+                'name'=>'orNo',
+                'label'=>'OR No.',
+                'fake'=>true,
+                'attributes' => [
+                    'readonly' => 'readonly'
+                ],
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-3'
+                ],
+                'tab' => 'Details',
+            ]
+        );
+
         $this->setupCreateOperation();
     }
 

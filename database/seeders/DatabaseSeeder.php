@@ -55,6 +55,11 @@ class DatabaseSeeder extends Seeder
             RPTLandSeeder::class,
             RPTBuildingSeeder::class,
             RPTMachinerySeeder::class,
+            TreasuryRPTSeeder::class,
+            BusinessActivitySeeder::class,
+            BusinessJobCategorySeeder::class,
+            BusinessTypeSeeder::class,
+            BusinessProfileSeeder::class,
         ]);
     }
 }

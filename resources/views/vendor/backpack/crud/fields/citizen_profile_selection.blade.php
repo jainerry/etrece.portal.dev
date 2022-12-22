@@ -180,7 +180,10 @@
                             let customText = `
                                     <div>
                                         <div>
-                                            Fullname: <b class="fullname"> ${item.fullname}</b>
+                                            Full Name: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Type: <b class="fullname"> Citizen Profile</b>
                                         </div>
                                         <div>
                                             Reference ID: <b> ${item.refID}</b>

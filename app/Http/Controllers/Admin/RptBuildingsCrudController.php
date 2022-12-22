@@ -1466,6 +1466,7 @@ class RptBuildingsCrudController extends CrudController
                 ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
                 ->join('citizen_profiles', 'faas_building_profiles.primary_owner', '=', 'citizen_profiles.id')
                 ->with('citizen_profile')
+                ->with('faas_building_profile.land_profile')
                 ->where('rpt_buildings.isActive', '=', '1')
                 ->where('rpt_buildings.id', '=', $id)
                 ->get();
@@ -1477,6 +1478,7 @@ class RptBuildingsCrudController extends CrudController
                 ->join('faas_building_profiles', 'rpt_buildings.faasId', '=', 'faas_building_profiles.id')
                 ->join('name_profiles', 'faas_building_profiles.primary_owner', '=', 'name_profiles.id')
                 ->with('name_profile')
+                ->with('faas_building_profile.land_profile')
                 ->where('rpt_buildings.isActive', '=', '1')
                 ->where('rpt_buildings.id', '=', $id)
                 ->get();

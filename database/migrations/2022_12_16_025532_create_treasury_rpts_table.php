@@ -21,11 +21,24 @@ return new class extends Migration
             $table->string('rptType')->nullable();
             $table->string('year')->nullable();
             $table->string('periodCovered')->nullable();
+
+            $table->string('basic_amount')->nullable();
+            $table->string('basicPenalty_amount')->nullable();
+            $table->string('basicDiscount_amount')->nullable();
+            $table->string('totalBasic_amount')->nullable();
+            $table->string('sef_amount')->nullable();
+            $table->string('sefPenalty_amount')->nullable();
+            $table->string('sefDiscount_amount')->nullable();
+            $table->string('totalSef_amount')->nullable();
+
             // $table->text('otherFees')->nullable();
             // $table->string('totalOtherFees')->nullable();
-            $table->text('summary')->nullable();
+            // $table->text('summary')->nullable();
+
             $table->string('totalSummaryAmount')->nullable();
-            $table->string('paymentDate')->nullable();
+
+            //$table->timestamp('paymentDate')->nullable();
+            
             $table->boolean('isActive')->default(1);
             $table->timestamps();
         });

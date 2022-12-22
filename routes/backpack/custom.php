@@ -111,6 +111,8 @@ Route::group([
     Route::get('/api/rpt-building-assessment/get-details', 'RptBuildingsCrudController@getDetails');
     Route::get('/api/rpt-land-assessment/get-details', 'RptLandsCrudController@getDetails');
     Route::get('/api/rpt-machinery-assessment/get-details', 'RptMachineriesCrudController@getDetails');
+
+    Route::get('/api/rpt-rates/get-details', 'RptRatesCrudController@getDetails');
     
     Route::crud('bus-mayors-permits', 'BusMayorsPermitsCrudController');
     Route::crud('buss-tax-assessments', 'BussTaxAssessmentsCrudController');

@@ -6,10 +6,16 @@ $(function () {
         }
     });
 
-    $('.tab-container').addClass('hidden')
-    $('#saveActions').addClass('hidden')
+    $('form div.card').addClass('hidden')
 
-    $('#btnSearch').on('click', function(){
+    fetchData($('form input[name="faasId"]').val())
+
+    fetchData($('form input[name="rptId"]').val(),$('form select[name="rptType"]').val())
+
+    // $('.tab-container').addClass('hidden')
+    // $('#saveActions').addClass('hidden')
+
+    /*$('#btnSearch').on('click', function(){
         let searchByType = $('select[name="searchByType"]').val()
         let searchByReferenceId = $('input[name="searchByReferenceId"]').val()
         let searchByTDNo = $('input[name="searchByTDNo"]').val()
@@ -92,7 +98,7 @@ $(function () {
         $('input[name="searchByReferenceId"]').val('')
         $('input[name="searchByTDNo"]').val('')
         $('input[name="searchByOwner"]').val('')
-    })
+    })*/
 
 })
 

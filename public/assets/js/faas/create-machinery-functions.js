@@ -77,6 +77,6 @@ function formatStringToInteger(num){
         return 0
     }
     else {
-        return parseInt(num.replaceAll('%',''))
+        return parseFloat(num.replaceAll('%',''))
     }
 }
