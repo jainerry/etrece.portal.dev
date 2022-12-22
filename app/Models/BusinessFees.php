@@ -43,9 +43,7 @@ class BusinessFees extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-    public function category(){
-        return $this->belongsTo(BusinessCategory::class, "category_id", "id");
-    }
+   
     /*
     |--------------------------------------------------------------------------
     | SCOPES

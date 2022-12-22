@@ -39,19 +39,27 @@ class BusinessTaxFeesCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-       $this->crud->column('refID');
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');  
+        $this->crud->removeButton('update');  
+        $this->crud->orderBy('refID','desc');
+
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('business-fees.edit',$entry->id);
+                },
+            ],
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
+ 
+             }
+          ]);
        $this->crud->column('business_fees_id');
        $this->crud->column('effective_date');
-       $this->crud->column('chart_of_accounts_lvl4_id');
-       $this->crud->column('business_categories');
-       $this->crud->column('Basis');
-       $this->crud->column('range_box');
-       $this->crud->column('computation');
-       $this->crud->column('amount_value');
-       $this->crud->column('isActive');
-       $this->crud->column('created_at');
-       $this->crud->column('updated_at');
-
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * -$this->crud->column('price')->type('number');
@@ -98,14 +106,89 @@ class BusinessTaxFeesCrudController extends CrudController
             'class' => 'form-group col-12 col-md-6'
         ]
      ]);
-       $this->crud->field('chart_of_accounts_lvl4_id');
-       $this->crud->field('business_categories');
-       $this->crud->field('Basis');
+     $this->crud->addField([
+        "name"=>"chart_of_accounts_lvl4_id",
+        "label"=>"Account Name",
+        'type'      => 'select',
+        'entity'    => 'account_name',
+        'attribute' => 'code_name', 
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+        'options'   => (function ($query) {
+            return $query->orderBy('name', 'ASC')->get();
+        }), 
+       ]);
+       $this->crud->addField([  // Select
+        "name"=>"category",
+        'label'     => "Category",
+        'type'      => 'select_from_array',
+        'options'         => ['Business Tax' => 'Business Tax', 
+                             "Mayors Permit" => 'Mayor s Permit',
+                             'Occupational Tax' => 'Occupational Tax',
+                             "Delivery Truck" => "Delivery Truck",
+                            "Regulatory"=>"Regulatory"],
+        "allow_null"=>true,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+     ]);
+     $this->crud->addField([  // Select
+        "name"=>"basis",
+        'label'     => "Basis",
+        'type'      => 'select_from_array',
+        'options'         => ['Capital/Net Profit' => 'Capital/Net Profit', 
+                             "Business Area" => ' Business Area                             ',
+                             'No of Employee' => 'No of Employee',
+                             "Delivery Truck" => "Delivery Truck",
+                             "No & Type of Vehicle"=>"No & Type of Vehicle"],
+        "allow_null"=>true,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+     ]);
+     $this->crud->addField([  // Select
+        "name"=>"type",
+        'label'     => "Type",
+        'type'      => 'select_from_array',
+        'options'         => ['Regular' => 'Regular', 
+                             "Range" => 'Range'],
+        "allow_null"=>true,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+     ]);
+   
        $this->crud->field('range_box');
-       $this->crud->field('computation');
-       $this->crud->field('amount_value');
-       $this->crud->field('isActive');
-
+       $this->crud->addField([  // Select
+        "name"=>"type",
+        'label'     => "Type",
+        'type'      => 'select_from_array',
+        'options'         => ['Amount' => 'Amount', 
+                             "Percentage" => 'Percentage'],
+        "allow_null"=>true,
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
+     ]);
+       $this->crud->addField([
+        'name'=>"amount_value",
+        "type"=>"number"
+        ]);
+        $this->crud->addField([
+            'name'=>'isActive',
+            'label'=>'Status',
+            'type' => 'select_from_array',
+            'options' => [
+                'Y' => 'Active', 
+                'N' => 'Inactive'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12'
+            ],
+        ]);
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * -$this->crud->field('price')->type('number');

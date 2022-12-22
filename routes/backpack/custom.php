@@ -125,7 +125,6 @@ Route::group([
     Route::crud('chart-of-account-lvl2', 'ChartOfAccountLvl2CrudController');
     Route::crud('chart-of-account-lvl3', 'ChartOfAccountLvl3CrudController');
     Route::crud('chart-of-account-lvl4', 'ChartOfAccountLvl4CrudController');
-    Route::crud('business-job-categories', 'BusinessJobCategoriesCrudController');
     Route::crud('business-fees', 'BusinessFeesCrudController');
     Route::crud('rpt-rates', 'RptRatesCrudController');
     Route::crud('business-tax-fees', 'BusinessTaxFeesCrudController');

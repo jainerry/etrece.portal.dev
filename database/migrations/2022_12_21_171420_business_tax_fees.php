@@ -20,7 +20,8 @@ return new class extends Migration
             $table->date('effective_date')->nullable();
             $table->string('chart_of_accounts_lvl4_id')->nullable();
             $table->string('business_categories')->nullable();
-            $table->string('Basis')->nullable();
+            $table->string('basis')->nullable();
+            $table->string('type')->nullable();
             $table->json('range_box')->nullable();
             $table->string('computation')->nullable();
             $table->string('amount_value')->nullable();

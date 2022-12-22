@@ -37,6 +37,9 @@ class BusinessTaxFees extends Model
     public function fees(){
         return $this->belongsTo(BusinessFees::class, "business_fees_id", "id");
     }
+    public function account_name(){
+        return $this->belongsTo(ChartOfAccountLvl4::class, "chart_of_accounts_lvl4_id", "id");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

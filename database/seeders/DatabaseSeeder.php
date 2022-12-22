@@ -56,7 +56,6 @@ class DatabaseSeeder extends Seeder
             RPTMachinerySeeder::class,
             TreasuryRPTSeeder::class,
             BusinessActivitySeeder::class,
-            BusinessJobCategorySeeder::class,
             BusinessTypeSeeder::class,
             BusinessProfileSeeder::class,
             BusinessTaxAssessmentSeeder::class,

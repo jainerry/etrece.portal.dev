@@ -59,7 +59,7 @@ class BusinessFeesCrudController extends CrudController
              }
           ]);
 
-        $this->crud->column('category_id');
+        $this->crud->column('category');
         $this->crud->column('name');
        
 
@@ -81,16 +81,14 @@ class BusinessFeesCrudController extends CrudController
         $this->crud->setValidation(BusinessFeesRequest::class);
 
         $this->crud->addField([  // Select
+            "name"=>"category",
             'label'     => "Category",
-            'type'      => 'select',
-            'name'      => 'category_id', 
-            'entity'    => 'category',
-            'attribute' => 'name', // foreign key attribute that is shown to user
-            
-            // optional - force the related options to be a custom query, instead of all();
-            'options'   => (function ($query) {
-                 return $query->orderBy('name', 'ASC')->get();
-             }), //  you can use this to filter the results show in the select
+            'type'      => 'select_from_array',
+            'options'         => ['Business Tax' => 'Business Tax', 
+                                 "Mayors Permit" => 'Mayors Permit',
+                                 'Occupational Tax' => 'Occupational Tax',
+                                 "Delivery Truck" => "Delivery Truck",
+                                "Regulatory"=>"Regulatory"],
          ]);
         $this->crud->field('name');
         $this->crud->addField([
