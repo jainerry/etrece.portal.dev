@@ -45,7 +45,7 @@ class BusinessProfileSeeder extends Seeder
                 'tax_incentives' => 'Y',
                 'certificate' => 'bussprofile/39ed618a60ae0fc6080e5d8d50880aef.pdf',
                 'line_of_business' => '[{"capital": "459,458.00", "taxcode": "a4d15cfd-5dc6-4c85-8c30-471ef0409028"}]',
-                'number_of_employee' => '[{"sex": "1", "number": "100", "job_category": "01gmx9qfv1ng5hvqprmcs6kg10"}]',
+                'number_of_employees' => '[{"sex": "1", "number": "100", "job_category": "01gmx9qfv1ng5hvqprmcs6kg10"}]',
                 'created_at' => Carbon::now(),
             ],
             [
@@ -74,7 +74,7 @@ class BusinessProfileSeeder extends Seeder
                 'tax_incentives' => 'Y',
                 'certificate' => 'bussprofile/850c5def6e0a6b8cfba8e1c158cf1e83.pdf',
                 'line_of_business' => '[{"capital": "1,393,049.00", "taxcode": "84005df2-771d-41d9-951b-088176cd4453"}]',
-                'number_of_employee' => '[{"sex": "1", "number": "200", "job_category": "01gmx9qxty2fd66jrw4yk8w4hy"}, {"sex": "0", "number": "10", "job_category": "01gmx9r3b4s1eberkmp1nq9ymt"}, {"sex": "0", "number": "200", "job_category": "01gmx9qxty2fd66jrw4yk8w4hy"}]',
+                'number_of_employees' => '[{"sex": "1", "number": "200", "job_category": "01gmx9qxty2fd66jrw4yk8w4hy"}, {"sex": "0", "number": "10", "job_category": "01gmx9r3b4s1eberkmp1nq9ymt"}, {"sex": "0", "number": "200", "job_category": "01gmx9qxty2fd66jrw4yk8w4hy"}]',
                 'created_at' => Carbon::now(),
             ],
         ];

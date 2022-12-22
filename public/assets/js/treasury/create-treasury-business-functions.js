@@ -10,25 +10,25 @@ $(function () {
     $('#saveActions').addClass('hidden')
 
     $('#btnSearch').on('click', function(){
-        let searchByAssessmentRefID = $('input[name="searchByAssessmentRefID"]').val()
-        let searchByBusinessRefID = $('input[name="searchByBusinessRefID"]').val()
-        let searchByBusinessName = $('input[name="searchByBusinessName"]').val()
-        let searchByBusinessOwner = $('input[name="searchByBusinessOwner"]').val()
+        let searchByReferenceId = $('input[name="searchByReferenceId"]').val()
+        let searchByName = $('input[name="searchByName"]').val()
+        let searchByOwner = $('input[name="searchByOwner"]').val()
 
         $.ajax({
             url: '/admin/api/treasury-business/apply-search-filters',
             type: 'GET',
             dataType: 'json',
             data: {
-                searchByAssessmentRefID: searchByAssessmentRefID,
-                searchByBusinessRefID: searchByBusinessRefID,
-                searchByBusinessName: searchByBusinessName,
-                searchByBusinessOwner: searchByBusinessOwner
+                searchByReferenceId: searchByReferenceId,
+                searchByName: searchByName,
+                searchByOwner: searchByOwner
             },
             success: function (data) {
                 console.log(data)
+
+                return false
+
                 let html = ''
-                console.log(data.length > 0)
                 if (data.length > 0) {
                     html = '\n\
                     <div class="table-responsive-sm">\n\
@@ -93,10 +93,9 @@ $(function () {
     })
 
     $('#btnClear').on('click', function(){
-        $('input[name="searchByAssessmentRefID"]').val('')
-        $('input[name="searchByBusinessRefID"]').val('')
-        $('input[name="searchByBusinessName"]').val('')
-        $('input[name="searchByBusinessOwner"]').val('')
+        $('input[name="searchByReferenceId"]').val('')
+        $('input[name="searchByName"]').val('')
+        $('input[name="searchByOwner"]').val('')
     })
 
 })

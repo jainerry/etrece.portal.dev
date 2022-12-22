@@ -60,6 +60,8 @@ class DatabaseSeeder extends Seeder
             BusinessJobCategorySeeder::class,
             BusinessTypeSeeder::class,
             BusinessProfileSeeder::class,
+            BusinessTaxAssessmentSeeder::class,
+            BusinessFeesSeeder::class,
         ]);
     }
 }

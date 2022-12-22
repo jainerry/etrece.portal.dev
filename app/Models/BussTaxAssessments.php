@@ -4,10 +4,12 @@ namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
 use Illuminate\Database\Eloquent\Model;
+use Illuminate\Database\Eloquent\Concerns\HasUuids;
 
 class BussTaxAssessments extends Model
 {
     use CrudTrait;
+    use HasUuids;
 
     /*
     |--------------------------------------------------------------------------
@@ -22,6 +24,11 @@ class BussTaxAssessments extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+
+    protected $casts = [
+        'fees_and_delinquency' => 'array',
+        'tax_withheld_discount' => 'array',
+    ];
 
     /*
     |--------------------------------------------------------------------------

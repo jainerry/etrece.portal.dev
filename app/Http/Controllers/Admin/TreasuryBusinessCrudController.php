@@ -84,8 +84,8 @@ class TreasuryBusinessCrudController extends CrudController
 
         /*Search Fields*/
         $this->crud->addField([
-            'name' => 'searchByAssessmentRefID', 
-            'label' => 'Search by Assessment Reference ID', 
+            'name' => 'searchByReferenceId', 
+            'label' => 'Search by Reference ID', 
             'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
@@ -93,8 +93,8 @@ class TreasuryBusinessCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
-            'name' => 'searchByBusinessRefID', 
-            'label' => 'Search by Business Reference ID', 
+            'name' => 'searchByName', 
+            'label' => 'Search by Name', 
             'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
@@ -102,17 +102,8 @@ class TreasuryBusinessCrudController extends CrudController
             ],
         ]);
         $this->crud->addField([
-            'name' => 'searchByBusinessName', 
-            'label' => 'Search by Business Name', 
-            'type' => 'text',
-            'fake' => true,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3',
-            ],
-        ]);
-        $this->crud->addField([
-            'name' => 'searchByBusinessOwner', 
-            'label' => 'Search by Business Owner', 
+            'name' => 'searchByOwner', 
+            'label' => 'Search by Owner', 
             'type' => 'text',
             'fake' => true,
             'wrapperAttributes' => [
@@ -368,10 +359,9 @@ class TreasuryBusinessCrudController extends CrudController
     }
 
     public function applySearchFilters(Request $request){
-        $searchByAssessmentRefID = $request->input('searchByAssessmentRefID');
-        $searchByBusinessRefID = $request->input('searchByBusinessRefID');
-        $searchByBusinessName = $request->input('searchByBusinessName');
-        $searchByBusinessOwner = $request->input('searchByBusinessOwner');
+        $searchByReferenceId = $request->input('searchByReferenceId');
+        $searchByName = $request->input('searchByName');
+        $searchByOwner = $request->input('searchByOwner');
 
         $results = [];
 
@@ -380,35 +370,30 @@ class TreasuryBusinessCrudController extends CrudController
             'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'),
             'business_profiles.refID as businessRefID', 'business_profiles.business_name')
             ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
-            ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
-            ->with('owner');
+            ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id');
+            //->with('owner');
 
         $nameProfile = BussTaxAssessments::select('buss_tax_assessments.id', 'buss_tax_assessments.refID',
             'buss_tax_assessments.isActive',
             'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'),
             'business_profiles.refID as businessRefID', 'business_profiles.business_name')
             ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
-            ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
-            ->with('names');
+            ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id');
+            //->with('names');
 
-        if (!empty($searchByAssessmentRefID)) { 
-            $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByAssessmentRefID.'%');
-            $nameProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByAssessmentRefID.'%');
+        if (!empty($searchByReferenceId)) { 
+            $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByReferenceId.'%');
+            $nameProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByReferenceId.'%');
         }
 
-        if (!empty($searchByBusinessRefID)) { 
-            $citizenProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByBusinessRefID.'%');
-            $nameProfile->where('buss_tax_assessments.refID', 'like', '%'.$searchByBusinessRefID.'%');
+        if (!empty($searchByName)) { 
+            $citizenProfile->where('business_profiles.business_name', 'like', '%'.$searchByName.'%');
+            $nameProfile->where('business_profiles.business_name', 'like', '%'.$searchByName.'%');
         }
 
-        if (!empty($searchByBusinessName)) { 
-            $citizenProfile->where('business_profiles.business_name', 'like', '%'.$searchByBusinessName.'%');
-            $nameProfile->where('business_profiles.business_name', 'like', '%'.$searchByBusinessName.'%');
-        }
-
-        if (!empty($searchByBusinessOwner)) { 
-            $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByBusinessOwner.'%');
-            $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByBusinessOwner.'%');
+        if (!empty($searchByOwner)) { 
+            $citizenProfile->where(DB::raw('CONCAT(citizen_profiles.fName," ",citizen_profiles.mName," ",citizen_profiles.lName)'), 'like', '%'.$searchByOwner.'%');
+            $nameProfile->where(DB::raw('CONCAT(name_profiles.first_name," ",name_profiles.middle_name," ",name_profiles.last_name)'), 'like', '%'.$searchByOwner.'%');
         }
 
         $citizenProfiles = $citizenProfile->where('buss_tax_assessments.isActive', '=', 'Y')->orderBy('buss_tax_assessments.refID','ASC')->get();
