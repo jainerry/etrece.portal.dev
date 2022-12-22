@@ -331,7 +331,8 @@ function propertyAssessmentValueComputation(){
     assessmentLevel = formatStringToInteger(assessmentLevel)
     let assessmentValue = (marketValue / 100) * assessmentLevel
     $('#tab_property-assessment input[name="propertyAssessment[0][assessmentValue]"]').val(assessmentValue)
-
+    $('#tab_property-assessment input[name="totalPropertyAssessmentMarketValue"]').val(marketValue)
+    $('#tab_property-assessment input[name="totalPropertyAssessmentAssessmentValue"]').val(assessmentValue)
 }
 
 function propertyAppraisalActions(){

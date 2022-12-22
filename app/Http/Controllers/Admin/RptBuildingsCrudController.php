@@ -971,14 +971,6 @@ class RptBuildingsCrudController extends CrudController
             'label' => 'Property Assessment',
             'type'  => 'repeatable',
             'subfields' => [
-                /*[
-                    'name'    => 'actualUse',
-                    'type'    => 'select',
-                    'label'   => 'Actual Use',
-                    'model'     => "App\Models\FaasBuildingClassifications",
-                    'attribute' => 'name',
-                    'wrapper' => ['class' => 'form-group col-md-3 actualUse'],
-                ],*/
                 [
                     'name'    => 'actualUse',
                     'type'    => 'select',
@@ -1012,17 +1004,6 @@ class RptBuildingsCrudController extends CrudController
                     'label'   => 'Market Value',
                     'wrapper' => ['class' => 'form-group col-md-3 propertyAssessment_marketValue'],
                 ],
-                /*[
-                    'name'    => 'assessmentLevel',
-                    'type'    => 'select',
-                    'label'   => 'Assessment Level',
-                    'model'     => "App\Models\FaasBuildingClassifications",
-                    'attribute' => 'assessmentLevel',
-                    'attributes' => [
-                        'readonly' => 'readonly',
-                    ],
-                    'wrapper' => ['class' => 'form-group col-md-3 assessmentLevel'],
-                ],*/
                 [
                     'name'    => 'assessmentLevel',
                     'type'    => 'text',
@@ -1033,16 +1014,6 @@ class RptBuildingsCrudController extends CrudController
                     'label'   => 'Assessment Level',
                     'wrapper' => ['class' => 'form-group col-md-3'],
                 ],
-                /*[
-                    'name'  => 'assessedValue',
-                    'type'  => 'text',
-                    'attributes' => [
-                        'class' => 'form-control text_input_mask_currency',
-                        'readonly' => 'readonly',
-                    ],
-                    'label' => 'Assessed Value',
-                    'wrapper' => ['class' => 'form-group col-md-3 assessedValue'],
-                ],*/
                 [
                     'name'  => 'assessmentValue',
                     'type'=>'text',
@@ -1065,6 +1036,30 @@ class RptBuildingsCrudController extends CrudController
             'min_rows' => 1,
             'max_rows' => 1,
             'reorder' => true,
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalPropertyAssessmentMarketValue',
+            'label'=>'TOTAL (Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalPropertyAssessmentAssessmentValue',
+            'label'=>'TOTAL (Assessment Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentAssessmentValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([

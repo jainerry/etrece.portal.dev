@@ -704,6 +704,30 @@ class RptMachineriesCrudController extends CrudController
             'tab' => 'Property Assessment',
         ]);
         $this->crud->addField([
+            'name'=>'totalPropertyAssessmentMarketValue',
+            'label'=>'TOTAL (Market Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentMarketValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
+            'name'=>'totalPropertyAssessmentAssessmentValue',
+            'label'=>'TOTAL (Assessment Value)',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency totalPropertyAssessmentAssessmentValue',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Property Assessment',
+        ]);
+        $this->crud->addField([
             'name'  => 'separator3',
             'type'  => 'custom_html',
             'value' => '<hr>',
@@ -1117,8 +1141,8 @@ class RptMachineriesCrudController extends CrudController
                 ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
                 ->join('citizen_profiles', 'faas_machineries.primaryOwnerId', '=', 'citizen_profiles.id')
                 ->with('citizen_profile')
-                ->where('rpt_buildings.isActive', '=', '1')
-                ->where('rpt_buildings.id', '=', $id)
+                ->where('rpt_machineries.isActive', '=', '1')
+                ->where('rpt_machineries.id', '=', $id)
                 ->get();
 
             $nameProfiles = RptMachineries::select('rpt_machineries.*',
@@ -1128,8 +1152,8 @@ class RptMachineriesCrudController extends CrudController
                 ->join('faas_machineries', 'rpt_machineries.faasId', '=', 'faas_machineries.id')
                 ->join('name_profiles', 'faas_machineries.primaryOwnerId', '=', 'name_profiles.id')
                 ->with('name_profile')
-                ->where('rpt_buildings.isActive', '=', '1')
-                ->where('rpt_buildings.id', '=', $id)
+                ->where('rpt_machineries.isActive', '=', '1')
+                ->where('rpt_machineries.id', '=', $id)
                 ->get();
             
             $results = $citizenProfiles->merge($nameProfiles);

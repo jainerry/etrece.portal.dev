@@ -98,9 +98,6 @@ $(function () {
 })
 
 function fetchData(id,searchByType){
-    console.log(id)
-    console.log(searchByType)
-
     let api_url = ''
     if(searchByType === 'Land'){
         api_url = '/admin/api/rpt-land-assessment/get-details'
@@ -146,6 +143,7 @@ function fetchData(id,searchByType){
                 $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentAssessmentValue)
                 $('#tab_details input[name="dateAssessed"]').val(data.assessedDate)
 
+                /*
                 //8 items on Summary Defaults
                 
                 for (let index = 0; index < 8; index++) {
@@ -157,6 +155,7 @@ function fetchData(id,searchByType){
                         $('.repeatable-group[bp-field-name="summary"] button.add-repeatable-element-button').trigger('click')
                     }
                 }
+                */
                 
 
                 $('.treasuryModal').modal('hide');
