@@ -44,7 +44,6 @@ class DatabaseSeeder extends Seeder
             ChartOfAccountLVL2Seeder::class,
             ChartOfAccountLVL3Seeder::class,
             ChartOfAccountLVL4Seeder::class,
-            BusinessCategories::class,
             FaasLandSeeder::class,
             FaasLandSecondaryOwnerSeeder::class,
             FaasBuildingSeeder::class,
