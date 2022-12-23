@@ -6,57 +6,17 @@ $(function () {
         }
     });
 
-    $('.tab-container').addClass('hidden')
-    $('#saveActions').addClass('hidden')
+    $('form div.card').addClass('hidden')
 
-    $('#btnSearch').on('click', function(){
-        let searchByType = $('select[name="searchByType"]').val()
-        let searchByReferenceId = $('input[name="searchByReferenceId"]').val()
-        let searchByName = $('input[name="searchByName"]').val()
-        let searchByOwner = $('input[name="searchByOwner"]').val()
-
-        $.ajax({
-            url: '/admin/api/treasury-other/apply-search-filters',
-            type: 'GET',
-            dataType: 'json',
-            data: {
-                searchByType: searchByType,
-                searchByReferenceId: searchByReferenceId,
-                searchByName: searchByName,
-                searchByOwner: searchByOwner
-            },
-            success: function (data) {
-                if(searchByType === 'Business') {
-                    getBusiness(data)
-                }
-                else {
-                    getOtherProfile(data)
-                }
-            }
-        })
-    })
-
-    $('#btnClear').on('click', function(){
-        $('select[name="searchByType"]').val()
-        $('input[name="searchByReferenceId"]').val('')
-        $('input[name="searchByName"]').val('')
-        $('input[name="searchByOwner"]').val('')
-    })
-
-    $('input[name="type"]').val($('select[name="searchByType"]').val())
-
-    $('select[name="searchByType"]').on("change", function(){
-        let searchByType = $(this).val()
-        $('input[name="type"]').val(searchByType)
-        if(searchByType === "Business") {
-            $('input[name="searchByOwner"]').val('')
-            $('.searchByOwnerWrapper').removeClass('hidden')
-        }
-        else {
-            $('input[name="searchByOwner"]').val('')
-            $('.searchByOwnerWrapper').addClass('hidden')
-        }
-    })
+    if($('input[name="businessAssessmentId"]').val() !== ''){
+        fetchBusinessData($('input[name="businessAssessmentId"]').val())
+    }
+    else if($('input[name="citizenProfileId"]').val() !== ''){
+        fetchOtherProfileData($('input[name="citizenProfileId"]').val(), 'CitizenProfile')
+    }
+    else if($('input[name="nameProfileId"]').val() !== ''){
+        fetchOtherProfileData($('input[name="nameProfileId"]').val(), 'NameProfile')
+    }
 
     feesActions()
     computeTotalFeesAmount()

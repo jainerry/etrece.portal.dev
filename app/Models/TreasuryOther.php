@@ -28,8 +28,7 @@ class TreasuryOther extends Model
     // protected $dates = [];
 
     protected $casts = [
-        'otherFees' => 'array',
-        'details' => 'array',
+        'fees' => 'array',
     ];
 
     protected static function boot(){
@@ -64,6 +63,39 @@ class TreasuryOther extends Model
     | FUNCTIONS
     |--------------------------------------------------------------------------
     */
+
+    public function getPayee(){
+        $payee = "";
+        
+        $first_name = '';
+        $middle_name = '';
+        $last_name = '';
+        $suffix = '';
+
+        if($this->citizenProfileId !== '') {
+            $payeeData = CitizenProfile::where("id", $this->citizenProfileId)->first();
+            $first_name = $payeeData->fName;
+            $middle_name = $payeeData->mName;
+            $last_name = $payeeData->lName;
+            $suffix = $payeeData->suffix;
+            $payee = $first_name." ".$middle_name." ".$last_name." ".$suffix;
+        }
+        else if($this->nameProfileId !== '') {
+            $payeeData = NameProfiles::where("id", $this->nameProfileId)->first();
+            $first_name = $payeeData->first_name;
+            $middle_name = $payeeData->middle_name;
+            $last_name = $payeeData->last_name;
+            $suffix = $payeeData->suffix;
+            $payee = $first_name." ".$middle_name." ".$last_name." ".$suffix;
+        }
+        else if($this->businessAssessmentId !== '') {
+            $payeeData = BussTaxAssessments::where("id", $this->businessAssessmentId)->first();
+            $businessData = BusinessProfiles::where("id", $payeeData->business_profiles_id)->first();
+            $payee = $businessData->business_name;
+        }
+
+        return $payee;
+    }
 
     /*
     |--------------------------------------------------------------------------

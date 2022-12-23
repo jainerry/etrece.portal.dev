@@ -62,6 +62,7 @@ class DatabaseSeeder extends Seeder
             BusinessFeesSeeder::class,
             TreasuryBusinessSeeder::class,
             TreasuryCTCSeeder::class,
+            TreasuryOtherSeeder::class,
         ]);
     }
 }

@@ -135,4 +135,6 @@ Route::group([
     Route::get('/api/citizen-profile/get-details', 'CitizenProfileCrudController@getDetails');
     Route::get('/api/name-profile/get-details', 'NameProfilesCrudController@getDetails');
 
+    Route::get('/api/treasury-other/apply-search-filters', 'TreasuryOtherCrudController@applySearchFilters');
+
 }); // this should be the absolute last line of this file
