@@ -22,7 +22,7 @@ class BusinessProfileSeeder extends Seeder
             [
                 'id' => '980ae678-1d57-4a0f-8724-cdc752c54a81',
                 'refID' => 'BUS-ID'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
-                'business_name' => 'SM Prime Holdings INC.',
+                'business_name' => 'SM Prime Holdings Incorporated',
                 'owner_id' => '55e25338-a90b-466d-b942-4121caab9687',
                 'main_office_address' => '98074d71-16bf-4b19-a9ad-d91786682ab1',
                 'property_owner' => 'Y',

@@ -61,6 +61,7 @@ class DatabaseSeeder extends Seeder
             BusinessTaxAssessmentSeeder::class,
             BusinessFeesSeeder::class,
             TreasuryBusinessSeeder::class,
+            TreasuryCTCSeeder::class,
         ]);
     }
 }

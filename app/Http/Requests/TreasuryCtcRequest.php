@@ -26,6 +26,9 @@ class TreasuryCtcRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
+            'ctcNumber' => 'required|unique:treasury_ctcs,ctcNumber,'.$this->id,
+            'ctcType' => 'required',
+            'dateOfIssue' => 'required'
         ];
     }
 

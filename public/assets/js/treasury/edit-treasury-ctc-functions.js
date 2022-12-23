@@ -11,6 +11,9 @@ $(function () {
         }
     });
 
+    citizenProfileData($('select[name="individualProfileId"]').val())
+    businessProfileData($('select[name="businessProfileId"]').val())
+
     $('select[name="individualProfileId"]').on("change", function(){
         citizenProfileData($(this).val())
     })
@@ -95,7 +98,7 @@ $(function () {
     })
 
     feesActions()
-    computeTotalFeesAmount()
+    //computeTotalFeesAmount()
 
     $('.repeatable-group[bp-field-name="fees"] button.add-repeatable-element-button').on('click', function(){
         $('div[data-repeatable-holder="fees"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
@@ -104,7 +107,7 @@ $(function () {
     })
 })
 
-$(document).ready(function() {
+/*$(document).ready(function() {
     var date = new Date();
     var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
 
@@ -123,7 +126,7 @@ $(document).ready(function() {
 
     $('.dateOfIssue').datepicker('setDate', today)
     $('input[name="dateOfIssue"]').val(todayDate)
-});
+});*/
 
 function citizenProfileData(id){
     if(id !== '' && id !== null && id !== 'null') {
