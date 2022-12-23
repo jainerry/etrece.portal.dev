@@ -123,7 +123,7 @@ class TreasuryCtcCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<hr>',
         ]);
-        $this->crud->addField([
+        /*$this->crud->addField([
             'label' => 'Name',
             'type' => 'citizen_profile_selection',
             'name' => 'citizenId',
@@ -132,15 +132,90 @@ class TreasuryCtcCrudController extends CrudController
             'data_source' => url('/admin/api/citizen-profile/selection-search'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 citizenId'
+                'class' => 'form-group col-12 col-md-8 citizenIdWrapper'
+            ],
+        ]);*/
+
+        $this->crud->addField([
+            'label' => 'Name',
+            'type' => 'individual_profile_selection',
+            'name' => 'individualProfileId',
+            'entity' => 'citizen_profile',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-8 citizenAndNameProfileWrapper'
             ],
         ]);
+
         $this->crud->addField([
+            'name'  => 'separator5x',
+            'type'  => 'custom_html',
+            'value' => '
+                <table class="table table-bordered citizenProfileTable" id="citizenProfileTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="20%">Details</th>
+                            <th scope="col" width="80%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Address:</td>
+                            <td id="address"></td>
+                        </tr>
+                        <tr>
+                            <td>Gender:</td>
+                            <td id="gender"></td>
+                        </tr>
+                        <tr>
+                            <td>CitizenShip:</td>
+                            <td id= "citizenShip"></td>
+                        </tr>
+                        <tr>
+                            <td>Civil Status:</td>
+                            <td id="civilStatus"></td>
+                        </tr>
+                        <tr>
+                            <td>TIN:</td>
+                            <td id="tin"></td>
+                        </tr>
+                        <tr>
+                            <td>Birth Date:</td>
+                            <td id="birthDate"></td>
+                        </tr>
+                        <tr>
+                            <td>Birth Place:</td>
+                            <td id= "birthPlace"></td>
+                        </tr>
+                        <tr>
+                            <td>Height:</td>
+                            <td id="height"></td>
+                        </tr>
+                        <tr>
+                            <td>Weight:</td>
+                            <td id="weight"></td>
+                        </tr>
+                        <tr>
+                            <td>CTC No. / Ref. ID:</td>
+                            <td id="refId"></td>
+                        </tr>
+                    </tbody>
+                </table>'
+            ,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-8 citizenProfileTableWrapper',
+            ],
+        ]);
+
+        /*$this->crud->addField([
             'name'  => 'separator01',
             'type'  => 'custom_html',
             'value' => '<hr>',
-        ]);
-        $this->crud->addField([
+        ]);*/
+
+        /*$this->crud->addField([
             'label' => 'Business Name',
             'type' => 'primary_owner_union',
             'name' => 'businessId',
@@ -149,14 +224,65 @@ class TreasuryCtcCrudController extends CrudController
             'data_source' => url('/admin/api/business-profiles/selection-search'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-6 businessId'
+                'class' => 'form-group col-12 col-md-8 businessIdWrapper'
+            ],
+        ]);*/
+
+        $this->crud->addField([
+            'label' => 'Business Name',
+            'type' => 'business_profile_selection',
+            'name' => 'businessProfileId',
+            'entity' => 'business_profile',
+            'attribute' => 'full_name',
+            'data_source' => url('/admin/api/business-profile/search-business-profile'),
+            'minimum_input_length' => 1,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-8 businessProfileIdWrapper',
             ],
         ]);
+
         $this->crud->addField([
-            'name'  => 'separator02',
+            'name'  => 'separator5y',
+            'type'  => 'custom_html',
+            'value' => '
+                <table class="table table-bordered businessProfileTable" id="businessProfileTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="20%">Business Details</th>
+                            <th scope="col" width="80%"></th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Owner:</td>
+                            <td id="owner"></td>
+                        </tr>
+                        <tr>
+                            <td>Business Address:</td>
+                            <td id="businessAddress"></td>
+                        </tr>
+                        <tr>
+                            <td>Nature of Business:</td>
+                            <td id= "naturOfBusiness"></td>
+                        </tr>
+                        <tr>
+                            <td>CTC No. / Ref. ID:</td>
+                            <td id="refId"></td>
+                        </tr>
+                    </tbody>
+                </table>'
+            ,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-8 Wrapper',
+            ],
+        ]);
+        
+        $this->crud->addField([
+            'name'  => 'separator02i',
             'type'  => 'custom_html',
             'value' => '<hr>',
         ]);
+
         $this->crud->addField(
             [
                 'name'=>'employmentStatus',
@@ -167,7 +293,7 @@ class TreasuryCtcCrudController extends CrudController
                     'unemployed' => 'unemployed'
                 ],
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
+                    'class' => 'form-group col-12 col-md-4 employmentStatusWrapper'
                 ],
             ]
         );
@@ -179,7 +305,7 @@ class TreasuryCtcCrudController extends CrudController
                     'class' => 'form-control text_input_mask_currency'
                 ],
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
+                    'class' => 'form-group col-12 col-md-4 annualIncomeWrapper'
                 ]
             ]
         );
@@ -188,7 +314,7 @@ class TreasuryCtcCrudController extends CrudController
                 'name'=>'profession',
                 'label'=>'Profession',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
+                    'class' => 'form-group col-12 col-md-4 professionWrapper'
                 ]
             ]
         );
@@ -198,18 +324,20 @@ class TreasuryCtcCrudController extends CrudController
             'value' => '<hr>',
         ]);
         $this->crud->addField([   
-            'name'  => 'details',
-            'label' => 'Details',
+            'name'  => 'fees',
+            'label' => 'Fees',
             'type'  => 'repeatable',
             'subfields' => [
                 [
                     'name'    => 'particulars',
-                    'type'    => 'text',
+                    'type'    => 'select',
                     'label'   => 'Particulars',
+                    'model'     => "App\Models\BusinessFees",
+                    'attribute' => 'name',
                     'attributes' => [
                         'class' => 'form-control particulars',
                     ],
-                    'wrapper' => ['class' => 'form-group col-md-9'],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
                 [
                     'name'    => 'amount',
@@ -218,7 +346,7 @@ class TreasuryCtcCrudController extends CrudController
                         'class' => 'form-control text_input_mask_currency amount',
                     ],
                     'label'   => 'Amount',
-                    'wrapper' => ['class' => 'form-group col-md-3'],
+                    'wrapper' => ['class' => 'form-group col-md-6'],
                 ],
             ],
             'new_item_label'  => 'New Item', 
@@ -227,6 +355,57 @@ class TreasuryCtcCrudController extends CrudController
             'max_rows' => 10,
             'reorder' => false,
         ]);
+
+        $this->crud->addField([
+            'name'=>'totalFeesAmount',
+            'label'=>'Total Fees Amount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+        ]);
+
+        /*$this->crud->addField([
+            'name'  => 'separator5xx',
+            'type'  => 'custom_html',
+            'value' => '<label>Summary</label>
+                <table class="table table-bordered summaryTable" id="summaryTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="70%">Particulars</th>
+                            <th scope="col" width="30%">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>'
+            ,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name'=>'totalSummaryAmount',
+            'label'=>'Total Summary Amount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+        ]);*/
+
+        $this->crud->addField([
+            'name'  => 'separator03x',
+            'type'  => 'custom_html',
+            'value' => '<hr>',
+        ]);
+
         $this->crud->addField(
             [
                 'name'=>'remarks',
@@ -237,11 +416,11 @@ class TreasuryCtcCrudController extends CrudController
                 ]
             ]
         );
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'  => 'separator04',
             'type'  => 'custom_html',
             'value' => '<hr>',
-        ]);
+        ]);*/
         $this->crud->addField([
             'name'=>'isActive',
             'label'=>'Status <span style="color:red;">*</span>',
@@ -253,7 +432,7 @@ class TreasuryCtcCrudController extends CrudController
             'allows_null' => false,
             'default'     => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-3 hidden'
             ],
         ]);
 
