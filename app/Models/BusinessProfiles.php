@@ -99,7 +99,7 @@ class BusinessProfiles extends Model
        return  $this->belongsTo(FaasLand::class, "buss_activity_address_id", "id");
     }
     public function businessCategory(){
-        return  $this->belongsTo(BusinessFees::class, "line_of_business->particulars", "id");
+        return  $this->belongsTo(BusinessCategory::class, "line_of_business->particulars", "id");
      }
      public function vehicleType(){
         return  $this->belongsTo(BusinessVehicles::class, "line_of_business->particulars", "id");

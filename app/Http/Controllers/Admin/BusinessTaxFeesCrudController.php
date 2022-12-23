@@ -122,12 +122,9 @@ class BusinessTaxFeesCrudController extends CrudController
        $this->crud->addField([  // Select
         "name"=>"category",
         'label'     => "Category",
-        'type'      => 'select_from_array',
-        'options'         => ['Business Tax' => 'Business Tax', 
-                             "Mayors Permit" => 'Mayor s Permit',
-                             'Occupational Tax' => 'Occupational Tax',
-                             "Delivery Truck" => "Delivery Truck",
-                            "Regulatory"=>"Regulatory"],
+        'type'      => 'select',
+        "entity"    => "busCategory",
+        "attribute" => "name",
         "allow_null"=>true,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
@@ -235,8 +232,8 @@ class BusinessTaxFeesCrudController extends CrudController
         'reorder' => false, // hide up&down arrows next to each row (no reordering)
     ]);
        $this->crud->addField([  // Select
-        "name"=>"type",
-        'label'     => "Type",
+        "name"=>"computation",
+        'label'     => "Computation",
         'type'      => 'select_from_array',
         'options'         => ['Amount' => 'Amount', 
                              "Percentage" => 'Percentage'],
@@ -247,7 +244,10 @@ class BusinessTaxFeesCrudController extends CrudController
      ]);
        $this->crud->addField([
         'name'=>"amount_value",
-        "type"=>"number"
+        "type"=>"number",
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-6'
+        ],
         ]);
         $this->crud->addField([
             'name'=>'isActive',

@@ -41,6 +41,9 @@ class BusinessTaxFees extends Model
     public function account_name(){
         return $this->belongsTo(ChartOfAccountLvl4::class, "chart_of_accounts_lvl4_id", "id");
     }
+    public function busCategory(){
+        return $this->belongsTo(BusinessCategory::class, "category", "id");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

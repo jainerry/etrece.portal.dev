@@ -22,7 +22,7 @@ class BusinessFeesSeeder extends Seeder
             [
                 'id' => '980b1076-c365-4d66-8cbc-2a4bf31ef013',
                 'refID' => 'BUS-FEES'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
-                'category' => 'Business Tax',
+                'category' => 'BASIC',
                 'name' => 'Business Tax',
                 'created_at' => Carbon::now(),
             ],
