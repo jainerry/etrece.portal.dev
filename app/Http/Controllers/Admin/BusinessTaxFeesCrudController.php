@@ -43,7 +43,7 @@ class BusinessTaxFeesCrudController extends CrudController
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
         $this->crud->orderBy('refID','desc');
-
+      
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -164,6 +164,21 @@ class BusinessTaxFeesCrudController extends CrudController
         'label' => 'Range Box',
         'type'  => 'repeatable',
         'subfields' => [ // also works as: "fields"
+            [   // CustomHTML
+                'name'  => 'separator',
+                'type'  => 'custom_html',
+                'value' => '<div class=""></div>',
+                'tab' => 'Details',
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-6 d-none d-md-block  mb-0'
+                ]
+                ],
+            [
+                'name'    => 'infinite',
+                'type'    => 'checkbox',
+                'label'   => 'Infinite',
+                'wrapper' => ['class' => 'form-group form-group col-12 col-md-6  mb-0 text-right '],
+            ],
             [
                 'name'    => 'from',
                 'type'    => 'text',
@@ -174,8 +189,9 @@ class BusinessTaxFeesCrudController extends CrudController
                 'name'    => 'to',
                 'type'    => 'text',
                 'label'   => 'To',
-                'wrapper' => ['class' => 'form-group col-md-6'],
+                'wrapper' => ['class' => 'form-group col-md-6 position-relative'],
             ],
+          
             [
                 'name'    => 'pp1',
                 'type'    => 'text',
@@ -247,6 +263,7 @@ class BusinessTaxFeesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-12'
             ],
         ]);
+       
         /**
          * Fields can be defined using the fluent syntax or array syntax:
          * -$this->crud->field('price')->type('number');

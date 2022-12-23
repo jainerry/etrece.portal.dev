@@ -157,27 +157,19 @@ class BussTaxAssessmentsCrudController extends CrudController
         $this->crud->addField([   // repeatable
          'name'  => 'fees_and_delinquency',
          'label' => 'Fees and Delinquency',
-         'type'  => 'repeatable',
+         'type'  => 'repeatable_total',
          'subfields' => [ // also works as: "fields"
             [
-                'name'        => 'fees_list',
-                'label'       => "Fees List",
-                'type'        => 'select_from_array',
-                'options'     => ['Y' => 'Yes', 'N' => 'No'],
-                'allows_null' => true,
+                'name'        => 'business_tax_fees',
+                'label'       => "Business Tax Fees",
+                'type'        => 'select',
+                'entity'     =>"busTaxFees",
+                'attribute' => "name",
                 'tab' => 'Details',
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-4'
+                    'class' => 'form-group col-12 col-md-8'
                 ]
                 ],
-             [
-                 'name'    => 'name',
-                 'type'    => 'text',
-                 'label'   => 'Name',
-                 'wrapper' => ['class' => 'form-group col-md-4'],
-
-             ],
-             
              [
                  'name'    => 'amount',
                  'type'    => 'text',
@@ -199,13 +191,13 @@ class BussTaxAssessmentsCrudController extends CrudController
     $this->crud->addField([   // repeatable
         'name'  => 'tax_withheld_discount',
         'label' => 'Tax withheld discount',
-        'type'  => 'repeatable',
+        'type'  => 'repeatable_total',
         'subfields' => [ // also works as: "fields"
             [
                 'name'        => 'tax_withheld_discount',
                 'label'       => "Tax withheld Discount",
                 'type'        => 'select_from_array',
-                'options'     => ['Y' => 'Yes', 'N' => 'No'],
+                'options'     => ['Tax Withheld' => 'Tax Withheld', 'Discount' => 'Discount'],
                 'allows_null' => true,
                 'tab' => 'Details',
                 'wrapperAttributes' => [
@@ -213,9 +205,9 @@ class BussTaxAssessmentsCrudController extends CrudController
                 ]
                 ],
             [
-                'name'    => 'name',
+                'name'    => 'remarks',
                 'type'    => 'text',
-                'label'   => 'Name',
+                'label'   => 'Remarks',
                 'wrapper' => ['class' => 'form-group col-md-4'],
 
             ],
