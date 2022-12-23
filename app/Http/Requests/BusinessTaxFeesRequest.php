@@ -25,7 +25,8 @@ class BusinessTaxFeesRequest extends FormRequest
     public function rules()
     {
         return [
-            // 'name' => 'required|min:5|max:255'
+            'range_box.*.from' => 'required',
+            'range_box.*.to' => 'required'
         ];
     }
 

@@ -531,11 +531,7 @@ class BusinessProfilesCrudController extends CrudController
             'reorder' => false, // hide up&down arrows next to each row (no reordering)
         ]);
 
-        $jobcats = BusinessJobCategories::all();
-        $jcats = [];
-        foreach($jobcats as $jcat){
-            $jcats += [$jcat->id => $jcat->name];
-        }
+       
 
         $this->crud->addField([   // repeatable
             'name'  => 'number_of_employees',

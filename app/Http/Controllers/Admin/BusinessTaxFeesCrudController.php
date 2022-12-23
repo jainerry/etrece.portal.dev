@@ -159,7 +159,65 @@ class BusinessTaxFeesCrudController extends CrudController
         ],
      ]);
    
-       $this->crud->field('range_box');
+       $this->crud->addField([   // repeatable
+        'name'  => 'range_box',
+        'label' => 'Range Box',
+        'type'  => 'repeatable',
+        'subfields' => [ // also works as: "fields"
+            [
+                'name'    => 'from',
+                'type'    => 'text',
+                'label'   => 'From',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'    => 'to',
+                'type'    => 'text',
+                'label'   => 'To',
+                'wrapper' => ['class' => 'form-group col-md-6'],
+            ],
+            [
+                'name'    => 'pp1',
+                'type'    => 'text',
+                'label'   => 'PP1',
+                'wrapper' => ['class' => 'form-group col-md-3'],
+            ],
+            [   // CustomHTML
+                'name'  => 'separator',
+                'type'  => 'custom_html',
+               
+                'value' => '<div class="form-group "><label class="d-block">&nbsp;</label><span>% of</spam></div>',
+                'wrapper' => ['class' => 'form-group col-md-1'],
+            ],
+            [
+                'name'    => 'pp2',
+                'type'    => 'text',
+                'label'   => 'PP2',
+                'wrapper' => ['class' => 'form-group col-md-3'],
+            ],
+            [   // CustomHTML
+                'name'  => 'separator',
+                'type'  => 'custom_html',
+               
+                'value' => '<div class="form-group "><label class="d-block">&nbsp;</label><span>in excess of</spam></div>',
+                'wrapper' => ['class' => 'form-group col-md-1 p-0 text-center'],
+            ],
+            [
+                'name'    => 'PAmount',
+                'type'    => 'text',
+                'label'   => 'PAmount',
+                'wrapper' => ['class' => 'form-group col-md-4'],
+            ],
+        ],
+    
+        // optional
+        'new_item_label'  => 'Add Group', // customize the text of the button
+        'init_rows' => 1, // number of empty rows to be initialized, by default 1
+        "min_rows"=>1,
+        'max_rows' => 1, // maximum rows allowed, when reached the "new item" button will be hidden
+        // allow reordering?
+        'reorder' => false, // hide up&down arrows next to each row (no reordering)
+    ]);
        $this->crud->addField([  // Select
         "name"=>"type",
         'label'     => "Type",

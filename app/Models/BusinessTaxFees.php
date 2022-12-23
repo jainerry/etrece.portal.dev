@@ -3,12 +3,13 @@
 namespace App\Models;
 
 use Backpack\CRUD\app\Models\Traits\CrudTrait;
+use Illuminate\Database\Eloquent\Concerns\HasUlids;
 use Illuminate\Database\Eloquent\Model;
 
 class BusinessTaxFees extends Model
 {
     use CrudTrait;
-
+    use HasUlids;
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES
