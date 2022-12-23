@@ -129,4 +129,6 @@ Route::group([
     Route::crud('rpt-rates', 'RptRatesCrudController');
     Route::crud('business-tax-fees', 'BusinessTaxFeesCrudController');
     Route::crud('business-vehicles', 'BusinessVehiclesCrudController');
+
+    Route::get('/api/business-profile/search-business-profile', 'BusinessProfilesCrudController@searchBusinessProfile');
 }); // this should be the absolute last line of this file

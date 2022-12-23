@@ -28,18 +28,12 @@ class CTCTypesSeeder extends Seeder
             [
                 'id' => 'ae3f579e-d491-4635-80aa-49172e22cb47',
                 'refID' => 'CTC-TYPE'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
-                'name' => 'Individual - Sole',
-                'created_at' => Carbon::now(),
-            ],
-            [
-                'id' => 'f99e3222-1067-4cf2-90ab-27339744858c',
-                'refID' => 'CTC-TYPE'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
-                'name' => 'Proprietor',
+                'name' => 'Individual - Sole Proprietor',
                 'created_at' => Carbon::now(),
             ],
             [
                 'id' => '4a89ee8c-0aae-426e-83ec-998e25692724',
-                'refID' => 'CTC-TYPE'.'-'.str_pad((3), 4, "0", STR_PAD_LEFT),
+                'refID' => 'CTC-TYPE'.'-'.str_pad((2), 4, "0", STR_PAD_LEFT),
                 'name' => 'Corporation',
                 'created_at' => Carbon::now(),
             ],

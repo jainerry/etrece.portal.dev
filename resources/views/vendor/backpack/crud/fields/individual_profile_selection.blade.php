@@ -1,4 +1,4 @@
-{{-- Business Profile Selection --}}
+{{-- Individual Profile Selection--}}
 @php
     $connected_entity = new $field['model'];
     $connected_entity_key_name = $connected_entity->getKeyName();
@@ -9,7 +9,7 @@
     // this is the time we wait before send the query to the search endpoint, after the user as stopped typing.
     $field['delay'] = $field['delay'] ?? 500;
     $field['allows_null'] = $field['allows_null'] ?? $crud->model::isColumnNullable($field['name']);
-    $field['placeholder'] = $field['placeholder'] ?? 'Select Business Profile';
+    $field['placeholder'] = $field['placeholder'] ?? 'Select Citizen or Name Profile';
     $field['attribute'] = $field['attribute'] ?? $connected_entity->identifiableAttribute();
     $field['minimum_input_length'] = $field['minimum_input_length'] ?? 2;
 @endphp
@@ -19,7 +19,7 @@
     <select
         name="{{ $field['name'] }}"
         style="width: 100%"
-        data-init-function="bpFieldInitBusinessProfileSelectionInputElement"
+        data-init-function="bpFieldInitIndividualProfileInputElement"
         data-field-is-inline="{{var_export($inlineCreate ?? false)}}"
         data-column-nullable="{{ var_export($field['allows_null']) }}"
         data-dependencies="{{ isset($field['dependencies'])?json_encode(Arr::wrap($field['dependencies'])): json_encode([]) }}"
@@ -107,9 +107,9 @@
 
 {{-- include field specific select2 js --}}
 @push('crud_fields_scripts')
-@loadOnce('bpFieldInitBusinessProfileSelectionInputElement')
+@loadOnce('bpFieldInitIndividualProfileInputElement')
 <script>
-    function bpFieldInitBusinessProfileSelectionInputElement(element) {
+    function bpFieldInitIndividualProfileInputElement(element) {
         var form = element.closest('form');
         var $placeholder = element.attr('data-placeholder');
         var $minimumInputLength = element.attr('data-minimum-input-length');
@@ -143,7 +143,7 @@
         $(element).select2({
             theme: 'bootstrap',
             multiple: false,
-            placeholder: 'Select Business Profile',
+            placeholder: 'Select Citizen or Name Profile',
             minimumInputLength: 2,
             allowClear: true,
             templateSelection: formatState,
@@ -178,33 +178,51 @@
                         results: $.map(data, function(item) {
 
                             let customText = ''
-                            let primaryOwner = ''
-
-                            if(item.ownerType === 'NameProfile') {
-                                primaryOwner = item.names.full_name
-                            }
-                            else {
-                                primaryOwner = item.owner.full_name
-                            }
-
-                            let address = item.main_office.ownerAddress
-
-                            customText = `
+                            if(item.ownerType === 'CitizenProfile') {
+                                customText = `
                                     <div>
                                         <div>
-                                            Business Name: <b class="fullname"> ${item.full_name}</b>
+                                            Full Name: <b class="fullname"> ${item.fullname}</b>
+                                        </div>
+                                        <div>
+                                            Type: <b class="fullname"> Citizen Profile</b>
                                         </div>
                                         <div>
                                             Reference ID: <b> ${item.refID}</b>
                                         </div>
                                         <div>
-                                            Owner: <b> ${primaryOwner}</b>
+                                            Birth Date: <b> ${item.bdate}</b>
                                         </div>
                                         <div>
-                                            Address: <b> ${address}</b>
+                                            Barangay: <b> ${item.barangay.name}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
                                         </div>
                                     </div>
                                 `
+                            }
+                            else if(item.ownerType === 'NameProfile') {
+                                customText = `
+                                    <div>
+                                        <div>
+                                            Full Name: <b class="fullname"> ${item.full_name}</b>
+                                        </div>
+                                        <div>
+                                            Type: <b class="fullname"> Name Profile</b>
+                                        </div>
+                                        <div>
+                                            Reference ID: <b> ${item.refID}</b>
+                                        </div>
+                                        <div>
+                                            Birth Date: <b> ${item.bdate}</b>
+                                        </div>
+                                        <div>
+                                            Address: <b> ${item.address}</b>
+                                        </div>
+                                    </div>
+                                `
+                            }
                             let searchResults = { text: customText, id: item.id }
                             return searchResults
 

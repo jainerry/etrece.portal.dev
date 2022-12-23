@@ -75,3 +75,10 @@ form .select2.select2-container.select2-container--focus, form .select2.select2-
 .selectedBuildingProfileWrapper .selectedBuildingProfileLabel {
     color: #fff;
 }
+
+table#citizenProfileTable tr th,
+table#citizenProfileTable tr td,
+table#businessProfileTable tr th,
+table#businessProfileTable tr td {
+    padding: 3px 10px;
+}
