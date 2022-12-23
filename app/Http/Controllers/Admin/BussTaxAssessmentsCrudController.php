@@ -230,6 +230,46 @@ class BussTaxAssessmentsCrudController extends CrudController
         'reorder' => false, // hide up&down arrows next to each row (no reordering)
 
    ], );
+        $this->crud->addField([
+            // CustomHTML
+            'name' => 'separator',
+            'type' => 'custom_html',
+            'value' => '
+                    <label> Summary </label>
+                    <table class="table table-bordered summaryTable"> 
+                    <thead>
+                       <tr>
+                       <th>
+                       Particulars
+                       </th>
+                       <th>
+                       Amount
+                       </th>
+                       </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>
+                            Accounts here
+                            </td>
+                            <td>
+                            0.0000
+                            </td >
+                          
+                        </tr>
+                        <tr style="border-top: 1px solid rgba(0,40,100,.12);font-size:24px">
+                            <td class="border-right-0"">
+                            Total
+                            </td>
+                            <td class="border-left-0">
+                            0.0000
+                            </td>
+                        </tr>
+                    </tbody>
+             
+                    </table>',
+            'tab' => 'Details',
+        ]);
    $this->crud->addField([
     "name"=>"remarks",
     "type"=>"textarea",
