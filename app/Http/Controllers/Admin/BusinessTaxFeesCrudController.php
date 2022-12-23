@@ -6,6 +6,7 @@ use App\Http\Requests\BusinessTaxFeesRequest;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
+use Backpack\CRUD\app\Library\Widget;
 /**
  * Class BusinessTaxFeesCrudController
  * @package App\Http\Controllers\Admin
@@ -76,7 +77,11 @@ class BusinessTaxFeesCrudController extends CrudController
     protected function setupCreateOperation()
     {
        $this->crud->setValidation(BusinessTaxFeesRequest::class);
-
+       Widget::add([
+        'type'     => 'script',
+        'name'      => 'custom_script',
+        'content'  => '/assets/js/business.js',
+    ]);
        
        $this->crud->addField([
         "name"=>"business_fees_id",
