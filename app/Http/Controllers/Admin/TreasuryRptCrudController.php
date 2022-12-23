@@ -666,21 +666,6 @@ class TreasuryRptCrudController extends CrudController
      */
     protected function setupUpdateOperation()
     {
-        $this->crud->addField(
-            [
-                'name'=>'orNo',
-                'label'=>'OR No.',
-                'fake'=>true,
-                'attributes' => [
-                    'readonly' => 'readonly'
-                ],
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-3'
-                ],
-                'tab' => 'Details',
-            ]
-        );
-
         $this->setupCreateOperation();
     }
 

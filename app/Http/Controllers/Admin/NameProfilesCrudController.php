@@ -10,6 +10,7 @@ use Illuminate\Support\Carbon;
 USE Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use \Backpack\CRUD\app\Library\Widget;
+
 /**
  * Class NameProfilesCrudController
  * @package App\Http\Controllers\Admin
@@ -264,5 +265,19 @@ class NameProfilesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $results = NameProfiles::select('*')
+            ->where('isActive', '=', 'Y')
+            ->where('id', '=', $id)
+            ->get();
+        }
+
+        return $results;
     }
 }

@@ -7,6 +7,8 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
 use Illuminate\Http\Request;
+use App\Models\TreasuryCtc;
+use App\Models\CitizenProfile;
 
 /**
  * Class TreasuryCtcCrudController
@@ -54,21 +56,53 @@ class TreasuryCtcCrudController extends CrudController
         $this->crud->removeButton('update'); 
 
         $this->crud->addColumn([
-            'label'     => 'Reference ID',
+            'label'     => 'OR No.',
             'type'      => 'text',
-            'name'      => 'refID',
+            'name'      => 'orNo',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
                     return route('treasury-ctc.edit',$entry->id);
                 },
             ],
-          ]);
+        ]);
+        $this->crud->column('ctcNumber')->label('CTC No.');
 
-        $this->crud->column('or_no');
-        $this->crud->column('citizenId');
-        $this->crud->column('businessId');
-        $this->crud->column('isActive')->label('Status');
-        $this->crud->column('created_at');
+        CRUD::column('model_function')
+        ->type('model_function')
+        ->label('Name')
+        ->function_name('getNameProfile')
+        ->searchLogic(function ($query, $column, $searchTerm) {
+            $query->orWhereHas('citizen_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('fName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('mName', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('lName', 'like', '%'.$searchTerm.'%');
+            })
+            ->orWhereHas('name_profile', function ($q) use ($column, $searchTerm) {
+                $q->where('first_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('middle_name', 'like', '%'.$searchTerm.'%');
+                $q->orWhere('last_name', 'like', '%'.$searchTerm.'%');
+            });
+        });
+
+        $this->crud->addColumn([
+            'name'=>'businessProfileId',
+            'label' => "Business",
+            'type'=>'select',
+            'entity' => 'business_profile',
+            'attribute' => 'business_name',
+            'limit' => 255,
+        ]);
+
+        $this->crud->addColumn([
+            'name'=>'ctcType',
+            'label' => "Type",
+            'type'=>'select',
+            'entity' => 'ctc_type',
+            'attribute' => 'name',
+        ]);
+
+        $this->crud->column('totalFeesAmount')->label('Assessment Amount');
+        $this->crud->column('created_at')->label('Payment Date');
     }
 
     /**
@@ -113,7 +147,9 @@ class TreasuryCtcCrudController extends CrudController
                 'language' => 'fr',
                 'endDate' => '0d',
             ],
-            'hint'=>'Date',
+            'attributes' => [
+                'class' => 'form-control dateOfIssue',
+            ],
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
@@ -123,31 +159,59 @@ class TreasuryCtcCrudController extends CrudController
             'type'  => 'custom_html',
             'value' => '<hr>',
         ]);
-        /*$this->crud->addField([
-            'label' => 'Name',
-            'type' => 'citizen_profile_selection',
-            'name' => 'citizenId',
-            'entity' => 'citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/selection-search'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-8 citizenIdWrapper'
-            ],
-        ]);*/
 
-        $this->crud->addField([
-            'label' => 'Name',
-            'type' => 'individual_profile_selection',
-            'name' => 'individualProfileId',
-            'entity' => 'citizen_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-8 citizenAndNameProfileWrapper'
-            ],
-        ]);
+        //
+        $id = $this->crud->getCurrentEntryId();
+        
+        if ($id != false) {
+            $data = TreasuryCtc::where('id', $id)->first();
+            $individualProfileId = $data->individualProfileId;
+            
+            $ownerExist  = CitizenProfile::where("id", $individualProfileId)->count();
+            if ($ownerExist == 0) {
+                $this->crud->addField([
+                    'label' => 'Name',
+                    'type' => 'individual_profile_selection',
+                    'name' => 'individualProfileId',
+                    'entity' => 'name_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-8 citizenAndNameProfileWrapper'
+                    ],
+                ]);
+                
+            }
+            else {
+                $this->crud->addField([
+                    'label' => 'Name',
+                    'type' => 'individual_profile_selection',
+                    'name' => 'individualProfileId',
+                    'entity' => 'citizen_profile',
+                    'attribute' => 'full_name',
+                    'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                    'minimum_input_length' => 1,
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-8 citizenAndNameProfileWrapper'
+                    ],
+                ]);
+            }
+        }
+        else {
+            $this->crud->addField([
+                'label' => 'Name',
+                'type' => 'individual_profile_selection',
+                'name' => 'individualProfileId',
+                'entity' => 'citizen_profile',
+                'attribute' => 'full_name',
+                'data_source' => url('/admin/api/citizen-profile/search-primary-owner'),
+                'minimum_input_length' => 1,
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-8 citizenAndNameProfileWrapper'
+                ],
+            ]);
+        }
 
         $this->crud->addField([
             'name'  => 'separator5x',
@@ -209,31 +273,12 @@ class TreasuryCtcCrudController extends CrudController
             ],
         ]);
 
-        /*$this->crud->addField([
-            'name'  => 'separator01',
-            'type'  => 'custom_html',
-            'value' => '<hr>',
-        ]);*/
-
-        /*$this->crud->addField([
-            'label' => 'Business Name',
-            'type' => 'primary_owner_union',
-            'name' => 'businessId',
-            'entity' => 'business_profile',
-            'attribute' => 'full_name',
-            'data_source' => url('/admin/api/business-profiles/selection-search'),
-            'minimum_input_length' => 1,
-            'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-8 businessIdWrapper'
-            ],
-        ]);*/
-
         $this->crud->addField([
             'label' => 'Business Name',
             'type' => 'business_profile_selection',
             'name' => 'businessProfileId',
             'entity' => 'business_profile',
-            'attribute' => 'full_name',
+            'attribute' => 'business_name',
             'data_source' => url('/admin/api/business-profile/search-business-profile'),
             'minimum_input_length' => 1,
             'wrapperAttributes' => [
@@ -290,7 +335,7 @@ class TreasuryCtcCrudController extends CrudController
                 'type' => 'select_from_array',
                 'options' => [
                     'Employed' => 'Employed', 
-                    'unemployed' => 'unemployed'
+                    'Unemployed' => 'Unemployed'
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-4 employmentStatusWrapper'
@@ -448,5 +493,32 @@ class TreasuryCtcCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/create-treasury-ctc-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('treasury.ctc.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/treasury/edit-treasury-ctc-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('treasury.ctc.edit', $this->data);
     }
 }

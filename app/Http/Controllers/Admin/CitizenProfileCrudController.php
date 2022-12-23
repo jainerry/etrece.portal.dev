@@ -330,6 +330,7 @@ class CitizenProfileCrudController extends CrudController
         });
        
     }
+
     public function getCluster(Request $req){
         if($req->selected == true){
             return response()->json([
@@ -341,6 +342,7 @@ class CitizenProfileCrudController extends CrudController
         }
         
     }
+
     public function checkDuplicate(Request $req){
         $input = $req->all();
      
@@ -539,6 +541,20 @@ class CitizenProfileCrudController extends CrudController
                 ->with('barangay')
                 ->where('isActive', '=', 'Y')
                 ->orderBy('fullname','ASC')->paginate(10);
+        }
+
+        return $results;
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $results = CitizenProfile::select('*')
+            ->where('isActive', '=', 'Y')
+            ->where('id', '=', $id)
+            ->get();
         }
 
         return $results;

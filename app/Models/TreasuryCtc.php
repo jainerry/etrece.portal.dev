@@ -28,15 +28,19 @@ class TreasuryCtc extends Model
     // protected $dates = [];
 
     protected $casts = [
-        'details' => 'array',
+        'fees' => 'array',
     ];
 
     protected static function boot(){
         parent::boot();
         TreasuryCtc::creating(function($model){
             $count = TreasuryCtc::count();
+
             $refID = 'TRS-CTC'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $orNo = 'CTC-OR'.'-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
+
             $model->refID = $refID;
+            $model->orNo = $orNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -60,6 +64,32 @@ class TreasuryCtc extends Model
     |--------------------------------------------------------------------------
     */
 
+    public function getNameProfile()
+    {
+        $ownerExist = CitizenProfile::where("id", $this->individualProfileId)->count();
+        if ($ownerExist == 0) {
+            $primaryOwner = NameProfiles::where("id", $this->individualProfileId)->first();
+            $first_name = $primaryOwner->first_name;
+            $middle_name = $primaryOwner->middle_name;
+            $last_name = $primaryOwner->last_name;
+            $suffix = $primaryOwner->suffix;
+        }
+        else {
+            $primaryOwner = CitizenProfile::where("id", $this->individualProfileId)->first();
+            $first_name = $primaryOwner->fName;
+            $middle_name = $primaryOwner->mName;
+            $last_name = $primaryOwner->lName;
+            $suffix = $primaryOwner->suffix;
+        }
+
+        $fName = ucfirst($first_name)." ";
+        $mName = ($middle_name == null? "":" ").ucfirst($middle_name)." ";
+        $lName = ucfirst($last_name);
+        $suffix = ($suffix == null || $suffix == ""? "":" ").ucfirst($suffix);
+        
+        return "{$fName}{$mName}{$lName}{$suffix}";
+    }
+
     /*
     |--------------------------------------------------------------------------
     | RELATIONS
@@ -67,11 +97,19 @@ class TreasuryCtc extends Model
     */
 
     public function citizen_profile(){
-        return $this->belongsTo(CitizenProfile::class,'citizenId','id');
+        return $this->belongsTo(CitizenProfile::class,'individualProfileId','id');
     }
 
     public function business_profile(){
-        return $this->belongsTo(BusinessProfiles::class,'businessId','id');
+        return $this->belongsTo(BusinessProfiles::class,'businessProfileId','id');
+    }
+
+    public function name_profile(){
+        return $this->belongsTo(NameProfiles::class,'individualProfileId','id');
+    }
+
+    public function ctc_type(){
+        return $this->belongsTo(CtcType::class,'ctcType','id');
     }
 
     /*

@@ -36,8 +36,12 @@ class TreasuryOther extends Model
         parent::boot();
         TreasuryOther::creating(function($model){
             $count = TreasuryOther::count();
+
             $refID = 'TRS-OTHR'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $orNo = 'OTHR-OR'.'-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
+
             $model->refID = $refID;
+            $model->orNo = $orNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,

@@ -673,4 +673,30 @@ class BusinessProfilesCrudController extends CrudController
 
         return $results;
     }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        if (!empty($id))
+        {
+            $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+                ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+                ->with('owner')
+                ->with('main_office')
+                ->with('main_office.barangay');
+
+            $nameProfile = BusinessProfiles::select('business_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+                ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+                ->with('names')
+                ->with('main_office')
+                ->with('main_office.barangay');
+            
+            $citizenProfiles = $citizenProfile->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        return $results;
+    }
 }

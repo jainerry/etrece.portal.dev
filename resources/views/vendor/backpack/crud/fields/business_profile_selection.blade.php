@@ -192,10 +192,10 @@
                             customText = `
                                     <div>
                                         <div>
-                                            Business Name: <b class="fullname"> ${item.full_name}</b>
+                                            Business Name: <b class="fullname"> ${item.business_name}</b>
                                         </div>
                                         <div>
-                                            Reference ID: <b> ${item.refID}</b>
+                                            Reference ID: <b class="fullname"> ${item.refID}</b>
                                         </div>
                                         <div>
                                             Owner: <b> ${primaryOwner}</b>

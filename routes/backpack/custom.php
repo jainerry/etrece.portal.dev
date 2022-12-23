@@ -131,4 +131,8 @@ Route::group([
     Route::crud('business-vehicles', 'BusinessVehiclesCrudController');
 
     Route::get('/api/business-profile/search-business-profile', 'BusinessProfilesCrudController@searchBusinessProfile');
+    Route::get('/api/business-profile/get-details', 'BusinessProfilesCrudController@getDetails');
+    Route::get('/api/citizen-profile/get-details', 'CitizenProfileCrudController@getDetails');
+    Route::get('/api/name-profile/get-details', 'NameProfilesCrudController@getDetails');
+
 }); // this should be the absolute last line of this file
