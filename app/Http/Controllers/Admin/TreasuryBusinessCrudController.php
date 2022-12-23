@@ -56,20 +56,64 @@ class TreasuryBusinessCrudController extends CrudController
         $this->crud->removeButton('update'); 
 
         $this->crud->addColumn([
-            'label'     => 'Reference ID',
+            'label'     => 'OR No.',
             'type'      => 'text',
-            'name'      => 'refID',
+            'name'      => 'orNo',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
                     return route('treasury-business.edit',$entry->id);
                 },
             ],
-          ]);
+        ]);
 
-        $this->crud->column('or_no');
-        $this->crud->column('businessId');
-        $this->crud->column('isActive')->label('Status');
-        $this->crud->column('created_at');
+        $this->crud->addColumn([
+            'label'     => 'Assessment Ref. ID',
+            'type'      => 'text',
+            'name'      => 'business_tax_assessment.refID'
+        ]);
+
+        $this->crud->addColumn([
+            'label'     => 'Business Ref. ID',
+            'type'      => 'text',
+            'name'      => 'business_tax_assessment.bussProf.refID'
+        ]);
+
+        $this->crud->addColumn([
+            'label'     => 'Business Name',
+            'type'      => 'text',
+            'name'      => 'business_tax_assessment.bussProf.business_name'
+        ]);
+
+        $this->crud->addColumn([
+            'label'     => 'Business Name',
+            'type'      => 'text',
+            'name'      => 'business_tax_assessment.bussProf.main_office.ownerAddress',
+            'limit' => 255
+        ]);
+
+        $this->crud->addColumn([
+            'label'     => 'Kind',
+            'type'      => 'text',
+            'name'      => 'business_tax_assessment.bussType.name',
+            'limit' => 255
+        ]);
+
+        // $this->crud->addColumn([
+        //     'label'     => 'Reference ID',
+        //     'type'      => 'text',
+        //     'name'      => 'refID',
+        //     'wrapper'   => [
+        //         'href' => function ($crud, $column, $entry, ) {
+        //             return route('treasury-business.edit',$entry->id);
+        //         },
+        //     ],
+        //   ]);
+
+        // $this->crud->column('or_no');
+        // $this->crud->column('businessId');
+        // $this->crud->column('isActive')->label('Status');
+        $this->crud->column('totalSummaryAmount')->label('Assessment Amount');
+        $this->crud->column('created_at')->label('Payment Date');
     }
 
     /**
@@ -134,7 +178,7 @@ class TreasuryBusinessCrudController extends CrudController
         ]);
         $this->crud->addField(
             [
-                'name'=>'businessId',
+                'name'=>'businessTaxAssessmentId',
                 'type'=>'hidden',
             ]
         );
@@ -150,6 +194,35 @@ class TreasuryBusinessCrudController extends CrudController
                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-6'
+                ],
+                'tab' => 'Details',
+            ]
+        );
+        /*$this->crud->addField(
+            [
+                'name'=>'owner',
+                'label'=>'Owner',
+                'fake'=>true,
+                'attributes' => [
+                    'readonly' => 'readonly'
+                ],
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-6'
+                ],
+                'tab' => 'Details',
+            ]
+        );*/
+        $this->crud->addField(
+            [
+                'name'=>'mainOfficeAddress',
+                'label'=>'Business Address',
+                'type'=>'textarea',
+                'fake'=>true,
+                'attributes' => [
+                    'readonly' => 'readonly'
+                ],
+                'wrapperAttributes' => [
+                    'class' => 'form-group col-12 col-md-12'
                 ],
                 'tab' => 'Details',
             ]
@@ -170,36 +243,7 @@ class TreasuryBusinessCrudController extends CrudController
         );
         $this->crud->addField(
             [
-                'name'=>'businessAddress',
-                'label'=>'Business Address',
-                'type'=>'textarea',
-                'fake'=>true,
-                'attributes' => [
-                    'readonly' => 'readonly'
-                ],
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-12'
-                ],
-                'tab' => 'Details',
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'name',
-                'label'=>'Name',
-                'fake'=>true,
-                'attributes' => [
-                    'readonly' => 'readonly'
-                ],
-                'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
-                ],
-                'tab' => 'Details',
-            ]
-        );
-        $this->crud->addField(
-            [
-                'name'=>'address',
+                'name'=>'ownerAddress',
                 'label'=>'Address',
                 'type'=>'textarea',
                 'fake'=>true,
@@ -227,8 +271,8 @@ class TreasuryBusinessCrudController extends CrudController
                     'name'    => 'particulars',
                     'type'    => 'select',
                     'label'   => 'Particulars',
-                    'model'     => "App\Models\ChartOfAccountLvl4",
-                    'attribute' => 'code_name',
+                    'model'     => "App\Models\BusinessFees",
+                    'attribute' => 'name',
                     'attributes' => [
                         'class' => 'form-control particulars',
                     ],
@@ -251,13 +295,28 @@ class TreasuryBusinessCrudController extends CrudController
             'reorder' => false,
             'tab' => 'Details',
         ]);
+
+        $this->crud->addField([
+            'name'=>'totalOtherFeesAmount',
+            'label'=>'Total Other Fees Amount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ],
+            'tab' => 'Details',
+        ]);
+
         $this->crud->addField([
             'name'  => 'separator03',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Details',
         ]);
-        $this->crud->addField([   
+
+        /*$this->crud->addField([   
             'name'  => 'details',
             'label' => 'Details',
             'type'  => 'repeatable',
@@ -296,13 +355,49 @@ class TreasuryBusinessCrudController extends CrudController
             'max_rows' => 10,
             'reorder' => false,
             'tab' => 'Details',
-        ]);
+        ]);*/
+
         $this->crud->addField([
+            'name'  => 'separator5x',
+            'type'  => 'custom_html',
+            'value' => '<label>Summary</label>
+                <table class="table table-bordered summaryTable" id="summaryTable">
+                    <thead>
+                        <tr>
+                            <th scope="col" width="70%">Particulars</th>
+                            <th scope="col" width="30%">Amount</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                    </tbody>
+                </table>'
+            ,
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-12',
+            ],
+        ]);
+
+        $this->crud->addField([
+            'name'=>'totalSummaryAmount',
+            'label'=>'Total Summary Amount',
+            'attributes' => [
+                'class' => 'form-control text_input_mask_currency',
+                'readonly' => 'readonly'
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3 hidden'
+            ],
+            'tab' => 'Details',
+        ]);
+
+        /*$this->crud->addField([
             'name'  => 'separator04',
             'type'  => 'custom_html',
             'value' => '<hr>',
             'tab' => 'Details',
-        ]);
+        ]);*/
+
         $this->crud->addField([
             'name'=>'isActive',
             'label'=>'Status <span style="color:red;">*</span>',
@@ -314,7 +409,7 @@ class TreasuryBusinessCrudController extends CrudController
             'allows_null' => false,
             'default'     => 1,
             'wrapperAttributes' => [
-                'class' => 'form-group col-12 col-md-3'
+                'class' => 'form-group col-12 col-md-3 hidden'
             ],
             'tab' => 'Details',
         ]);

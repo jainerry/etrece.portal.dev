@@ -36,8 +36,12 @@ class TreasuryBusiness extends Model
         parent::boot();
         TreasuryBusiness::creating(function($model){
             $count = TreasuryBusiness::count();
+
             $refID = 'TRS-BUSS'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $orNo = 'BUSS-OR'.'-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
+            
             $model->refID = $refID;
+            $model->orNo = $orNo;
 
             TransactionLogs::create([
                 'transId' =>$refID,
@@ -66,6 +70,10 @@ class TreasuryBusiness extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
+
+    public function business_tax_assessment(){
+        return $this->belongsTo(BussTaxAssessments::class,'businessTaxAssessmentId','id');
+    }
 
     /*
     |--------------------------------------------------------------------------

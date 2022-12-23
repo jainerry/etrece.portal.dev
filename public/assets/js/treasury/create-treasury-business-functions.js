@@ -24,8 +24,6 @@ $(function () {
                 searchByOwner: searchByOwner
             },
             success: function (data) {
-                console.log(data)
-
                 let html = ''
                 if (data.length > 0) {
                     html = '\n\
@@ -34,7 +32,8 @@ $(function () {
                         <thead>\n\
                             <tr>\n\
                             <th scope="col">Reference ID</th>\n\
-                            <th scope="col">Business Profile</th>\n\
+                            <th scope="col">Business Name</th>\n\
+                            <th scope="col">Business Profile Ref ID</th>\n\
                             <th scope="col">Primary Owner</th>\n\
                             <th scope="col">Owner Address</th>\n\
                             <th scope="col">Business Type</th>\n\
@@ -66,6 +65,7 @@ $(function () {
 
                         html += '<tr>\n\
                             <td>'+refID+'</td>\n\
+                            <td>'+value.business_name+'</td>\n\
                             <td>'+businessRefID+'</td>\n\
                             <td>'+primaryOwner+'</td>\n\
                             <td>'+ownerAddress+'</td>\n\
@@ -94,6 +94,15 @@ $(function () {
         $('input[name="searchByOwner"]').val('')
     })
 
+    otherFeesActions()
+    computeTotalOtherFeesAmount()
+
+    $('.repeatable-group[bp-field-name="otherFees"] button.add-repeatable-element-button').on('click', function(){
+        $('div[data-repeatable-holder="otherFees"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
+        $('div[data-repeatable-holder="otherFees"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
+        otherFeesActions()
+    })
+
 })
 
 function fetchData(id){
@@ -105,12 +114,12 @@ function fetchData(id){
             id: id
         },
         success: function (data) {
-            console.log(data)
             if(data.length > 0) {
                 data = data[0]
-                /*
-                $('input[name="rptId"]').val(data.id)
-                $('#tab_details select[name="rptType"]').val(searchByType).change()
+                
+                $('input[name="businessTaxAssessmentId"]').val(data.id)
+
+                $('table#summaryTable tbody').html('')
 
                 let primaryOwner = ''
                 let suffix = ''
@@ -124,36 +133,43 @@ function fetchData(id){
                     primaryOwner = data.first_name+' '+data.middle_name+' '+data.last_name+' '+suffix
                 }
 
-                let lotNo = ''
-                let totalArea = ''
+                let mainOfficeAddress = data.buss_prof.main_office.lotNo+' '+data.buss_prof.main_office.noOfStreet+' '+data.buss_prof.main_office.barangay.name
 
-                if(searchByType === 'Land'){
-                    lotNo = data.lotNo
-                    totalArea = data.totalArea
-                }
-                else if(searchByType === 'Building'){
-                    lotNo = data.faas_building_profile.land_profile.lotNo
-                    totalArea = data.faas_building_profile.totalFloorArea
+                $('#tab_details input[name="businessName"]').val(data.business_name)
+                $('#tab_details textarea[name="mainOfficeAddress"]').val(mainOfficeAddress)
+                $('#tab_details input[name="owner"]').val(primaryOwner)
+                $('#tab_details textarea[name="ownerAddress"]').val(data.buss_prof.main_office.ownerAddress)
 
-                }
-                else if(searchByType === 'Machinery'){
-                    lotNo = data.faas_machinery_profile.land_profile.lotNo
-                    totalArea = data.faas_machinery_profile.land_profile.totalArea
-                }
+                let fees_and_delinquency = data.fees_and_delinquency
+                let tax_withheld_discount = data.tax_withheld_discount
 
-                $('#tab_details input[name="TDNo"]').val(data.TDNo)
-                $('#tab_details input[name="primaryOwner"]').val(primaryOwner)
-                $('#tab_details textarea[name="ownerAddress"]').val(data.ownerAddress)
-                $('#tab_details input[name="lotNo"]').val(lotNo)
-                $('#tab_details input[name="area"]').val(totalArea)
-                // $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentAssessmentValue)
-                $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentMarketValue)
-                $('#tab_details input[name="dateAssessed"]').val(data.assessedDate)
+                
+                $.each(fees_and_delinquency, function(i, fee) {
+                    $('table#summaryTable tbody').append('\n\
+                        <tr>\n\
+                            <td>'+fee.name+'</td>\n\
+                            <td class="fee" id="fee_'+i+'">'+fee.amount+'</td>\n\
+                        </tr>'
+                    )
+                })
 
-                //(Basic, Penalty, Discount, Total Basic, SEF, Penalty, Discount, Total SEF)
-                getTreasuryRPTRates('980935f0-66d2-44b9-a3b2-360288a5d048')
-                getTreasuryRPTRates('9809360c-1e78-40a8-b989-8b5979aecdd4')
-                */
+                $.each(tax_withheld_discount, function(j, discount) {
+                    $('table#summaryTable tbody').append('\n\
+                        <tr>\n\
+                            <td>'+discount.name+'</td>\n\
+                            <td class="discount" id="discount_'+j+'">'+discount.amount+'</td>\n\
+                        </tr>'
+                    )
+                })
+
+                $('table#summaryTable tbody').append('\n\
+                    <tr class="totalSummaryAmountWrapper" style="background-color: #fafafa; font-weight: 600; font-size: 20px; text-transform: uppercase;">\n\
+                        <td>Total</td>\n\
+                        <td class="totalSummaryAmount" id="totalSummaryAmount"></td>\n\
+                    </tr>'
+                )
+
+                computeTotalSummaryAmount()
 
                 $('.treasuryModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
@@ -161,6 +177,73 @@ function fetchData(id){
             }
         }
     })
+}
+
+function computeTotalSummaryAmount(){
+    let totalSummaryAmount = 0
+    $('table#summaryTable tbody tr td.fee').each(function(){
+        let fee = $(this).text()
+        fee = formatStringToFloat(fee)
+        totalSummaryAmount = totalSummaryAmount + fee
+    })
+
+    $('table#summaryTable tbody tr td.discount').each(function(){
+        let discount = $(this).text()
+        discount = formatStringToFloat(discount)
+        totalSummaryAmount = totalSummaryAmount + discount
+    })
+
+    $('table#summaryTable tbody tr td.otherFees').each(function(){
+        let otherFees = $(this).text()
+        otherFees = formatStringToFloat(otherFees)
+        totalSummaryAmount = totalSummaryAmount + otherFees
+    })
+    
+    $('#tab_details input[name="totalSummaryAmount"]').val(totalSummaryAmount)
+    $('table#summaryTable tbody tr.totalSummaryAmountWrapper td.totalSummaryAmount').text($('#tab_details input[name="totalSummaryAmount"]').val())
+}
+
+function otherFeesActions(){
+    $('#tab_details select.particulars').on("change", function(){
+        addNewOtherFeesToSummary()
+    })
+
+    $('#tab_details input.amount').on("change", function(){
+        addNewOtherFeesToSummary()
+    })
+}
+
+function addNewOtherFeesToSummary(){
+    $('table#summaryTable tbody tr.otherFeesWrapper').remove()
+
+    $('#tab_details select.particulars').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let otherFee = $('#tab_details select.particulars[data-row-number="'+dataRowNumber+'"] option:selected').text()
+        let otherFeeAmount = $('#tab_details input.amount[data-row-number="'+dataRowNumber+'"]').val()
+
+        let otherFeeRow = '<tr class="otherFeesWrapper">\n\
+                <td>(Other Fees) '+otherFee+'</td>\n\
+                <td class="otherFees" id="otherFee_'+dataRowNumber+'">'+otherFeeAmount+'</td>\n\
+            </tr>'
+
+        $(otherFeeRow).insertBefore('table#summaryTable tbody tr.totalSummaryAmountWrapper')
+    })
+    computeTotalSummaryAmount()
+    computeTotalOtherFeesAmount()
+}
+
+function computeTotalOtherFeesAmount(){
+    let totalOtherFeesAmount = 0
+    $('#tab_details select.particulars').each(function(){
+        let dataRowNumber = $(this).attr('data-row-number')
+        let otherFeeAmount = $('#tab_details input.amount[data-row-number="'+dataRowNumber+'"]').val()
+        otherFeeAmount = formatStringToFloat(otherFeeAmount)
+
+        totalOtherFeesAmount = totalOtherFeesAmount + otherFeeAmount
+        
+    })
+
+    $('#tab_details input[name="totalOtherFeesAmount"]').val(totalOtherFeesAmount)
 }
 
 function formatStringToFloat(num){

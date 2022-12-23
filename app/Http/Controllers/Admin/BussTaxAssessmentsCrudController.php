@@ -283,6 +283,10 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'business_profiles.refID as businessRefID', 'business_profiles.business_name')
                 ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
                 ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+                ->with('bussProf')
+                ->with('bussProf.main_office')
+                ->with('bussProf.main_office.barangay')
+                ->with('bussType')
                 ->where('buss_tax_assessments.isActive', '=', 'Y')
                 ->where('buss_tax_assessments.id', '=', $id)
                 ->get();
@@ -292,6 +296,10 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'business_profiles.refID as businessRefID', 'business_profiles.business_name')
                 ->join('business_profiles', 'buss_tax_assessments.business_profiles_id', '=', 'business_profiles.id')
                 ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+                ->with('bussProf')
+                ->with('bussProf.main_office')
+                ->with('bussProf.main_office.barangay')
+                ->with('bussType')
                 ->where('buss_tax_assessments.isActive', '=', 'Y')
                 ->where('buss_tax_assessments.id', '=', $id)
                 ->get();

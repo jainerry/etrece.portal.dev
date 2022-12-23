@@ -17,9 +17,10 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->string('refID')->unique();
             $table->string('orNo')->unique()->nullable();
-            $table->string('businessId')->nullable();
+            $table->string('businessTaxAssessmentId')->nullable();
             $table->text('otherFees')->nullable();
-            $table->string('totalOtherFees')->nullable();
+            $table->string('totalOtherFeesAmount')->nullable();
+
             // $table->string('businessTax')->nullable();
             // $table->string('businessTaxPenalty')->nullable();
             // $table->string('businessTaxInterest')->nullable();
@@ -28,11 +29,13 @@ return new class extends Migration
             // $table->string('summaryOtherFees')->nullable();
             // $table->string('delinquent')->nullable();
             // $table->string('taxWithheldDiscount')->nullable();
-            $table->text('details')->nullable();
-            $table->string('totalDetailsPreviousYear')->nullable();
-            $table->string('totalDetailsCurrentYear')->nullable();
+            // $table->text('details')->nullable();
+            // $table->string('totalDetailsPreviousYear')->nullable();
+            // $table->string('totalDetailsCurrentYear')->nullable();
             // $table->string('assessedBy')->nullable();
             // $table->string('assessedDate')->nullable();
+
+            $table->string('totalSummaryAmount')->nullable();
             $table->boolean('isActive')->default(1);
             $table->timestamps();
         });

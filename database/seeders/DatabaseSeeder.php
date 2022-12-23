@@ -60,6 +60,7 @@ class DatabaseSeeder extends Seeder
             BusinessProfileSeeder::class,
             BusinessTaxAssessmentSeeder::class,
             BusinessFeesSeeder::class,
+            TreasuryBusinessSeeder::class,
         ]);
     }
 }

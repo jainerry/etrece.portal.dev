@@ -41,11 +41,9 @@ class TreasuryRpt extends Model
             
             $refID = 'TRS-RPT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $orNo = 'RPT-OR'.'-'.str_pad(($count), 6, "0", STR_PAD_LEFT);
-            $paymentDate = Carbon::now();
             
             $model->refID = $refID;
             $model->orNo = $orNo;
-            $model->paymentDate = $paymentDate;
 
             TransactionLogs::create([
                 'transId' =>$refID,
