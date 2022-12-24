@@ -22,7 +22,7 @@ class BusinessTaxAssessmentSeeder extends Seeder
             [
                 'id' => '980b0670-857e-4bd5-aa22-e5cb895adb49',
                 'refID' => 'BUS-TAX-ASSESSMENT'.'-'.str_pad((0), 4, "0", STR_PAD_LEFT),
-                'application_type' => '980ae350-6e48-4700-ac4d-8c4f3be9a9b0',
+                'application_type' => 'New',
                 'business_profiles_id' => '980ae821-b775-4f24-b658-1061b82432fb',
                 'assessment_date' => '2022-11-27',
                 'assessment_year' => '2023',
@@ -36,7 +36,7 @@ class BusinessTaxAssessmentSeeder extends Seeder
             [
                 'id' => '980b0800-6b68-4ce6-8b80-d44f46c5f471',
                 'refID' => 'BUS-TAX-ASSESSMENT'.'-'.str_pad((1), 4, "0", STR_PAD_LEFT),
-                'application_type' => '980ae37d-5ad7-455f-8e69-d949ba8319b8',
+                'application_type' => 'New',
                 'business_profiles_id' => '980ae678-1d57-4a0f-8724-cdc752c54a81',
                 'assessment_date' => '2022-11-27',
                 'assessment_year' => '2023',
