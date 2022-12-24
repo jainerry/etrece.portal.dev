@@ -9,7 +9,7 @@ use Illuminate\Support\Carbon;
 use Illuminate\Http\Request;
 use App\Models\BussTaxAssessments;
 use Illuminate\Support\Facades\DB;
-
+use Backpack\CRUD\app\Library\Widget;
 /**
  * Class BussTaxAssessmentsCrudController
  * @package App\Http\Controllers\Admin
@@ -43,6 +43,12 @@ class BussTaxAssessmentsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
+        Widget::add([
+            'type'     => 'script',
+            'name'      => 'custom_script',
+            'content'  => '/assets/js/business/taxAssesment.js',
+        ]);
+
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  
         $this->crud->removeButton('update');  
@@ -326,6 +332,7 @@ class BussTaxAssessmentsCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+        Widget::name('custom_script')->remove();
     }
 
     public function getDetails(Request $request){
