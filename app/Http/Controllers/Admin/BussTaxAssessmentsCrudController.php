@@ -65,10 +65,9 @@ class BussTaxAssessmentsCrudController extends CrudController
              }
           ]);
         $this->crud->column('application_type');
-        $this->crud->column('assessment_date');
         $this->crud->column('assessment_year');
         $this->crud->column('payment_type');
-        $this->crud->column('net_profit');
+      
       
         /**
          * Columns can be defined using the fluent syntax or array syntax:
@@ -141,8 +140,8 @@ class BussTaxAssessmentsCrudController extends CrudController
           "name"=>'assessment_year',
           "label"=>"Assessment Year",
             'options' => [
-                'New' => 'New',
-                'Renewal' => 'Renewal',
+                'New' => 'Current',
+                'Renewal' => 'Next Year',
             ],
             "type"=>"select_from_array",
           'tab' => 'Details',
@@ -186,6 +185,10 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'entity'     =>"busTaxFees",
                 'attribute' => "fees_dropdown",
                 'tab' => 'Details',
+                "attributes"=>[
+                    'readonly'    => 'readonly',
+                  
+                 ],
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-8'
                 ]
@@ -259,7 +262,7 @@ class BussTaxAssessmentsCrudController extends CrudController
    ], );
         $this->crud->addField([
             // CustomHTML
-            'name' => 'separator',
+            'name' => 'table_summary',
             'type' => 'custom_html',
             'value' => '
                     <label> Summary </label>
@@ -288,7 +291,7 @@ class BussTaxAssessmentsCrudController extends CrudController
                             <td class="border-right-0"">
                             Total
                             </td>
-                            <td class="border-left-0">
+                            <td class="border-left-0 total-amount">
                             0.0000
                             </td>
                         </tr>

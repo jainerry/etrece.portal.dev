@@ -676,6 +676,7 @@ class BusinessProfilesCrudController extends CrudController
                 ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
                 ->with('names')
                 ->with('main_office')
+                ->with('businessCategory')
                 ->orWhere('business_profiles.refID', 'like', '%'.$search_term.'%')
                 ->orWhere('business_profiles.business_name', 'like', '%'.$search_term.'%');
 
@@ -705,7 +706,7 @@ class BusinessProfilesCrudController extends CrudController
                 ->with('names')
                 ->with('main_office')
                 ->with('main_office.barangay');
-            
+                
             $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
             $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
 

@@ -8,7 +8,7 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Relations\BelongsTo;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Storage;
-
+use App\Models\BusinessCategory;
 class BusinessProfiles extends Model
 {
     use CrudTrait;
@@ -28,7 +28,7 @@ class BusinessProfiles extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $appends = ['full_name'];
+    protected $appends = ['full_name',"business_category"];
     protected $casts = [
         'line_of_business' => 'array',
         'number_of_employee' => 'array',
@@ -102,6 +102,13 @@ class BusinessProfiles extends Model
     public function businessCategory(){
         return  $this->belongsTo(BusinessCategory::class, "line_of_business->particulars", "id");
      }
+    public function getBusinessCategoryAttribute(){
+        $particulars = [];
+        foreach($this->line_of_business as $lob){
+            array_push($particulars,BusinessCategory::where("id",$lob['particulars'])->with('business_tax_fees')->get());
+        }
+        return $particulars;
+    }
      public function vehicleType(){
         return  $this->belongsTo(BusinessVehicles::class, "line_of_business->vehicles", "id");
      }

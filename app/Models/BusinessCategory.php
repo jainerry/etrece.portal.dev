@@ -44,7 +44,9 @@ class BusinessCategory extends Model
     | RELATIONS
     |--------------------------------------------------------------------------
     */
-
+    public function business_tax_fees(){
+        return $this->hasMany(BusinessTaxFees::class, "business_categories_id","id");
+    }
     /*
     |--------------------------------------------------------------------------
     | SCOPES

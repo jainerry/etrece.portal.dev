@@ -7,10 +7,6 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
 use Backpack\CRUD\app\Library\Widget;
-use Illuminate\Http\Request;
-use Illuminate\Support\Facades\DB;
-use App\Models\BusinessTaxFees;
-
 /**
  * Class BusinessTaxFeesCrudController
  * @package App\Http\Controllers\Admin
@@ -42,6 +38,7 @@ class BusinessTaxFeesCrudController extends CrudController
      * @see  https://backpackforlaravel.com/docs/crud-operation-list-entries
      * @return void
      */
+    
     protected function setupListOperation()
     {
         $this->crud->removeButton('delete');  
@@ -159,7 +156,7 @@ class BusinessTaxFeesCrudController extends CrudController
         'type'      => 'select_from_array',
         'options'         => ['Regular' => 'Regular', 
                              "Range" => 'Range'],
-        "allow_null"=>true,
+        "allows_null"=>false,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
         ],
@@ -289,21 +286,5 @@ class BusinessTaxFeesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
-    }
-
-    public function getDetails(Request $request){
-        $id = $request->input('id');
-        $results = [];
-        
-        if (!empty($id))
-        {
-            $results = BusinessTaxFees::select('id', 'business_fees_id')
-            ->with('business_fees')
-            ->where('id', '=', $id)
-            ->where('isActive', '=', 'Y')
-            ->get();
-        }
-
-        return $results;
     }
 }

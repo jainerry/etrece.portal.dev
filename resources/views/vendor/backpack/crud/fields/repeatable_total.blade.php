@@ -77,7 +77,7 @@
             @endphp
         @endif
     </div>
-    <div class="toltal border p-2 text-right m-1 col-md-12">
+    <div class="total border p-2 text-right m-1 col-md-12">
       Total:  <strong><span class="total-{{$field['name'] }}">0</span> </strong>  
     </div>
 </div>
