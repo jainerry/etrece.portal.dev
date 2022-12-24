@@ -75,6 +75,14 @@ class BusinessFeesSeeder extends Seeder
                 'name' => 'Weight & Measure',
                 'created_at' => Carbon::now(),
             ],
+            [
+                'id' => '980b1274-e725-42a8-8e2e-b2505b9b2738',
+                'refID' => 'BUS-FEES'.'-'.str_pad((8), 4, "0", STR_PAD_LEFT),
+                'category' => 'Delivery Truck',
+                'name' => 'Tax Delivery Truck/Vehicles',
+                'created_at' => Carbon::now(),
+            ],
+          
         ];
 
         DB::table('business_fees')->insert($items);
