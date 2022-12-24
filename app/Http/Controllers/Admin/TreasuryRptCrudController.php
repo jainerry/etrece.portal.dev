@@ -353,7 +353,7 @@ class TreasuryRptCrudController extends CrudController
                     'readonly' => 'readonly'
                 ],
                 'wrapperAttributes' => [
-                    'class' => 'form-group col-12 col-md-6'
+                    'class' => 'form-group col-12 col-md-6 hidden'
                 ],
                 'tab' => 'Details',
             ]

@@ -706,10 +706,26 @@ class BusinessProfilesCrudController extends CrudController
                 ->with('main_office')
                 ->with('main_office.barangay');
             
-            $citizenProfiles = $citizenProfile->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
-            $nameProfiles = $nameProfile->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+            $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
 
             $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        return $results;
+    }
+
+    public function getLineOfBusinessesCategories(Request $request){
+        $id = $request->input('id');
+        $results = [];
+        
+        if (!empty($id))
+        {
+            $results = BusinessCategory::select('business_categories.id as businessCategoryId', 'business_tax_fees.*')
+            ->join('business_tax_fees', 'business_categories.id', '=', 'business_tax_fees.business_categories_id')
+            ->where('business_tax_fees.business_categories_id', '=', $id)
+            ->where('business_tax_fees.isActive', '=', 'Y')
+            ->get();
         }
 
         return $results;

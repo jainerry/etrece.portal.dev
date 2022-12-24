@@ -10,6 +10,7 @@ use Illuminate\Http\Request;
 use App\Models\BussTaxAssessments;
 use Illuminate\Support\Facades\DB;
 use Backpack\CRUD\app\Library\Widget;
+
 /**
  * Class BussTaxAssessmentsCrudController
  * @package App\Http\Controllers\Admin
@@ -333,6 +334,33 @@ class BussTaxAssessmentsCrudController extends CrudController
     {
         $this->setupCreateOperation();
         Widget::name('custom_script')->remove();
+    }
+
+    public function create()
+    {
+        Widget::add()->type('script')->content('assets/js/business-tax-assessment/create-business-tax-assessment-functions.js');
+        $this->crud->hasAccessOrFail('create');
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.add').' '.$this->crud->entity_name;
+        return view('business-tax-assessment.create', $this->data);
+    }
+
+    public function edit($id)
+    {
+        Widget::add()->type('script')->content('assets/js/business-tax-assessment/edit-business-tax-assessment-functions.js');
+        $this->crud->hasAccessOrFail('update');
+        $id = $this->crud->getCurrentEntryId() ?? $id;
+
+        $this->data['entry'] = $this->crud->getEntryWithLocale($id);
+        $this->crud->setOperationSetting('fields', $this->crud->getUpdateFields());
+
+        $this->data['crud'] = $this->crud;
+        $this->data['saveAction'] = $this->crud->getSaveAction();
+        $this->data['title'] = $this->crud->getTitle() ?? trans('backpack::crud.edit').' '.$this->crud->entity_name;
+        $this->data['id'] = $id;
+
+        return view('business-tax-assessment.edit', $this->data);
     }
 
     public function getDetails(Request $request){
