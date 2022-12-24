@@ -43,7 +43,24 @@ class BussTaxAssessmentsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        $this->crud->column('refID');
+        $this->crud->removeButton('delete');  
+        $this->crud->removeButton('show');  
+        $this->crud->removeButton('update');  
+        $this->crud->orderBy('refID','desc');
+        $this->crud->addColumn([
+            'label'     => 'Reference ID',
+            'type'      => 'text',
+            'name'      => 'refID',
+            'wrapper'   => [
+                'href' => function ($crud, $column, $entry, ) {
+                    return route('buss-tax-assessments.edit',$entry->id);
+                },
+            ],
+            'searchLogic' => function ($query, $column, $searchTerm) {
+                return $query->orWhere('refID', 'like', '%'.$searchTerm.'%');
+ 
+             }
+          ]);
         $this->crud->column('application_type');
         $this->crud->column('assessment_date');
         $this->crud->column('assessment_year');
