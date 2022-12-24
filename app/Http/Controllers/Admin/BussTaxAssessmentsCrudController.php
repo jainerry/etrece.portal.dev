@@ -129,20 +129,32 @@ class BussTaxAssessmentsCrudController extends CrudController
         $this->crud->addField([
           "name"=>'assessment_year',
           "label"=>"Assessment Year",
+            'options' => [
+                'New' => 'New',
+                'Renewal' => 'Renewal',
+            ],
+            "type"=>"select_from_array",
           'tab' => 'Details',
           'wrapperAttributes' => [
               'class' => 'form-group col-12 col-md-4 '
           ],
         ]);
         $this->crud->addField([
-          "name"=>'payment_type',
-          "label"=>"Payment Type",
-          'tab' => 'Details',
-          'wrapperAttributes' => [
-              'class' => 'form-group col-12 col-md-4 '
-          ],
+            "name"=>'payment_type',
+            "label"=>"Payment Type",
+              'options' => [
+                  'Monthly' => 'Monthly',
+                  'Quarterly' => 'Quarterly',
+                  'Semi-Annual' => 'Semi-Annual',
+                  'Annual' => 'Annual',
+              ],
+              "type"=>"select_from_array",
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 '
+            ],
+          ]);
 
-        ]);
         $this->crud->addField([
           "name"=>'net_profit',
           "label"=>"Net Profit",
