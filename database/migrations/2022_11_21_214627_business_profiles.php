@@ -43,6 +43,7 @@ return new class extends Migration
             $table->date('dti_reg_date')->nullable();
 
             $table->char('weight_and_measure',1)->nullable();
+            $table->string('area')->nullable();
             $table->char('unit_of_measurement',1)->nullable();
             $table->char('weight_and_measure_value',1)->nullable();
 

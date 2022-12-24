@@ -100,11 +100,6 @@ class BusinessProfilesCrudController extends CrudController
     protected function setupCreateOperation()
     {
         $this->crud->setValidation(BusinessProfilesRequest::class);
-        Widget::add([
-            'type'     => 'script',
-            'name'      => 'custom_script',
-            'content'  => '/assets/js/business.js',
-        ]);
 
 
         $this->crud->addField([
@@ -465,6 +460,26 @@ class BusinessProfilesCrudController extends CrudController
                 'class' => 'form-group col-12 col-md-4 order-last'
             ]
         ]);
+
+        $this->crud->addField([
+            'name'        => 'area',
+            'label'       => "Area",
+            'type'        => 'number',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4 order-last'
+            ]
+        ]);
+        $this->crud->addField([   // CustomHTML
+            'name'  => 'separator2',
+            'type'  => 'custom_html',
+            'value' => '<div class=""></div>',
+            'tab' => 'Details',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-8  d-md-block  mb-0 order-last'
+            ]
+        ]);
+
 
          $this->crud->addField([
             'name'        => 'tax_incentives',

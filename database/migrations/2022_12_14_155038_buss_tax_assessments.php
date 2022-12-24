@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('assessment_date')->nullable();
             $table->string('assessment_year')->nullable();
             $table->string('payment_type')->nullable();
-            $table->string('net_profit')->nullable();
+            $table->json('net_profit')->nullable();
             $table->string('fees_and_delinquency')->nullable();
             $table->string('tax_withheld_discount')->nullable();
             $table->string('remarks')->nullable();

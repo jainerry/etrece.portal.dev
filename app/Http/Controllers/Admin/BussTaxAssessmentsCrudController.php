@@ -169,14 +169,14 @@ class BussTaxAssessmentsCrudController extends CrudController
             ],
           ]);
 
-        $this->crud->addField([
-          "name"=>'net_profit',
-          "label"=>"Net Profit",
-          'tab' => 'Details',
-          'wrapperAttributes' => [
-              'class' => 'form-group col-12 col-md-4 '
-          ],
-        ]);
+        // $this->crud->addField([
+        //   "name"=>'net_profit',
+        //   "label"=>"Net Profit",
+        //   'tab' => 'Details',
+        //   'wrapperAttributes' => [
+        //       'class' => 'form-group col-12 col-md-4 '
+        //   ],
+        // ]);
         $this->crud->addField([   // repeatable
          'name'  => 'fees_and_delinquency',
          'label' => 'Fees and Delinquency',
