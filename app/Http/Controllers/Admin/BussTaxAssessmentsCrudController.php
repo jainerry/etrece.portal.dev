@@ -77,23 +77,20 @@ class BussTaxAssessmentsCrudController extends CrudController
         $this->crud->setValidation(BussTaxAssessmentsRequest::class);
 
 
-        $this->crud->addField([  // Select2
-         'label'     => "Application Type",
-         'type'      => 'select2',
-         'name'      => 'application_type', // the db column for the foreign key
+          $this->crud->addField([
+            'name'=>'application_type',
+            'label'=>'Application Type',
+            'type' => 'select_from_array',
+            'tab' => 'Details',
+            'options' => [
+                'New' => 'New',
+                'Renewal' => 'Renewal',
+            ],
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-6 mt-3'
+            ],
+        ]);
 
-        // optional
-         'entity'    => 'bussType', // the method that defines the relationship in your Model
-         'attribute' => 'name', // foreign key attribute that is shown to user
-         'tab' => 'Details',
-         'wrapperAttributes' => [
-             'class' => 'form-group col-12 col-md-6 mt-3'
-         ],
-         // also optional
-         'options'   => (function ($query) {
-             return $query->orderBy('name', 'ASC')->get();
-         }), // force the related options to be a custom query, instead of all(); you can use this to filter the results show in the select
-          ]);
 
         $this->crud->addField([
          'name'  => 'assessment_date',
@@ -113,7 +110,7 @@ class BussTaxAssessmentsCrudController extends CrudController
      ]);
 
         $this->crud->addField([  // Select2
-         'label'     => "Application Type",
+         'label'     => "Business Name",
          'type'      => 'select2',
          'name'      => 'business_profiles_id', // the db column for the foreign key
 
