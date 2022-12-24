@@ -23,10 +23,11 @@ function getBusinessProfile(id){
         success: function (data) {
             if(data.length > 0) {
                 data = data[0]
-                $.each(data.line_of_business, function(i, line_of_business) {
+                $("[bp-field-name=fees_and_delinquency]").find('[data-repeatable-holder=fees_and_delinquency]').html('')
+                $.each(data.line_of_business,async function(i, line_of_business) {
                     console.log(line_of_business.particulars)
-                    getLineOfBusinessesCategories(line_of_business.particulars)
-                    $("[bp-field-name=fees_and_delinquency]").find('.add-repeatable-element-button').trigger('click')
+                    await  getLineOfBusinessesCategories(line_of_business.particulars)
+                   
                 })
             }
         }
@@ -43,8 +44,11 @@ function getLineOfBusinessesCategories(id){
         },
         success: function (data) {
             if(data.length > 0) {
-                data = data[0]
-                console.log(data)
+                for(i=0; i<data.length;i++){
+                    
+                    $("[bp-field-name=fees_and_delinquency]").find('.add-repeatable-element-button').trigger('click')
+                }
+               
                 //fetched all business tax fees with business category id
             }
         }
