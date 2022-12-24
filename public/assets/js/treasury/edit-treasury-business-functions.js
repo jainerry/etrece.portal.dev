@@ -61,18 +61,20 @@ function fetchData(id){
 
                 
                 $.each(fees_and_delinquency, function(i, fee) {
+                    //getFeeDetails(i, fee.business_tax_fees, fee.amount)
                     $('table#summaryTable tbody').append('\n\
                         <tr>\n\
-                            <td>'+fee.name+'</td>\n\
+                            <td>'+fee.business_tax_fees+'</td>\n\
                             <td class="fee" id="fee_'+i+'">'+fee.amount+'</td>\n\
                         </tr>'
                     )
                 })
 
                 $.each(tax_withheld_discount, function(j, discount) {
+                    //getDiscountDetails(discount.tax_withheld_discount, discount.amount) //if and only if given is id
                     $('table#summaryTable tbody').append('\n\
                         <tr>\n\
-                            <td>'+discount.name+'</td>\n\
+                            <td>'+discount.tax_withheld_discount+'</td>\n\
                             <td class="discount" id="discount_'+j+'">'+discount.amount+'</td>\n\
                         </tr>'
                     )
@@ -92,6 +94,28 @@ function fetchData(id){
                 $('.treasuryModal').modal('hide');
                 $('.tab-container').removeClass('hidden')
                 $('#saveActions').removeClass('hidden')
+            }
+        }
+    })
+}
+
+function getFeeDetails(i, id, amount){
+    $.ajax({
+        url: '/admin/api/business-tax-fees/get-details',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            id: id
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                data = data[0]
+                let otherFeesWrapper = $('table#summaryTable tr.otherFeesWrapper')
+                let html = '<tr>\n\
+                        <td>'+data.business_fees.name+'</td>\n\
+                        <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
+                    </tr>'
+                $(html).insertBefore('table#summaryTable tr.totalSummaryAmountWrapper')
             }
         }
     })

@@ -138,5 +138,6 @@ Route::group([
     Route::get('/api/treasury-other/apply-search-filters', 'TreasuryOtherCrudController@applySearchFilters');
 
     Route::get('/api/business-profile/get-line-of-businesses-categories', 'BusinessProfilesCrudController@getLineOfBusinessesCategories');
+    Route::get('/api/business-tax-fees/get-details', 'BusinessTaxFeesCrudController@getDetails');
 
 }); // this should be the absolute last line of this file
