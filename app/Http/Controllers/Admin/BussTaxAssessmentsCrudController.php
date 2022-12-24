@@ -66,16 +66,7 @@ class BussTaxAssessmentsCrudController extends CrudController
         $this->crud->column('assessment_year');
         $this->crud->column('payment_type');
         $this->crud->column('net_profit');
-        $this->crud->column('num_of_employees');
-        $this->crud->column('other_fees');
-        $this->crud->column('deliquent');
-        $this->crud->column('tax_withheld_and_discount');
-        $this->crud->column('remarks');
-        $this->crud->column('assessmentLevels');
-        $this->crud->column('isActive');
-        $this->crud->column('created_at');
-        $this->crud->column('updated_at');
-
+      
         /**
          * Columns can be defined using the fluent syntax or array syntax:
          * -$this->crud->column('price')->type('number');

@@ -17,7 +17,7 @@ class BusCategorySeeder extends Seeder
     {
         //
         BusinessCategory::insert([
-            ['id'=>Str::uuid(),"refID"=>"BUS-CAT-0000",'code'=>'a1',"name"=>"BUS CATEGORY 1","description"=>"THIS IS A CATEGORY"],
+            ['id'=>"e223e31d-984a-4147-a6bc-ade3a5a61984","refID"=>"BUS-CAT-0000",'code'=>'a1',"name"=>"BUS CATEGORY 1","description"=>"THIS IS A CATEGORY"],
             ['id'=>Str::uuid(),"refID"=>"BUS-CAT-0001",'code'=>'a2',"name"=>"BUS CATEGORY 2","description"=>"THIS IS A CATEGORY"]
         ]);
     }
