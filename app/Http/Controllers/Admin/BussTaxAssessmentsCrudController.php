@@ -173,7 +173,7 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'label'       => "Business Tax Fees",
                 'type'        => 'select',
                 'entity'     =>"busTaxFees",
-                'attribute' => "name",
+                'attribute' => "fees_dropdown",
                 'tab' => 'Details',
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-8'
@@ -183,6 +183,10 @@ class BussTaxAssessmentsCrudController extends CrudController
                  'name'    => 'amount',
                  'type'    => 'text',
                  'label'   => 'Amount',
+                 "disable"  =>true,
+                 "attributes"=>[
+                    'readonly' => 'readonly',
+                 ],
                  'wrapper' => ['class' => 'form-group col-md-4'],
 
              ],
@@ -225,6 +229,9 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'name'    => 'amount',
                 'type'    => 'text',
                 'label'   => 'Amount',
+                "attributes"=>[
+                    'readonly' => 'readonly',
+                 ],
                 'wrapper' => ['class' => 'form-group col-md-4'],
 
             ],
