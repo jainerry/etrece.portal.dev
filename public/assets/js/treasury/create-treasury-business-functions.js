@@ -145,20 +145,22 @@ function fetchData(id){
 
                 
                 $.each(fees_and_delinquency, function(i, fee) {
+                    console.log(fee)
                     //getFeeDetails(i, fee.business_tax_fees, fee.amount)
                     $('table#summaryTable tbody').append('\n\
                         <tr>\n\
-                            <td>'+fee.business_tax_fees+'</td>\n\
+                            <td>'+fee.name+'</td>\n\
                             <td class="fee" id="fee_'+i+'">'+fee.amount+'</td>\n\
                         </tr>'
                     )
                 })
 
                 $.each(tax_withheld_discount, function(j, discount) {
+                    console.log(discount)
                     //getDiscountDetails(discount.tax_withheld_discount, discount.amount) //if and only if given is id
                     $('table#summaryTable tbody').append('\n\
                         <tr>\n\
-                            <td>'+discount.tax_withheld_discount+'</td>\n\
+                            <td>'+discount.name+'</td>\n\
                             <td class="discount" id="discount_'+j+'">'+discount.amount+'</td>\n\
                         </tr>'
                     )
