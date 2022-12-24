@@ -44,11 +44,7 @@ class BussTaxAssessmentsCrudController extends CrudController
      */
     protected function setupListOperation()
     {
-        Widget::add([
-            'type'     => 'script',
-            'name'      => 'custom_script',
-            'content'  => '/assets/js/business/taxAssesment.js',
-        ]);
+       
 
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');  

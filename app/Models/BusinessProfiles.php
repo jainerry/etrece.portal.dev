@@ -13,6 +13,7 @@ class BusinessProfiles extends Model
 {
     use CrudTrait;
     use HasUuids;
+    
     /*
     |--------------------------------------------------------------------------
     | GLOBAL VARIABLES

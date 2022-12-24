@@ -463,7 +463,7 @@ class BusinessProfilesCrudController extends CrudController
 
         $this->crud->addField([
             'name'        => 'area',
-            'label'       => "Area",
+            'label'       => "Area (sq.)",
             'type'        => 'number',
             'tab' => 'Details',
             'wrapperAttributes' => [

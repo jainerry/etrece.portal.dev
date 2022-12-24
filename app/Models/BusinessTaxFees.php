@@ -57,7 +57,7 @@ class BusinessTaxFees extends Model
         return $this->belongsTo(BusinessCategory::class, "business_categories_id", "id");
     }
     public function getFeesDropdownAttribute(){
-        return  $this->business_categories->name."-".$this->business_fees->name;
+        return $this->business_fees->name;
     }
    
     /*

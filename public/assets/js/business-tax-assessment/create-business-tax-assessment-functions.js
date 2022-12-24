@@ -24,7 +24,9 @@ function getBusinessProfile(id){
             if(data.length > 0) {
                 data = data[0]
                 $.each(data.line_of_business, function(i, line_of_business) {
+                    console.log(line_of_business.particulars)
                     getLineOfBusinessesCategories(line_of_business.particulars)
+                    $("[bp-field-name=fees_and_delinquency]").find('.add-repeatable-element-button').trigger('click')
                 })
             }
         }
