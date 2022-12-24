@@ -51,7 +51,7 @@ class BusinessTaxFeesCrudController extends CrudController
             'name'      => 'refID',
             'wrapper'   => [
                 'href' => function ($crud, $column, $entry, ) {
-                    return route('business-fees.edit',$entry->id);
+                    return route('business-tax-fees.edit',$entry->id);
                 },
             ],
             'searchLogic' => function ($query, $column, $searchTerm) {
@@ -87,7 +87,7 @@ class BusinessTaxFeesCrudController extends CrudController
         "name"=>"business_fees_id",
         "label"=>"Fees",
         'type'      => 'select',
-        'entity'    => 'fees',
+        'entity'    => 'business_fees',
         'attribute' => 'name', 
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
@@ -125,10 +125,10 @@ class BusinessTaxFeesCrudController extends CrudController
         }), 
        ]);
        $this->crud->addField([  // Select
-        "name"=>"category",
+        "name"=>"business_categories_id",
         'label'     => "Category",
         'type'      => 'select',
-        "entity"    => "busCategory",
+        "entity"    => "business_categories",
         "attribute" => "name",
         "allow_null"=>true,
         'wrapperAttributes' => [

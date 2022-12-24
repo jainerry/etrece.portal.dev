@@ -59,7 +59,7 @@ class BussTaxAssessments extends Model
         return $this->belongsTo(BusinessProfiles::class, "business_profiles_id", "id");
     }
     public function busTaxFees(){
-        return $this->belongsTo(BusinessTaxFees::class,"fees_and_delinquency->business_tax_fees","id");
+        return $this->belongsTo(BusinessTaxFees::class, "fees_and_delinquency->business_tax_fees", "id");
     }
     /*
     |--------------------------------------------------------------------------
