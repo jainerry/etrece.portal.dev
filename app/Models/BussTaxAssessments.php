@@ -28,6 +28,7 @@ class BussTaxAssessments extends Model
     protected $casts = [
         'fees_and_delinquency' => 'array',
         'tax_withheld_discount' => 'array',
+        'net_profit' =>'array'
     ];
 
     /*

@@ -31,7 +31,8 @@ class BusinessProfiles extends Model
     protected $appends = ['full_name',"business_category"];
     protected $casts = [
         'line_of_business' => 'array',
-        'number_of_employee' => 'array',
+        'number_of_employees' => 'array',
+        'vehicles'=>'array'
     ];
 
 
@@ -110,7 +111,7 @@ class BusinessProfiles extends Model
         return $particulars;
     }
      public function vehicleType(){
-        return  $this->belongsTo(BusinessVehicles::class, "line_of_business->vehicles", "id");
+        return  $this->belongsTo(BusinessVehicles::class, "vehicles->types", "id");
      }
     public function setCertificateAttribute($value)
     {

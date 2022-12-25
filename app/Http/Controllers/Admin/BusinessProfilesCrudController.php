@@ -690,32 +690,136 @@ class BusinessProfilesCrudController extends CrudController
         return $results;
     }
 
+    // public function getDetails(Request $request){
+    //     $id = $request->input('id');
+    //     $results = [];
+    //     dd($id);
+    //     if (!empty($id))
+    //     {
+    //         $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+    //             ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+    //             ->with('owner')
+    //             ->with('main_office')
+    //             ->with('main_office.barangay');
+
+    //         $nameProfile = BusinessProfiles::select('business_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+    //             ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+    //             ->with('names')
+    //             ->with('main_office')
+    //             ->with('main_office.barangay');
+                
+    //         $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+    //         $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+
+    //         $results = $citizenProfiles->merge($nameProfiles);
+    //     }
+
+    //     return $results;
+    // }
     public function getDetails(Request $request){
         $id = $request->input('id');
         $results = [];
+        $taxFees = [];
+        $total = 0;
+        $taxFeesForResult = [];
+
         if (!empty($id))
         {
-            $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-                ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
-                ->with('owner')
-                ->with('main_office')
-                ->with('main_office.barangay');
+            $BusinessProfiles = BusinessProfiles::where("id",$id)->where('isActive','y')->get()->first();
+            $category = $BusinessProfiles->businessCategory;
+            $totalEmployee = 0;
+            $area = $BusinessProfiles->area;
+            $weight_and_measure_value = $BusinessProfiles->weight_and_measure_value;
+            $vehicle = $BusinessProfiles->vehicles;
+            $lineOfBusiness = [];
+            foreach($BusinessProfiles->line_of_business as $lineOB){
 
-            $nameProfile = BusinessProfiles::select('business_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-                ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
-                ->with('names')
-                ->with('main_office')
-                ->with('main_office.barangay');
-                
-            $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
-            $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+                array_push($lineOfBusiness, ['capital' => $lineOB['capital'], 'particulars' => BusinessCategory::select(['name','id'])->where("id",$lineOB['particulars'])->get()]);
 
-            $results = $citizenProfiles->merge($nameProfiles);
+            }
+            foreach($BusinessProfiles->number_of_employees as $empNo){
+                $totalEmployee += $empNo['number'];
+            }
+            
+            foreach($category as $cat){
+               if(collect($cat)->isEmpty()){
+
+               }else{
+
+                foreach($cat->first()->business_tax_fees as $taxF){
+                            array_push($taxFees, $taxF);
+                    }
+               }
+             
+               
+            }
+         
+            if(collect($taxFees)->isEmpty()){
+
+            }else{
+                foreach($taxFees as $tax){
+                    $rangeBox = $tax->range_box[0];
+                    switch($tax->basis){
+                        case "Business Area":
+                             
+                              if($area > $rangeBox['from'] && $area <= $rangeBox['to']){
+                                  $total += $tax->amount_value;
+                                  array_push($taxFeesForResult, $tax);
+                              }else if($area > $rangeBox['from'] && $area['infinite'] == 1){
+                                  $total += $tax->amount_value;
+                                  array_push($taxFeesForResult, $tax);
+                               }
+                        break;
+                        case "No of Employee":
+                                  $total += $tax->amount_value*$totalEmployee;
+                                  $tax->amount_value = $tax->amount_value * $totalEmployee;
+                                  array_push($taxFeesForResult, $tax);
+                              break;
+                        case "Weight & Measure":
+
+                                if($weight_and_measure_value > $rangeBox['from'] &&  $weight_and_measure_value <= $rangeBox['to']){
+                                    $total += $tax->amount_value;
+                                    array_push($taxFeesForResult, $tax);
+                                }else if($weight_and_measure_value > $rangeBox['from'] && $rangeBox['infinite'] == 1){
+                                    $total += $tax->amount_value;
+                                    array_push($taxFeesForResult, $tax);
+                                }
+                        break;  
+                        case "No & Type of Vehicle":
+                            
+                            if(collect($vehicle)->isEmpty()){
+
+                            }else{
+                                if($vehicle[0]['type'] === $tax->vehicle_type ){
+                                    $total += $tax->amount_value*$vehicle[0]['number'];
+                                    $tax->amount_value =  $tax->amount_value*$vehicle[0]['number'];
+                                    array_push($taxFeesForResult, $tax);
+                                }
+                            }
+                           
+                            
+
+                        break;  
+                        default:
+                              $total += $tax->amount_value;
+                              array_push($taxFeesForResult, $tax);
+                      }
+                  }
+            }
+           
+
+            $results =
+                [
+                    'taxFees' =>$taxFeesForResult,
+
+                    'line_of_business'=>$lineOfBusiness,
+                    "total"=>$total];
+             
+            // $results = $citizenProfiles->merge($nameProfiles);
         }
 
         return $results;
     }
-
     public function getLineOfBusinessesCategories(Request $request){
         $id = $request->input('id');
         $results = [];

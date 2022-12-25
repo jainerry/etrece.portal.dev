@@ -45,7 +45,7 @@ return new class extends Migration
             $table->char('weight_and_measure',1)->nullable();
             $table->string('area')->nullable();
             $table->char('unit_of_measurement',1)->nullable();
-            $table->char('weight_and_measure_value',1)->nullable();
+            $table->string('weight_and_measure_value')->nullable();
 
 
             $table->string('tax_incentives')->nullable();

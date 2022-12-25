@@ -92,6 +92,7 @@ class BussTaxAssessmentsCrudController extends CrudController
             'label'=>'Application Type',
             'type' => 'select_from_array',
             'tab' => 'Details',
+            "allows_null"=>false,
             'options' => [
                 'New' => 'New',
                 'Renewal' => 'Renewal',
@@ -165,14 +166,45 @@ class BussTaxAssessmentsCrudController extends CrudController
             ],
           ]);
 
-        // $this->crud->addField([
-        //   "name"=>'net_profit',
-        //   "label"=>"Net Profit",
-        //   'tab' => 'Details',
-        //   'wrapperAttributes' => [
-        //       'class' => 'form-group col-12 col-md-4 '
-        //   ],
-        // ]);
+        $this->crud->addField([
+          "name"=>'net_profit',
+          "label"=>"Net Profit",
+          'tab' => 'Details',
+          'type'=>'repeatable',
+          'subfields' => [
+                [
+                    'name' => 'categoryName',
+                    "label"=>"Line of Business",
+                    'type' => 'custom_html',
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 '
+                    ],
+                    'value' => '
+                    <label class="d-block">Line Of Business </label>
+                    <div class="lineOfBusiness">
+                    
+                    </div>'
+
+                ],
+                [
+                    "name" =>"net_profit",
+                    "label"=>"Value",
+                    'wrapperAttributes' => [
+                        'class' => 'form-group col-12 col-md-6 '
+                    ],
+                    "attributes"=>[
+                        "readonly"=>"readonly"
+                    ]
+                    
+                ]
+          ],
+          'init_rows' => 1, 
+          "max_rows"=>1,
+          'reorder' => false,
+          'wrapperAttributes' => [
+              'class' => 'form-group col-12 col-md-4 '
+          ],
+        ]);
         $this->crud->addField([   // repeatable
          'name'  => 'fees_and_delinquency',
          'label' => 'Fees and Delinquency',
@@ -185,13 +217,17 @@ class BussTaxAssessmentsCrudController extends CrudController
                 'entity'     =>"busTaxFees",
                 'attribute' => "fees_dropdown",
                 'tab' => 'Details',
-                "attributes"=>[
-                    'readonly'    => 'readonly',
-                  
-                 ],
+                'attributes'=>[
+                    'disabled'=>'disabled'
+                ],
+                
                 'wrapperAttributes' => [
                     'class' => 'form-group col-12 col-md-8'
                 ]
+                ],
+                [
+                  "name" => "taxFeesID",
+                  "type" =>"hidden", 
                 ],
              [
                  'name'    => 'amount',
@@ -211,6 +247,7 @@ class BussTaxAssessmentsCrudController extends CrudController
          'tab' => 'Details',
          'new_item_label'  => 'Add Group', // customize the text of the button
          'init_rows' => 1, // number of empty rows to be initialized, by default 1
+         'max_rows'=>1,
         // allow reordering?
          'reorder' => false, // hide up&down arrows next to each row (no reordering)
 

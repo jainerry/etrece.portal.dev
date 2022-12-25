@@ -23,6 +23,7 @@ class BusinessTaxFees extends Model
     // protected $fillable = [];
     // protected $hidden = [];
     // protected $dates = [];
+    protected $appends = ['business_fees_name'];
     protected $casts = [
         'range_box' => 'array',
     ];
@@ -59,13 +60,18 @@ class BusinessTaxFees extends Model
     public function getFeesDropdownAttribute(){
         return $this->business_fees->name;
     }
+    public function vehicle(){
+        return $this->belongsTo(BusinessVehicles::class, "vehicle_type", "id");
+    }
    
     /*
     |--------------------------------------------------------------------------
     | SCOPES
     |--------------------------------------------------------------------------
     */
-
+    public function getBusinessFeesNameAttribute(){
+        return $this->business_fees->name;
+    }
     /*
     |--------------------------------------------------------------------------
     | ACCESSORS

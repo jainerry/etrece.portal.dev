@@ -79,11 +79,11 @@ class BusinessTaxFeesCrudController extends CrudController
     {
        $this->crud->setValidation(BusinessTaxFeesRequest::class);
        Widget::add([
-        'type'     => 'script',
-        'name'      => 'custom_script',
-        'content'  => '/assets/js/business.js',
-    ]);
-       
+            'type'     => 'script',
+            'name'      => 'custom_script',
+            'content'  => '/assets/js/business-tax-fees/tax-fees-create.js',
+        ]);
+        
        $this->crud->addField([
         "name"=>"business_fees_id",
         "label"=>"Fees",
@@ -112,6 +112,7 @@ class BusinessTaxFeesCrudController extends CrudController
             'class' => 'form-group col-12 col-md-6'
         ]
      ]);
+  
      $this->crud->addField([
         "name"=>"chart_of_accounts_lvl4_id",
         "label"=>"Account Name",
@@ -143,7 +144,7 @@ class BusinessTaxFeesCrudController extends CrudController
         'options'         => ['Capital/Net Profit' => 'Capital/Net Profit', 
                              "Business Area" => ' Business Area                             ',
                              'No of Employee' => 'No of Employee',
-                             "Delivery Truck" => "Delivery Truck",
+                             "Weight & Measure" => "Weight & Measure",
                              "No & Type of Vehicle"=>"No & Type of Vehicle"],
         "allow_null"=>true,
         'wrapperAttributes' => [
@@ -162,6 +163,20 @@ class BusinessTaxFeesCrudController extends CrudController
         ],
      ]);
    
+     $this->crud->addField([
+        "name"=>"vehicle_type",
+        "label"=>"Vehicle Type",
+        'type'      => 'select',
+        'entity'    => 'vehicle',
+        'attribute' => 'name', 
+        'hint'       => 'select type of vehicle ',
+        'wrapperAttributes' => [
+            'class' => 'form-group col-12 col-md-12'
+        ],
+        'options'   => (function ($query) {
+            return $query->orderBy('name', 'ASC')->get();
+        }), 
+       ]);
        $this->crud->addField([   // repeatable
         'name'  => 'range_box',
         'label' => 'Range Box',

@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('refID')->nullable();
             $table->string('business_fees_id')->nullable();
             $table->date('effective_date')->nullable();
+            $table->string('vehicle_type')->nullable();
             $table->string('chart_of_accounts_lvl4_id')->nullable();
             $table->string('business_categories_id')->nullable();
             $table->string('basis')->nullable();
