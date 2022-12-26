@@ -20,11 +20,14 @@ $(function () {
         $(`[data-repeatable-holder=fees_and_delinquency]`).find('select').prop('disabled',false)
         $('form').submit()
     })
+
+   
 })
 crud.field('application_type').onChange(function(field){
     console.log(field)
     checkAppType()
 });
+
 function checkAppType(){
     // let appType = crud.field("application_type").value;
     // $(`[data-repeatable-holder=net_profit]`).html('')

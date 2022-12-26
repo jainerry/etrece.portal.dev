@@ -1,5 +1,10 @@
-$(function () {
+let totalFees = 0;
+let totalDiscount = 0;
+let finalAccounts = [];
+let taxWithheldInput;
 
+$(function () {
+    taxWithheldInput =$(`[bp-field-name=tax_withheld_discount] select, [bp-field-name=tax_withheld_discount] [data-repeatable-input-name=amount]`);
     $.ajaxSetup({
         headers: {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
@@ -9,18 +14,26 @@ $(function () {
     $('select[name="business_profiles_id"]').on('change', function () {
         getBusinessProfile($(this).val())
     })
-    profval = $(`[name=business_profiles_id]`).val()
-    console.log(profval)
+
+    profval = $.trim($(`[name=business_profiles_id]`).val())
+
+    if(profval != null && profval != ""){
+     getBusinessProfile(profval)
+    }
     checkAppType();
     $(`[type=submit]`).click(function(e){
         e.preventDefault();
-        console.log( $(`[data-repeatable-holder=fees_and_delinquency]`).find('select'))
+
         $(`[data-repeatable-holder=fees_and_delinquency]`).find('select').prop('disabled',false)
         $('form').submit()
     })
+    
+    $('body').on('change','[bp-field-name=tax_withheld_discount] select, [bp-field-name=tax_withheld_discount] [data-repeatable-input-name=amount]',function(){
+        generateSummary();
+    })
 })
 crud.field('application_type').onChange(function(field){
-    console.log(field)
+  
     checkAppType()
 });
 function checkAppType(){
@@ -51,7 +64,6 @@ async function getBusinessProfile(id) {
         success: function (data) {
             $('[data-repeatable-holder=fees_and_delinquency]').html('')
           
-            console.log(data)
             if(data.taxFees.length>0){
                 $.each(data.taxFees,function(i,d){
                     repeaterparent.find('.add-repeatable-element-button').trigger('click');
@@ -77,7 +89,9 @@ async function getBusinessProfile(id) {
                
                 net_profit.find('.delete-element').remove();
             }   
-            generateSummary(data.total,accounts)
+            totalFees =data.total;
+            finalAccounts = accounts;
+            generateSummary()
             
         }
     })
@@ -91,33 +105,49 @@ function showNetProfit(){
         }
 }
 
-function generateSummary(total,accounts){
+function appendTaxWithheldSummary(){
+
+
+}
+function generateSummary(){
     let tableParent = $('[bp-field-type=custom_html]')
     let tbody = tableParent.find('tbody');
     let tr = tbody.find('tr');
     tr.map(function(i,d){
-       console.log(tr.length)
         if(i <(tr.length-1) ){
             this.remove();
         }
     })
-    console.log(accounts)
     let ds = [];
-    $.each(accounts,function(){
+    let select,text;
+    let discount =[];
+    let taxWithheldContainer = $(`[bp-field-name=tax_withheld_discount] [data-repeatable-identifier=tax_withheld_discount]`);
+    $.each(taxWithheldContainer,function(){
+         select = $(this).find('[data-repeatable-input-name=tax_withheld_discount]');
+         text = $(this).find('[data-repeatable-input-name=amount]');
+        if($.trim(select.val()) != "" && Math.abs(text.val()) != 0){
+            finalAccounts.push([{"accountname":select.val(),"amount":-Math.abs(text.val())}])
+            totalFees = totalFees - Math.abs(text.val());
+        }
+       
+        
+    })
+    console.log(finalAccounts)
+    $.each(finalAccounts.reverse(),function(){
         ds =this[0]
-        console.log(this)
+        console.log(ds)
         tbody.prepend(`
             <tr>
                 <td>
                     ${ds.accountname}
                 </td>
                 <td>
-                ${ds.amount}
+                ${ds.amount.toLocaleString()}
              </td>
             </tr>
         `);
     })
-    $(".total-amount").html("P"+total.toLocaleString())
+    $(".total-amount").html("P"+totalFees.toLocaleString())
 
 
 }
