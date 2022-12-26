@@ -133,6 +133,7 @@ function getFeeDetails(i, id, amount){
                 let otherFeesWrapper = $('table#summaryTable tr.otherFeesWrapper')
                 let discountWrapper = $('table#summaryTable tr.discountWrapper')
                 let business_fees_name = ''
+
                 if(data.business_fees_name){
                     business_fees_name = data.business_fees_name
                 }
@@ -141,15 +142,7 @@ function getFeeDetails(i, id, amount){
                     <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
                 </tr>'
 
-                if(otherFeesWrapper.length > 0) {
-                    $(html).insertBefore('table#summaryTable tr.otherFeesWrapper:first-child')
-                }
-                else if(discountWrapper.length > 0){
-                    $(html).insertBefore('table#summaryTable tr.discountWrapper:first-child')
-                }
-                else {
-                    $(html).insertBefore('table#summaryTable tr.totalSummaryAmountWrapper:first-child')
-                }
+                $(html).insertBefore('table#summaryTable tbody tr:first-child')
 
                 computeTotalSummaryAmount()
             }

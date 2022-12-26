@@ -224,15 +224,7 @@ function getFeeDetails(i, id, amount){
                     <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
                 </tr>'
 
-                if(otherFeesWrapper.length > 0) {
-                    $(html).insertBefore('table#summaryTable tr.otherFeesWrapper:first-child')
-                }
-                else if(discountWrapper.length > 0){
-                    $(html).insertBefore('table#summaryTable tr.discountWrapper:first-child')
-                }
-                else {
-                    $(html).insertBefore('table#summaryTable tr.totalSummaryAmountWrapper:first-child')
-                }
+                $(html).insertBefore('table#summaryTable tbody tr:first-child')
 
                 computeTotalSummaryAmount()
             }
