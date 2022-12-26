@@ -19,6 +19,12 @@ class BusinessVehiclesCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:Business > Business Vehicles', ['only' => ['index','show','create','store','edit','update','destroy']]);
+    }
     
 
     /**

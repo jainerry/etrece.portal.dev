@@ -24,10 +24,6 @@ class SectionCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-sections', ['only' => ['index','show']]);
-        $this->middleware('can:create-sections', ['only' => ['create','store']]);
-        $this->middleware('can:edit-sections', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-sections', ['only' => ['destroy']]);
     }
 
     /**

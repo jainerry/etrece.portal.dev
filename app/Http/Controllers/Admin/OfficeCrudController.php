@@ -23,10 +23,6 @@ class OfficeCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-offices', ['only' => ['index','show']]);
-        $this->middleware('can:create-offices', ['only' => ['create','store']]);
-        $this->middleware('can:edit-offices', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-offices', ['only' => ['destroy']]);
     }
 
     /**

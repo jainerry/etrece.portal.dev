@@ -22,10 +22,11 @@ class UserCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-users', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-users', ['only' => ['index','show']]);
         $this->middleware('can:create-users', ['only' => ['create','store']]);
         $this->middleware('can:edit-users', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-users', ['only' => ['destroy']]);
+        $this->middleware('can:delete-users', ['only' => ['destroy']]);*/
+        //$this->middleware('can:Authentication > Users', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

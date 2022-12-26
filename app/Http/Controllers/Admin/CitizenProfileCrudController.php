@@ -34,11 +34,11 @@ class CitizenProfileCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-citizen-profiles', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-citizen-profiles', ['only' => ['index','show']]);
         $this->middleware('can:create-citizen-profiles', ['only' => ['create','store']]);
         $this->middleware('can:edit-citizen-profiles', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-citizen-profiles', ['only' => ['destroy']]);
-        
+        $this->middleware('can:delete-citizen-profiles', ['only' => ['destroy']]);*/
+        $this->middleware('can:Citizens', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

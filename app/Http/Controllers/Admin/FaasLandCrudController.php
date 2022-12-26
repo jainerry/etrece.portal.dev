@@ -30,10 +30,12 @@ class FaasLandCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-faas-lands', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-faas-lands', ['only' => ['index','show']]);
         $this->middleware('can:create-faas-lands', ['only' => ['create','store']]);
         $this->middleware('can:edit-faas-lands', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-faas-lands', ['only' => ['destroy']]);
+        $this->middleware('can:delete-faas-lands', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Masterlist > Lands', ['only' => ['index','show','create','store','edit','update','destroy']]);
+
     }
 
     /**

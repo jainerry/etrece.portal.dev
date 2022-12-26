@@ -24,10 +24,11 @@ class FaasMachineryClassificationsCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-machinery-classifications', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-machinery-classifications', ['only' => ['index','show']]);
         $this->middleware('can:create-machinery-classifications', ['only' => ['create','store']]);
         $this->middleware('can:edit-machinery-classifications', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-machinery-classifications', ['only' => ['destroy']]);
+        $this->middleware('can:delete-machinery-classifications', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Configurations > Machinery Classifications', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

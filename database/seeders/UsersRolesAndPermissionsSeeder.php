@@ -24,91 +24,89 @@ class UsersRolesAndPermissionsSeeder extends Seeder
         app()[\Spatie\Permission\PermissionRegistrar::class]->forgetCachedPermissions();
 
         $objects = [
-            'citizen-profiles',
-            'employees',
-            'building-profiles',
-            'faas-machineries',
-            'faas-lands',
-            'faas-idle-lands',
-            'faas-others',
-            'users',
-            'roles',
-            'permissions',
-            'office-locations',
-            'offices',
-            'sections',
-            'positions',
-            'appointment-statuses',
-            'provinces',
-            'municipalities',
-            'barangays',
-            'streets',
-            'structural-types',
-            'kind-of-buildings',
-            'structural-roofs',
-            'land-classifications',
-            'building-classifications',
-            'machinery-classifications',
-            'structural-floorings',
-            'structural-wallings',
-            'structural-additional-items',
-            'transaction-logs'
+            'Citizens',
+            'Employees',
+            'FAAS Masterlist',
+            'FAAS Masterlist > Lands',
+            'FAAS Masterlist > Buildings',
+            'FAAS Masterlist > Machineries',
+            'Authentication',
+            'Authentication > Users',
+            'Authentication > Roles',
+            'Authentication > Permissions',
+            'Configurations',
+            'Configurations > Regions',
+            'Configurations > Provinces',
+            'Configurations > Cities',
+            'Configurations > Barangays',
+            'Configurations > Streets',
+            'FAAS Configurations',
+            'FAAS Configurations > Structural Types',
+            'FAAS Configurations > Structural Roofs',
+            'FAAS Configurations > Land Classifications',
+            'FAAS Configurations > Building Classifications',
+            'FAAS Configurations > Machinery Classifications',
+            'FAAS Configurations > Structural Floorings',
+            'FAAS Configurations >Structural Wallings',
+            'Treasury Configurations',
+            'Treasury Configurations > CTC Types',
+            'Treasury Configurations > RPT Rates',
+            'RPT Assessments',
+            'RPT Assessments > Lands',
+            'RPT Assessments > Buildings',
+            'RPT Assessments > Machineries',
+            'Treasury',
+            'Treasury > RPT',
+            'Treasury > Business',
+            'Treasury > CTC',
+            'Treasury > Other',
+            'Chart of Accounts',
+            'Chart of Accounts > Level 1',
+            'Chart of Accounts > Level 2',
+            'Chart of Accounts > Level 3',
+            'Chart of Accounts > Level 4',
+            'Business',
+            'Business > Business Profile',
+            'Business > Name Profiles',
+            'Business > Business Vehicles',
+            'Business > Business Types',
+            'Business > Business Activities',
+            'Business > Business Categories',
+            'Business > Business Fees',
+            'Business > Business Tax Fees',
+            'Business > Business Tax Assessments',
+            'Transaction Logs',
         ];
 
-        foreach ($objects as $object) {
-
-            for($i=0; $i<3; $i++ ){
-                switch ($i) {
-                case 0:
-                    $permission_name = 'view-'.$object;
-                    break;
-                case 1:
-                    $permission_name = 'create-'.$object;
-                    break;
-                default:
-                    $permission_name = 'edit-'.$object;
-                }
-
-                Permission::create(['name' => $permission_name,'guard_name' => 'backpack']);
-            }
+        //Create Permissions
+        foreach ($objects as $key => $object) {
+            Permission::create(['name' => $object,'guard_name' => 'backpack']);
         }
 
-        //specific permissions
-
-        Permission::create(['name' => 'rpt-view-assessment-requests','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-create-new-assessment-request','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-edit-assessment-request','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-delete-assessment-request','guard_name' => 'backpack']);
-        Permission::create(['name' => 'rpt-approve-assessment-request','guard_name' => 'backpack']);
-
+        //Create Roles & Users
         $superAdmin = Role::create(['name' => 'Super Admin','guard_name' => 'backpack']);
         $superAdmin->givePermissionTo(Permission::all());
-
         $superAdminUser = User::create(['name' => 'Super Admin','email' => 'superadmin@etreceportal.com','password' => Hash::make('superadmin@etreceportal.com')]);
         $superAdminUser->assignRole($superAdmin);
 
         $rptAdmin = Role::create(['name' => 'RPT Admin','guard_name' => 'backpack']);
         $rptAdmin->givePermissionTo([
-            'rpt-view-assessment-requests',
-            'rpt-create-new-assessment-request',
-            'rpt-edit-assessment-request',
-            'rpt-approve-assessment-request',
+            'RPT Assessments',
+            'RPT Assessments > Lands',
+            'RPT Assessments > Buildings',
+            'RPT Assessments > Machineries',
         ]);
-
         $rptAdminUser = User::create(['name' => 'RPT Admin','email' => 'rptadmin@etreceportal.com','password' => Hash::make('rptadmin@etreceportal.com')]);
         $rptAdminUser->assignRole($rptAdmin);
 
-        $caoUser = Role::create(['name' => 'CAO User','guard_name' => 'backpack']);
-        $caoUser->givePermissionTo([
-            'rpt-view-assessment-requests',
-            'rpt-approve-assessment-request',
-        ]);
-
-        $caoUserUser = User::create(['name' => 'CAO User','email' => 'caouser@etreceportal.com','password' => Hash::make('caouser@etreceportal.com')]);
-        $caoUserUser->assignRole($caoUser);
-
         $trsUser = Role::create(['name' => 'TRS User','guard_name' => 'backpack']);
-
+        $trsUser->givePermissionTo([
+            'Treasury',
+            'Treasury > RPT',
+            'Treasury > Business',
+            'Treasury > CTC',
+            'Treasury > Other',
+        ]);
         $trsUserUser = User::create(['name' => 'TRS User','email' => 'trsuser@etreceportal.com','password' => Hash::make('trsuser@etreceportal.com')]);
         $trsUserUser->assignRole($trsUser);
 

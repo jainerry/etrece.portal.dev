@@ -22,10 +22,11 @@ class StructuralRoofsCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-structural-roofs', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-structural-roofs', ['only' => ['index','show']]);
         $this->middleware('can:create-structural-roofs', ['only' => ['create','store']]);
         $this->middleware('can:edit-structural-roofs', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-structural-roofs', ['only' => ['destroy']]);
+        $this->middleware('can:delete-structural-roofs', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Configurations > Structural Roofs', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

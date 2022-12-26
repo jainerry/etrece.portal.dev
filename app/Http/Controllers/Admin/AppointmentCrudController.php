@@ -22,10 +22,10 @@ class AppointmentCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-appointment-statuses', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-appointment-statuses', ['only' => ['index','show']]);
         $this->middleware('can:create-appointment-statuses', ['only' => ['create','store']]);
         $this->middleware('can:edit-appointment-statuses', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-appointment-statuses', ['only' => ['destroy']]);
+        $this->middleware('can:delete-appointment-statuses', ['only' => ['destroy']]);*/
     }
 
     /**

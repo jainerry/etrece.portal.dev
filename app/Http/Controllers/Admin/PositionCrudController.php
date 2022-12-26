@@ -22,10 +22,6 @@ class PositionCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-positions', ['only' => ['index','show']]);
-        $this->middleware('can:create-positions', ['only' => ['create','store']]);
-        $this->middleware('can:edit-positions', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-positions', ['only' => ['destroy']]);
     }
 
 

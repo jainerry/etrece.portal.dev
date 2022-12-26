@@ -30,10 +30,11 @@ class EmployeeCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-employees', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-employees', ['only' => ['index','show']]);
         $this->middleware('can:create-employees', ['only' => ['create','store']]);
         $this->middleware('can:edit-employees', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-employees', ['only' => ['destroy']]);
+        $this->middleware('can:delete-employees', ['only' => ['destroy']]);*/
+        $this->middleware('can:Employees', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

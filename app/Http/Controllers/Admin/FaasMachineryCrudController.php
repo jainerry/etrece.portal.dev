@@ -28,10 +28,11 @@ class FaasMachineryCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-faas-machineries', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-faas-machineries', ['only' => ['index','show']]);
         $this->middleware('can:create-faas-machineries', ['only' => ['create','store']]);
         $this->middleware('can:edit-faas-machineries', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-faas-machineries', ['only' => ['destroy']]);
+        $this->middleware('can:delete-faas-machineries', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Masterlist > Machineries', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

@@ -22,10 +22,11 @@ class StructuralTypeCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-structural-types', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-structural-types', ['only' => ['index','show']]);
         $this->middleware('can:create-structural-types', ['only' => ['create','store']]);
         $this->middleware('can:edit-structural-types', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-structural-types', ['only' => ['destroy']]);
+        $this->middleware('can:delete-structural-types', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Configurations > Structural Types', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

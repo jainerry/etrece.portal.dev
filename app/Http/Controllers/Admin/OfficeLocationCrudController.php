@@ -22,10 +22,6 @@ class OfficeLocationCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-office-locations', ['only' => ['index','show']]);
-        $this->middleware('can:create-office-locations', ['only' => ['create','store']]);
-        $this->middleware('can:edit-office-locations', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-office-locations', ['only' => ['destroy']]);
     }
 
     /**

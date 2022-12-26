@@ -25,10 +25,11 @@ class FaasBuildingClassificationsCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-building-classifications', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-building-classifications', ['only' => ['index','show']]);
         $this->middleware('can:create-building-classifications', ['only' => ['create','store']]);
         $this->middleware('can:edit-building-classifications', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-building-classifications', ['only' => ['destroy']]);
+        $this->middleware('can:delete-building-classifications', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Configurations > Building Classifications', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

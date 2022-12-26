@@ -24,10 +24,11 @@ class StreetCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-streets', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-streets', ['only' => ['index','show']]);
         $this->middleware('can:create-streets', ['only' => ['create','store']]);
         $this->middleware('can:edit-streets', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-streets', ['only' => ['destroy']]);
+        $this->middleware('can:delete-streets', ['only' => ['destroy']]);*/
+        $this->middleware('can:Configurations > Streets', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

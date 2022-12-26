@@ -23,10 +23,11 @@ class BarangayCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-barangays', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-barangays', ['only' => ['index','show']]);
         $this->middleware('can:create-barangays', ['only' => ['create','store']]);
         $this->middleware('can:edit-barangays', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-barangays', ['only' => ['destroy']]);
+        $this->middleware('can:delete-barangays', ['only' => ['destroy']]);*/
+        $this->middleware('can:Configurations > Barangays', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
 
     /**

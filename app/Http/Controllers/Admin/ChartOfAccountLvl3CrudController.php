@@ -19,6 +19,12 @@ class ChartOfAccountLvl3CrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
+    public function __construct()
+    {
+        parent::__construct();
+        $this->middleware('can:Chart of Accounts > Level 3', ['only' => ['index','show','create','store','edit','update','destroy']]);
+    }
+
     /**
      * Configure the CrudPanel object. Apply settings to all operations.
      * 

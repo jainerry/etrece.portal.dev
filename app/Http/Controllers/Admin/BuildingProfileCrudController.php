@@ -29,10 +29,11 @@ class BuildingProfileCrudController extends CrudController
     public function __construct()
     {
         parent::__construct();
-        $this->middleware('can:view-building-profiles', ['only' => ['index','show']]);
+        /*$this->middleware('can:view-building-profiles', ['only' => ['index','show']]);
         $this->middleware('can:create-building-profiles', ['only' => ['create','store']]);
         $this->middleware('can:edit-building-profiles', ['only' => ['edit','update']]);
-        $this->middleware('can:delete-building-profiles', ['only' => ['destroy']]);
+        $this->middleware('can:delete-building-profiles', ['only' => ['destroy']]);*/
+        $this->middleware('can:FAAS Masterlist > Buildings', ['only' => ['index','show','create','store','edit','update','destroy']]);
     }
     
     /**
