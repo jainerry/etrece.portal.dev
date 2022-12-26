@@ -192,9 +192,6 @@ class BussTaxAssessmentsCrudController extends CrudController
                     'wrapperAttributes' => [
                         'class' => 'form-group col-12 col-md-6 '
                     ],
-                    "attributes"=>[
-                        "readonly"=>"readonly"
-                    ]
                     
                 ]
           ],

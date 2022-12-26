@@ -32,19 +32,19 @@ $(function () {
         generateSummary();
     })
 })
-crud.field('application_type').onChange(function(field){
+$(`[name=application_type]`).on("change",function(field){
   
-    checkAppType()
+    checkAppType(this)
 });
-function checkAppType(){
-    // let appType = crud.field("application_type").value;
-    // $(`[data-repeatable-holder=net_profit]`).html('')
-    // if(appType == "Renewal"){
-    //     crud.field('net_profit').show()
-    // }else{
-    //     crud.field('net_profit').hide()
-    // }
-}
+function checkAppType(ds){
+      
+    if($(ds).val() =="New"){
+        $(`[data-repeatable-input-name=net_profit]`).prop('disabled',true);
+    }else{
+        $(`[data-repeatable-input-name=net_profit]`).prop('disabled',false);
+    }
+    }
+   
 async function getBusinessProfile(id) {
     let busCat = [];
     let busTaxFees = [];
@@ -85,6 +85,9 @@ async function getBusinessProfile(id) {
                 
                     net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
                     net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
+                    if($(`[name=application_type]`).val() =="New"){
+                        net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
+                    }
                 })
                
                 net_profit.find('.delete-element').remove();
