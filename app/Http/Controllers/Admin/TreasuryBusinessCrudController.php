@@ -92,9 +92,9 @@ class TreasuryBusinessCrudController extends CrudController
         ]);
 
         $this->crud->addColumn([
-            'label'     => 'Kind',
+            'label'     => 'Type',
             'type'      => 'text',
-            'name'      => 'business_tax_assessment.bussType.name',
+            'name'      => 'business_tax_assessment.application_type',
             'limit' => 255
         ]);
 
