@@ -73,7 +73,7 @@ class BusinessProfileSeeder extends Seeder
                 'dti_reg_date' => '2022-11-28',
                 'tax_incentives' => 'Y',
                 'certificate' => 'bussprofile/850c5def6e0a6b8cfba8e1c158cf1e83.pdf',
-                'line_of_business' => '[{"capital": "1,393,049.00", "particulars": "e223e31d-984a-4147-a6bc-ade3a5a61984"}]',
+                'line_of_business' => '[{"capital": "1393049", "particulars": "e223e31d-984a-4147-a6bc-ade3a5a61984"}]',
                 'number_of_employees' => '[{"sex": "1", "number": "200"}, {"sex": "0", "number": "10"}]',
                 'created_at' => Carbon::now(),
             ],

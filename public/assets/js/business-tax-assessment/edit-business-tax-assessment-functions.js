@@ -58,7 +58,7 @@ async function getBusinessProfile(id) {
                 $.each(data.taxFees,function(i,d){
                     repeaterparent.find('.add-repeatable-element-button').trigger('click');
                     repeaterparent.find(`[data-row-number=${(i+1)}]`).find('select').val(this.id)
-                    repeaterparent.find(`[data-row-number=${(i+1)}]`).find('[data-repeatable-input-name=amount]').val(this.amount_value)
+                    repeaterparent.find(`[data-row-number=${(i+1)}]`).find('[data-repeatable-input-name=amount]').val(parseFloat(this.amount_value).toLocaleString())
                     accounts.push([{accountname:this.business_fees_name,amount:this.amount_value.toLocaleString()}])
                 })
                
@@ -74,7 +74,7 @@ async function getBusinessProfile(id) {
                     net_profit.find('.add-repeatable-element-button').trigger('click');
                 
                     net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
-                    net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
+                    net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(parseFloat(this.capital).toLocaleString())
                 })
                
                 net_profit.find('.delete-element').remove();
@@ -114,7 +114,7 @@ function generateSummary(total,accounts){
                     ${ds.accountname}
                 </td>
                 <td>
-                ${ds.amount}
+                ${parseFloat(ds.amount).toLocaleString()}
              </td>
             </tr>
         `);

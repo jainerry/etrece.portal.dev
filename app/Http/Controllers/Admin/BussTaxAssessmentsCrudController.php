@@ -65,7 +65,7 @@ class BussTaxAssessmentsCrudController extends CrudController
              }
           ]);
         $this->crud->column('application_type');
-        $this->crud->column('assessment_year');
+
         $this->crud->column('payment_type');
       
       
