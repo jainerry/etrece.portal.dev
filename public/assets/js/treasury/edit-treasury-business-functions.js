@@ -58,26 +58,44 @@ function fetchData(id){
 
                 let fees_and_delinquency = data.fees_and_delinquency
                 let tax_withheld_discount = data.tax_withheld_discount
-
                 
                 $.each(fees_and_delinquency, function(i, fee) {
-                    console.log(fee)
-                    //getFeeDetails(i, fee.business_tax_fees, fee.amount)
-                    $('table#summaryTable tbody').append('\n\
-                        <tr>\n\
-                            <td>'+fee.name+'</td>\n\
-                            <td class="fee" id="fee_'+i+'">'+fee.amount+'</td>\n\
-                        </tr>'
-                    )
+                    let name = ''
+                    let amount = '0.00'
+                    if(fee.business_tax_fees){
+                        name = fee.business_tax_fees
+                    }
+
+                    if(fee.amount){
+                        amount = fee.amount
+                    }
+
+                    if(name !== ''){
+                        getFeeDetails(i, name, amount)
+                        /*$('table#summaryTable tbody').append('\n\
+                            <tr>\n\
+                                <td>'+name+'</td>\n\
+                                <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
+                            </tr>'
+                        )*/
+                    }
                 })
 
                 $.each(tax_withheld_discount, function(j, discount) {
-                    console.log(discount)
+                    let name = ''
+                    let amount = '0.00'
+                    if(discount.tax_withheld_discount){
+                        name = discount.tax_withheld_discount
+                    }
+
+                    if(discount.amount){
+                        amount = discount.amount
+                    }
                     //getDiscountDetails(discount.tax_withheld_discount, discount.amount) //if and only if given is id
                     $('table#summaryTable tbody').append('\n\
-                        <tr>\n\
-                            <td>'+discount.name+'</td>\n\
-                            <td class="discount" id="discount_'+j+'">'+discount.amount+'</td>\n\
+                        <tr class="discountWrapper">\n\
+                            <td>'+name+'</td>\n\
+                            <td class="discount" id="discount_'+j+'">'+amount+'</td>\n\
                         </tr>'
                     )
                 })
@@ -113,11 +131,27 @@ function getFeeDetails(i, id, amount){
             if(data.length > 0) {
                 data = data[0]
                 let otherFeesWrapper = $('table#summaryTable tr.otherFeesWrapper')
+                let discountWrapper = $('table#summaryTable tr.discountWrapper')
+                let business_fees_name = ''
+                if(data.business_fees_name){
+                    business_fees_name = data.business_fees_name
+                }
                 let html = '<tr>\n\
-                        <td>'+data.business_fees.name+'</td>\n\
-                        <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
-                    </tr>'
-                $(html).insertBefore('table#summaryTable tr.totalSummaryAmountWrapper')
+                    <td>'+business_fees_name+'</td>\n\
+                    <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
+                </tr>'
+
+                if(otherFeesWrapper.length > 0) {
+                    $(html).insertBefore('table#summaryTable tr.otherFeesWrapper:first-child')
+                }
+                else if(discountWrapper.length > 0){
+                    $(html).insertBefore('table#summaryTable tr.discountWrapper:first-child')
+                }
+                else {
+                    $(html).insertBefore('table#summaryTable tr.totalSummaryAmountWrapper:first-child')
+                }
+
+                computeTotalSummaryAmount()
             }
         }
     })

@@ -58,7 +58,7 @@ class DatabaseSeeder extends Seeder
             BusinessActivitySeeder::class,
             BusinessTypeSeeder::class,
             BusinessProfileSeeder::class,
-            // BusinessTaxAssessmentSeeder::class,
+            BusinessTaxAssessmentSeeder::class,
             BusinessFeesSeeder::class,
             TreasuryBusinessSeeder::class,
             TreasuryCTCSeeder::class,

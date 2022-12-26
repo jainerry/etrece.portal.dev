@@ -7,6 +7,9 @@ use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Illuminate\Support\Carbon;
 use Backpack\CRUD\app\Library\Widget;
+use App\Models\BusinessTaxFees;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 /**
  * Class BusinessTaxFeesCrudController
  * @package App\Http\Controllers\Admin
@@ -301,5 +304,19 @@ class BusinessTaxFeesCrudController extends CrudController
     protected function setupUpdateOperation()
     {
         $this->setupCreateOperation();
+    }
+
+    public function getDetails(Request $request){
+        $id = $request->input('id');
+        
+        $results = [];
+        if (!empty($id))
+        {
+            $results = BusinessTaxFees::where('isActive', '=', 'Y')
+                ->where('id', '=', $id)
+                ->get();
+        }
+
+        return $results;
     }
 }
