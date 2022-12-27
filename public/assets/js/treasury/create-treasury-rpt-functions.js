@@ -155,8 +155,7 @@ function fetchData(id,searchByType){
                 $('#tab_details textarea[name="ownerAddress"]').val(data.ownerAddress)
                 $('#tab_details input[name="lotNo"]').val(lotNo)
                 $('#tab_details input[name="area"]').val(totalArea)
-                // $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentAssessmentValue)
-                $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentMarketValue)
+                $('#tab_details input[name="assessedValue"]').val(data.totalPropertyAssessmentAssessmentValue)
                 $('#tab_details input[name="dateAssessed"]').val(data.assessedDate)
 
                 //(Basic, Penalty, Discount, Total Basic, SEF, Penalty, Discount, Total SEF)

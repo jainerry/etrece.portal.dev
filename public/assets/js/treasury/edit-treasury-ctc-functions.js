@@ -12,6 +12,9 @@ $(function () {
     });
 
     citizenProfileData($('select[name="individualProfileId"]').val())
+
+    console.log($('select[name="businessProfileId"]').val())
+    
     businessProfileData($('select[name="businessProfileId"]').val())
 
     $('select[name="individualProfileId"]').on("change", function(){
@@ -107,27 +110,6 @@ $(function () {
     })
 })
 
-/*$(document).ready(function() {
-    var date = new Date();
-    var today = new Date(date.getFullYear(), date.getMonth(), date.getDate());
-
-    $('.dateOfIssue').datepicker({
-        format: 'yyyy-mm-dd',
-        orientation: 'bottom'
-    });
-
-    let month = date.getMonth()+1;
-    let day = date.getDate();
-
-    let todayDate = date.getFullYear() + '-' +
-        (month<10 ? '0' : '') + month + '-' +
-        (day<10 ? '0' : '') + day;
-
-
-    $('.dateOfIssue').datepicker('setDate', today)
-    $('input[name="dateOfIssue"]').val(todayDate)
-});*/
-
 function citizenProfileData(id){
     if(id !== '' && id !== null && id !== 'null') {
         $.ajax({
@@ -218,6 +200,8 @@ function businessProfileData(id){
             success: function (data) {
                 if(data.length > 0) {
                     data = data[0]
+
+                    console.log(data)
 
                     let primaryOwner = ''
                     let suffix = ''

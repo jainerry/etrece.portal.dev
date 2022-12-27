@@ -65,6 +65,7 @@ class DatabaseSeeder extends Seeder
             BusCategorySeeder::class,
             BusTaxFeesSeeder::class,
             BusVehicleSeeder::class,
+            //ModulesAndSubModulesSeeder::class,
         ]);
         $this->call(UsersTableSeeder::class);
         $this->call(StreetsTableSeeder::class);

@@ -216,6 +216,8 @@ function businessProfileData(id){
                 if(data.length > 0) {
                     data = data[0]
 
+                    console.log(data)
+
                     let primaryOwner = ''
                     let suffix = ''
                     if(data.suffix !== null && data.suffix !== 'null') {

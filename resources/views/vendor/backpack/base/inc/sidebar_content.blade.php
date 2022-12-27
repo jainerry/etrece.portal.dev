@@ -237,8 +237,12 @@
 </li>
 @endcan
 
+
 @can('Transaction Logs')
     <li class="nav-item"><a class="nav-link" href="{{ backpack_url('transaction-logs') }}"><i class="nav-icon la la-clipboard"></i> Transaction Logs</a></li>
 @endcan
 
 
+@can('Modules')
+    <li class="nav-item hidden" style="display:none;"><a class="nav-link" href="{{ backpack_url('modules') }}"><i class="nav-icon la la-th-list"></i> Modules</a></li>
+@endcan

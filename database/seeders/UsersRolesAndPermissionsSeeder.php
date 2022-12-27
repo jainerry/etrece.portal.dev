@@ -76,6 +76,7 @@ class UsersRolesAndPermissionsSeeder extends Seeder
             'Business > Business Tax Fees',
             'Business > Business Tax Assessments',
             'Transaction Logs',
+            'Modules',
         ];
 
         //Create Permissions
