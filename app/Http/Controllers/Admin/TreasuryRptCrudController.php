@@ -12,6 +12,7 @@ use Illuminate\Support\Facades\DB;
 use App\Models\RptLands;
 use App\Models\RptBuildings;
 use App\Models\RptMachineries;
+use App\Models\TreasuryRpt;
 
 /**
  * Class TreasuryRptCrudController
@@ -813,6 +814,24 @@ class TreasuryRptCrudController extends CrudController
             $results = $citizenProfiles->merge($nameProfiles);
         }
 
+        
+        return $results;
+    }
+
+    public function getPrecedingPayments(Request $request){
+        $rptId = $request->input('rptId');
+        $rptType = $request->input('rptType');
+
+        $results = [];
+
+        if(!empty($rptId) && !empty($rptType)) {
+            $results = TreasuryRpt::select('id', 'rptId', 'rptType', 'year', 'periodCovered')
+                ->where('rptId', '=', $rptId)
+                ->where('rptType', '=', $rptType)
+                ->where('isActive', '=', '1')
+                ->orderBy('created_at','DESC')
+                ->get();
+        }
         
         return $results;
     }

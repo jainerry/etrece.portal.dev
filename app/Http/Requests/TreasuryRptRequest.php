@@ -26,6 +26,8 @@ class TreasuryRptRequest extends FormRequest
     {
         return [
             // 'name' => 'required|min:5|max:255'
+            'year' => 'required',
+            'periodCovered' => 'required',
         ];
     }
 

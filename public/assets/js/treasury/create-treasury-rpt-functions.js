@@ -1,3 +1,7 @@
+let errorInPeriodCoveredMsg = ''
+let rptPrecedingPaymentsArray = []
+let hasErrorInPeriodCovered = false
+
 $(function () {
 
     $.ajaxSetup({
@@ -92,6 +96,63 @@ $(function () {
         $('input[name="searchByReferenceId"]').val('')
         $('input[name="searchByTDNo"]').val('')
         $('input[name="searchByOwner"]').val('')
+    })
+
+    $('select[name="rptType"]').on('change', function(){
+        getPrecedingPayments($('select[name="rptType"]').val(), $('input[name="rptId"]').val())
+    })
+
+    $('input[name="rptId"]').on('change', function(){
+        getPrecedingPayments($('select[name="rptType"]').val(), $('input[name="rptId"]').val())
+    })
+
+    $('select[name="periodCovered"]').on('change', function(){
+        checkRPTPrecedingPayments()
+    })
+
+    $('input[name="year"]').on('change', function(){
+        checkRPTPrecedingPayments()
+    })
+
+    $('form').on("submit", function(e){
+        let currentYear = $('input[name="year"]').val()
+        let currentPeriodCovered = $('select[name="periodCovered"]').val()
+
+        let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+        let msg = ''
+
+        if(currentYear === ''){
+            e.preventDefault()
+            msg = 'Please check your inputs. The field Year is Required.'
+            $('.alertMessageModal .modal-title').html(title)
+            $('.alertMessageModal .modal-body').html(msg)
+            $('.alertMessageModal').modal('show');
+            $('form #saveActions button[type="submit"]').attr('disabled',false)
+        }
+        else if (currentPeriodCovered === '') {
+            e.preventDefault()
+            msg = 'Please check your inputs. The field Period Covered is Required.'
+            $('.alertMessageModal .modal-title').html(title)
+            $('.alertMessageModal .modal-body').html(msg)
+            $('.alertMessageModal').modal('show');
+            $('form #saveActions button[type="submit"]').attr('disabled',false)
+        }
+
+        if(currentYear !== '' && currentPeriodCovered !== '') {
+            if(hasErrorInPeriodCovered) {
+                e.preventDefault()
+                let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+                let msg = errorInPeriodCoveredMsg
+                $('.alertMessageModal .modal-title').html(title)
+                $('.alertMessageModal .modal-body').html(msg)
+                $('.alertMessageModal').modal('show');
+                $('form #saveActions button[type="submit"]').attr('disabled',false)
+            }
+            else {
+                $('form').submit()
+            }
+        }
+        
     })
 
 })
@@ -278,6 +339,78 @@ function computeTotalSummaryAmount(){
 
     $('input[name="totalSummaryAmount"]').val(totalSummaryAmount)
     $('table#summaryTable tbody tr td#totalSummaryAmount').text($('input[name="totalSummaryAmount"]').val())
+}
+
+function getPrecedingPayments(rptType, rptId){
+    rptPrecedingPaymentsArray = []
+
+    $.ajax({
+        url: '/admin/api/treasury-rpt/get-preceding-payments',
+        type: 'GET',
+        dataType: 'json',
+        data: {
+            rptId: rptId,
+            rptType: rptType
+        },
+        success: function (data) {
+            if(data.length > 0) {
+                rptPrecedingPaymentsArray = data
+            }
+        }
+    })
+}
+
+function checkRPTPrecedingPayments(){
+    let currentYear = $('input[name="year"]').val()
+    let currentPeriodCovered = $('select[name="periodCovered"]').val()
+    let quarterlyCtr = 0
+    let semiAnnuallyCtr = 0
+    let annuallyCtr = 0
+    hasErrorInPeriodCovered = false
+    errorInPeriodCoveredMsg = ''
+
+    $.each(rptPrecedingPaymentsArray, function(i, payment) {
+        if(currentPeriodCovered === 'Quarterly'){
+            if(payment.year === currentYear) {
+                if(payment.periodCovered === currentPeriodCovered) {
+                    quarterlyCtr++
+                }
+            }
+        }
+        else if(currentPeriodCovered === 'Semi-Annually'){
+            if(payment.year === currentYear) {
+                if(payment.periodCovered === currentPeriodCovered) {
+                    semiAnnuallyCtr++
+                }
+            }
+        }
+        else if(currentPeriodCovered === 'Annually'){
+            if(payment.year === currentYear) {
+                if(payment.periodCovered === currentPeriodCovered) {
+                    annuallyCtr++
+                }
+            }
+        }
+    })
+
+    if(currentPeriodCovered === 'Quarterly'){
+        if(quarterlyCtr === 4) {
+            hasErrorInPeriodCovered = true 
+            errorInPeriodCoveredMsg = 'Payment Record cannot be saved. The period covered ('+currentPeriodCovered+') for year ('+currentYear+') has been exhausted.'
+        }
+    }
+    else if(currentPeriodCovered === 'Semi-Annually'){
+        if(semiAnnuallyCtr === 2) {
+            hasErrorInPeriodCovered = true 
+            errorInPeriodCoveredMsg = 'Payment Record cannot be saved. The period covered ('+currentPeriodCovered+') for year ('+currentYear+') has been exhausted.'
+        }
+    }
+    else if(currentPeriodCovered === 'Annually'){
+        if(annuallyCtr === 1) {
+            hasErrorInPeriodCovered = true 
+            errorInPeriodCoveredMsg = 'Payment Record cannot be saved. The period covered ('+currentPeriodCovered+') for year ('+currentYear+') has been exhausted.'
+        }
+    }
 }
 
 function formatStringToFloat(num){
