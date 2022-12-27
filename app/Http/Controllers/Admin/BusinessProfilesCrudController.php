@@ -746,7 +746,7 @@ class BusinessProfilesCrudController extends CrudController
         $id = $request->input('id');
         $appType = $request->input('appType');
         $lob = $request->input('lob');
-      
+        $action =  $request->input('action');
         $results = [];
         $taxFees = [];
         $total = 0;
@@ -831,13 +831,13 @@ class BusinessProfilesCrudController extends CrudController
                             case "Capital/Net Profit";
                                 $checkIfRenewal = BussTaxAssessments::where('business_profiles_id',$id)->count() >0 ? true:false;
                                 
-                                if($appType == "New" && $checkIfRenewal){
+                                if($appType == "New" && $checkIfRenewal && $action != "edit"){
                                 return response()->json(["result" => "Application Type must be a renewal"], 400);
                                 }
 
 
                                 $total_temp = 0;
-                                if($checkIfRenewal){
+                                if($checkIfRenewal && $action != "edit"){
                                     foreach($lob as $line){
                            
                                         if($tax->computation == "Percentage"){

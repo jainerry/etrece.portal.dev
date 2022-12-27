@@ -124,7 +124,8 @@ async function getBusinessProfile(id,$exclude_net_profit = false) {
         data: {
             id: id,
             appType:$.trim($('[name=application_type]').val()),
-            lob:lobarray
+            lob:lobarray,
+            action:'edit'
         },
         success: function (data) {
             $('[data-repeatable-holder=fees_and_delinquency]').html('')
