@@ -701,7 +701,6 @@ class BusinessProfilesCrudController extends CrudController
     public function getDetails(Request $request){
         $id = $request->input('id');
         $results = [];
-        dd($id);
         if (!empty($id))
         {
             $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
