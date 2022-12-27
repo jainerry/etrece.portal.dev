@@ -74,7 +74,7 @@ async function getBusinessProfile(id) {
     })
    
     await $.ajax({
-        url: '/admin/api/business-profile/get-details',
+        url: '/admin/api/business-profile/get-details-v2',
         type: 'POST',
         dataType: 'json',
         data: {
