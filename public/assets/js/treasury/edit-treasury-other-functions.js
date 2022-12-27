@@ -152,14 +152,14 @@ function getBusiness(data){
                 <th scope="col">Business Profile Ref ID</th>\n\
                 <th scope="col">Primary Owner</th>\n\
                 <th scope="col">Owner Address</th>\n\
-                <th scope="col">Business Type</th>\n\
+                <th scope="col">Application Type</th>\n\
                 <th scope="col">Status</th>\n\
                 </tr>\n\
             </thead>\n\
             <tbody>'
 
         $.each(data, function(i, value) {
-            let refID = '<a href="javascript:void(0)" onclick="fetchBusinessData(\''+value.id+'\')">'+value.refID+'</a>'
+            let refID = '<a href="javascript:void(0)" onclick="fetchBusinessData(\''+value.business_profiles_id+'\')">'+value.refID+'</a>'
             let businessRefID = value.businessRefID
             let primaryOwner = '-'
             let suffix = ''
@@ -173,7 +173,14 @@ function getBusiness(data){
             else {
                 primaryOwner = value.first_name+' '+value.middle_name+' '+value.last_name+' '+suffix
             }
-            let buss_type = value.buss_type.name
+
+            let buss_type = ''
+            if(value.buss_type !== '' && value.buss_type !== null && value.buss_type !== 'null') {
+                buss_type = value.buss_type.name
+            }
+
+            let application_type = value.application_type
+
             let isActive = 'Active'
             if(value.isActive === '0') { isActive = 'Inactive' }
 
@@ -185,7 +192,7 @@ function getBusiness(data){
                 <td>'+businessRefID+'</td>\n\
                 <td>'+primaryOwner+'</td>\n\
                 <td>'+ownerAddress+'</td>\n\
-                <td>'+buss_type+'</td>\n\
+                <td>'+application_type+'</td>\n\
                 <td>'+isActive+'</td>\n\
             </tr>'
         });
