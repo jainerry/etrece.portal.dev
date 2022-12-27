@@ -26,7 +26,7 @@ class StreetRequest extends FormRequest
     {
         return [
             'name' => 'required|unique:streets,name'.$this->id,
-            'barangayId' => 'required',
+            'barangay_id' => 'required',
             'isActive' => 'required'
         ];
     }

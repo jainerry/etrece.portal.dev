@@ -38,6 +38,8 @@ $(function () {
     $('body').on('change','[bp-field-name=tax_withheld_discount] select, [bp-field-name=tax_withheld_discount] [data-repeatable-input-name=amount]',function(){
         generateSummary();
     })
+
+
 })
 $(`[name=application_type]`).on("change",function(field){
   
@@ -51,36 +53,46 @@ function checkAppType(ds){
         $(`[data-repeatable-input-name=net_profit]`).prop('disabled',false);
     }
     }
-   
+function genereateLineOfBusinessArray(){
+    const net_profit =  $(`[data-repeatable-identifier=net_profit]`);
+    let result = [];
+
+    let accountLOB,amount =null;
+    $.each(net_profit,function(){
+       accountLOB =  $(this).find('.lineOfBusiness').html()
+       amount = $(this).find('[data-repeatable-input-name=net_profit]').val() == "" ? 0 :$(this).find('[data-repeatable-input-name=net_profit]').val();
+       result.push({'accountLOB':accountLOB,"amount":amount});
+    });
+
+    return result;
+}
 async function getBusinessProfile(id) {
     if(id==""){
         return;
     }
-    let busCat = [];
-    let busTaxFees = [];
     let repeaterparent = $("[bp-field-name=fees_and_delinquency]");
     let accounts = [];
-    let totalFeesCotainer = $("[bp-field-name=fees_and_delinquency]").find('.total');
-    let taxWithheldContainer = $(`[bp-field-name=tax_withheld_discount] [data-repeatable-identifier=tax_withheld_discount]`);
-    let LOBContainer = $('[bp-field-name=net_profit] [data-repeatable-identifier=net_profit]')
+    let net_profit =  $(`[bp-field-name=net_profit]`);
+
     await $.ajax({
         url: '/admin/api/business-profile/get-line-of-business',
         type: 'POST',
         dataType: 'json',
         data: {
             id: id,
-            appType:$.trim($('[name=application_type]').val())
+            appType:$.trim($('[name=application_type]').val()),
+            lob:genereateLineOfBusinessArray()
         },
         success:function(data){
            
             if(data.line_of_business.length>0){
-                let net_profit =  $(`[bp-field-name=net_profit]`);
+              
                 net_profit.find('[data-repeatable-holder=net_profit]').html('')
                 $.each(data.line_of_business,function(i,d){
                     net_profit.find('.add-repeatable-element-button').trigger('click');
                     
                     net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
-                    net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
+                    // net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
                     if($(`[name=application_type]`).val() =="New"){
                         net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
                     }
@@ -90,7 +102,10 @@ async function getBusinessProfile(id) {
             }   
         }
     })
-   
+    
+
+
+
     await $.ajax({
         url: '/admin/api/business-profile/get-details-v2',
         type: 'POST',
@@ -123,6 +138,7 @@ async function getBusinessProfile(id) {
             console.log(e)
             let message = e.responseJSON.result
             $('[name=business_profiles_id]').val('').trigger('change')
+            net_profit.find('[data-repeatable-holder=net_profit]').html('')
             swal({
                 title: "Invalid Application Type",
                 text: message,

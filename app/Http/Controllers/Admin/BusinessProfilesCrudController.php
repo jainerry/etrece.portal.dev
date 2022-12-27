@@ -738,6 +738,7 @@ class BusinessProfilesCrudController extends CrudController
                 'line_of_business' => $lineOfBusiness,
             ];
         }
+        
         return $results;
     }
     public function getDetailsV2(Request $request){
