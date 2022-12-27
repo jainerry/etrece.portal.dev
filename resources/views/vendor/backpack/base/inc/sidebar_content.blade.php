@@ -129,7 +129,7 @@
 
 @can('Treasury Configurations')
 <li class="nav-item nav-dropdown">
-    <a class="nav-link nav-dropdown-toggle" href="#"><i class="nav-icon la la-cog"></i>Treasury Configurations</a>
+    <a class="nav-link nav-dropdown-toggle d-flex" href="#"><i class="nav-icon la la-cog"></i>Treasury Configurations</a>
     <ul class="nav-dropdown-items"> 
         @can('Treasury Configurations > CTC Types')
         <li class="nav-item"><a class="nav-link" href="{{ backpack_url('ctc-type') }}"><i class="nav-icon la la-ellipsis-v"></i> CTC Types</a></li>

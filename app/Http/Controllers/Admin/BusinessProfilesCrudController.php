@@ -7,10 +7,12 @@ use App\Models\BusinessCategory;
 use App\Models\BusinessJobCategories;
 use App\Models\BusinessProfiles;
 use App\Models\BusinessTaxCode;
+use App\Models\BussTaxAssessments;
 use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
 use Backpack\CRUD\app\Library\CrudPanel\CrudPanelFacade as CRUD;
 use Backpack\CRUD\app\Library\Widget;
+use Database\Seeders\BusTaxFeesSeeder;
 // use GuzzleHttp\Psr7\Request;
 use Illuminate\Http\Request;
 use Illuminate\Support\Carbon;
@@ -696,34 +698,48 @@ class BusinessProfilesCrudController extends CrudController
         return $results;
     }
 
-    // public function getDetails(Request $request){
-    //     $id = $request->input('id');
-    //     $results = [];
-    //     dd($id);
-    //     if (!empty($id))
-    //     {
-    //         $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
-    //             ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
-    //             ->with('owner')
-    //             ->with('main_office')
-    //             ->with('main_office.barangay');
-
-    //         $nameProfile = BusinessProfiles::select('business_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
-    //             ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
-    //             ->with('names')
-    //             ->with('main_office')
-    //             ->with('main_office.barangay');
-                
-    //         $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
-    //         $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
-
-    //         $results = $citizenProfiles->merge($nameProfiles);
-    //     }
-
-    //     return $results;
-    // }
     public function getDetails(Request $request){
         $id = $request->input('id');
+        $results = [];
+        dd($id);
+        if (!empty($id))
+        {
+            $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
+                ->join('citizen_profiles', 'business_profiles.owner_id', '=', 'citizen_profiles.id')
+                ->with('owner')
+                ->with('main_office')
+                ->with('main_office.barangay');
+
+            $nameProfile = BusinessProfiles::select('business_profiles.*', 'name_profiles.first_name', 'name_profiles.middle_name', 'name_profiles.last_name', 'name_profiles.suffix', 'name_profiles.address', DB::raw('"NameProfile" as ownerType'))
+                ->join('name_profiles', 'business_profiles.owner_id', '=', 'name_profiles.id')
+                ->with('names')
+                ->with('main_office')
+                ->with('main_office.barangay');
+                
+            $citizenProfiles = $citizenProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+            $nameProfiles = $nameProfile->where('business_profiles.id', '=', $id)->where('business_profiles.isActive', '=', 'Y')->orderBy('business_profiles.refID','ASC')->get();
+
+            $results = $citizenProfiles->merge($nameProfiles);
+        }
+
+        return $results;
+    }
+    public function getLineOfBusiness(Request $request){
+        $id = $request->input('id');
+        $BusinessProfiles = BusinessProfiles::where("id",$id)->where('isActive','y')->get()->first();
+        $lineOfBusiness = [];
+        $results = [];
+        if (!empty($id)) {
+            foreach($BusinessProfiles->line_of_business as $lineOB){
+                array_push($lineOfBusiness, ['capital' => $lineOB['capital'], 'particulars' => BusinessCategory::select(['name','id'])->where("id",$lineOB['particulars'])->get()]);
+            }
+            
+        }
+        return $results;
+    }
+    public function getDetailsV2(Request $request){
+        $id = $request->input('id');
+        $appType = $request->input('appType');
         $results = [];
         $taxFees = [];
         $total = 0;
@@ -803,12 +819,18 @@ class BusinessProfilesCrudController extends CrudController
                                 }
                             }
                            
-                            
-
-                        break;  
+                        break;
+                            case "Capital/Net Profit";
+                                $checkIfRenewal = BussTaxAssessments::where('business_profiles_id',$id)->count() >0 ? true:false;
+                                
+                                if($appType == "New" && $checkIfRenewal){
+                                return response()->json(["result" => "Application Type must be a renewal"], 400);
+                                }
+                            break;
                         default:
                               $total += $tax->amount_value;
                               array_push($taxFeesForResult, $tax);
+
                       }
                   }
             }

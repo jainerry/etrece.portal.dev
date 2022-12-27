@@ -10,9 +10,16 @@ $(function () {
             'X-CSRF-TOKEN': $('meta[name="csrf-token"]').attr('content')
         }
     });
-
-    $('select[name="business_profiles_id"]').on('change', function () {
+    const inputBusProfID = $('select[name="business_profiles_id"]');
+    inputBusProfID.on('change', function () {
+        
         getBusinessProfile($(this).val())
+    })
+    $('[name=application_type]').on('change',function(){
+        if(inputBusProfID.val() != null || inputBusProfID != ""){
+            getBusinessProfile(inputBusProfID.val())
+        }
+       
     })
 
     profval = $.trim($(`[name=business_profiles_id]`).val())
@@ -46,24 +53,37 @@ function checkAppType(ds){
     }
    
 async function getBusinessProfile(id) {
+    if(id==""){
+        return;
+    }
     let busCat = [];
     let busTaxFees = [];
     let repeaterparent = $("[bp-field-name=fees_and_delinquency]");
-    let total = 0;
-    let accountname,amount = null;
     let accounts = [];
-    let numOfEmployee = 0;
     let totalFeesCotainer = $("[bp-field-name=fees_and_delinquency]").find('.total');
+    let taxWithheldContainer = $(`[bp-field-name=tax_withheld_discount] [data-repeatable-identifier=tax_withheld_discount]`);
+    let LOBContainer = $('[bp-field-name=net_profit] [data-repeatable-identifier=net_profit]')
     await $.ajax({
-        url: '/admin/api/business-profile/get-details',
-        type: 'GET',
+        url: '/admin/api/business-profile/get-line-of-business',
+        type: 'POST',
         dataType: 'json',
         data: {
-            id: id
+            id: id,
+            appType:$.trim($('[name=application_type]').val())
+        },
+    })
+   
+    await $.ajax({
+        url: '/admin/api/business-profile/get-details',
+        type: 'POST',
+        dataType: 'json',
+        data: {
+            id: id,
+            appType:$.trim($('[name=application_type]').val())
         },
         success: function (data) {
             $('[data-repeatable-holder=fees_and_delinquency]').html('')
-          
+            
             if(data.taxFees.length>0){
                 $.each(data.taxFees,function(i,d){
                     repeaterparent.find('.add-repeatable-element-button').trigger('click');
@@ -96,6 +116,18 @@ async function getBusinessProfile(id) {
             finalAccounts = accounts;
             generateSummary()
             
+        },
+        error:function(e){
+            console.log(e)
+            let message = e.responseJSON.result
+            $('[name=business_profiles_id]').val('').trigger('change')
+            swal({
+                title: "Invalid Application Type",
+                text: message,
+                icon: "error",
+                timer: 4000,
+                buttons: false,
+            });
         }
     })
   

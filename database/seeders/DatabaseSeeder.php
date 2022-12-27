@@ -27,7 +27,6 @@ class DatabaseSeeder extends Seeder
             PositionSeeder::class,
             SectionSeeder::class,
             AppointmentSeeder::class,
-            StreetSeeder::class,
             EmployeeSeeder::class,
             ProvinceSeeder::class,
             MunicipalitiesSeeder::class,
@@ -67,5 +66,7 @@ class DatabaseSeeder extends Seeder
             BusTaxFeesSeeder::class,
             BusVehicleSeeder::class,
         ]);
+        $this->call(UsersTableSeeder::class);
+        $this->call(StreetsTableSeeder::class);
     }
 }

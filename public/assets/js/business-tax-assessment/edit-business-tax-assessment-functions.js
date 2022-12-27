@@ -48,7 +48,7 @@ async function getBusinessProfile(id) {
     let totalFeesCotainer = $("[bp-field-name=fees_and_delinquency]").find('.total');
     await $.ajax({
         url: '/admin/api/business-profile/get-details',
-        type: 'GET',
+        type: 'POST',
         dataType: 'json',
         data: {
             id: id

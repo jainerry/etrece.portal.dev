@@ -132,6 +132,8 @@ Route::group([
 
     Route::get('/api/business-profile/search-business-profile', 'BusinessProfilesCrudController@searchBusinessProfile');
     Route::get('/api/business-profile/get-details', 'BusinessProfilesCrudController@getDetails');
+    Route::post('/api/business-profile/get-details-v2', 'BusinessProfilesCrudController@getDetailsV2');
+    Route::post('/api/business-profile/get-line-of-business', 'BusinessProfilesCrudController@getLineOfBusiness');
     Route::get('/api/citizen-profile/get-details', 'CitizenProfileCrudController@getDetails');
     Route::get('/api/name-profile/get-details', 'NameProfilesCrudController@getDetails');
 
