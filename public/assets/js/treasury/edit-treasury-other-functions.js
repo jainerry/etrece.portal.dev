@@ -22,9 +22,29 @@ $(function () {
     computeTotalFeesAmount()
 
     $('.repeatable-group[bp-field-name="fees"] button.add-repeatable-element-button').on('click', function(){
+        //checks if other fees have duplicates
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+            $('.repeatable-group[bp-field-name="fees"] .repeatable-element:last-child').remove()
+        }
+
         $('div[data-repeatable-holder="fees"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
         $('div[data-repeatable-holder="fees"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
         feesActions()
+    })
+
+    $('form').on("submit", function(e){
+        //checks if other fees have duplicates
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+            e.preventDefault()
+            $('form #saveActions button[type="submit"]').attr('disabled',false)
+        }
+        else {
+            $('form').submit()
+        }
     })
 
 })
@@ -285,11 +305,23 @@ function getOtherProfile(data){
 
 function feesActions(){
     $('select.particulars').on("change", function(){
-        computeTotalFeesAmount()
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+        }
+        else {
+            computeTotalFeesAmount()
+        }
     })
 
     $('input.amount').on("change", function(){
-        computeTotalFeesAmount()
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+        }
+        else {
+            computeTotalFeesAmount()
+        }
     })
 }
 
@@ -303,6 +335,34 @@ function computeTotalFeesAmount(){
     })
 
     $('input[name="totalFeesAmount"]').val(totalFeesAmount)
+}
+
+function checkForDuplicatesOtherFees(){
+    otherFeesArray = []
+    let duplicatesCtr = 0
+
+    $('#tab_details select.particulars').each(function(){
+        let otherFee = $(this).find('option:selected').text()
+
+        if($.inArray(otherFee,otherFeesArray) !== -1) {
+            duplicatesCtr++
+            duplicatedOtherFee = otherFee
+        }
+        else {
+            otherFeesArray.push(otherFee)
+        }
+    })
+
+    if(duplicatesCtr > 0) { return true }
+    else { return false }
+}
+
+function otherFeeHaveDuplicatesAction(){
+    let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+    let msg = duplicatedOtherFee+' (Particulars) already exist. Please change, duplicate fees are not allowed.'
+    $('.alertMessageModal .modal-title').html(title)
+    $('.alertMessageModal .modal-body').html(msg)
+    $('.alertMessageModal').modal('show');
 }
 
 function formatStringToFloat(num){
