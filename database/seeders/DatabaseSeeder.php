@@ -55,19 +55,17 @@ class DatabaseSeeder extends Seeder
             RPTMachinerySeeder::class,
             TreasuryRPTSeeder::class,
             BusinessActivitySeeder::class,
-            BusinessTypeSeeder::class,
             BusinessProfileSeeder::class,
-            BusinessTaxAssessmentSeeder::class,
-            BusinessFeesSeeder::class,
             TreasuryBusinessSeeder::class,
             TreasuryCTCSeeder::class,
             TreasuryOtherSeeder::class,
             BusCategorySeeder::class,
-            BusTaxFeesSeeder::class,
             BusVehicleSeeder::class,
             //ModulesAndSubModulesSeeder::class,
         ]);
         $this->call(UsersTableSeeder::class);
         $this->call(StreetsTableSeeder::class);
+        $this->call(BusinessFeesTableSeeder::class);
+        $this->call(BusinessTaxFeesTableSeeder::class);
     }
 }

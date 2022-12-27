@@ -36,6 +36,7 @@ class BusinessFeesCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-fees');
         $this->crud->setEntityNameStrings('Fees', 'Fees');
         $this->crud->removeButton('delete');
+        $this->crud->addClause('where', 'isActive', '=', 'Y');
     }
 
     /**
@@ -66,7 +67,17 @@ class BusinessFeesCrudController extends CrudController
              }
           ]);
 
-        $this->crud->column('category');
+        $this->crud->addColumn([
+            // select_from_array
+            'name'    => 'category',
+            'label'   => 'Cateogry',
+            'type'    => 'select_from_array',
+            'options' => ['01' => 'Business Tax', 
+            "02" => 'Mayors Permit',
+            '03' => 'Occupational Tax',
+            "04" => "Delivery Truck",
+           "05"=>"Regulatory"],
+        ]);
         $this->crud->column('name');
        
 
@@ -91,11 +102,11 @@ class BusinessFeesCrudController extends CrudController
             "name"=>"category",
             'label'     => "Category",
             'type'      => 'select_from_array',
-            'options'         => ['Business Tax' => 'Business Tax', 
-                                 "Mayors Permit" => 'Mayors Permit',
-                                 'Occupational Tax' => 'Occupational Tax',
-                                 "Delivery Truck" => "Delivery Truck",
-                                "Regulatory"=>"Regulatory"],
+            'options'         => ['01' => 'Business Tax', 
+                                 "02" => 'Mayors Permit',
+                                 '03' => 'Occupational Tax',
+                                 "04" => "Delivery Truck",
+                                "05"=>"Regulatory"],
          ]);
         $this->crud->field('name');
         $this->crud->addField([

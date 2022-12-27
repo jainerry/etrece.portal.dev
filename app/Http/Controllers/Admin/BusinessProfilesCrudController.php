@@ -7,6 +7,7 @@ use App\Models\BusinessCategory;
 use App\Models\BusinessJobCategories;
 use App\Models\BusinessProfiles;
 use App\Models\BusinessTaxCode;
+use App\Models\BusinessTaxFees;
 use App\Models\BussTaxAssessments;
 use App\Models\CitizenProfile;
 use Backpack\CRUD\app\Http\Controllers\CrudController;
@@ -702,6 +703,7 @@ class BusinessProfilesCrudController extends CrudController
     public function getDetails(Request $request){
         $id = $request->input('id');
         $results = [];
+      
         if (!empty($id))
         {
             $citizenProfile = BusinessProfiles::select('business_profiles.*', 'citizen_profiles.fName', 'citizen_profiles.mName', 'citizen_profiles.lName', 'citizen_profiles.suffix', 'citizen_profiles.address', DB::raw('"CitizenProfile" as ownerType'))
@@ -744,152 +746,144 @@ class BusinessProfilesCrudController extends CrudController
     }
     public function getDetailsV2(Request $request){
         $id = $request->input('id');
-        $appType = $request->input('appType');
-        $lob = $request->input('lob');
-        $action =  $request->input('action');
-        $results = [];
-        $taxFees = [];
-        $total = 0;
-        $taxFeesForResult = [];
-        $details = [];
+        $lineofbusiness = $request->input('lineofbusiness');
+        $results = [];       
         if (!empty($id))
         {
             $BusinessProfiles = BusinessProfiles::where("id",$id)->where('isActive','y')->get()->first();
-            $category = $BusinessProfiles->businessCategory;
-            $totalEmployee = 0;
-            $area = $BusinessProfiles->area;
-            $weight_and_measure_value = $BusinessProfiles->weight_and_measure_value;
-            $vehicle = $BusinessProfiles->vehicles;
-            $lineOfBusiness = [];
-            $exceeded =0;
-            foreach($BusinessProfiles->line_of_business as $lineOB){
-
-                array_push($lineOfBusiness, ['capital' => $lineOB['capital'], 'particulars' => BusinessCategory::select(['name','id'])->where("id",$lineOB['particulars'])->get()]);
-
-            }
-            foreach($BusinessProfiles->number_of_employees as $empNo){
-                $totalEmployee += $empNo['number'];
-            }
+            $categories = $BusinessProfiles->businessCategory;
+            $isRenewal = BussTaxAssessments::where('business_profiles_id', $id)->count() > 0;
             
-            foreach($category as $cat){
-               if(collect($cat)->isEmpty()){
-
-               }else{
-
-                foreach($cat->first()->business_tax_fees as $taxF){
-                            array_push($taxFees, $taxF);
-                    }
-               }
-             
-               
+            $activeCategory = [];
+            foreach($categories as $cat){
+                if($cat->count() > 0 ){
+                    
+                    array_push($activeCategory,$cat->first());
+                }
             }
-         
-            if(collect($taxFees)->isEmpty()){
+            $activeFees = [];
+            foreach($activeCategory as $ac){
+                foreach($ac->business_tax_fees as $tax){
+                    array_push($activeFees, $tax);
+                }
+            }
+          
+            $grouped =  collect($activeFees)->groupBy('business_fees_name');
+            
+            $taxFeeCollections = [];
+            $totalCollection = [];
+            if(collect( $grouped)->count() >0 ){
+                foreach( $grouped as $d){
+						
+							$data = collect($d)->sortBy([
+								['business_fees_name','desc']
+							])->first();
+						
+                   	 $range = collect($data)->get('range_box');
+				
+                 
+                   	 switch($data->basis){
+                        case '01':
+                            $amount = 0;
+                            // Capital/Net Profit
+									if($isRenewal){
 
-            }else{
-                foreach($taxFees as $tax){
-                    $rangeBox = $tax->range_box[0];
-                    switch($tax->basis){
-                        case "Business Area":
-                             
-                              if($area > $rangeBox['from'] && $area <= $rangeBox['to']){
-                                  $total += $tax->amount_value;
-                                  array_push($taxFeesForResult, $tax);
-                              }else if($area > $rangeBox['from'] && $area['infinite'] == 1){
-                                  $total += $tax->amount_value;
-                                  array_push($taxFeesForResult, $tax);
-                               }
-                        break;
-                        case "No of Employee":
-                                  $total += $tax->amount_value*$totalEmployee;
-                                  $tax->amount_value = $tax->amount_value * $totalEmployee;
-                                  array_push($taxFeesForResult, $tax);
-                              break;
-                        case "Weight & Measure":
+									}else{
+										$lineofbusiness = $BusinessProfiles->line_of_business;
+										if(collect($lineofbusiness)->count() > 0){
+											foreach($lineofbusiness as $lob){
+										dd($d);
+												
+											}
 
-                                if($weight_and_measure_value > $rangeBox['from'] &&  $weight_and_measure_value <= $rangeBox['to']){
-                                    $total += $tax->amount_value;
-                                    array_push($taxFeesForResult, $tax);
-                                }else if($weight_and_measure_value > $rangeBox['from'] && $rangeBox['infinite'] == 1){
-                                    $total += $tax->amount_value;
-                                    array_push($taxFeesForResult, $tax);
-                                }
-                        break;  
-                        case "No & Type of Vehicle":
+										}
+										
+									}
+
                             
-                            if(collect($vehicle)->isEmpty()){
-
-                            }else{
-                                if($vehicle[0]['type'] === $tax->vehicle_type ){
-                                    $total += $tax->amount_value*$vehicle[0]['number'];
-                                    $tax->amount_value =  $tax->amount_value*$vehicle[0]['number'];
-                                    array_push($taxFeesForResult, $tax);
-                                }
-                            }
-                           
                         break;
-                            case "Capital/Net Profit";
-                                $checkIfRenewal = BussTaxAssessments::where('business_profiles_id',$id)->count() >0 ? true:false;
-                                
-                                if($appType == "New" && $checkIfRenewal && $action != "edit"){
-                                return response()->json(["result" => "Application Type must be a renewal"], 400);
-                                }
+                        case '02':
+                            // Business Area
+										$amount = 0;
+										$area = $BusinessProfiles->area;
+										$tmp = [];
+											if(isset($area)){
+											foreach($d as $x){
+												$amount = $x->amount_value;
+												$i = collect($x->range_box)->first();
+												if($area >= abs($i['from']) && $area < abs($i['to'])){
+													array_push($tmp, ['name' => $x->business_fees_name,
+													'amount'=> $amount]);
+												}elseif($area >=abs($i['from']) && $i['infinite'] == 1){
+													array_push($tmp, ['name' => $x->business_fees_name,
+													'amount'=> $amount]);
+												}
+											}
+											if(collect($tmp)->count() > 0){
+												$tmp = collect($tmp)->sortBy([
+													['amount', 'desc']
+												])->first();
+												array_push($taxFeeCollections, $tmp);
+											}
+										}
 
-
-                                $total_temp = 0;
-                                if($checkIfRenewal && $action != "edit"){
-                                    foreach($lob as $line){
+                        break;
+								case '03':
+									// No of Employee
+							
+                            $amount = 0;
+                            $totalSubject = collect($BusinessProfiles->number_of_employees)->sum('number');
+                            $amount = $data->amount_value*$totalSubject;
+                            
+                            array_push($taxFeeCollections, ['name' => $data->business_fees_name,
+                                                            'amount'=> $amount]);
+                        break;
+                        case '04':
+                            // Weight & Measure
+                            $amount = 0;
+                            $weight_and_measure_value = $BusinessProfiles->weight_and_measure_value;
+                            if(isset($weight_and_measure_value)){
+                              
+                                $totalSubject = abs($weight_and_measure_value);
+                                $amount = $data->amount_value*$totalSubject;
+                                array_push($taxFeeCollections, ['name' => $data->business_fees_name,
+                                                                'amount'=> $amount]);
                            
-                                        if($tax->computation == "Percentage"){
-                                           
-                                            if($line['amount'] >=  $rangeBox['from']){
-                                            // dd($rangeBox);
-                                              $exceeded = ($rangeBox['PAmount'] == null ? 0 : abs($rangeBox['PAmount'])) + ((abs($rangeBox['from']) - abs($line['amount']) * (abs($rangeBox['pp1'])/100)) * (abs($rangeBox['pp1'])/100));
-                                                
-                                            $total_temp += $exceeded;
-                                            $total += $exceeded;
-                                            }
-                                          
-                                        }else{
-                                            
-                                        }
-                                    }
-                                }else{
-                                    foreach ($BusinessProfiles->line_of_business as $line) {
-                                    if($line['capital'] >=  $rangeBox['from']){
-                                        // dd($rangeBox);
-                                          $exceeded = ($rangeBox['PAmount'] == null ? 0 : abs($rangeBox['PAmount'])) + ((abs($rangeBox['from']) - abs($line['capital']) * (abs($rangeBox['pp1'])/100)) * (abs($rangeBox['pp1'])/100));
-                                            
-                                        $total_temp += $exceeded;
-                                        $total += $exceeded;
-                                        }
-                                    }
-                                }
-                                
-                                $tax->amount_value =  $total_temp;
-                                array_push($taxFeesForResult, $tax);
-                            break;
+                            }
+
+                        break;
+                        case '05':
+                            // No & Type of Vehicle
+                            $amount = 0;
+                            $vehicles = $BusinessProfiles->vehicles;
+                            if(collect($vehicles)->count()>0){
+                                $totalSubject = collect($vehicles)->sum('number');
+                                $amount = $data->amount_value*$totalSubject;
+                                array_push($taxFeeCollections, ['name' => $data->business_fees_name,
+                                                                'amount'=> $amount]);
+                           
+                            }
+                        break;
+
                         default:
-                              $total += $tax->amount_value;
-                              array_push($taxFeesForResult, $tax);
 
-                      }
-                  }
+
+                    }
+
+                }
+
+
+
             }
-           
-
-            $results =
-                [
-                    'taxFees' =>$taxFeesForResult,
-
-                    'line_of_business'=>$lineOfBusiness,
-                    "total"=>$total];
-             
-            // $results = $citizenProfiles->merge($nameProfiles);
+            $results = [
+                'taxFeeCollection'=>$taxFeeCollections,
+                'total'=>collect($taxFeeCollections)->sum('amount')
+            ];
         }
 
         return $results;
     }
+    
     public function getLineOfBusinessesCategories(Request $request){
         $id = $request->input('id');
         $results = [];

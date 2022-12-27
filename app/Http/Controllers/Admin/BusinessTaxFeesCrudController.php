@@ -151,11 +151,11 @@ class BusinessTaxFeesCrudController extends CrudController
         "name"=>"basis",
         'label'     => "Basis",
         'type'      => 'select_from_array',
-        'options'         => ['Capital/Net Profit' => 'Capital/Net Profit', 
-                             "Business Area" => ' Business Area                             ',
-                             'No of Employee' => 'No of Employee',
-                             "Weight & Measure" => "Weight & Measure",
-                             "No & Type of Vehicle"=>"No & Type of Vehicle"],
+        'options'         => ['01' => 'Capital/Net Profit', 
+                             "02" => 'Business Area',
+                             '03' => 'No of Employee',
+                             "04" => "Weight & Measure",
+                             "05"=>"No & Type of Vehicle"],
         "allow_null"=>true,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
@@ -165,8 +165,8 @@ class BusinessTaxFeesCrudController extends CrudController
         "name"=>"type",
         'label'     => "Type",
         'type'      => 'select_from_array',
-        'options'         => ['Regular' => 'Regular', 
-                             "Range" => 'Range'],
+        'options'         => ['01' => 'Regular', 
+                             "02" => 'Range'],
         "allows_null"=>false,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
@@ -266,8 +266,8 @@ class BusinessTaxFeesCrudController extends CrudController
         "name"=>"computation",
         'label'     => "Computation",
         'type'      => 'select_from_array',
-        'options'         => ['Amount' => 'Amount', 
-                             "Percentage" => 'Percentage'],
+        'options'         => ['01' => 'Amount', 
+                             "02" => 'Percentage'],
         "allow_null"=>true,
         'wrapperAttributes' => [
             'class' => 'form-group col-12 col-md-6'
