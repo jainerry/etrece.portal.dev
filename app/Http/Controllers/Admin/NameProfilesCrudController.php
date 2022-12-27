@@ -21,8 +21,8 @@ class NameProfilesCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
     {
@@ -40,6 +40,7 @@ class NameProfilesCrudController extends CrudController
         $this->crud->setModel(\App\Models\NameProfiles::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/name-profiles');
         $this->crud->setEntityNameStrings('name profiles', 'name profiles');
+        $this->crud->removeButton('delete');
     }
 
     /**

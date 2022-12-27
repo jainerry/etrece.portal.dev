@@ -16,8 +16,8 @@ class BusinessActivityCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
     {
@@ -35,6 +35,7 @@ class BusinessActivityCrudController extends CrudController
         $this->crud->setModel(\App\Models\BusinessActivity::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-activity');
         $this->crud->setEntityNameStrings('business activity', 'business activity');
+        $this->crud->removeButton('delete');
     }
 
     /**

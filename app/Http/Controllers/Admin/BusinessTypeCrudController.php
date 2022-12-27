@@ -16,8 +16,8 @@ class BusinessTypeCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
     {
@@ -35,6 +35,7 @@ class BusinessTypeCrudController extends CrudController
         $this->crud->setModel(\App\Models\BusinessType::class);
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/business-type');
         $this->crud->setEntityNameStrings('business type', 'business types');
+        $this->crud->removeButton('delete');
     }
 
     /**

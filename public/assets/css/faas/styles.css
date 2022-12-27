@@ -82,3 +82,7 @@ table#businessProfileTable tr th,
 table#businessProfileTable tr td {
     padding: 3px 10px;
 }
+
+a.btn.float-right i.la.la-print {
+    font-size: 1.8rem;
+}

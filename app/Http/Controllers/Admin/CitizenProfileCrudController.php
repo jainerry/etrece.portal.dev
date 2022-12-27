@@ -53,6 +53,7 @@ class CitizenProfileCrudController extends CrudController
         $this->crud->setRoute(config('backpack.base.route_prefix') . '/citizen-profile');
         $this->crud->setEntityNameStrings('citizen profile', 'citizen profiles');
         $this->crud->setCreateContentClass('col-md-12 asdasd');
+        $this->crud->removeButton('delete');
     }
     
     /**

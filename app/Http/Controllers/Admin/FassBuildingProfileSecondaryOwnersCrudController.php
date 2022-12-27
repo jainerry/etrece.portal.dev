@@ -16,8 +16,8 @@ class FassBuildingProfileSecondaryOwnersCrudController extends CrudController
     use \Backpack\CRUD\app\Http\Controllers\Operations\ListOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\CreateOperation;
     use \Backpack\CRUD\app\Http\Controllers\Operations\UpdateOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
-    use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\DeleteOperation;
+    //use \Backpack\CRUD\app\Http\Controllers\Operations\ShowOperation;
 
     public function __construct()
     {
@@ -34,6 +34,7 @@ class FassBuildingProfileSecondaryOwnersCrudController extends CrudController
         CRUD::setModel(\App\Models\FassBuildingProfileSecondaryOwners::class);
         CRUD::setRoute(config('backpack.base.route_prefix') . '/fass-building-profile-secondary-owners');
         CRUD::setEntityNameStrings('fass building profile secondary owners', 'fass building profile secondary owners');
+        $this->crud->removeButton('delete');
     }
 
     /**
