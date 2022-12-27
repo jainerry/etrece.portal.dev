@@ -739,17 +739,19 @@ class BusinessProfilesCrudController extends CrudController
                 'line_of_business' => $lineOfBusiness,
             ];
         }
-        
+
         return $results;
     }
     public function getDetailsV2(Request $request){
         $id = $request->input('id');
         $appType = $request->input('appType');
+        $lob = $request->input('lob');
+      
         $results = [];
         $taxFees = [];
         $total = 0;
         $taxFeesForResult = [];
-
+        $details = [];
         if (!empty($id))
         {
             $BusinessProfiles = BusinessProfiles::where("id",$id)->where('isActive','y')->get()->first();
@@ -759,6 +761,7 @@ class BusinessProfilesCrudController extends CrudController
             $weight_and_measure_value = $BusinessProfiles->weight_and_measure_value;
             $vehicle = $BusinessProfiles->vehicles;
             $lineOfBusiness = [];
+            $exceeded =0;
             foreach($BusinessProfiles->line_of_business as $lineOB){
 
                 array_push($lineOfBusiness, ['capital' => $lineOB['capital'], 'particulars' => BusinessCategory::select(['name','id'])->where("id",$lineOB['particulars'])->get()]);
@@ -831,6 +834,40 @@ class BusinessProfilesCrudController extends CrudController
                                 if($appType == "New" && $checkIfRenewal){
                                 return response()->json(["result" => "Application Type must be a renewal"], 400);
                                 }
+
+
+                                $total_temp = 0;
+                                if($checkIfRenewal){
+                                    foreach($lob as $line){
+                           
+                                        if($tax->computation == "Percentage"){
+                                           
+                                            if($line['amount'] >=  $rangeBox['from']){
+                                            // dd($rangeBox);
+                                              $exceeded = ($rangeBox['PAmount'] == null ? 0 : abs($rangeBox['PAmount'])) + ((abs($rangeBox['from']) - abs($line['amount']) * (abs($rangeBox['pp1'])/100)) * (abs($rangeBox['pp1'])/100));
+                                                
+                                            $total_temp += $exceeded;
+                                            $total += $exceeded;
+                                            }
+                                          
+                                        }else{
+                                            
+                                        }
+                                    }
+                                }else{
+                                    foreach ($BusinessProfiles->line_of_business as $line) {
+                                    if($line['capital'] >=  $rangeBox['from']){
+                                        // dd($rangeBox);
+                                          $exceeded = ($rangeBox['PAmount'] == null ? 0 : abs($rangeBox['PAmount'])) + ((abs($rangeBox['from']) - abs($line['capital']) * (abs($rangeBox['pp1'])/100)) * (abs($rangeBox['pp1'])/100));
+                                            
+                                        $total_temp += $exceeded;
+                                        $total += $exceeded;
+                                        }
+                                    }
+                                }
+                                
+                                $tax->amount_value =  $total_temp;
+                                array_push($taxFeesForResult, $tax);
                             break;
                         default:
                               $total += $tax->amount_value;

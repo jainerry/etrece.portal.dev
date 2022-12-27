@@ -1,8 +1,10 @@
 let totalFees = 0;
 let totalDiscount = 0;
 let finalAccounts = [];
+let finalDiscountAccounts = [];
+let finalDiscount = 0;
 let taxWithheldInput;
-
+const net_profit =  $(`[data-repeatable-identifier=net_profit]`);
 $(function () {
     taxWithheldInput =$(`[bp-field-name=tax_withheld_discount] select, [bp-field-name=tax_withheld_discount] [data-repeatable-input-name=amount]`);
     $.ajaxSetup({
@@ -38,13 +40,18 @@ $(function () {
     $('body').on('change','[bp-field-name=tax_withheld_discount] select, [bp-field-name=tax_withheld_discount] [data-repeatable-input-name=amount]',function(){
         generateSummary();
     })
+    $(`body`).on('change','[data-repeatable-input-name=net_profit]',function(){
 
+        getBusinessProfile(inputBusProfID.val(),true);
+    })
+    
 
 })
 $(`[name=application_type]`).on("change",function(field){
   
     checkAppType(this)
 });
+
 function checkAppType(ds){
       
     if($(ds).val() =="New"){
@@ -54,57 +61,61 @@ function checkAppType(ds){
     }
     }
 function genereateLineOfBusinessArray(){
-    const net_profit =  $(`[data-repeatable-identifier=net_profit]`);
-    let result = [];
-
-    let accountLOB,amount =null;
-    $.each(net_profit,function(){
-       accountLOB =  $(this).find('.lineOfBusiness').html()
-       amount = $(this).find('[data-repeatable-input-name=net_profit]').val() == "" ? 0 :$(this).find('[data-repeatable-input-name=net_profit]').val();
-       result.push({'accountLOB':accountLOB,"amount":amount});
-    });
-
+   
+  
     return result;
 }
-async function getBusinessProfile(id) {
+async function getBusinessProfile(id,$exclude_net_profit = false) {
     if(id==""){
         return;
     }
+    finalAccounts = [];
     let repeaterparent = $("[bp-field-name=fees_and_delinquency]");
     let accounts = [];
     let net_profit =  $(`[bp-field-name=net_profit]`);
-
-    await $.ajax({
-        url: '/admin/api/business-profile/get-line-of-business',
-        type: 'POST',
-        dataType: 'json',
-        data: {
-            id: id,
-            appType:$.trim($('[name=application_type]').val()),
-            lob:genereateLineOfBusinessArray()
-        },
-        success:function(data){
-           
-            if(data.line_of_business.length>0){
-              
-                net_profit.find('[data-repeatable-holder=net_profit]').html('')
-                $.each(data.line_of_business,function(i,d){
-                    net_profit.find('.add-repeatable-element-button').trigger('click');
-                    
-                    net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
-                    // net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
-                    if($(`[name=application_type]`).val() =="New"){
-                        net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
-                    }
-                })
+    if(!$exclude_net_profit){
+        await $.ajax({
+            url: '/admin/api/business-profile/get-line-of-business',
+            type: 'POST',
+            dataType: 'json',
+            data: {
+                id: id,
+                appType:$.trim($('[name=application_type]').val()),
+            
+            },
+            success:function(data){
                
-                net_profit.find('.delete-element').remove();
-            }   
-        }
-    })
+                if(data.line_of_business.length>0){
+                  
+                    net_profit.find('[data-repeatable-holder=net_profit]').html('')
+                    $.each(data.line_of_business,function(i,d){
+                        net_profit.find('.add-repeatable-element-button').trigger('click');
+                        
+                        net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
+                        // net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
+                        if($(`[name=application_type]`).val() =="New"){
+                            net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
+                        }
+                    })
+                   
+                    net_profit.find('.delete-element').remove();
+                }   
+            }
+        })
+        
+    }
     
+    
+    let lobarray = [];
 
+    let accountLOB,amount =null;
+    $.each(net_profit,function(){
+       accountLOB =  $(this).find('.lineOfBusiness').text()
+       amount = $(this).find('[data-repeatable-input-name=net_profit]').val() == "" ? 0 :$(this).find('[data-repeatable-input-name=net_profit]').val();
+       lobarray.push({'accountLOB':accountLOB,"amount":amount});
+    });
 
+    console.log(lobarray)
 
     await $.ajax({
         url: '/admin/api/business-profile/get-details-v2',
@@ -112,7 +123,8 @@ async function getBusinessProfile(id) {
         dataType: 'json',
         data: {
             id: id,
-            appType:$.trim($('[name=application_type]').val())
+            appType:$.trim($('[name=application_type]').val()),
+            lob:lobarray
         },
         success: function (data) {
             $('[data-repeatable-holder=fees_and_delinquency]').html('')
@@ -135,14 +147,14 @@ async function getBusinessProfile(id) {
             
         },
         error:function(e){
-            console.log(e)
+          
             let message = e.responseJSON.result
-            $('[name=business_profiles_id]').val('').trigger('change')
+            $('[name=application_type]').val('Renewal').trigger('change')
             net_profit.find('[data-repeatable-holder=net_profit]').html('')
             swal({
                 title: "Invalid Application Type",
                 text: message,
-                icon: "error",
+                icon: "warning",
                 timer: 4000,
                 buttons: false,
             });
@@ -174,23 +186,27 @@ function generateSummary(){
     let ds = [];
     let select,text;
     let discount =[];
+    finalDiscount = 0;
+    finalDiscountAccounts = [];
     let taxWithheldContainer = $(`[bp-field-name=tax_withheld_discount] [data-repeatable-identifier=tax_withheld_discount]`);
+    let TWHD_isexist = $(".summaryTable .tax-discount");
+    if(TWHD_isexist.length>0){
+        TWHD_isexist.remove()
+    }
     $.each(taxWithheldContainer,function(){
          select = $(this).find('[data-repeatable-input-name=tax_withheld_discount]');
          text = $(this).find('[data-repeatable-input-name=amount]');
         if($.trim(select.val()) != "" && Math.abs(text.val()) != 0){
-            finalAccounts.push([{"accountname":select.val(),"amount":-Math.abs(text.val())}])
-            totalFees = totalFees - Math.abs(text.val());
-        }
-       
-        
+            finalDiscountAccounts.push([{"accountname":select.val(),"amount":-Math.abs(text.val()),"taxWithHeldClass":'tax-discount'}])
+            finalDiscount = finalDiscount + Math.abs(text.val());
+        }  
     })
-    console.log(finalAccounts)
-    $.each(finalAccounts.reverse(),function(){
+
+    $.each(finalAccounts,function(){
         ds =this[0]
-        console.log(ds)
+      
         tbody.prepend(`
-            <tr>
+            <tr >
                 <td>
                     ${ds.accountname}
                 </td>
@@ -200,7 +216,24 @@ function generateSummary(){
             </tr>
         `);
     })
-    $(".total-amount").html("P"+totalFees.toLocaleString())
+    // finalDiscountAccounts.sort((a,b)=> a>b);
+    console.log(finalDiscountAccounts.sort((a,b)=> {return a.accountname>b.accountname}))
+    $.each(finalDiscountAccounts.sort((a,b)=> a.accountname>b.accountname),function(){
+        ds =this[0]
+        $(`
+            <tr class="${ds.taxWithHeldClass != null ? ds.taxWithHeldClass:''}">
+                <td>
+                    ${ds.accountname}
+                </td>
+                <td>
+                ${ds.amount.toLocaleString()}
+             </td>
+            </tr>
+        `).insertBefore('tbody tr:last-child');
+    })
+    // $fnum =totalFees - finalDiscount;
+   
+    $(".total-amount").html("P"+(totalFees - finalDiscount).toLocaleString())
 
 
 }
