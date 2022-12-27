@@ -1,3 +1,6 @@
+let otherFeesArray = []
+let duplicatedOtherFee = ''
+
 $(function () {
 
     $.ajaxSetup({
@@ -12,11 +15,32 @@ $(function () {
 
     otherFeesActions()
     computeTotalOtherFeesAmount()
+    computeTotalSummaryAmount()
 
     $('.repeatable-group[bp-field-name="otherFees"] button.add-repeatable-element-button').on('click', function(){
+        //checks if other fees have duplicates
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+            $('.repeatable-group[bp-field-name="otherFees"] .repeatable-element:last-child').remove()
+        }
+
         $('div[data-repeatable-holder="otherFees"] .repeatable-element input.text_input_mask_currency').inputmask({ alias : "currency", prefix: '' })
         $('div[data-repeatable-holder="otherFees"] .repeatable-element input.text_input_mask_percent').inputmask({ alias : "numeric", min:0, max:100, suffix: '%' })
         otherFeesActions()
+    })
+
+    $('form').on("submit", function(e){
+        //checks if other fees have duplicates
+        let haveDuplicates = checkForDuplicatesOtherFees()
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+            e.preventDefault()
+            $('form #saveActions button[type="submit"]').attr('disabled',false)
+        }
+        else {
+            $('form').submit()
+        }
     })
 
 })
@@ -72,12 +96,6 @@ function fetchData(id){
 
                     if(name !== ''){
                         getFeeDetails(i, name, amount)
-                        /*$('table#summaryTable tbody').append('\n\
-                            <tr>\n\
-                                <td>'+name+'</td>\n\
-                                <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
-                            </tr>'
-                        )*/
                     }
                 })
 
@@ -93,9 +111,9 @@ function fetchData(id){
                     }
                     //getDiscountDetails(discount.tax_withheld_discount, discount.amount) //if and only if given is id
                     $('table#summaryTable tbody').append('\n\
-                        <tr class="discountWrapper">\n\
+                        <tr class="discountWrapper" data-name="'+name+'">\n\
                             <td>'+name+'</td>\n\
-                            <td class="discount" id="discount_'+j+'">'+amount+'</td>\n\
+                            <td class="discount" id="discount_'+j+'">- '+amount+'</td>\n\
                         </tr>'
                     )
                 })
@@ -137,7 +155,10 @@ function getFeeDetails(i, id, amount){
                 if(data.business_fees_name){
                     business_fees_name = data.business_fees_name
                 }
-                let html = '<tr>\n\
+
+                amount = amount+'.00'
+
+                let html = '<tr class="feesWrapper" data-name="'+business_fees_name+'">\n\
                     <td>'+business_fees_name+'</td>\n\
                     <td class="fee" id="fee_'+i+'">'+amount+'</td>\n\
                 </tr>'
@@ -160,8 +181,9 @@ function computeTotalSummaryAmount(){
 
     $('table#summaryTable tbody tr td.discount').each(function(){
         let discount = $(this).text()
+        discount = discount.replaceAll('- ','')
         discount = formatStringToFloat(discount)
-        totalSummaryAmount = totalSummaryAmount + discount
+        totalSummaryAmount = totalSummaryAmount - discount
     })
 
     $('table#summaryTable tbody tr td.otherFees').each(function(){
@@ -176,12 +198,77 @@ function computeTotalSummaryAmount(){
 
 function otherFeesActions(){
     $('#tab_details select.particulars').on("change", function(){
-        addNewOtherFeesToSummary()
+        let haveDuplicates = checkForDuplicatesOtherFees()
+
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+        }
+        else {
+            addNewOtherFeesToSummary()
+        }
     })
 
     $('#tab_details input.amount').on("change", function(){
-        addNewOtherFeesToSummary()
+        let haveDuplicates = checkForDuplicatesOtherFees()
+
+        if(haveDuplicates) {
+            otherFeeHaveDuplicatesAction()
+        }
+        else {
+            addNewOtherFeesToSummary()
+        }
     })
+}
+
+function checkForDuplicatesOtherFees(){
+    otherFeesArray = []
+    let duplicatesCtr = 0
+
+    $('table#summaryTable tbody tr.feesWrapper').each(function(){
+        let dataName = $(this).attr('data-name')
+        if($.inArray(dataName,otherFeesArray) !== -1) {
+            duplicatesCtr++
+            duplicatedOtherFee = dataName
+        }
+        else {
+            otherFeesArray.push(dataName)
+        }
+    })
+
+    $('table#summaryTable tbody tr.discountWrapper').each(function(){
+        let dataName = $(this).attr('data-name')
+
+        if($.inArray(dataName,otherFeesArray) !== -1) {
+            duplicatesCtr++
+            duplicatedOtherFee = dataName
+        }
+        else {
+            otherFeesArray.push(dataName)
+        }
+    })
+
+    $('#tab_details select.particulars').each(function(){
+        let otherFee = $(this).find('option:selected').text()
+
+        if($.inArray(otherFee,otherFeesArray) !== -1) {
+            duplicatesCtr++
+            duplicatedOtherFee = otherFee
+        }
+        else {
+            otherFeesArray.push(otherFee)
+        }
+    })
+
+    if(duplicatesCtr > 0) { return true }
+    else { return false }
+}
+
+function otherFeeHaveDuplicatesAction(){
+    let title = '<i class="la la-exclamation-triangle"></i> Warning Alert'
+    let msg = duplicatedOtherFee+' (Particulars) are already exist. Please change, duplicate fees are not allowed.'
+    $('.alertMessageModal .modal-title').html(title)
+    $('.alertMessageModal .modal-body').html(msg)
+    $('.alertMessageModal').modal('show');
 }
 
 function addNewOtherFeesToSummary(){
@@ -190,9 +277,17 @@ function addNewOtherFeesToSummary(){
     $('#tab_details select.particulars').each(function(){
         let dataRowNumber = $(this).attr('data-row-number')
         let otherFee = $('#tab_details select.particulars[data-row-number="'+dataRowNumber+'"] option:selected').text()
-        let otherFeeAmount = $('#tab_details input.amount[data-row-number="'+dataRowNumber+'"]').val()
 
-        let otherFeeRow = '<tr class="otherFeesWrapper">\n\
+        let otherFeeAmount = $('#tab_details input.amount[data-row-number="'+dataRowNumber+'"]').val()
+        otherFeeAmount = formatStringToFloat(otherFeeAmount)
+        if(otherFeeAmount === 0) {
+            otherFeeAmount = '0.00'
+        }
+        else {
+            otherFeeAmount = otherFeeAmount+'.00'
+        }
+
+        let otherFeeRow = '<tr class="otherFeesWrapper" data-name="'+otherFee+'">\n\
                 <td>(Other Fees) '+otherFee+'</td>\n\
                 <td class="otherFees" id="otherFee_'+dataRowNumber+'">'+otherFeeAmount+'</td>\n\
             </tr>'
