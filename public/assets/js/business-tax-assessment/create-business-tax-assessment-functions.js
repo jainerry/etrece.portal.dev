@@ -71,6 +71,9 @@ async function getBusinessProfile(id) {
             id: id,
             appType:$.trim($('[name=application_type]').val())
         },
+        success:function(e){
+            console.log(e)
+        }
     })
    
     await $.ajax({
