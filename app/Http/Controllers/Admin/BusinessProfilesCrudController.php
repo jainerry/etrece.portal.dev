@@ -727,12 +727,16 @@ class BusinessProfilesCrudController extends CrudController
         $id = $request->input('id');
         $BusinessProfiles = BusinessProfiles::where("id",$id)->where('isActive','y')->get()->first();
         $lineOfBusiness = [];
+        
         $results = [];
         if (!empty($id)) {
+           
             foreach($BusinessProfiles->line_of_business as $lineOB){
                 array_push($lineOfBusiness, ['capital' => $lineOB['capital'], 'particulars' => BusinessCategory::select(['name','id'])->where("id",$lineOB['particulars'])->get()]);
             }
-            
+            $results = [
+                'line_of_business' => $lineOfBusiness,
+            ];
         }
         return $results;
     }

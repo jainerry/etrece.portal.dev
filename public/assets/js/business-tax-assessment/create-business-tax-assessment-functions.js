@@ -71,8 +71,23 @@ async function getBusinessProfile(id) {
             id: id,
             appType:$.trim($('[name=application_type]').val())
         },
-        success:function(e){
-            console.log(e)
+        success:function(data){
+           
+            if(data.line_of_business.length>0){
+                let net_profit =  $(`[bp-field-name=net_profit]`);
+                net_profit.find('[data-repeatable-holder=net_profit]').html('')
+                $.each(data.line_of_business,function(i,d){
+                    net_profit.find('.add-repeatable-element-button').trigger('click');
+                    
+                    net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
+                    net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
+                    if($(`[name=application_type]`).val() =="New"){
+                        net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
+                    }
+                })
+               
+                net_profit.find('.delete-element').remove();
+            }   
         }
     })
    
@@ -99,22 +114,6 @@ async function getBusinessProfile(id) {
               
                 repeaterparent.find('.delete-element').remove();
             }
-            if(data.line_of_business.length>0){
-                let net_profit =  $(`[bp-field-name=net_profit]`);
-                netprofitTotal ="" ;
-                net_profit.find('[data-repeatable-holder=net_profit]').html('')
-                $.each(data.line_of_business,function(i,d){
-                    net_profit.find('.add-repeatable-element-button').trigger('click');
-                
-                    net_profit.find(`[data-row-number=${(i+1)}]`).find(".lineOfBusiness").html(this.particulars[0].name)
-                    net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").val(this.capital.toLocaleString())
-                    if($(`[name=application_type]`).val() =="New"){
-                        net_profit.find(`[data-row-number=${(i+1)}]`).find("[data-repeatable-input-name=net_profit]").prop('disabled','disabled');
-                    }
-                })
-               
-                net_profit.find('.delete-element').remove();
-            }   
             totalFees =data.total;
             finalAccounts = accounts;
             generateSummary()
