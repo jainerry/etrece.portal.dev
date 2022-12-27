@@ -66,6 +66,7 @@ $(function () {
             }
             else {
                 $('form').submit()
+                //openPrintModal()
             }
         }
         
@@ -328,6 +329,54 @@ function checkRPTPrecedingPayments(){
         }
     }
 }
+
+/*function openPrintModal(){
+    let html = '\n\
+    <style>\n\
+        body {\n\
+            font-size: 14px;\n\
+            font-family:Calibri;\n\
+        }\n\
+        table {\n\
+            font-size: 14px;\n\
+            font-family:Calibri;\n\
+        }\n\
+    </style>\n\
+    <table style="width:100%">\n\
+        <tr>\n\
+            <td align ="left">SALE ORDER NO</td>\n\
+            <td align ="right">S01</td>\n\
+        </tr>\n\
+        <tr>\n\
+            <td align ="left">SALE ORDER D/TIME</td>\n\
+            <td align ="right">2009/01/01</td>\n\
+        </tr>\n\
+        <tr>\n\
+            <td align ="left">CUSTOMER</td>\n\
+            <td align ="right">JOHN DOE</td>\n\
+        </tr>\n\
+    </table>\n\
+    ';
+
+    Popup(html)
+}
+
+function Popup(data) 
+{
+    var myWindow = window.open('', 'Receipt');
+    myWindow.document.write('<html><head><title>Receipt</title>');
+    myWindow.document.write('<style type="text/css"> *, html {margin:0;padding:0;} </style>');
+    myWindow.document.write('</head><body>');
+    myWindow.document.write(data);
+    myWindow.document.write('</body></html>');
+    myWindow.document.close();
+
+    myWindow.onload=function(){
+        myWindow.focus();
+        myWindow.print();
+        myWindow.close();
+    };
+}*/
 
 function formatStringToFloat(num){
     if(num === '') {
