@@ -26,12 +26,6 @@ class Street extends Model
     // protected $hidden = [];
     // protected $dates = [];
 
-    protected $fillable = [
-        'name',
-        'barangayId',
-        'isActive'
-    ];
-
     /*
     |--------------------------------------------------------------------------
     | FUNCTIONS
@@ -60,6 +54,7 @@ class Street extends Model
     public function barangay(){
         return $this->belongsTo(Barangay::class);
     }
+
     /*
     |--------------------------------------------------------------------------
     | SCOPES

@@ -131,8 +131,22 @@ class CitizenProfileCrudController extends CrudController
             'entity'    => 'barangay',
             'attribute' => 'name'
         ]);
-        $this->crud->column('sex');
-        $this->crud->column('isActive')->label('Status');
+        //$this->crud->column('get_sex');
+        //$this->crud->column('get_isActive')->label('Status');
+
+        $this->crud->addColumn([
+            'name'  => 'sex',
+            'label' => 'Sex',
+            'type'  => 'model_function',
+            'function_name' => 'get_sex',
+        ]);
+
+        $this->crud->addColumn([
+        'name'  => 'isActive',
+        'label' => 'Status',
+        'type'  => 'model_function',
+        'function_name' => 'get_isActive',
+        ]);
     }
 
     /**
@@ -214,7 +228,6 @@ class CitizenProfileCrudController extends CrudController
                               'Married' => 'Married',
                               'Widowed' => 'Widowed'],
             'allows_null' => false,
-            'default'     => '1',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ]
@@ -235,16 +248,33 @@ class CitizenProfileCrudController extends CrudController
             ]
          ]);
         
-        $this->crud->addField([ 
+        /*$this->crud->addField([ 
             'name'        => 'sex',
             'label'       => "Sex",
             'type'        => 'select_from_array',
-            'options'     => ['1' => 'Male', '0' => 'Female'],
+            'options'     => [
+                1 => 'Male', 
+                0 => 'Female'
+            ],
             'allows_null' => false,
-           
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ]
+        ]);*/
+
+        $this->crud->addField([
+            'name'=>'sex',
+            'label'=>'Sex',
+            'type' => 'select_from_array',
+            'options' => [
+                1 => 'Male', 
+                0 => 'Female'
+            ],
+            'allows_null' => false,
+            'default'     => 'Y',
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-4'
+            ],
         ]);
 
         $this->crud->addField([
@@ -263,7 +293,6 @@ class CitizenProfileCrudController extends CrudController
             'type'        => 'select_from_array',
             'options'     => ['N/A' => 'N/A'],
             'allows_null' => false,
-            'default'     => '1',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-4'
             ]
@@ -295,7 +324,7 @@ class CitizenProfileCrudController extends CrudController
             'value' => '<hr>',
         ]);
         
-        $this->crud->addField([
+        /*$this->crud->addField([
             'name'=>'isActive',
             'label'=>'Status',
             'type' => 'select_from_array',
@@ -304,10 +333,21 @@ class CitizenProfileCrudController extends CrudController
                 'N' => 'Inactive'
             ],
             'allows_null' => false,
-            'default'     => 'Y',
             'wrapperAttributes' => [
                 'class' => 'form-group col-12 col-md-3'
             ],
+        ]);*/
+
+        $this->crud->addField([
+            'name'        => 'isActive',
+            'label'       => "Status",
+            'type'        => 'select_from_array',
+            'options'     => ['Y' => 'Active', 
+                              'N' => 'Inactive'],
+            'allows_null' => false,
+            'wrapperAttributes' => [
+                'class' => 'form-group col-12 col-md-3'
+            ]
         ]);
 
     }
