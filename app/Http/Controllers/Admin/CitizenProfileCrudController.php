@@ -131,8 +131,22 @@ class CitizenProfileCrudController extends CrudController
             'entity'    => 'barangay',
             'attribute' => 'name'
         ]);
-        $this->crud->column('sex');
-        $this->crud->column('isActive')->label('Status');
+        //$this->crud->column('get_sex');
+        //$this->crud->column('get_isActive')->label('Status');
+
+        $this->crud->addColumn([
+            'name'  => 'sex',
+            'label' => 'Sex',
+            'type'  => 'model_function',
+            'function_name' => 'get_sex',
+        ]);
+
+        $this->crud->addColumn([
+        'name'  => 'isActive',
+        'label' => 'Status',
+        'type'  => 'model_function',
+        'function_name' => 'get_isActive',
+        ]);
     }
 
     /**

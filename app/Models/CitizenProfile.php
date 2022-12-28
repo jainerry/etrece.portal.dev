@@ -58,6 +58,24 @@ class CitizenProfile extends Model
     public function getAddressWithBaranggay(){
         return trim($this->address." ".$this->address." ".$this->barangay->name);
     }
+
+    public function get_sex(){
+        if($this->sex === 1){
+            return "Male";
+        }
+        else {
+            return "Female";
+        }
+    }
+
+    public function get_isActive(){
+        if($this->isActive === 'Y'){
+            return "Active";
+        }
+        else {
+            return "Inactive";
+        }
+    }
    
     /*
     |--------------------------------------------------------------------------
@@ -98,17 +116,17 @@ class CitizenProfile extends Model
     |--------------------------------------------------------------------------
     */
 
-    // protected function sex(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($value) =>( $value == 1? 'Male':'Female'),
-    //     );
-    // }
+    /*protected function get_sex(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 1? 'Male':'Female'),
+        );
+    }
 
-    // protected function isActive(): Attribute
-    // {
-    //     return Attribute::make(
-    //         get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
-    //     );
-    // }
+    protected function get_isActive(): Attribute
+    {
+        return Attribute::make(
+            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+        );
+    }*/
 }
