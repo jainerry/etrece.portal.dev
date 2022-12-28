@@ -281,7 +281,7 @@ class BussTaxAssessmentsCrudController extends CrudController
             ],
           
             [
-                'name'    => 'amount',
+                'name'    => 'discount_amount',
                 'type'    => 'text',
                 'label'   => 'Amount',
                 'wrapper' => ['class' => 'form-group col-md-4'],

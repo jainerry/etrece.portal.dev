@@ -525,7 +525,7 @@ class BusinessProfilesCrudController extends CrudController {
                                                             $excess = $capital - $i['PAmount'];
                                                             $amount = ($excess * ($i['pp1'] / 100) * ($i['pp2'] / 100));
                                                         }
-                                                        array_push($tmp, ['categories'=>$lob_name,'name' => $x->business_fees_name, 'amount' => $amount]);
+                                                        array_push($tmp, ['id'=>$x->id,'categories'=>$lob_name,'name' => $x->business_fees_name, 'amount' => $amount]);
                                                     }
                                                 }
                                             }
@@ -543,7 +543,7 @@ class BusinessProfilesCrudController extends CrudController {
 															array_push($t, $tp->first());	
 														}
 								 
-													array_push($taxFeeCollections, ['name'=>'bustax','data'=>$t,'amount'=>collect($t)->sum('amount')]);
+													array_push($taxFeeCollections, ['id'=>$x->id,'name'=>'bustax','data'=>$t,'amount'=>collect($t)->sum('amount')]);
 											  }
                                 }
 
@@ -565,7 +565,7 @@ class BusinessProfilesCrudController extends CrudController {
                                     }
                                     elseif ($area >= ($i['from']) && $i['infinite'] == 1) {
 
-                                        array_push($tmp, ['name' => $x->business_fees_name, 'amount' => $amount]);
+                                        array_push($tmp, ['id'=>$x->id,'name' => $x->business_fees_name, 'amount' => $amount]);
                                     }
                                 }
                                 if (collect($tmp)->count() > 0) {
@@ -584,7 +584,7 @@ class BusinessProfilesCrudController extends CrudController {
                                 ->sum('number');
                             $amount = $data->amount_value * $totalSubject;
 
-                            array_push($taxFeeCollections, ['name' => $data->business_fees_name, 'amount' => $amount]);
+                            array_push($taxFeeCollections, ['id'=>$data->id,'name' => $data->business_fees_name, 'amount' => $amount]);
                         break;
                         case '04':
                             // Weight & Measure
@@ -594,7 +594,7 @@ class BusinessProfilesCrudController extends CrudController {
 
                                 $totalSubject = abs($weight_and_measure_value);
                                 $amount = $data->amount_value * $totalSubject;
-                                array_push($taxFeeCollections, ['name' => $data->business_fees_name, 'amount' => $amount]);
+                                array_push($taxFeeCollections, ['id'=>$data->id,'name' => $data->business_fees_name, 'amount' => $amount]);
 
                             }
 
@@ -606,7 +606,8 @@ class BusinessProfilesCrudController extends CrudController {
                             if (collect($vehicles)->count() > 0) {
                                 $totalSubject = collect($vehicles)->sum('number');
                                 $amount = $data->amount_value * $totalSubject;
-                                array_push($taxFeeCollections, ['name' => $data->business_fees_name, 'amount' => $amount]);
+                                
+                                array_push($taxFeeCollections, ['id'=>$data->id,'name' => $data->business_fees_name, 'amount' => $amount]);
 
                             }
                         break;
