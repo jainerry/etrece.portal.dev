@@ -123,7 +123,7 @@ class BarangayCrudController extends CrudController
             ]
         ]);
         $this->crud->addField([
-            'name'=>'municipalityId',
+            'name'=>'municipality_id',
             'label' => "City",
             'type'=>'select',
             'entity' => 'municipality',

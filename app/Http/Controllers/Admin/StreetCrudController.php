@@ -56,6 +56,7 @@ class StreetCrudController extends CrudController
         $this->crud->removeButton('delete');  
         $this->crud->removeButton('show');
         $this->crud->removeButton('update'); 
+        
         $this->crud->addFilter([
             'type'  => 'date',
             'name'  => 'created_at',
@@ -76,6 +77,8 @@ class StreetCrudController extends CrudController
           function ($value) { // if the filter is active, apply these constraints
             $this->crud->addClause('where', 'barangay_id', $value);
           });
+        
+
         $this->crud->addColumn([
             'label'     => 'Reference ID',
             'type'      => 'text',
@@ -158,11 +161,7 @@ class StreetCrudController extends CrudController
             $refID = 'STREET-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
             $entry->refID = $refID;
 
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$refID,
                 'category' =>'street',
                 'type' =>'create',
@@ -181,12 +180,7 @@ class StreetCrudController extends CrudController
         $this->setupCreateOperation();
 
         Street::updating(function($entry) {
-
-            $transCount = TransactionLogs::count();
-            $transRefID = 'TRANS-LOG'.'-'.str_pad(($transCount), 4, "0", STR_PAD_LEFT);
-          
             TransactionLogs::create([
-                'refID' => $transRefID,
                 'transId' =>$entry->refID,
                 'category' =>'street',
                 'type' =>'update',
