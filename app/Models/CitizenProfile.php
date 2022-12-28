@@ -97,16 +97,18 @@ class CitizenProfile extends Model
     | MUTATORS
     |--------------------------------------------------------------------------
     */
-    protected function sex(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 1? 'Male':'Female'),
-        );
-    }
-    protected function isActive(): Attribute
-    {
-        return Attribute::make(
-            get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
-        );
-    }
+
+    // protected function sex(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) =>( $value == 1? 'Male':'Female'),
+    //     );
+    // }
+
+    // protected function isActive(): Attribute
+    // {
+    //     return Attribute::make(
+    //         get: fn ($value) =>( $value == 'Y'? 'Active':'Inactive'),
+    //     );
+    // }
 }

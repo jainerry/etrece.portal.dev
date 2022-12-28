@@ -21,7 +21,7 @@ return new class extends Migration
             $table->string('mName')->nullable();
             $table->string('lName')->nullable();
             $table->string('suffix')->nullable();
-            $table->integer('sex')->nullable();
+            $table->boolean('sex')->default(1);
             $table->date('bdate')->nullable();
             $table->foreignUuid('civilStatus')->nullable();
             $table->foreignUuid('brgyID')->nullable();
