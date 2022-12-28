@@ -56,7 +56,19 @@ async function getDetails(id){
             id:id
         },
         success:function(data){
-            console.log(data);
+          if(data.taxFeeCollection.length > 0){
+            let tax =data.taxFeeCollection;
+            let fees_and_deliquency_holder = $(`[bp-field-name=fees_and_delinquency]`);
+            fees_and_deliquency_holder.find(`[data-repeatable-holder=fees_and_delinquency]`).html('')
+            $.each(tax,function(i,d){
+                if(this.name == "bustax"){
+                    $.each(this.data,)
+                }else{
+                    
+                    fees_and_deliquency_holder.find('.add-repeatable-element-button').trigger('click')
+                }
+            })
+          }
         }
 
     })
