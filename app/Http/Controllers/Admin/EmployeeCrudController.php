@@ -198,9 +198,9 @@ class EmployeeCrudController extends CrudController
 
         Employee::creating(function($entry) {
             
-            $employeeIdCtr = Employee::select(DB::raw('count(*) as count'))->orderBy('created_at', 'desc')->first();
+            $employeeIdCtr = Employee::count();
             //EP22-001 (EP)(last two digit of current year)(-)(series)
-            $employeeId = 'EP'.substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.str_pad(($employeeIdCtr->count), 3, "0", STR_PAD_LEFT);
+            $employeeId = 'EP'.substr(Date('Y'),(strlen(Date('Y'))-2),2).'-'.str_pad(($employeeIdCtr), 3, "0", STR_PAD_LEFT);
             /*
             $request = app(EmployeeRequest::class);
             $appointmentName = Appointment::find($request->input('appointmentId'))->name;
@@ -216,7 +216,7 @@ class EmployeeCrudController extends CrudController
             $entry->refID = $refID;
 
             TransactionLogs::create([
-                'transId' =>$employeeId,
+                'transId' =>$refID,
                 'category' =>'employee',
                 'type' =>'create',
             ]);
@@ -236,7 +236,7 @@ class EmployeeCrudController extends CrudController
         Widget::name('custom_script')->remove();
         Employee::updating(function($entry) {
             TransactionLogs::create([
-                'transId' =>$entry->employeeId,
+                'transId' =>$entry->refID,
                 'category' =>'employee',
                 'type' =>'update',
             ]);
