@@ -62,7 +62,7 @@ class BusinessProfiles extends Model
 
             while($isExist){
                 $count++;
-                $refID = 'CITIZEN'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+                $refID = 'BUS-ID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
                 $isExist = BusinessProfiles::where("refID",$refID)->count() > 0;
             }
 
