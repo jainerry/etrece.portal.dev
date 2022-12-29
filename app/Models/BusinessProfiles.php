@@ -58,6 +58,15 @@ class BusinessProfiles extends Model
         BusinessProfiles::creating(function($model){
             $count = BusinessProfiles::count();
             $refID = 'BUS-ID'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $isExist = BusinessProfiles::where("refID",$refID)->count() > 0;
+
+            while($isExist){
+                $count++;
+                $refID = 'CITIZEN'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+                $isExist = BusinessProfiles::where("refID",$refID)->count() > 0;
+            }
+
+
             $model->refID = $refID;
         });
         BusinessProfiles::deleting(function ($obj) {
