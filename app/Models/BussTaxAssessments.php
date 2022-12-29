@@ -42,7 +42,15 @@ class BussTaxAssessments extends Model
         BussTaxAssessments::creating(function($model){
             $count = BussTaxAssessments::count();
             $refID = 'BUSS-TAX-ASSESSMENT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $isExist = BussTaxAssessments::where("refID",$refID)->count() > 0;
+
+            while($isExist){
+                $count++;
+                $refID = 'BUSS-TAX-ASSESSMENT'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+                $isExist = BussTaxAssessments::where("refID",$refID)->count() > 0;
+            }
             $model->refID = $refID;
+       
         });
     }
 
