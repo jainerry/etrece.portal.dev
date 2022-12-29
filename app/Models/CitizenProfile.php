@@ -41,7 +41,16 @@ class CitizenProfile extends Model
 
         CitizenProfile::creating(function($model){
             $count = CitizenProfile::count();
+            
             $refID = 'CITIZEN'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+            $isExist = CitizenProfile::where("refID",$refID)->count() > 0;
+           
+            while($isExist){
+                $count++;
+                $refID = 'CITIZEN'.'-'.str_pad(($count), 4, "0", STR_PAD_LEFT);
+                $isExist = CitizenProfile::where("refID",$refID)->count() > 0;
+            }
+
             $model->refID = $refID;
         });
     }
