@@ -134,8 +134,9 @@ class BusinessProfiles extends Model
     }
     public function getOwner(){
         if($this->names()->get()->first() == null){
-            return $this->owner()->get()->first()->full_name;
+            return null;
         }else{
+
             return $this->names()->get()->first()->full_name;
         }   
     }
